@@ -71,3 +71,22 @@ Las siguientes son **ideas para explorar**, no decisiones de diseño cerradas ni
 - **Datos de muestra:** pueden ser ficticios **solo en bocetos**, siempre identificados como tales.
 
 **Pendiente de revisar conjuntamente:** grado de ornamentación, textura y marco, proporciones y tamaño del retrato, separación entre métricas, colocación final de los microcopies y tratamiento visual del bloque inferior. No considerar aprobada ninguna de estas elecciones hasta confirmación explícita.
+
+## Referencia visual objetivo — boceto generado (2026-11-16)
+
+**Estado: REFERENCIA DE ASPIRACIÓN VISUAL, NO DISEÑO APROBADO NI GARANTÍA TÉCNICA.**
+
+Se ha generado en la conversación un boceto de la ventana General que el usuario desea conservar como referencia estética para futuras iteraciones. La imagen original está en la conversación de diseño; **este documento registra sus características, pero no constituye una copia de la imagen**.
+
+Características que interesa preservar al evolucionar la propuesta:
+
+- Ventana vertical con marco de metal oscuro, detalles dorados y esquinas ornamentales, evocando directamente la UI clásica de Warcraft.
+- Cabecera **WarScore**, pestaña **General** visible y cierre en la esquina superior derecha.
+- Retrato circular grande, centrado, con ilustración provisional de un personaje orco; nombre, nivel y clase justo debajo. En producción se sustituirá por el retrato real según posibilidades de Forever.
+- Fondo oscuro texturizado, con elementos de ambientación de la Horda en los laterales del boceto (no necesariamente definitivos ni obligatorios para Alianza).
+- **Muertes con honor**: título con adornos de laurel y gran cifra dorada, máximo foco de atención.
+- **Ratio HK/D** y **ratio KB/D**: datos centrados y decrecientes en jerarquía; icono de ayuda junto a la etiqueta y microcopy descriptivo bajo la cifra.
+- **Muertes PvP sufridas** al final del panel, con cifra roja apagada.
+- Separadores dorados finos entre secciones. Sensación de panel integrado en el juego, no de aplicación web.
+
+Los valores y el personaje del boceto son **ficticios**. La fidelidad de texturas, máscaras circulares, fuentes y retratos debe verificarse en WoW Forever antes de implementación. No modificar código ni tratar esta referencia como aprobada sin acuerdo posterior.
