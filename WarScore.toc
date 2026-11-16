@@ -3,7 +3,7 @@
 ## Author: WarScore
 ## Version: 0.1.0
 ## SavedVariables: WarScoreDB
-# TODO: añadir ## Interface: <numero> tras confirmar versión de cliente Forever.
+## Interface: 16001
 
 Core/Bootstrap.lua
 Core/Storage.lua
