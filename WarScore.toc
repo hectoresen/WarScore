@@ -1,0 +1,11 @@
+## Title: WarScore
+## Notes: Estadísticas PvP históricas para WoW Forever
+## Author: WarScore
+## Version: 0.1.0
+## SavedVariables: WarScoreDB
+# TODO: añadir ## Interface: <numero> tras confirmar versión de cliente Forever.
+
+Core/Bootstrap.lua
+Core/Storage.lua
+Core/Stats.lua
+UI/General.lua
