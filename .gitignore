@@ -1,0 +1,6 @@
+# Artefactos locales
+.DS_Store
+Thumbs.db
+*.zip
+.vscode/
+.idea/
