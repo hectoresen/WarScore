@@ -20,20 +20,25 @@ Los términos HK/D y KB/D son técnicamente más precisos que «KDA». Si el den
 
 ## Sección inferior — estadísticas complementarias
 
-Diseñar un bloque secundario **por debajo** de los cinco indicadores principales, sin competir visualmente con ellos. Preparar el espacio y componentes de forma flexible; **no mostrar valores falsos**.
+Diseñar un bloque secundario **por debajo** de los cinco indicadores principales, sin alterar la composición ya propuesta para ellos. En la siguiente iteración del boceto, destacar en esta zona **duelos totales ganados** y **número total de campos de batalla jugados**; ambos son contadores históricos deseados, pero su disponibilidad en la API de Forever está pendiente de verificación. Preparar el espacio y componentes de forma flexible; **no mostrar valores falsos**.
 
 | Métrica | Estado para diseño | Nota técnica |
 | --- | --- | --- |
 | Golpes de gracia históricos (KB) | Candidata documentada, condicionada | Estadística ID `1487` (*Total Killing Blows*). Hay que confirmar que representa exclusivamente golpes finales PvP; no asumirlo. |
 | Porcentaje de golpes de gracia | Derivada, condicionada | `KB PvP / HK × 100`; solo si KB corresponde realmente a PvP. |
-| Rango PvP máximo | API documentada, pendiente de prueba | `GetPVPLifetimeStats()` ofrece un rango histórico; verificar su significado en Forever. |
-| **Duelos ganados** | **Añadida al diseño, pendiente de ID Lua** | Estadística registrada por WoW; localizar ID exacto y lectura histórica en Forever. |
+| Rango PvP (histórico / máximo por definir) | **Posición visual por decidir: quizá entre datos principales**; API pendiente de prueba | Investigar `GetPVPLifetimeStats()`, confirmar significado y disponibilidad real en Forever. No moverlo aún al bloque principal sin aprobar la nueva jerarquía. |
+| **Duelos totales ganados** | **Prioridad en el nuevo bloque inferior; pendiente de ID Lua y prueba** | Confirmar ID, acceso y lectura histórica en Forever. |
 | **Duelos perdidos** | **Añadida al diseño, pendiente de ID Lua** | Misma validación que duelos ganados. |
 | **Porcentaje de duelos ganados** | **Derivada, condicionada** | `ganados / (ganados + perdidos) × 100`; no mostrar si falta alguno de los contadores. |
+| **Campos de batalla totales jugados** | **Prioridad en el nuevo bloque inferior; pendiente de ID Lua y prueba** | Se solicitan **partidas disputadas**, no solamente victorias; confirmar contador histórico accesible en Forever. |
 | Victorias en campos de batalla | Candidata, pendiente de ID | No separar modalidades en el bloque principal. |
 | Porcentaje de victorias en campos de batalla | Candidata, condicionada | Solo si existe también un denominador histórico fiable. |
 
-**Decisión visual para duelos:** agrupar victorias y derrotas en una misma tarjeta o subapartado «Duelos», con el porcentaje de victorias como dato complementario si es calculable. Evitar que esta sección quite protagonismo a HK y los dos ratios.
+**Actualización de diseño (2026-11-16):** en la siguiente preview, añadir una zona inferior diferenciada con **duelos totales ganados** y **campos de batalla totales jugados**, con números legibles pero secundarios. Las restantes métricas candidatas de esta tabla no se incorporan automáticamente al boceto.
+
+**Propuesta anterior sobre duelos, aún por revisar:** agrupar victorias y derrotas en una misma tarjeta o subapartado «Duelos», con el porcentaje de victorias si es calculable. La nueva prioridad explícita son los **duelos ganados**; no incorporar automáticamente derrotas ni porcentajes.
+
+**Rango PvP:** el usuario plantea mostrarlo **entre los indicadores principales**, no confirma todavía su posición. Explorar una integración visual discreta sin desplazar ni alterar los cinco elementos principales hasta acordarlo.
 
 ## Semáforo de evidencia
 
@@ -67,7 +72,8 @@ Las siguientes son **ideas para explorar**, no decisiones de diseño cerradas ni
   - HK/D: «Muertes con honor / Muertes PvP sufridas».
   - KB/D: «Golpes de gracia / Muertes PvP sufridas».
 - **Muertes PvP sufridas:** parte inferior del bloque principal; cifra secundaria, posiblemente en rojo apagado.
-- **Bloque de estadísticas complementarias:** mantenerlo visualmente separado y subordinado al bloque principal; contenido sujeto a validación técnica y decisiones existentes en este documento.
+- **Bloque de estadísticas complementarias:** añadir debajo del bloque principal dos indicadores visuales: **duelos totales ganados** y **campos de batalla totales jugados**, sin cambiar lo que ya figura por encima. Mantenerlo subordinado, con separadores ornamentales discretos. Disponibilidad histórica pendiente de verificación.
+- **Rango PvP:** candidato a aparecer entre los datos principales; posición, presentación y semántica histórica pendientes de acordar. No incluirlo como decisión cerrada.
 - **Datos de muestra:** pueden ser ficticios **solo en bocetos**, siempre identificados como tales.
 
 **Pendiente de revisar conjuntamente:** grado de ornamentación, textura y marco, proporciones y tamaño del retrato, separación entre métricas, colocación final de los microcopies y tratamiento visual del bloque inferior. No considerar aprobada ninguna de estas elecciones hasta confirmación explícita.
