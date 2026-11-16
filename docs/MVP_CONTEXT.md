@@ -107,6 +107,18 @@ No implementar APIs inventadas. El scaffold puede dejar módulos preparados y fu
 - Fuentes: https://github.com/xIGBClutchIx/ForeverPlusPlus/blob/main/docs/forever-api.md ; https://github.com/realworldbuilder/wowwrapped/blob/main/docs/addon-api.md ; https://foreverbase.org/en/addons/install/ ; https://forevermeta.me/es/guides/wow-forever-addons-interface
 - La existencia de una función genérica no valida los IDs y valores históricos de cada estadística. Esta investigación continúa pendiente.
 
+## 7A. IDs históricos encontrados (2026-11-16)
+
+Evidencia específica de Wowhead Forever 1.60.1:
+- `1487` — Total Killing Blows: https://www.wowhead.com/forever/achievement=1487/total-killing-blows
+- `1501` — Total deaths from other players: https://www.wowhead.com/forever/achievement=1501/total-deaths-from-other-players
+- `GetPVPLifetimeStats()` devuelve `lifetimeHonorableKills, lifetimeMaxPVPRank`; firma documentada en la API generada para camelot/Forever 1.60.1: https://wowlua.dev/api/global/GetPVPLifetimeStats
+- `GetStatistic(1487)` y `GetStatistic(1501)` son las consultas candidatas, conforme a https://warcraft.wiki.gg/wiki/API_GetStatistic. El retorno es texto formateado: normalizar localización/separadores antes de calcular ratios.
+- **Riesgo crítico:** «Total Killing Blows» podría incluir golpes finales contra criaturas PvE, no solo jugadores. No etiquetar `1487` como KB PvP ni utilizarlo en KB/D hasta comprobar su semántica específica en Forever. No sumar «World Killing Blows» y «Battleground Killing Blows» sin demostrar que World excluye PvE y que no hay solapamiento.
+- `1501` explícitamente incluye muertes causadas por otros jugadores, por lo que encaja semánticamente con el denominador deseado.
+- Estos IDs están publicados y son una base documental sólida; **todavía no hay prueba funcional de que GetStatistic devuelva sus valores en Forever**.
+- Wowhead (2026-09-24) publica la lista completa de estadísticas disponibles en la interfaz Forever: https://www.wowhead.com/forever/news/statistics-pane-now-available-in-wow-forever-beta-383102
+
 ## 8. Ideas y preguntas abiertas
 
 - ¿Puede la API de Forever recuperar realmente muertes PvP sufridas históricas, diferenciadas de muertes PvE?
