@@ -1,5 +1,7 @@
-# WarScore — Contrato de diseño: vista General
+# WarScore — Vista General: contexto y propuestas de diseño
 
+> **ESTADO VISUAL: PREVIEW EN ITERACIÓN — DISEÑO NO APROBADO.** Las decisiones de producto recogidas aquí siguen vigentes, pero las propuestas estéticas no autorizan implementación. No modificar código de UI hasta aprobación expresa.
+>
 > Documento vivo para el agente de UI/UX. Leer junto a `docs/MVP_CONTEXT.md`. Actualizar este archivo cuando se confirme, descarte o cambie una métrica. **No implica que la API haya sido probada en el cliente.**
 >
 > Última actualización: 2026-11-16.
@@ -53,3 +55,19 @@ El diseñador puede preparar componentes para métricas documentadas o candidata
 - **Agente técnico:** investiga compatibilidad, semántica e IDs; actualiza esta tabla cuando cambie la evidencia.
 - **Agente de diseño:** consulta este archivo antes de diseñar o implementar la pantalla; respeta la jerarquía visual y deja preparada una sección inferior extensible.
 - Las decisiones visuales nuevas deben acordarse con el usuario; no añadir métricas por iniciativa propia al MVP.
+
+## Preview visual en iteración (NO APROBADA)
+
+Las siguientes son **ideas para explorar**, no decisiones de diseño cerradas ni instrucciones de implementación:
+
+- **Dirección estética tentativa:** ventana compacta y vertical inspirada en paneles nativos de WoW, con fondo oscuro texturizado, bordes dorados discretos, tipografía acorde al juego y separadores sutiles; evitar apariencia de dashboard web o abundancia de tarjetas.
+- **Retrato durante el prototipado:** mostrar dentro del marco circular una ilustración provisional de un personaje de Warcraft para dar identidad visual a los bocetos. **Es solo un placeholder visual**, nunca un sustituto definitivo del retrato real del personaje. En producción investigar y usar la API de retrato disponible en Forever, sin asumir máscaras circulares funcionales.
+- **HK:** cifra grande en dorado y centrada, claramente predominante.
+- **HK/D y KB/D:** apilados verticalmente, con HK/D más destacado; incluir un **microcopy aclaratorio** de tamaño pequeño, gris/beige y jerarquía baja, colocado al lado del dato o debajo (ubicación aún por decidir):
+  - HK/D: «Muertes con honor / Muertes PvP sufridas».
+  - KB/D: «Golpes de gracia / Muertes PvP sufridas».
+- **Muertes PvP sufridas:** parte inferior del bloque principal; cifra secundaria, posiblemente en rojo apagado.
+- **Bloque de estadísticas complementarias:** mantenerlo visualmente separado y subordinado al bloque principal; contenido sujeto a validación técnica y decisiones existentes en este documento.
+- **Datos de muestra:** pueden ser ficticios **solo en bocetos**, siempre identificados como tales.
+
+**Pendiente de revisar conjuntamente:** grado de ornamentación, textura y marco, proporciones y tamaño del retrato, separación entre métricas, colocación final de los microcopies y tratamiento visual del bloque inferior. No considerar aprobada ninguna de estas elecciones hasta confirmación explícita.
