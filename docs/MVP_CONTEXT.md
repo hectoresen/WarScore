@@ -2,11 +2,11 @@
 
 > **OBLIGATORIO PARA AGENTES:** leer este documento antes de proponer o implementar cambios. Es la fuente temporal de contexto y decisiones. Actualizarlo cuando se cierre una decisión o se descubra evidencia técnica. **Eliminarlo al completar el MVP**, trasladando antes a documentación estable solo lo que siga siendo útil.
 >
-> Estado: planificación / scaffold. No confundir una API documentada con una API probada en WoW Forever.
+> Estado: planificación / scaffold. Compatibilidad base documentada el 2026-11-16. No confundir una API documentada con una API probada en WoW Forever.
 
 ## 1. Propósito y restricciones
 
-WarScore es un addon nativo de **World of Warcraft Forever** para consultar estadísticas PvP de personajes propios, especialmente su historial acumulado. Debe ejecutarse íntegramente dentro del cliente, sin servidores, servicios web, APIs remotas ni bases de datos externas. Lua y la API real del cliente son la base técnica; **averiguar la versión exacta de interfaz y APIs de Forever antes de fijar el TOC o implementar llamadas**.
+WarScore es un addon nativo de **World of Warcraft Forever** para consultar estadísticas PvP de personajes propios, especialmente su historial acumulado. Debe ejecutarse íntegramente dentro del cliente, sin servidores, servicios web, APIs remotas ni bases de datos externas. Lua y la API real del cliente son la base técnica; **Compatibilidad base documentada:** Forever 1.60.1, interfaz `16001`, familia de APIs Mainline moderna (no Classic Era). La compatibilidad de cada llamada concreta sigue pendiente.
 
 El usuario quiere soporte **multipersonaje**: por defecto se muestra el personaje conectado, pero debe poder navegarse por otros personajes conocidos del addon. No atribuir a personajes desconectados información que el cliente no permita consultar; distinguir datos cacheados y actuales.
 
@@ -78,7 +78,8 @@ No implementar APIs inventadas. El scaffold puede dejar módulos preparados y fu
 ## 6. Roadmap propuesto
 
 ### Fase 0 — Compatibilidad y descubrimiento
-- Identificar versión de cliente, TOC, API Lua, restricciones de interfaz y retrato.
+- [x] Identificar versión de cliente (`1.60.1`), TOC (`16001`) y familia API (Mainline moderna).
+- [ ] Verificar APIs concretas de retrato y estadísticas, y restricciones de interfaz.
 - Documentar fuentes, firmas e IDs de HK, KB, muertes PvP sufridas y rango.
 - Diferenciar datos históricos disponibles de datos capturables solo a futuro.
 
@@ -98,7 +99,15 @@ No implementar APIs inventadas. El scaffold puede dejar módulos preparados y fu
 - Historial de combates, rivales, clases, facciones, rachas y sesiones cuando los eventos lo permitan.
 - Distinguir claramente seguimiento desde instalación frente a históricos.
 
-## 7. Ideas y preguntas abiertas
+## 7. Hallazgos de compatibilidad (2026-11-16)
+
+- Forever live: versión `1.60.1`, interfaz `16001`, producto `wowf`, carpeta `_forever_`; documentado por inspección de build 70755 (2026-11-03) en ForeverPlusPlus.
+- Utiliza APIs de la familia Mainline moderna, no las de Classic Era; Lua 5.1 según implementaciones comunitarias.
+- Hay restricciones modernas de valores secretos y acceso al registro de combate; no diseñar el historial detallado de encuentros suponiendo acceso a eventos de combate.
+- Fuentes: https://github.com/xIGBClutchIx/ForeverPlusPlus/blob/main/docs/forever-api.md ; https://github.com/realworldbuilder/wowwrapped/blob/main/docs/addon-api.md ; https://foreverbase.org/en/addons/install/ ; https://forevermeta.me/es/guides/wow-forever-addons-interface
+- La existencia de una función genérica no valida los IDs y valores históricos de cada estadística. Esta investigación continúa pendiente.
+
+## 8. Ideas y preguntas abiertas
 
 - ¿Puede la API de Forever recuperar realmente muertes PvP sufridas históricas, diferenciadas de muertes PvE?
 - ¿Qué ID representa los golpes de gracia históricos? ¿Se contabilizan igual en todas las modalidades?
@@ -108,7 +117,7 @@ No implementar APIs inventadas. El scaffold puede dejar módulos preparados y fu
 - ¿Hay estadísticas globales de campos de batalla y duelos con identificadores accesibles?
 - ¿Cómo comunicar ausencia de una métrica histórica sin ofrecer cifras engañosas?
 
-## 8. Alcance operativo durante arranque
+## 9. Alcance operativo durante arranque
 
 Priorizar velocidad e iteración. **No configurar pipelines CI/CD, rulesets, políticas de contributors, validaciones obligatorias, PR templates ni burocracia de repositorio**. Cambios directos a `main` son aceptables en esta fase. Añadir pruebas manuales concretas solo cuando aporten valor a la compatibilidad del addon.
 
