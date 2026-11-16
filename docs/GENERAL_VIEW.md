@@ -1,6 +1,6 @@
 # WarScore — Vista General: contexto y propuestas de diseño
 
-> **ESTADO VISUAL: PREVIEW EN ITERACIÓN — DISEÑO NO APROBADO.** Las decisiones de producto recogidas aquí siguen vigentes, pero las propuestas estéticas no autorizan implementación. No modificar código de UI hasta aprobación expresa.
+> **ESTADO VISUAL: REFERENCIA OBJETIVO ELEGIDA, AÚN SIN APROBACIÓN PARA IMPLEMENTAR.** El usuario ha elegido el segundo boceto generado como referencia visual principal; debe reproducirse con la máxima fidelidad técnicamente posible. Las decisiones de producto siguen vigentes y no se autoriza modificar la UI hasta aprobación expresa.
 >
 > Documento vivo para el agente de UI/UX. Leer junto a `docs/MVP_CONTEXT.md`. Actualizar este archivo cuando se confirme, descarte o cambie una métrica. **No implica que la API haya sido probada en el cliente.**
 >
@@ -38,7 +38,7 @@ Diseñar un bloque secundario **por debajo** de los cinco indicadores principale
 
 **Propuesta anterior sobre duelos, aún por revisar:** agrupar victorias y derrotas en una misma tarjeta o subapartado «Duelos», con el porcentaje de victorias si es calculable. La nueva prioridad explícita son los **duelos ganados**; no incorporar automáticamente derrotas ni porcentajes.
 
-**Rango PvP:** el usuario plantea mostrarlo **entre los indicadores principales**, no confirma todavía su posición. Explorar una integración visual discreta sin desplazar ni alterar los cinco elementos principales hasta acordarlo.
+**Rango PvP:** el segundo boceto de referencia lo muestra debajo del retrato y antes de HK, como placa/ribbon ornamental. Es la **ubicación objetivo de la preview**, sujeta a la disponibilidad y semántica real del dato en Forever.
 
 ## Semáforo de evidencia
 
@@ -73,26 +73,39 @@ Las siguientes son **ideas para explorar**, no decisiones de diseño cerradas ni
   - KB/D: «Golpes de gracia / Muertes PvP sufridas».
 - **Muertes PvP sufridas:** parte inferior del bloque principal; cifra secundaria, posiblemente en rojo apagado.
 - **Bloque de estadísticas complementarias:** añadir debajo del bloque principal dos indicadores visuales: **duelos totales ganados** y **campos de batalla totales jugados**, sin cambiar lo que ya figura por encima. Mantenerlo subordinado, con separadores ornamentales discretos. Disponibilidad histórica pendiente de verificación.
-- **Rango PvP:** candidato a aparecer entre los datos principales; posición, presentación y semántica histórica pendientes de acordar. No incluirlo como decisión cerrada.
+- **Rango PvP:** en la referencia visual elegida aparece como placa bajo el nombre/nivel/clase y antes de HK. Mantener esa composición en la preview; significado histórico y viabilidad aún pendientes.
 - **Datos de muestra:** pueden ser ficticios **solo en bocetos**, siempre identificados como tales.
 
 **Pendiente de revisar conjuntamente:** grado de ornamentación, textura y marco, proporciones y tamaño del retrato, separación entre métricas, colocación final de los microcopies y tratamiento visual del bloque inferior. No considerar aprobada ninguna de estas elecciones hasta confirmación explícita.
 
 ## Referencia visual objetivo — boceto generado (2026-11-16)
 
-**Estado: REFERENCIA DE ASPIRACIÓN VISUAL, NO DISEÑO APROBADO NI GARANTÍA TÉCNICA.**
+**Estado actualizado: SEGUNDO BOCETO ELEGIDO COMO REFERENCIA VISUAL PRINCIPAL. Máxima fidelidad como objetivo; no constituye aprobación de implementación ni garantía de compatibilidad técnica.**
 
-Se ha generado en la conversación un boceto de la ventana General que el usuario desea conservar como referencia estética para futuras iteraciones. La imagen original está en la conversación de diseño; **este documento registra sus características, pero no constituye una copia de la imagen**.
+El **segundo boceto generado en esta conversación (2026-11-16)**, que incorpora rango PvP y dos indicadores inferiores, es la referencia elegida por el usuario. **Intentar reproducirlo con la mayor fidelidad posible** en proporciones, texturas, contornos, tipografía, iluminación, iconos, jerarquía y separadores. No simplificarlo por preferencia personal: adaptar solo cuando una limitación demostrada de WoW Forever lo exija. La imagen original está en la conversación; **este documento conserva una descripción textual, no adjunta aún el archivo gráfico al repositorio**.
 
 Características que interesa preservar al evolucionar la propuesta:
 
 - Ventana vertical con marco de metal oscuro, detalles dorados y esquinas ornamentales, evocando directamente la UI clásica de Warcraft.
-- Cabecera **WarScore**, pestaña **General** visible y cierre en la esquina superior derecha.
+- Cabecera **WarScore**, pestañas contiguas **General** y **Hoy** (la segunda se incorporará en la próxima iteración), y cierre en la esquina superior derecha.
 - Retrato circular grande, centrado, con ilustración provisional de un personaje orco; nombre, nivel y clase justo debajo. En producción se sustituirá por el retrato real según posibilidades de Forever.
 - Fondo oscuro texturizado, con elementos de ambientación de la Horda en los laterales del boceto (no necesariamente definitivos ni obligatorios para Alianza).
+- **Rango PvP**: placa ornamental debajo de la identidad del personaje y antes de HK, tal como aparece en el segundo boceto; denominación e histórico por verificar.
 - **Muertes con honor**: título con adornos de laurel y gran cifra dorada, máximo foco de atención.
-- **Ratio HK/D** y **ratio KB/D**: datos centrados y decrecientes en jerarquía; icono de ayuda junto a la etiqueta y microcopy descriptivo bajo la cifra.
-- **Muertes PvP sufridas** al final del panel, con cifra roja apagada.
+- **Ratio HK/D** y **ratio KB/D**: en el segundo boceto aparecen en **dos columnas contiguas** con separador vertical; mantener HK/D visualmente más importante. Cada uno tiene icono de ayuda junto a la etiqueta y microcopy bajo el valor. Esta presentación visual sustituye provisionalmente la anterior disposición apilada, pendiente de validación final.
+- **Muertes PvP sufridas** en rojo apagado, justo encima de la sección complementaria.
+- **Pie complementario** enmarcado, en dos columnas: **duelos ganados** y **campos de batalla jugados**, con iconos e indicadores de menor peso.
 - Separadores dorados finos entre secciones. Sensación de panel integrado en el juego, no de aplicación web.
 
 Los valores y el personaje del boceto son **ficticios**. La fidelidad de texturas, máscaras circulares, fuentes y retratos debe verificarse en WoW Forever antes de implementación. No modificar código ni tratar esta referencia como aprobada sin acuerdo posterior.
+
+## Nueva pestaña «Hoy» — alcance inicial (2026-11-16)
+
+**Decisión de producto:** añadir una segunda pestaña etiquetada exactamente **«Hoy»**, inmediatamente **a la derecha de «General»**, con estética y estructura de navegación coherentes con el segundo boceto objetivo.
+
+- **General:** muestra estadísticas PvP **históricas/acumuladas** del personaje, conforme a las restricciones de disponibilidad y evidencia técnica ya descritas.
+- **Hoy:** mostrará **estadísticas PvP correspondientes exclusivamente al día actual**, no los acumulados históricos. No trasladar automáticamente los totales históricos a esta pestaña.
+- **Pendiente de diseño y aprobación:** métricas concretas, disposición interna de «Hoy», si se usa historial obtenido de una API diaria o seguimiento local, persistencia, momento exacto de reinicio diario (hora local / servidor) y tratamiento de periodos sin seguimiento. Evitar inventar datos anteriores a la instalación si no son recuperables.
+- La incorporación de la pestaña no debe cambiar la distribución de las estadísticas de «General» más allá del espacio de navegación requerido.
+
+**Nota para agentes:** documentar aquí nuevas decisiones cuando se acuerden; no implementar ninguna de las dos pestañas a partir del boceto sin autorización explícita.
