@@ -163,3 +163,20 @@ El usuario ejecutó `/wsdiag list 21` y `/wsdiag list 153`:
 **Interpretación:** IDs `839` y `840` identificados en la API del cliente; el valor `--` no equivale a cero ni demuestra que el contador sea inutilizable. Contrastar con la interfaz nativa y, si es posible, tras jugar un BG. HK/D provisional = `32 / 8 = 4,00` usando las respuestas de las APIs; no implica que las estadísticas tengan necesariamente el mismo horizonte histórico, que debe contrastarse.
 
 **Siguiente prueba:** `/wsdiag list 137` (golpes de gracia), `/wsdiag list 122` (muertes), y captura/lectura del panel nativo de estadísticas para BG y KB. Revisar categoría `128` para duelos y KB si las anteriores no bastan.
+
+
+## Prueba real — categorías de golpes de gracia y muertes (2026-11-17)
+
+Salida de `/wsdiag list 137`:
+- `1487` Golpes de gracia = **882**.
+- `1488` Golpes de gracia del mundo = **702**.
+- `1489` Continente con más número de golpes de gracia = **354 (Kalimdor)** (valor textual, no contador PvP directo).
+- `1491` Golpes de gracia en campos de batalla = `--`.
+- `1716` Campo de batalla con más número de golpes de gracia = `--`.
+- `1495`, `1496`, `1497`, `64181` (KB por BG) = `--`.
+
+Salida de `/wsdiag list 122`: `60` Muertes propias = **38** (no utilizar como muertes PvP).
+
+**Hallazgo:** `1487` tiene desglose por mundo y campos de batalla, pero **882 KB frente a 32 HK** de `GetPVPLifetimeStats()` es una discrepancia fuerte. No afirmar aún que ambos contadores tengan el mismo horizonte temporal ni utilizar `1487` en KB/D. `1501` = 8 sigue siendo el candidato más específico para muertes sufridas en PvP. Los `--` no equivalen a cero.
+
+**Prueba siguiente recomendada:** comprobar en el panel nativo las cifras HK históricas, KB, muertes PvP y, si hay historial, BG; registrar si el personaje ha participado en BG. Investigar también categoría `128` (víctimas) y `136` (HK) y la procedencia del total de HK (puede reflejar distintos periodos).
