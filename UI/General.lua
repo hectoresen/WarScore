@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "33"
+local UI_ITERATION = "34"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -114,6 +114,14 @@ local function ornament(parent, side)
     seam:SetVertexColor(0.60, 0.34, 0.12, 0.38)
     seam:SetSize(63, 1)
     seam:SetPoint("TOP", banner, "TOP", 0, -113)
+    -- Light vertical thread lines suggest embroidered cloth, not solid panels.
+    for _, x in ipairs({ -47, 47 }) do
+        local stitch = banner:CreateTexture(nil, "BORDER")
+        stitch:SetTexture("Interface\\Buttons\\WHITE8X8")
+        stitch:SetVertexColor(0.75, 0.47, 0.22, 0.28)
+        stitch:SetSize(1, 149)
+        stitch:SetPoint("TOP", banner, "TOP", x, -21)
+    end
     return banner
 end
 
@@ -204,6 +212,14 @@ local function statBand(parent, y, definitions)
     backdrop(band, 0.92)
     band:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 18 })
     band:SetBackdropBorderColor(0.76, 0.51, 0.20, 0.96)
+    -- Shared side rails strengthen the single-piece metallic frame.
+    for _, side in ipairs({ "LEFT", "RIGHT" }) do
+        local insetRule = band:CreateTexture(nil, "BORDER")
+        insetRule:SetTexture("Interface\\Buttons\\WHITE8X8")
+        insetRule:SetVertexColor(0.52, 0.32, 0.11, 0.86)
+        insetRule:SetSize(2, 76)
+        insetRule:SetPoint(side, band, side, side == "LEFT" and 7 or -7, 0)
+    end
 
     local function trim(point, inset, offset, height, color)
         local rule = band:CreateTexture(nil, "BORDER")
@@ -253,14 +269,22 @@ local function statBand(parent, y, definitions)
             bevel:SetVertexColor(0.23, 0.13, 0.06, 0.95)
             bevel:SetSize(1, 84)
             bevel:SetPoint("CENTER", band, "LEFT", dividerX + 3, 0)
+            for _, vertical in ipairs({ "TOP", "BOTTOM" }) do
+                local rivet = band:CreateTexture(nil, "OVERLAY")
+                rivet:SetTexture("Interface\\Buttons\\WHITE8X8")
+                rivet:SetVertexColor(0.92, 0.66, 0.23, 0.84)
+                rivet:SetSize(4, 4)
+                rivet:SetPoint("TOP", band, "LEFT", dividerX,
+                    vertical == "TOP" and -13 or -99)
+            end
         end
 
         -- Dark mount behind each icon gives the lower bands one visual language.
         local iconMount = segment:CreateTexture(nil, "BORDER")
         iconMount:SetTexture("Interface\\Buttons\\WHITE8X8")
         iconMount:SetVertexColor(0.13, 0.09, 0.045, 0.95)
-        iconMount:SetSize(48, 48)
-        iconMount:SetPoint("LEFT", segment, "LEFT", 10, 0)
+        iconMount:SetSize(52, 52)
+        iconMount:SetPoint("LEFT", segment, "LEFT", 9, 0)
         -- Thin inner ornament visually ties the icon cell to the shared band.
         local iconAccent = segment:CreateTexture(nil, "BORDER")
         iconAccent:SetTexture("Interface\\Buttons\\WHITE8X8")
@@ -269,14 +293,14 @@ local function statBand(parent, y, definitions)
         iconAccent:SetPoint("LEFT", segment, "LEFT", 8, 0)
         local icon = segment:CreateTexture(nil, "ARTWORK")
         icon:SetTexture(definition.icon)
-        icon:SetSize(40, 40)
-        icon:SetPoint("LEFT", segment, "LEFT", 14, 0)
+        icon:SetSize(44, 44)
+        icon:SetPoint("LEFT", segment, "LEFT", 13, 0)
 
         -- Title and value share one reading column, like the approved mockup.
-        local caption = label(segment, definition.title, 12, CREAM, 33, -12, segmentWidth - 80, 37)
+        local caption = label(segment, definition.title, 12, CREAM, 38, -12, segmentWidth - 83, 37)
         caption:SetTextColor(0.88, 0.78, 0.60)
-        local value = label(segment, "—", definition.valueSize or 28,
-            definition.color or GOLD, 33, -52, segmentWidth - 80, 47)
+        local value = label(segment, "—", definition.valueSize or 30,
+            definition.color or GOLD, 38, -52, segmentWidth - 83, 47)
         value:SetShadowColor(0.26, 0.14, 0.045, 0.68)
         value:SetShadowOffset(1, -1)
         values[i] = value
