@@ -181,3 +181,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 22: replace side bars with mirrored small leaf/stem ornaments around HK, preserving text and statistics.
 - [ ] Owner tests iteration 22 ornament visibility, no clipping, and absence of Lua errors.
 - [ ] Create dedicated transparent painted laurel textures if native primitives remain insufficient; full design parity and automated tests outstanding.
+
+## Iteration 22 screenshot / iteration 23 authored HK laurels
+
+- [x] Owner screenshot: primitive HK sprigs render but look blocky and unlike the approved laurel reference. Data and both lower bands remain visible.
+- [x] Iteration 23: commit original transparent 128x128 TGA laurel art; replace primitive sprigs with mirrored textures in UI/General.lua.
+- [ ] Owner tests iteration 23: both transparent laurels load, orientations match, HK stays readable, no Lua errors or unexpected occlusion.
+- [ ] Full painted-reference fidelity, multi-resolution tests and automated Lua checks remain pending.
