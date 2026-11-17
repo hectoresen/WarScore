@@ -69,3 +69,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Owner tests commit `b20ddb0`: two provisional faction side banners, no occlusion or Lua errors.
 - [ ] Replace provisional banners with authored alpha-textured assets; implement circular portrait and ornate details against original PNG when available.
 - UI fidelity not accepted; automated tests NOT RUN.
+
+## Iteration 6 — owner client screenshot PASS for placement, FAIL for fidelity
+
+- Both Horde emblems and red side rectangles render, with no visible collisions; HK=32, PvP deaths=8, HK/D=4.00 stable.
+- [ ] Iteration 7: produce original alpha-textured torn banners, verify one TGA/BLP asset in Forever, then replace provisional rectangular flags.
+- [ ] Add circular portrait overlay/mask and remaining ornate elements; obtain approved reference PNG.
+- **Do not mark visual acceptance complete.** See `docs/DEVELOPMENT_HANDOFF.md`.
