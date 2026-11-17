@@ -84,24 +84,22 @@ local function cornerAccent(parent, xSide, ySide)
     corner:SetTexture("Interface\\Buttons\\WHITE8X8")
     corner:SetVertexColor(0.88, 0.57, 0.17, 0.9)
     corner:SetSize(22, 3)
-    corner:SetPoint(ySide .. xSide, parent, ySide .. xSide, -x * 13, -y * 13)
+    corner:SetPoint(ySide .. xSide, parent, ySide .. xSide, x * 13, y * 13)
     local upright = parent:CreateTexture(nil, "OVERLAY")
     upright:SetTexture("Interface\\Buttons\\WHITE8X8")
     upright:SetVertexColor(0.88, 0.57, 0.17, 0.9)
     upright:SetSize(3, 22)
-    upright:SetPoint(ySide .. xSide, parent, ySide .. xSide, -x * 13, -y * 13)
+    upright:SetPoint(ySide .. xSide, parent, ySide .. xSide, x * 13, y * 13)
 end
 
 local function sectionPlaque(parent, y, width, height, alpha)
-    local panel = CreateFrame("Frame", nil, parent)
-    panel:SetSize(width, height)
-    panel:SetPoint("TOP", parent, "TOP", 0, y)
-    local shade = panel:CreateTexture(nil, "BACKGROUND")
+    -- Parent BACKGROUND texture avoids child frames painting over text.
+    local shade = parent:CreateTexture(nil, "BACKGROUND")
     shade:SetTexture("Interface\\Buttons\\WHITE8X8")
     shade:SetVertexColor(0.035, 0.022, 0.018, alpha or 0.65)
-    shade:SetAllPoints(panel)
-    accent(panel, "TOP", "TOP", 0, 0, width - 12, 1, { 0.44, 0.27, 0.09 })
-    return panel
+    shade:SetSize(width, height)
+    shade:SetPoint("TOP", parent, "TOP", 0, y)
+    return shade
 end
 
 local function card(parent, x, y, w, h, title, color, iconPath)
