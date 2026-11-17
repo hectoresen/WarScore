@@ -641,3 +641,16 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - No gameplay, saved-variable, PvP calculations, colors, empty-data formatting, main structure or banners changed.
 - **Package verified:** GitHub Actions refreshed ZIP commit `289c4d7e4aec728dd94e178d438c5905faa8eb4b`, ZIP blob `203bdcd85adaf9cbf93a1de114577b508706f473`, 116,253 bytes, 15 deflated runtime files, with packaged `UI/General.lua` CRC32 `c150ec3e` matching repo source. No docs/OpenSpec/tools in the package.
 - **Owner QA pending:** completely replace addon folder, `/reload`, `/ws version` should display 47; check 43px icons no longer look tiny and don't overlap centered text, and rank no longer has detached gold foliage. Send screenshot and note any Lua errors. Further proper art direction remains pending after validation; banners remain frozen.
+
+## Iteration #47 — owner screenshot review (2026-11-17)
+
+- Owner screenshot displays six now-larger native circularly masked stat icons, centered text/value columns, cream titles, top gold zeros and lower green 0%/dash, all inside the proven two-frame window. The rank ribbon is visibly plain with the detached miniature laurels removed; no new visual artifact seen. HK=32, PvP deaths=9, HK/D=3.56 and unavailable KB/D/rank remain unchanged in this character's test screenshot. The user has not explicitly signed off on finished visuals. Banners stay frozen.
+- The next priority is increasing the rank panel's perceived depth and aligning its text without another cartoon or orange rectangle, while preserving all successful layout fixes.
+
+## Iteration #48 — contained ribbon metalwork and centered inscription (2026-11-17)
+
+- Code commit `f47530d4478b07c9bc2c6ad23cbb2dfbda9795a5`, `UI/General.lua`; `UI_ITERATION = "48"`.
+- Rank: retain previously client-tested dark leather ribbon; slightly widen its dark inset backing to 404×32 and change backing color subtly. Add two continuous 362px fine metallic top/bottom details **inside** the plaque, intentionally avoiding loose endcaps and laurel fragments; make both small rank title and dynamic value exactly horizontally centered (x=0) within the full plaque. Slightly reduce the faction crest holder to 39px while preserving the true faction and two-line unavailable rank state. No new art files or clipping masks.
+- No modifications to lower 43px native masked icons, 2×3 centered band composition, level/portrait/HK/ratio calculations, missing-value presentation, shell frames, or deliberately frozen Horda/Alliance banners. Status remains visual preview rather than completed match to source artwork.
+- CI-produced `dist/WarScore.zip` after commit `65d0d54059c82775c1d37959df8915e6f1b783af`, blob SHA `4d15954294d0a396fdd74d34be19a1455c74b58b`. Readback independently verified ZIP central directory, 15 Deflate files rooted under `WarScore/`, no docs/OpenSpec/tools, current `UI/General.lua` CRC32 `88702245` identical to archived version; size 116,329 bytes.
+- **Owner QA pending**: full clean folder replacement, `/reload`, `/ws version` = 48, `/ws`; inspect ribbon top/bottom highlights, small headline clearance, crest fit, no unnatural free-floating gold strokes or overlaps, stable stat rendering and 43px six glyphs. Send screenshot. In-game build 48 and multi-scale/Alliance data tests not yet run, and final WoW-reference match is not accepted.
