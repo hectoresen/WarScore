@@ -20,3 +20,7 @@ No CraftAtlas GitHub rulesets, CI validators, mandatory two-PR process, branch n
 
 ## First change
 `openspec/changes/feat001-general-pvp-dashboard/` is a **draft awaiting approval**. Its implementation is blocked until the owner explicitly approves. See `openspec/README.md` and `skills/documentation-sync/SKILL.md`.
+
+## Context handoff
+
+**Read `docs/DEVELOPMENT_HANDOFF.md` at the beginning of every resumed agent session.** It records the current commit, real-client QA, unresolved defects and the next exact test. Update it after every iteration and maintain honest OpenSpec task status.
