@@ -1,6 +1,6 @@
 # WarScore — live development handoff
 
-**Last updated:** 2026-11-17. **Active work:** `feat001-general-pvp-dashboard` — OWNER APPROVED, implementation IN PROGRESS, NOT accepted. **Current branch:** `main` (all changes committed directly to main by the chat assistant so far; do not claim a feature branch exists).
+**Last updated:** 2026-11-17 (iteration 3). **Active work:** `feat001-general-pvp-dashboard` — OWNER APPROVED, implementation IN PROGRESS, NOT accepted. **Current branch:** `main` (all changes committed directly to main by the chat assistant so far; do not claim a feature branch exists).
 
 ## Read in this order
 1. `AGENTS.md`, `openspec/README.md` — lightweight SDD and approval boundaries.
@@ -25,17 +25,24 @@ Environment: WoW Forever 1.60.1; character Krawer, level 29 Priest. Screenshot s
 - **FAIL observed:** background appears transparent, cards and separators invisible, incorrect portrait ring (floating offset), world visible behind UI, oversized and dispersed layout, no ornamental assets.
 - **NOT RUN:** client tests at other scales/resolutions, positive BG/duel values, automated Lua tests, image parity, actual asset support.
 
-## Iteration #2 — committed, AWAITING OWNER TEST
+## Iteration #2 — client-tested by owner
 Git commit: `70aca9f02c41ac37fa701354c3ef80bb6561726d` (following earlier incremental commits).
 - Changed flat color textures to `Interface\\Buttons\\WHITE8X8` + `SetVertexColor` to address transparent background/cards/lines in this client.
 - Replaced inappropriate minimap tracking ring with portrait border using `Interface\\Tooltips\\UI-Tooltip-Border`.
 - Applied `window:SetScale(0.86)` and fixed initial window height to 990.
-- **These are hypotheses, not yet verified in client.** Owner should update from main and test `/ws`. Ask for screenshot and Lua errors.
+- **OWNER SCREENSHOT #2: PASS** for dark background, visible cards, separators and improved overall scale. **FAIL** for portrait ring (still floating offset), insufficient Warcraft ornamentation and simplistic card styling. Screenshot exists in chat but is not stored in GitHub.
 - Known risk: portrait still uses square texture; circular clipping/mask not implemented. Frame may still be too large. WoW native texture support must be confirmed.
 
+## Iteration #3 — committed, AWAITING OWNER TEST
+
+Git commit: `e845257cf70957f56eefd26c555c35f57aafdae5`.
+- Removed `Interface\\Minimap\\MiniMap-TrackingBorder`, **confirmed in source** to be the cause of the misplaced gold ring; replaced with centered tooltip border as a temporary **square** frame. True circular mask still not implemented.
+- Added darker header plate, rank plate and vertical separator between HK/D and KB/D.
+- **NOT TESTED** in Forever yet. The selected ornate reference is still far away; no licensed texture asset pack has been added.
+
 ## Exact next actions for any agent
-1. **Wait for owner screenshot of iteration #2.** Check whether background, card panels, separators and portrait border now render; record observed PASS/FAIL with date.
-2. If `WHITE8X8` fails, investigate known game-compatible `SetTexture`/Backdrop options with in-client test rather than guessing; keep changes minimal.
+1. **Wait for owner screenshot of iteration #3.** Check that floating gold ring is gone, portrait is framed by a stable square border, header and rank plate display, central ratio separator is visible; record observed PASS/FAIL with date.
+2. The `WHITE8X8` + vertex-color technique is now supported by the owner's screenshot; keep it for opaque panels. Do not reintroduce minimap tracking border for portrait.
 3. Then improve layout proportions and asset pipeline toward reference; ensure readable second row, no action-bar overlap, real faction banners and ornaments, correct portrait framing.
 4. Add Lua deterministic tests when runtime available, then run; don't mark NOT RUN as PASS.
 5. Update this file and `tasks.md` after every test/commit, and run `skills/documentation-sync/SKILL.md` before declaring implementation complete.
