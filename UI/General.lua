@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "43"
+local UI_ITERATION = "44"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -305,10 +305,12 @@ local function statBand(parent, y, definitions, secondary)
         -- replaces these with transparent cutouts, not destructive cropping.
         local icon = segment:CreateTexture(nil, "ARTWORK")
         icon:SetTexture(definition.icon)
-        icon:SetSize(36, 36)
-        icon:SetPoint("LEFT", segment, "LEFT", 7, -1)
+        -- These files are original alpha-cutout glyphs, not square inventory
+        -- sprites, so they can be displayed larger without a false slot.
+        icon:SetSize(49, 49)
+        icon:SetPoint("LEFT", segment, "LEFT", 1, -1)
         icon:SetTexCoord(0, 1, 0, 1)
-        icon:SetAlpha(secondary and 0.80 or 0.93)
+        icon:SetAlpha(secondary and 0.90 or 1)
 
         -- x=0 means centered on the FULL segment, not offset by its icon.
         -- Width reserves a small gap from the left decorative pictogram.
@@ -502,19 +504,13 @@ local function build()
     rankPlate:SetPoint("TOP", window, "TOP", 0, -296)
 
     -- A low-key inner shadow makes the ribbon read as metal over dark leather.
-    local ribbonShadow = rankPlate:CreateTexture(nil, "BACKGROUND")
-    ribbonShadow:SetTexture("Interface\\Buttons\\WHITE8X8")
-    ribbonShadow:SetVertexColor(0.07, 0.035, 0.02, 0.29)
-    ribbonShadow:SetSize(400, 28)
-    ribbonShadow:SetPoint("CENTER", rankPlate, "CENTER", 0, -1)
+    -- One original bevelled transparent TGA replaces all cropped/ragged
+    -- ribbon art and separate rectangular shadows. Its tapered contour
+    -- defines the plaque shape, independent of the dynamic rank text.
     local ribbon = rankPlate:CreateTexture(nil, "BORDER")
-    ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
-    -- Crop the old striped terminal ornaments, which looked like rendering errors.
-    -- The remaining central bevel provides a quieter rank ribbon silhouette.
-    ribbon:SetTexCoord(0.09, 0.91, 0.10, 0.90)
-    ribbon:SetSize(448, 47)
+    ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_plate_sculpted")
+    ribbon:SetSize(460, 54)
     ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
-    ribbon:SetAlpha(0.94)
 
     -- Keep the ribbon art continuous: no disconnected gold strokes at its ends.
     -- The two-line caption and real faction crest remain above the artwork.
@@ -610,15 +606,15 @@ local function build()
     ornamentDiamond(window, -712, 8)
 
     local firstRow = statBand(window, -727, {
-        { title = "DUELOS GANADOS", color = GOLD, icon = "Interface\\Icons\\Ability_DualWield" },
-        { title = "CAMPOS DE BATALLA JUGADOS", color = GOLD, icon = "Interface\\Icons\\INV_BannerPVP_02" },
-        { title = "BG GANADOS", color = GOLD, icon = "Interface\\Icons\\Achievement_BG_WinWSG" },
+        { title = "DUELOS GANADOS", color = GOLD, icon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duels" },
+        { title = "CAMPOS DE BATALLA JUGADOS", color = GOLD, icon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_battle" },
+        { title = "BG GANADOS", color = GOLD, icon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_trophy" },
     })
     fields.duels, fields.bgPlayed, fields.bgWon = unpack(firstRow)
     local secondRow = statBand(window, -846, {
-        { title = "WIN RATE BG", color = GREEN, icon = "Interface\\Icons\\INV_BannerPVP_01" },
-        { title = "WIN RATE DUELOS", color = GREEN, icon = "Interface\\Icons\\Ability_DualWield" },
-        { title = "CAMPO DE BATALLA FAVORITO", color = GREEN, icon = "Interface\\Icons\\INV_BannerPVP_02", valueSize = 17 },
+        { title = "WIN RATE BG", color = GREEN, icon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_rates" },
+        { title = "WIN RATE DUELOS", color = GREEN, icon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duels" },
+        { title = "CAMPO DE BATALLA FAVORITO", color = GREEN, icon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_favorite", valueSize = 17 },
     }, true)
     fields.bgRate, fields.duelRate, fields.favorite = unpack(secondRow)
 
