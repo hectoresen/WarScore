@@ -153,3 +153,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 18: add decorative crossed-swords header medallion reusing supported ring TGA and icon; reposition tabs to avoid its footprint.
 - [ ] Owner tests iteration 18 in Forever and sends screenshot checking square artifacts, icon/ring alignment, tab labels and interaction, close button, and Lua errors.
 - [ ] Continue improving ornamental art and source-image fidelity; automated Lua checks and multi-resolution QA remain NOT RUN.
+
+## Iteration 18 screenshot / iteration 19 medallion mask
+
+- [x] Owner screenshot: crossed-swords medallion renders, tabs/title/close remain visible; squared backing and icon are visually obvious.
+- [x] Iteration 19: apply guarded circular alpha mask to both medallion disc and swords icon, with smaller icon/no square backing as fallback.
+- [ ] Owner test iteration 19 medallion masking and fallback/no artifacts in Forever; ensure other stats/UI stay intact.
+- [ ] Final hand-painted swords artwork, ornamental asset fidelity, Lua tests and multi-resolution QA remain pending.
