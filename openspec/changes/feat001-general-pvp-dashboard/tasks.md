@@ -266,3 +266,11 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 30 code: masked faction emblem over banners with compatibility fallback; two-tier PvP rank caption/value with retained faction crest; subtle icon accents within both lower bands.
 - [ ] Owner validates iteration 30 rank alignment, banner emblem masking, lower icon details and no Lua errors in Forever.
 - [ ] Regenerate and verify clean ZIP after Lua changes; continue final art parity and Alliance/multiple-UI-scale QA.
+
+## Iteration 30 screenshot / iteration 31 version check
+
+- [x] Owner screenshot of the purported iteration 30 looks like pre-30 rank (single-line) and square banner icons; exact loaded UI build not verified.
+- [x] Iteration 31 adds `/ws version` diagnostic and refines two-line rank layout.
+- [x] GitHub Actions rebuilt ZIP; independently checked ZIP central directory and UI source CRC/length match (15 clean addon files).
+- [ ] Owner installs by replacing the complete `WarScore/` folder, runs `/ws version` expecting 31, opens `/ws`, sends screenshot.
+- [ ] If diagnostic confirms 31 but visuals do not match, debug actual in-game render and alpha-mask support. Automated Lua and multi-faction QA still outstanding.
