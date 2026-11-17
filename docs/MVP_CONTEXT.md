@@ -134,3 +134,33 @@ Evidencia específica de Wowhead Forever 1.60.1:
 Priorizar velocidad e iteración. **No configurar pipelines CI/CD, rulesets, políticas de contributors, validaciones obligatorias, PR templates ni burocracia de repositorio**. Cambios directos a `main` son aceptables en esta fase. Añadir pruebas manuales concretas solo cuando aporten valor a la compatibilidad del addon.
 
 Este documento es **temporal**, no un contrato permanente. Eliminar tras completar el MVP.
+
+
+## Investigación técnica: pestaña «Hoy» (2026-11-17)
+
+**Definición funcional aprobada:** día natural del juego, no sesión de login. Cerrar y reabrir WoW no debe reiniciar la vista. La fuente de datos debe indicar el día al que corresponde y no inventar valores anteriores al seguimiento.
+
+### API documentada para Forever 1.60.1
+
+- `GetPVPSessionStats()` devuelve dos números; el **primero es las muertes con honor de hoy** según documentación de Blizzard (PlayerScript, camelot 1.60.1) y Warcraft Wiki. Aunque el nombre diga «Session», la documentación describe explícitamente el primer valor como «today». No asumir que el segundo representa honor exacto: su semántica es incierta.
+- `GetPVPYesterdayStats()` devuelve estadísticas de honor de ayer; útil para diagnóstico, no imprescindible en la vista Hoy.
+- `GetPVPLifetimeStats()` sigue siendo la fuente candidata para HK históricas de General.
+- **Nivel de evidencia:** documentado para Forever 1.60.1, no probado en el cliente.
+
+Fuentes:
+- https://wowlua.dev/api/global/GetPVPSessionStats
+- https://warcraft.wiki.gg/wiki/API_GetPVPSessionStats
+- https://warcraft.wiki.gg/wiki/API_GetPVPYesterdayStats
+- https://warcraft.wiki.gg/wiki/API_GetPVPLifetimeStats
+
+### Estrategia propuesta para las demás métricas de Hoy
+
+No se han identificado APIs diarias específicas para golpes de gracia PvP ni muertes PvP sufridas. Investigar primero si existen contadores diarios reales en Forever. En ausencia de ellos:
+1. Guardar en SavedVariables snapshots **fechados por personaje** de los contadores históricos disponibles (IDs candidatos `1487` y `1501`).
+2. Calcular diferencias respecto a una **línea base del mismo día**. Solo son diferencias válidas si existe una referencia fiable del inicio del día; si el primer snapshot se toma tarde, marcar el resultado como **parcial desde primera observación**, nunca como total del día.
+3. No inferir que el cliente estuvo abierto durante todo el día. Mantener datos entre cierres y aperturas; persistencia en logout y eventos de guardado.
+4. Elegir explícitamente fuente de calendario/reinicio (preferir día del servidor si coincide con el «hoy» del propio juego); investigar funciones de fecha y cambios de día, incluyendo sesión que cruza medianoche.
+5. Los ratios diarios HK/D y KB/D solo se muestran si sus numeradores y denominador corresponden al **mismo intervalo completo y fiable**. No mezclar HK diarias completas con muertes parciales.
+6. Si los contadores históricos disminuyen, no calcular deltas negativos: marcar discontinuidad y reinicializar la referencia con indicación al usuario.
+
+**Pendientes:** confirmar en cliente el comportamiento real de `GetPVPSessionStats()` entre logins y a medianoche; identificar APIs de fecha/reinicio, IDs de duelos y campos de batalla; verificar que `1487` contabiliza exclusivamente KB PvP.
