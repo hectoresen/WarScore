@@ -218,3 +218,11 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Updated General.lua to use faction-specific fabrics and new ribbon, keeping current rank unavailable and all other metrics unchanged.
 - [ ] Owner tests iteration 27 in Forever: banner alpha/tears, faction emblem placement, rank ribbon texture visibility and layering, no overlap or Lua errors, stable stats.
 - [ ] Confirm Alliance appearance in client; run syntax/behavior tests and compare at other scales; full mockup fidelity remains pending.
+
+## Iteration 27 screenshot / iteration 28 reordered center
+
+- [x] Owner screenshot: Horde v2 banner cloth and metallic rank ribbon load, main counters and lower bands remain visible; new banner styling is progress but not final reference fidelity. Ribbon's angular end still looks awkward; Alliance remains untested.
+- [x] Owner explicitly requests HK → PvP deaths → HK/D and KB/D, keeping lower rows.
+- [x] Iteration 28: move death section below HK, move ratios lower, update separators within existing window height; narrow rank-ribbon rendered dimensions.
+- [ ] Owner validates iteration 28 in Forever with screenshot: no overlap, stable numbers, readability of rank, ratios and lower bands.
+- [ ] Continue original art fidelity, Alliance tests, automated Lua tests and UI-scale/large-value QA; no acceptance or archive yet.
