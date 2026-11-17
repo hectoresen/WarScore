@@ -76,3 +76,9 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Iteration 7: produce original alpha-textured torn banners, verify one TGA/BLP asset in Forever, then replace provisional rectangular flags.
 - [ ] Add circular portrait overlay/mask and remaining ornate elements; obtain approved reference PNG.
 - **Do not mark visual acceptance complete.** See `docs/DEVELOPMENT_HANDOFF.md`.
+
+## Iteration 7 — code committed, awaiting owner test
+
+- Commit `b19a011`: replace rectangular flags with layered ragged-edge silhouettes built from known-working WHITE8X8 textures, keeping faction icons. This is a provisional visual improvement, not actual alpha-textured art.
+- [ ] Owner tests `/ws` and sends screenshot of ragged flags.
+- [ ] Source proper original TGA banner textures and verify compatibility; add circular portrait frame and ornamental details.
