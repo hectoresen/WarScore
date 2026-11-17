@@ -18,3 +18,7 @@ Consulta [docs/MVP_CONTEXT.md](docs/MVP_CONTEXT.md) antes de modificar el proyec
 - `docs/MVP_CONTEXT.md`: contexto temporal para agentes.
 
 No hay servicios externos, CI ni reglas de contribución por ahora.
+
+## Spec-driven development
+
+WarScore uses a lightweight OpenSpec workflow adapted from CraftAtlas. Start with [AGENTS.md](AGENTS.md) and [openspec/README.md](openspec/README.md). The first [General dashboard proposal](openspec/changes/feat001-general-pvp-dashboard/proposal.md) is a **draft awaiting owner approval**; no UI implementation has been authorized or started by this proposal. The permanent [PvP statistics contract](docs/PVP_STATISTICS.md) and [visual reconstruction specification](docs/GENERAL_VISUAL_SPEC.md) define its data and appearance targets.
