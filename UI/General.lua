@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "31"
+local UI_ITERATION = "32"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -75,9 +75,10 @@ local function ornament(parent, side)
     local icon = banner:CreateTexture(nil, "ARTWORK")
     icon:SetTexture(isAlliance and "Interface\\Icons\\INV_BannerPVP_02"
         or "Interface\\Icons\\INV_BannerPVP_01")
-    icon:SetSize(70, 70)
-    icon:SetPoint("TOP", banner, "TOP", 0, -38)
-    icon:SetAlpha(0.86)
+    -- Less sticker-like: soften the icon and leave more textured cloth around it.
+    icon:SetSize(63, 63)
+    icon:SetPoint("TOP", banner, "TOP", 0, -43)
+    icon:SetAlpha(0.76)
     local masked = false
     if type(banner.CreateMaskTexture) == "function"
         and type(icon.AddMaskTexture) == "function" then
@@ -239,7 +240,7 @@ local function statBand(parent, y, definitions)
         -- Thin inner ornament visually ties the icon cell to the shared band.
         local iconAccent = segment:CreateTexture(nil, "BORDER")
         iconAccent:SetTexture("Interface\\Buttons\\WHITE8X8")
-        iconAccent:SetVertexColor(0.65, 0.43, 0.17, 0.74)
+        iconAccent:SetVertexColor(0.50, 0.33, 0.13, 0.68)
         iconAccent:SetSize(2, 40)
         iconAccent:SetPoint("LEFT", segment, "LEFT", 8, 0)
         local icon = segment:CreateTexture(nil, "ARTWORK")
@@ -455,9 +456,10 @@ local function build()
 
     -- Clean centered rank inscription: a small section name and an honest
     -- unavailable value, like the two-tier reference ribbon.
-    local rankCaption = label(rankPlate, "Rango PvP", 12, CREAM, 17, -3, 330, 16)
+    -- Reserve a visible margin below the rank value and above the HK divider.
+    local rankCaption = label(rankPlate, "Rango PvP", 12, CREAM, 17, -1, 330, 14)
     rankCaption:SetTextColor(0.93, 0.72, 0.37)
-    fields.rank = label(rankPlate, "No disponible", 17, GOLD, 17, -20, 330, 20)
+    fields.rank = label(rankPlate, "No disponible", 16, GOLD, 17, -16, 330, 19)
     fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
     fields.rank:SetShadowOffset(1, -1)
     line(window, -341, 650)
