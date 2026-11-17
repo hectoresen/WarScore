@@ -89,3 +89,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Add original 128×256 32-bit transparent TGA `Media/General/banner_horde.tga` and integrate it into `UI/General.lua`.
 - [ ] **Owner tests iteration 8** in Forever: custom cloth alpha, ragged bottom edge, faction icon, no Lua errors. Texture compatibility NOT YET VERIFIED.
 - [ ] Add Alliance cloth variant, circular portrait framing, ornamental frame and screenshot QA.
+
+## Iteration 8 owner QA / iteration 9 circular portrait
+
+- [x] Owner screenshot confirms original Horde TGA banners render with ragged transparent edges in Forever.
+- [x] Added original 128×128 TGA portrait ring with transparent circular aperture and gold border; integrated into `UI/General.lua`.
+- [ ] Owner tests iteration 9: portrait visually circular, no black square artifacts or texture errors.
+- [ ] Continue approved ornamentation and layout comparison after screenshot; full visual acceptance still pending.
