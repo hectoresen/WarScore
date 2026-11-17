@@ -290,3 +290,11 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] CI rebuilt verified clean ZIP; inspected 15 Deflate entries, updated Lua CRC and no development files.
 - [ ] Owner tests iteration 33 in Forever, checks `/ws version` returns 33 and no visual clipping/errors.
 - [ ] Full original mockup fidelity, Alliance and varied UI-scale/large-number test cases and automated Lua checks remain outstanding.
+
+## Iteration 33 screenshot / iteration 34 lower bands
+
+- [x] Owner screenshot: latest banded layout, two-tier rank and softened circular Horde emblems render; core counters unchanged. Full visual acceptance not granted.
+- [x] Iteration 34: banner edge stitching, stronger inset band rails and divider rivets, bigger bottom icons and standard values; corrected divider-rivet anchors before QA.
+- [ ] Confirm clean GitHub Actions package regenerated after iteration 34 changes; verify shipped `General.lua` matches source.
+- [ ] Owner tests iteration 34 in Forever and shares screenshot; assess long label clipping, icon/value spacing, rivets, banner edges, errors.
+- [ ] Full original reference parity, automated Lua tests and additional faction/scale testing outstanding.
