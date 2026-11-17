@@ -253,3 +253,15 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - UI commit `52281582e82c8cecc23b818516e8622bbab98c44`: removed the native WHITE8X8 HK sprigs and rendered the authored TGA twice, mirrored horizontally for symmetry. Each is displayed at 108×108 logical pixels, at ±190 x from window center, top -384. No modification to HK dynamic number, data adapter, rank, tabs, portrait, or two lower bands.
 - **Client QA NOT RUN** for iteration 23. Owner should install current main, `/reload`, `/ws`; check both laurels load with transparency, no square backgrounds, correct mirror orientation, no text collision and no Lua errors. Also inspect whether the arrangement resembles the approved reference better than iteration 22. If not, refine TGA artwork/position rather than returning to primitive rectangle stacks.
 - Automated Lua tests: NOT RUN. No claim of pixel parity or overall MVP acceptance; known rank and KB/D remain unavailable.
+
+## Iteration #23 — owner screenshot QA (2026-11-17)
+
+- Owner screenshot confirms both original transparent TGA HK laurel sprites render with mirrored orientation and no opaque square artifacts. HK=32, deaths=8, HK/D=4.00 remain legible; bottom bands and portrait remain intact. **Limited visual PASS for texture loading and appearance**, not final owner acceptance or automated functional QA.
+- Visible flaw: both laurels extend down to the HK/ratio horizontal divider, making the composition appear cramped; adjust position/size before continuing other ornamentation.
+
+## Iteration #24 — HK laurels alignment adjustment, awaiting client QA (2026-11-17)
+
+- Code commit: `cf68d2db26d833ed24a3acd82fa5dae84133303f` in `UI/General.lua`.
+- Kept existing `Media/General/hk_laurel.tga` and two mirrored instances; changed display dimensions 108×108 to 96×96 logical pixels, x centers ±190 to ±183, and top position -384 to -371. The goal is to raise laurels above the ratio separator and visually frame the HK number more closely. No new assets, API usage or data changes.
+- **Awaiting owner screenshot** in Forever: `/reload`, `/ws`; verify laurel positions are better balanced, neither touches divider or HK text, no texture or Lua errors, same stats. This adjustment has NOT been client-tested; large HK values and different scales remain untested.
+- Automated Lua tests: NOT RUN. Full UI fidelity and MVP acceptance still outstanding.
