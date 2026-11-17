@@ -125,3 +125,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Add original TGA ornate corner and feathered section plaque assets; integrate four mirrored corners, softer HK/death sections, header detailing and six card studs.
 - [ ] Owner tests iteration 13: texture loading, corner mirroring, feathering, text layering and no Lua errors.
 - [ ] Continue with approved reference fidelity; no final visual acceptance.
+
+## Iteration 13 screenshot / iteration 14 visual batch
+
+- [x] Owner screenshot: TGA corner art and soft section plaques render, but corners clip at window edges.
+- [x] Iteration 14: inset ornate corners, custom gold General/Hoy tab skin, layered rank-plate borders.
+- [ ] Owner tests iteration 14 for clipped corners, correct selected tab styling, text readability and Lua errors.
+- [ ] Continue approved visual parity work with original art assets; Hoy remains future functionality.
