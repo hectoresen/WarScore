@@ -1,6 +1,6 @@
 # WarScore — live development handoff
 
-**Last updated:** 2026-11-17 (iteration 5). **Active work:** `feat001-general-pvp-dashboard` — OWNER APPROVED, implementation IN PROGRESS, NOT accepted. **Current branch:** `main` (all changes committed directly to main by the chat assistant so far; do not claim a feature branch exists).
+**Last updated:** 2026-11-17 (iteration 6). **Active work:** `feat001-general-pvp-dashboard` — OWNER APPROVED, implementation IN PROGRESS, NOT accepted. **Current branch:** `main` (all changes committed directly to main by the chat assistant so far; do not claim a feature branch exists).
 
 ## Read in this order
 1. `AGENTS.md`, `openspec/README.md` — lightweight SDD and approval boundaries.
@@ -48,15 +48,21 @@ Git commit: `f76b55991406c29a07d28353019082c9352f5f86`.
 - Replaced unsupported Unicode circled-info glyphs (rendered as square boxes) with '(i)' temporary text. Proper tooltip buttons still outstanding.
 - **OWNER SCREENSHOT #4:** WarScore title, rank label, all six card borders, and '(i)' labels render legibly. HK 32, PvP deaths 8, HK/D 4.00 unchanged. **FAIL / PENDING:** square portrait, no approved ornate frame, banners, laurels, corner details; mockup fidelity still low. Screenshot is in chat, not repository.
 
-## Iteration #5 — committed, AWAITING OWNER TEST
+## Iteration #5 — client-tested by owner
 
 Git commit: `170abf6ad66bb4eef6fff6862ef952f546951db7`.
 - Added **provisional** WoW-native icon textures to each of six statistic cards, with adjusted label/value vertical layout.
-- Icon paths (e.g. `Interface\\Icons\\Ability_DualWield`, `INV_BannerPVP_02`, `Achievement_BG_WinWSG`) are **NOT VERIFIED** against the Forever client; missing icons must be corrected from real screenshots. They are not final art.
+- **OWNER SCREENSHOT #5:** all six provisional card icons render, labels and numbers fit without visible overlap; stats remain HK=32, PvP deaths=8, HK/D=4.00. **PENDING:** custom ornaments, accurate circular portrait and screenshot fidelity. Icon assets are temporary.
 - Circular portrait masking, custom ornaments, banners and reference PNG are still pending; no claim of visual parity.
 
+## Iteration #6 — committed, AWAITING OWNER TEST
+
+Git commit: `b20ddb00e9ced29b2d17dc8caa26e61b6c1fe07e`.
+- Added two **temporary** side banner blocks behind character content, with gold trim and faction-aware native PvP icon. This is an incremental layout test, **not** final torn-cloth/banner art.
+- **NOT TESTED** in Forever. Must inspect visual overlap, opacity and faction icon selection. True circular portrait and approved custom assets remain pending.
+
 ## Exact next actions for any agent
-1. **Wait for owner screenshot of iteration #5.** Check whether all six card icons render or show missing/incorrect textures; verify labels/numbers fit, and record PASS/FAIL with date.
+1. **Wait for owner screenshot of iteration #6.** Check faction banners appear at both sides without obscuring portrait, name or tabs, and that the addon still opens without Lua errors. Note whether faction icon is correct.
 2. The `WHITE8X8` + vertex-color technique is now supported by the owner's screenshot; keep it for opaque panels. Do not reintroduce minimap tracking border for portrait.
 3. Then improve layout proportions and asset pipeline toward reference; ensure readable second row, no action-bar overlap, real faction banners and ornaments, correct portrait framing.
 4. Add Lua deterministic tests when runtime available, then run; don't mark NOT RUN as PASS.
