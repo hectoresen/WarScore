@@ -442,3 +442,17 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - No changes to statistics adapters, persistent data, unavailable rank/KB-D, HK/deaths hierarchy, two-line rank, portrait, tabs, original textures, or rejected upper-left medallion.
 - **Owner QA pending:** install the CI-built clean ZIP, `/reload`, verify `/ws version` displays 34, then `/ws`. Check both lower bands for icon/text overlap, central-divider rivets, long label wrapping and six values. Inspect subtle banner threads and verify prior HK/deaths/ratio values unchanged. Send screenshot.
 - This is still a styling preview, not overall design approval. Automated Lua client tests, high-value and Alliance UI tests remain pending. **Never distribute the source repository archive**; only the 15-file CI-generated `dist/WarScore.zip` after validating it matches current source.
+
+## Iteration #34 — owner screenshot review (2026-11-17)
+
+- Screenshot shows larger icons and values in both unified lower bands, the newly adjusted dividers and rivets, faction banners, two-line unavailable-rank plate and main historic stats (HK=32, PvP deaths=8, HK/D=4.00). No obvious clipping/overlap in shown state. The extra small rivets at divider edges read as detached pixels, and the two-band artwork still falls short of the approved continuous ornamental mockup. **Limited visual PASS for function/layout only**, not final visual approval; no explicit version command in screenshot.
+- Design direction: favor coherent ornament over increasingly many native white-square studs, retaining the user's desired central hierarchy and rejecting a return to separate six cards.
+
+## Iteration #35 — remove stray decorative pixels, unify band trim (2026-11-17)
+
+- UI code commit: `08409f34c7930466ada0061e5715ad82fb821a5f`. Updated `UI_ITERATION` to `35`.
+- Replaced tiny 4×4 scattered rivets at internal lower-band dividers with short 12×2 horizontal caps connected visually to the shared frame, and added one restrained full-band inner-top glint; kept the segmented structure and six data bindings.
+- Removed thin isolated 3×20 ribbon endcap strokes; preserved actual metallic ribbon TGA, faction crest, two-level `Rango PvP` and `No disponible` labels.
+- Slightly softened provisional native lower icon opacity; no statistical data, saved variables, banner textures, portrait or character-scoped logic changes.
+- CI packaging commit `ffebcf6604e2d826530ebfdefc4e855e5b84ee5a` rebuilt `dist/WarScore.zip`. Blob SHA `0f06c5213ce216d122c7fcba0e78727b50004609`, size 109,062 bytes. Read-back confirms 15 Deflate files only under `WarScore/`, valid ZIP central directory, `UI/General.lua` CRC32 `90ff51aa` matches current source. No OpenSpec/docs/tooling included.
+- **Owner QA pending:** install clean ZIP, `/reload`, verify `/ws version` reports 35, then `/ws`. Look at shared divider caps, ribbon ends, six icon/value alignments, intact stats and absence of Lua errors. Send screenshot. Automated Lua gameplay tests, varied UI scales and Alliance art tests still outstanding. Visual mockup remains a preview, not approved final.
