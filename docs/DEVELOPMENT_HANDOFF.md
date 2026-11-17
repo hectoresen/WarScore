@@ -400,3 +400,18 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - **Verified clean package**: GitHub Actions generated commit `af41bed80990d76c004092d1b4834560c2908c85`, `dist/WarScore.zip` blob SHA `3b2f0713efa351ca8d16bc3720599d958c7be775`. Connector readback verified ZIP central directory and 15 Deflate entries; the ZIP's `WarScore/UI/General.lua` CRC32 (`0d8647e0`) and uncompressed length match current repo source. 108,209 bytes. No docs/OpenSpec.
 - **Owner test (important):** delete the previous `Interface/AddOns/WarScore` directory, extract the new clean ZIP so the structure is exactly `Interface/AddOns/WarScore/WarScore.toc`, run `/reload`, enter `/ws version` and confirm **31**, then run `/ws` and send screenshot. Inspect two-line rank and banner emblems. If version 31 shows but rank is still single-line or masks fail, investigate client masking/fonts/layout rather than attributing it to stale installation.
 - Owner client test, gameplay QA, other factions/UI scales and Lua automated tests: still NOT RUN for iteration #31. Overall design remains unaccepted.
+
+## Iteration #31 — owner client verification and screenshot (2026-11-17)
+
+- Owner explicitly ran `/ws version` and supplied chat output **`WarScore UI iteración 31`**. Screenshot confirms the rank is now two-tier: `Rango PvP` above `No disponible`; both faction emblems on Horde banners are circularly masked and the rest of the UI remains stable. Stats HK=32, PvP deaths=8, HK/D=4.00 and the two lower bands remain visible. The previously suspected outdated client install is no longer an issue for this screenshot. **Limited native-client PASS** for 31, not final design acceptance.
+- Remaining visual issues: two-line rank text slightly crowds the lower ribbon edge; faction badges remain prominent as independent icon cutouts instead of blended cloth artwork. The approved original artwork is still substantially richer than the live implementation.
+
+## Iteration #32 — rank spacing and more restrained faction heraldry (2026-11-17)
+
+- Code commit `edfed05fad35bf40c98c5d3cc274adab8b6d2cea` in `UI/General.lua`.
+- Updated `UI_ITERATION` to `32` so `/ws version` will explicitly identify this build.
+- Adjusted rank caption/value to height 14/19, vertical offsets -1/-16, 12/16px fonts respectively; helps avoid clipping into the divider below. Maintains the two-tier rank hierarchy, left faction crest, true `No disponible` value and the existing ribbon art.
+- On both faction cloths, masked banner emblem reduced 70→63px and alpha 0.86→0.76, with placement moved down 5 px; aims to reduce the appearance of square icon graphics hovering over fabric. When client masking is unavailable the original guarded icon fallback remains.
+- Slightly softened vertical icon accents inside bottom bands; historical data, dynamic HK laurel, subdued PvP deaths, navigation and lower-band structure unchanged.
+- Verified clean CI-built `dist/WarScore.zip`: packaging commit `32239815757023d05295f82e9ef1c9f24f85f5c9`, blob SHA `41f69dddd5cae09239f7350469350d7580d47480`, 108,283 bytes. ZIP readback shows 15 Deflate files all under `WarScore/`; its `UI/General.lua` CRC32 `89540300` and uncompressed byte count match current source; no OpenSpec/docs/tools distributed.
+- **Owner QA PENDING**: replace entire WarScore folder with clean ZIP, `/reload`, `/ws version` should show 32, then `/ws`. Check two-line rank within ribbon and smaller/less visually intrusive circular faction emblems, lower bands, no Lua errors; send screenshot. Alliance cloth and alternate scales remain untested. No automated Lua gameplay tests or final design approval.
