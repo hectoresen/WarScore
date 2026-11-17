@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "40"
+local UI_ITERATION = "41"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -50,7 +50,7 @@ local function ornament(parent, side)
     local cloth = banner:CreateTexture(nil, "BACKGROUND")
     cloth:SetTexture(isAlliance
         and "Interface\\AddOns\\WarScore\\Media\\General\\banner_alliance_v2"
-        or "Interface\\AddOns\\WarScore\\Media\\General\\banner_horde_woven")
+        or "Interface\\AddOns\\WarScore\\Media\\General\\banner_horde_embroidered")
     cloth:SetAllPoints(banner)
     cloth:SetAlpha(0.97)
     -- A dark hanging rod and two small side clasps keep the banner looking
@@ -172,6 +172,16 @@ local function skinTab(button, text, selected)
         bg:SetVertexColor(0.075, 0.055, 0.045, 0.98)
     end
     bg:SetAllPoints(button)
+    if selected then
+        -- Subtle reflected metal along the active tab, rather than a flat
+        -- uninterrupted bronze rectangle.
+        local reflection = button:CreateTexture(nil, "BORDER")
+        reflection:SetTexture("Interface\\Buttons\\WHITE8X8")
+        reflection:SetVertexColor(0.90, 0.62, 0.22, 0.35)
+        reflection:SetPoint("TOPLEFT", button, "TOPLEFT", 8, -5)
+        reflection:SetPoint("TOPRIGHT", button, "TOPRIGHT", -8, -5)
+        reflection:SetHeight(1)
+    end
 
     local function edge(pointA, pointB, width, height, color)
         local tex = button:CreateTexture(nil, "BORDER")
@@ -305,7 +315,7 @@ local function statBand(parent, y, definitions, secondary)
         icon:SetSize(44, 44)
         icon:SetPoint("LEFT", segment, "LEFT", 16, -1)
         icon:SetTexCoord(0, 1, 0, 1)
-        icon:SetAlpha(secondary and 0.85 or 0.97)
+        icon:SetAlpha(secondary and 0.84 or 0.96)
 
         -- Two typographic levels: first strip counts, second strip insights.
         -- Titles remain centered in the available text column, including
@@ -314,9 +324,9 @@ local function statBand(parent, y, definitions, secondary)
             CREAM, 43, -12, segmentWidth - 96, 38)
         caption:SetTextColor(secondary and 0.82 or 0.96,
             secondary and 0.75 or 0.85, secondary and 0.64 or 0.61)
-        local value = label(segment, "—", definition.valueSize or (secondary and 29 or 33),
-            definition.color or GOLD, 43, -54, segmentWidth - 96, 45)
-        value:SetShadowColor(0.26, 0.14, 0.045, 0.68)
+        local value = label(segment, "—", definition.valueSize or (secondary and 29 or 35),
+            definition.color or GOLD, 43, -53, segmentWidth - 96, 45)
+        value:SetShadowColor(0.26, 0.14, 0.045, secondary and 0.45 or 0.72)
         value:SetShadowOffset(1, -1)
         values[i] = value
     end
@@ -495,15 +505,15 @@ local function build()
     -- A low-key inner shadow makes the ribbon read as metal over dark leather.
     local ribbonShadow = rankPlate:CreateTexture(nil, "BACKGROUND")
     ribbonShadow:SetTexture("Interface\\Buttons\\WHITE8X8")
-    ribbonShadow:SetVertexColor(0.07, 0.035, 0.02, 0.42)
-    ribbonShadow:SetSize(408, 30)
+    ribbonShadow:SetVertexColor(0.07, 0.035, 0.02, 0.29)
+    ribbonShadow:SetSize(400, 28)
     ribbonShadow:SetPoint("CENTER", rankPlate, "CENTER", 0, -1)
     local ribbon = rankPlate:CreateTexture(nil, "BORDER")
     ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
     -- Crop the old striped terminal ornaments, which looked like rendering errors.
     -- The remaining central bevel provides a quieter rank ribbon silhouette.
     ribbon:SetTexCoord(0.09, 0.91, 0.10, 0.90)
-    ribbon:SetSize(446, 46)
+    ribbon:SetSize(448, 47)
     ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
     ribbon:SetAlpha(0.94)
 
@@ -516,7 +526,7 @@ local function build()
     crestHolder:SetPoint("LEFT", rankPlate, "LEFT", 15, 0)
     backdrop(crestHolder, 1)
     crestHolder:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 12 })
-    crestHolder:SetBackdropBorderColor(0.82, 0.55, 0.20, 0.96)
+    crestHolder:SetBackdropBorderColor(0.78, 0.51, 0.19, 0.85)
     local crest = crestHolder:CreateTexture(nil, "ARTWORK")
     local rankFaction = UnitFactionGroup("player")
     crest:SetTexture(rankFaction == "Alliance"
@@ -528,9 +538,9 @@ local function build()
     -- Clean centered rank inscription: a small section name and an honest
     -- unavailable value, like the two-tier reference ribbon.
     -- Reserve a visible margin below the rank value and above the HK divider.
-    local rankCaption = label(rankPlate, "Rango PvP", 12, CREAM, 12, -1, 330, 14)
-    rankCaption:SetTextColor(0.93, 0.72, 0.37)
-    fields.rank = label(rankPlate, "No disponible", 16, GOLD, 12, -16, 330, 19)
+    local rankCaption = label(rankPlate, "Rango PvP", 12, CREAM, 10, -1, 330, 14)
+    rankCaption:SetTextColor(0.89, 0.70, 0.39)
+    fields.rank = label(rankPlate, "No disponible", 17, GOLD, 10, -16, 330, 19)
     fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
     fields.rank:SetShadowOffset(1, -1)
     line(window, -341, 650)
