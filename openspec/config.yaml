@@ -1,0 +1,24 @@
+schema: spec-driven
+context: |
+  WarScore is a native offline Lua addon for World of Warcraft Forever,
+  TOC Interface 16001. Current code is an early scaffold, not a finished UI.
+  Historical PvP metrics and in-client evidence are documented in
+  docs/PVP_STATISTICS.md; the chosen visual target is described in
+  docs/GENERAL_VIEW.md and docs/GENERAL_VISUAL_SPEC.md.
+  Read README.md and AGENTS.md; inspect actual source before implementation.
+  Never assume retail WoW API support or fabricate missing values.
+  Use Core/ for data and normalization and UI/ for native frames.
+  No remote services, mandatory CI, or CraftAtlas-specific GitHub governance.
+rules:
+  proposal:
+    - State goal, in-scope/out-of-scope, risks, fallback and approval status.
+    - Record WoW Forever API evidence and assets/provenance assumptions.
+  specs:
+    - Use testable SHALL requirements with WHEN/THEN scenarios.
+    - Cover unavailable values, zero denominators, offline characters and UI constraints.
+  design:
+    - Specify native-Lua module boundaries, texture assets, data contracts and compatibility checks.
+    - Treat the reference image as a target, not as a deployable texture.
+  tasks:
+    - Include offline checks, real-client manual verification, documentation and acceptance.
+    - Do not mark tests complete without actual evidence.
