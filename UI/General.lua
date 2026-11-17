@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "39"
+local UI_ITERATION = "40"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -50,7 +50,7 @@ local function ornament(parent, side)
     local cloth = banner:CreateTexture(nil, "BACKGROUND")
     cloth:SetTexture(isAlliance
         and "Interface\\AddOns\\WarScore\\Media\\General\\banner_alliance_v2"
-        or "Interface\\AddOns\\WarScore\\Media\\General\\banner_horde_embossed")
+        or "Interface\\AddOns\\WarScore\\Media\\General\\banner_horde_woven")
     cloth:SetAllPoints(banner)
     cloth:SetAlpha(0.97)
     -- A dark hanging rod and two small side clasps keep the banner looking
@@ -294,16 +294,18 @@ local function statBand(parent, y, definitions, secondary)
         -- square inventory-icon tile surrounded by several hard rectangles.
         local recess = segment:CreateTexture(nil, "BORDER")
         recess:SetTexture("Interface\\Buttons\\WHITE8X8")
-        recess:SetVertexColor(0.12, 0.072, 0.036, secondary and 0.32 or 0.46)
-        recess:SetSize(50, 50)
-        recess:SetPoint("LEFT", segment, "LEFT", 13, -1)
+        recess:SetVertexColor(0.12, 0.072, 0.036, secondary and 0.25 or 0.36)
+        recess:SetSize(48, 48)
+        recess:SetPoint("LEFT", segment, "LEFT", 14, -1)
 
         local icon = segment:CreateTexture(nil, "ARTWORK")
         icon:SetTexture(definition.icon)
-        icon:SetSize(48, 48)
-        icon:SetPoint("LEFT", segment, "LEFT", 14, -1)
-        icon:SetTexCoord(0.09, 0.91, 0.09, 0.91)
-        icon:SetAlpha(secondary and 0.82 or 0.96)
+        -- Previous texture-coordinate cropping zoomed in and amputated swords,
+        -- banners and shields. Restore their full recognizable silhouettes.
+        icon:SetSize(44, 44)
+        icon:SetPoint("LEFT", segment, "LEFT", 16, -1)
+        icon:SetTexCoord(0, 1, 0, 1)
+        icon:SetAlpha(secondary and 0.85 or 0.97)
 
         -- Two typographic levels: first strip counts, second strip insights.
         -- Titles remain centered in the available text column, including
@@ -503,15 +505,15 @@ local function build()
     ribbon:SetTexCoord(0.09, 0.91, 0.10, 0.90)
     ribbon:SetSize(446, 46)
     ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
-    ribbon:SetAlpha(0.98)
+    ribbon:SetAlpha(0.94)
 
     -- Keep the ribbon art continuous: no disconnected gold strokes at its ends.
     -- The two-line caption and real faction crest remain above the artwork.
 
     -- The faction crest identifies the character but never claims a rank.
     local crestHolder = CreateFrame("Frame", nil, rankPlate, "BackdropTemplate")
-    crestHolder:SetSize(44, 44)
-    crestHolder:SetPoint("LEFT", rankPlate, "LEFT", 14, 0)
+    crestHolder:SetSize(40, 40)
+    crestHolder:SetPoint("LEFT", rankPlate, "LEFT", 15, 0)
     backdrop(crestHolder, 1)
     crestHolder:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 12 })
     crestHolder:SetBackdropBorderColor(0.82, 0.55, 0.20, 0.96)
@@ -520,15 +522,15 @@ local function build()
     crest:SetTexture(rankFaction == "Alliance"
         and "Interface\\Icons\\INV_BannerPVP_02"
         or "Interface\\Icons\\INV_BannerPVP_01")
-    crest:SetSize(30, 30)
+    crest:SetSize(29, 29)
     crest:SetPoint("CENTER", crestHolder, "CENTER", 0, 0)
 
     -- Clean centered rank inscription: a small section name and an honest
     -- unavailable value, like the two-tier reference ribbon.
     -- Reserve a visible margin below the rank value and above the HK divider.
-    local rankCaption = label(rankPlate, "Rango PvP", 12, CREAM, 17, -1, 330, 14)
+    local rankCaption = label(rankPlate, "Rango PvP", 12, CREAM, 12, -1, 330, 14)
     rankCaption:SetTextColor(0.93, 0.72, 0.37)
-    fields.rank = label(rankPlate, "No disponible", 16, GOLD, 17, -16, 330, 19)
+    fields.rank = label(rankPlate, "No disponible", 16, GOLD, 12, -16, 330, 19)
     fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
     fields.rank:SetShadowOffset(1, -1)
     line(window, -341, 650)
