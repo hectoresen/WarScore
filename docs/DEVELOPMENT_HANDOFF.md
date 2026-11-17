@@ -312,3 +312,19 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - **QA NEXT:** replace addon with latest main, `/reload` and `/ws`; verify transparent torn cloth loads for both flags without square artifacts, top fittings and emblems remain aligned; verify new rank ribbon loads fully, its caption is legible and it does not collide with the divider underneath or portrait/name above. Compare composition and colors against approved reference. Confirm 32 HK, 8 PvP deaths and HK/D 4.00, plus lower bands. Check Lua errors. Later test Alliance character to verify blue cloth and correct insignia.
 - **Not validated in Forever yet.** Automated Lua tests NOT RUN. Large/offline values, varied UI scales, and exact reference fidelity still unverified. This is an intermediate ornamental iteration, not visual acceptance.
 - **Next if verified:** replace square faction icon art with original alpha heraldry, strengthen outer frame and title treatments, and polish lower-band iconography in a cohesive batch. Keep rejected medallion removed.
+
+## Iteration #27 — owner screenshot review (2026-11-17)
+
+- Owner screenshot confirms the new Horde v2 banner artwork renders with visible folds, top gold fittings and torn lower hems, without obvious opaque rectangles or overlap with the character portrait. The new angular rank ribbon texture also loads and the unavailable-rank caption remains legible. HK=32, PvP deaths=8, HK/D=4.00 and the lower segmented bands stay visible.
+- **Limited client visual PASS for Horde texture loading**, not final art acceptance. The right tip of the rank ribbon appears mechanically striped and awkward; Alliance art has NOT been tested. Automated Lua tests, larger counts and other scale/resolution tests remain NOT RUN.
+- Owner requests a new information hierarchy: **HK, then PvP deaths, then HK/D and KB/D**, without changing the lower bands. Owner also requests continuing visual refinement.
+
+## Iteration #28 — reorder lifetime counters above ratios and adjust rank ribbon (2026-11-17)
+
+- UI code commit `1d4f60b2751f207e00f651fa45e3f607e12e63d7` on `main`; changed `UI/General.lua` only.
+- Retained HK hero headline/value at their approved positions. Moved the red PvP-deaths headline/value immediately below HK (title y=-483; value y=-518). Moved the gold HK/D and KB/D two-column section into the lower region (headings y=-602, values y=-634, descriptions y=-677), with a single shared center divider and new intermediate divider y=-590. Kept the lower-band entry y=-727 and final central divider y=-714, so overall window dimensions and already-tested bands remain unchanged.
+- Narrowed rank ribbon texture display from 484×58 to 452×52 logical pixels to reduce awkward overshoot of the tips. Did not replace source asset or modify the unavailable-rank label/faction emblem.
+- No changes to data sources, HK/D or KB/D semantics, denominator handling, faction banners, portrait, General/Hoy navigation, HK laurel texture, or saved variables. Never fabricate unknown KB/D/rank.
+- Static source verification confirmed one death field, ordering HK → PvP deaths → HK/D → lower stats, and preservation of the removed medallion and '(i)' UI elements. **This is code inspection, NOT a client render test.**
+- **Owner QA pending:** install latest main, run `/reload`, `/ws`; inspect HK laurels and number, new PvP-deaths position, ratio headings/values/descriptions and all separator lines for overlaps. Check rank ribbon tips and legibility, both segmented lower rows, 32 HK / 8 deaths / HK-D 4.00 on the known character and absence of Lua errors. Send screenshot.
+- Automated Lua tests and actual iteration 28 native-client tests: NOT RUN. Other UI scales, long numbers and Alliance banner still not verified; feature remains open and visually unaccepted.
