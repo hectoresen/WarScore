@@ -429,3 +429,16 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - The overall layout stays HK hero → subdued PvP deaths → HK/D and KB/D → two lower statistic bands. Nothing modifies `ns.Stats`, SavedVariables, available numeric values or unsupported KB/D/rank semantics. Removed upper-left swords medallion and redundant info symbols remain absent.
 - **Clean distribution verified:** GitHub Actions commit `b3fe0eb9a14ada8300d484cf433767172bdca8a0` updated `dist/WarScore.zip`; ZIP blob SHA `ae28d0e79f572ac2838358f82623886c9b8236c7`, length 108,681 bytes, 15 Deflate entries under `WarScore/`, none from docs/OpenSpec/tools. Connector readback verified central-directory structure and source CRC of `WarScore/UI/General.lua` matches current repo source. No raw/manual ZIP assembly.
 - **Owner QA pending:** install clean ZIP, `/reload`, `/ws version` must display 33, `/ws` then inspect left/right banner clasps and emblems, two-tier rank legibility and bronze endcaps, both complete lower strips, preserved historical values and absence of Lua errors. Send screenshot. Current iteration not yet client-tested or accepted; automated Lua/runtime tests, Alliance and alternative scaling remain open.
+
+## Iteration #33 — owner screenshot review (2026-11-17)
+
+- Owner screenshot shows the two-tier rank label, both Horde cloth banners with circular faction emblems and revised fittings, HK=32, PvP deaths=8, HK/D=4.00, and both segmented lower rows. No major clipping is visible in this example. **Limited visual PASS**, not approval of art fidelity or proof of other UI scales/factions. Exact `/ws version` output for this screenshot was not supplied.
+
+## Iteration #34 — stronger shared lower-band frame and banner stitching (2026-11-17)
+
+- UI commits: `1ab1498cf76a9c72b629c6195c2865029b537448` and anchor correction `fc4f37d38d20a91e4c08563bc663b82c65dc6281`, in `UI/General.lua`. `UI_ITERATION` now `34` for `/ws version`.
+- Main changes: subtle gold stitch rails along both banners without opaque backing; paired inner metallic side rules on each unified lower statistics band; small rivets above/below each internal segment divider; increase lower icon mounts from 48 to 52 px and icons from 40 to 44; offset label/value columns slightly to the right and increase regular value size 28 to 30. Keep second-row favorite BG value smaller (16 px) for multiline text.
+- A first pass of divider rivets used an incorrect reference point; corrected to the band's `TOPLEFT` to ensure all rivets are placed inside band. The corrections are included before release.
+- No changes to statistics adapters, persistent data, unavailable rank/KB-D, HK/deaths hierarchy, two-line rank, portrait, tabs, original textures, or rejected upper-left medallion.
+- **Owner QA pending:** install the CI-built clean ZIP, `/reload`, verify `/ws version` displays 34, then `/ws`. Check both lower bands for icon/text overlap, central-divider rivets, long label wrapping and six values. Inspect subtle banner threads and verify prior HK/deaths/ratio values unchanged. Send screenshot.
+- This is still a styling preview, not overall design approval. Automated Lua client tests, high-value and Alliance UI tests remain pending. **Never distribute the source repository archive**; only the 15-file CI-generated `dist/WarScore.zip` after validating it matches current source.
