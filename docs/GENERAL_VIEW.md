@@ -195,3 +195,7 @@ Salida de `/wsdiag list 122`: `60` Muertes propias = **38** (no utilizar como mu
 **Lectura:** las 32 HK históricas están reflejadas en el contador de mundo, sin registros numéricos de BG en esta prueba. Los `--` no se interpretan automáticamente como cero. La discrepancia de `1487` KB=882 frente a HK=32 sigue abierta; no calcular KB/D todavía.
 
 **Diagnóstico corregido:** la categoría `128` estaba bloqueada por una lista de permitidas del propio addon, no por la API del juego. Habilitada en `Core/Diagnostics.lua` para próxima prueba.
+
+## Prueba real — duelos, categoría 154 (2026-11-17)
+
+`/wsdiag list 154` muestra `319` «Duelos ganados» = `--` y `320` «Duelos perdidos» = `--`. El usuario confirma que **nunca ha jugado un duelo con ese personaje** y que la interfaz nativa de WoW muestra **0 ganados / 0 perdidos**. En este caso concreto, `--` corresponde a ausencia de actividad (0 en la UI). **No generalizar todavía** `--` a cero para cualquier ID sin contraste; diseñar normalización específica por estadística tras más pruebas. IDs 319 y 320 ya identificados y sus etiquetas verificadas en el cliente. Próximo paso útil: comparar valores antes/después de un duelo, y verificar si el personaje ha jugado BG; investigar la discrepancia 882 KB vs 32 HK.
