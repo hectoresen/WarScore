@@ -175,22 +175,13 @@ local function build()
     local portrait = portraitRing:CreateTexture(nil, "ARTWORK")
     portrait:SetSize(108, 108)
     portrait:SetPoint("CENTER")
-    -- A true circular crop requires an alpha-mask asset compatible with Forever.
-    -- Keep the portrait centered and avoid misleading offset minimap art.
     fields.portrait = portrait
-    -- The minimap tracking border is an offset atlas and cannot frame portraits.
-    -- Use a stable symmetric border until a dedicated circular TGA/BLP is supplied.
-    local portraitBorder = CreateFrame("Frame", nil, portraitRing, "BackdropTemplate")
-    portraitBorder:SetAllPoints(portraitRing)
-    portraitBorder:SetBackdrop({
-        bgFile = "Interface\\Buttons\\WHITE8X8",
-        edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-        tile = false, edgeSize = 22,
-        insets = { left = 7, right = 7, top = 7, bottom = 7 }
-    })
-    portraitBorder:SetBackdropColor(0.03, 0.02, 0.02, 0)
-    portraitBorder:SetBackdropBorderColor(0.91, 0.66, 0.24, 1)
-    portraitBorder:EnableMouse(false)
+    -- Overlay occludes the square portrait corners while leaving a transparent
+    -- circular aperture; unlike SetMaskTexture this works on older clients.
+    local ring = portraitRing:CreateTexture(nil, "OVERLAY")
+    ring:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring")
+    ring:SetSize(126, 126)
+    ring:SetPoint("CENTER", portraitRing, "CENTER", 0, 0)
     fields.name = label(window, "—", 24, CREAM, 0, -233, 360, 34)
     fields.level = label(window, "—", 15, CREAM, 0, -269, 360, 25)
     local rankPlate = CreateFrame("Frame", nil, window, "BackdropTemplate")
