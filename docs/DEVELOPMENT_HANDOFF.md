@@ -1,6 +1,6 @@
 # WarScore — live development handoff
 
-**Last updated:** 2026-11-17 (iteration 4). **Active work:** `feat001-general-pvp-dashboard` — OWNER APPROVED, implementation IN PROGRESS, NOT accepted. **Current branch:** `main` (all changes committed directly to main by the chat assistant so far; do not claim a feature branch exists).
+**Last updated:** 2026-11-17 (iteration 5). **Active work:** `feat001-general-pvp-dashboard` — OWNER APPROVED, implementation IN PROGRESS, NOT accepted. **Current branch:** `main` (all changes committed directly to main by the chat assistant so far; do not claim a feature branch exists).
 
 ## Read in this order
 1. `AGENTS.md`, `openspec/README.md` — lightweight SDD and approval boundaries.
@@ -40,16 +40,23 @@ Git commit: `e845257cf70957f56eefd26c555c35f57aafdae5`.
 - Added darker header plate, rank plate and vertical separator between HK/D and KB/D.
 - **OWNER SCREENSHOT #3:** gold minimap ring is gone, centered square portrait border and vertical ratio separator render; stats remain HK 32, PvP deaths 8, HK/D 4.00. **FAIL:** WarScore title invisible because header child frame covers parent FontString; rank label darkened because rankPlate child frame covers parent FontString; ornate assets/circular portrait missing. The screenshot exists in chat, not repo.
 
-## Iteration #4 — committed, AWAITING OWNER TEST
+## Iteration #4 — client-tested by owner
 
 Git commit: `f76b55991406c29a07d28353019082c9352f5f86`.
 - Moved WarScore title FontString inside the header child frame and rank FontString inside the rankPlate child frame, preventing their backgrounds from painting over the labels.
 - Added native tooltip-style border to each of six cards.
 - Replaced unsupported Unicode circled-info glyphs (rendered as square boxes) with '(i)' temporary text. Proper tooltip buttons still outstanding.
-- **NOT TESTED** in client yet. No decorative texture assets, actual circular crop or reference PNG uploaded. Do not claim fidelity.
+- **OWNER SCREENSHOT #4:** WarScore title, rank label, all six card borders, and '(i)' labels render legibly. HK 32, PvP deaths 8, HK/D 4.00 unchanged. **FAIL / PENDING:** square portrait, no approved ornate frame, banners, laurels, corner details; mockup fidelity still low. Screenshot is in chat, not repository.
+
+## Iteration #5 — committed, AWAITING OWNER TEST
+
+Git commit: `170abf6ad66bb4eef6fff6862ef952f546951db7`.
+- Added **provisional** WoW-native icon textures to each of six statistic cards, with adjusted label/value vertical layout.
+- Icon paths (e.g. `Interface\\Icons\\Ability_DualWield`, `INV_BannerPVP_02`, `Achievement_BG_WinWSG`) are **NOT VERIFIED** against the Forever client; missing icons must be corrected from real screenshots. They are not final art.
+- Circular portrait masking, custom ornaments, banners and reference PNG are still pending; no claim of visual parity.
 
 ## Exact next actions for any agent
-1. **Wait for owner screenshot of iteration #4.** Confirm title and rank text are legible and all six cards have stronger borders; record observed PASS/FAIL with date.
+1. **Wait for owner screenshot of iteration #5.** Check whether all six card icons render or show missing/incorrect textures; verify labels/numbers fit, and record PASS/FAIL with date.
 2. The `WHITE8X8` + vertex-color technique is now supported by the owner's screenshot; keep it for opaque panels. Do not reintroduce minimap tracking border for portrait.
 3. Then improve layout proportions and asset pipeline toward reference; ensure readable second row, no action-bar overlap, real faction banners and ornaments, correct portrait framing.
 4. Add Lua deterministic tests when runtime available, then run; don't mark NOT RUN as PASS.
