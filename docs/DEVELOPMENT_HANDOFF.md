@@ -1,6 +1,6 @@
 # WarScore — live development handoff
 
-**Last updated:** 2026-11-17 (iteration 11 accents, pending owner QA).
+**Last updated:** 2026-11-17 (iteration 12 larger ornament batch, awaiting owner QA).
 
 ## Read in this order
 1. `AGENTS.md`, `openspec/README.md` — lightweight SDD and approval boundaries.
@@ -110,3 +110,11 @@ Owner screenshot confirms the square dark portrait background is gone and the go
 ## Iteration #11 — committed, AWAITING OWNER TEST
 
 Commit `e1353241894e48931294dbaad878175f07ca7742`: added subtle metallic horizontal header trim, gold selected-General-tab underline and rank-plate side accents using client-tested WHITE8X8. No changes to stats, portrait masking or banner files. **NOT TESTED in client**. Owner should download latest main, run `/reload` and `/ws`, and check header/title, General/Hoy tabs, rank text and new gold accents for layering or clipping. Continue with original ornamental asset pack and reference-image fidelity afterward; do not treat this as final design.
+
+## Iteration #11 — owner screenshot PASS
+
+Owner screenshot shows header gold trim, General tab underline, rank plate accents all render and remain readable; stats stable (HK=32, deaths=8, HK/D=4.00), portrait circular, banners unchanged. Screenshot exists in chat, not repository. Owner requested **larger feature batches per iteration**, not one tiny visual tweak at a time.
+
+## Iteration #12 — larger ornamental pass committed, AWAITING OWNER TEST
+
+Commits `73238105b21acc864700e51d3bbef7a5b6ca07d8`, `89f9a87004a2c4e30f7a417e36126497d37dc912`. Added in one batch: four metallic outer corner accents, layered header trim, small diamond ornaments on four major dividers, shaded main HK and PvP-death section plaques. All drawn using previously tested WHITE8X8; text-background layering fixed before requesting QA. No stats or masking changes. **NOT TESTED IN CLIENT.** Potential compatibility risk: `Texture:SetRotation` on the decorative diamonds. Owner should test `/ws` for Lua errors, title/rank/number visibility, all diamonds and corner accents. If `SetRotation` unsupported, remove/replace rotation. Still not the final painted WoW ornamental texture pack or approved reference parity. Next batch should integrate substantial authored assets, not tiny line adjustments.
