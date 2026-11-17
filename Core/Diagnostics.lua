@@ -67,10 +67,46 @@ local function categories()
     end
 end
 
+
+local function listStats(category)
+    local allowed = { [21]=true, [153]=true, [154]=true, [137]=true, [136]=true, [122]=true }
+    if not allowed[category] then
+        output("Categoria no admitida. Usa 21, 153, 154, 137, 136 o 122")
+        return
+    end
+    if type(GetCategoryNumAchievements) ~= "function" or type(GetAchievementInfo) ~= "function" then
+        output("APIs de enumeracion no disponibles")
+        return
+    end
+    local ok, total = pcall(GetCategoryNumAchievements, category)
+    if not ok or type(total) ~= "number" then
+        output("No se pudo consultar la categoria " .. category .. ": " .. show(total))
+        return
+    end
+    output("Categoria " .. category .. ": " .. total .. " entradas; mostrando hasta 35")
+    for i = 1, math.min(total, 35) do
+        local success, id, name = pcall(GetAchievementInfo, category, i)
+        if success and type(id) == "number" then
+            local value = "--"
+            if type(GetStatistic) == "function" then
+                local readOk, stat = pcall(GetStatistic, id)
+                if readOk then value = show(stat) end
+            end
+            output(i .. ". " .. id .. " | " .. show(name) .. " | valor " .. value)
+        else
+            output(i .. ". ERROR " .. show(id))
+        end
+    end
+    if total > 35 then output("Hay mas entradas; se limita el chat a 35") end
+end
+
 SLASH_WARSCOREDIAG1 = "/wsdiag"
 SlashCmdList.WARSCOREDIAG = function(message)
     local mode = (message or ""):match("^%s*(%S+)") or ""
-    if mode == "categories" then
+    if mode == "list" then
+        local id = tonumber((message or ""):match("^%s*list%s+(%d+)"))
+        if id then listStats(id) else output("Uso: /wsdiag list 21") end
+    elseif mode == "categories" then
         categories()
     elseif mode == "detail" then
         details()
@@ -80,6 +116,6 @@ SlashCmdList.WARSCOREDIAG = function(message)
         inspect("GetPVPYesterdayStats", GetPVPYesterdayStats)
     else
         basics()
-        output("Opciones: /wsdiag categories | detail | daily")
+        output("Opciones: /wsdiag list 21 | categories | detail | daily")
     end
 end
