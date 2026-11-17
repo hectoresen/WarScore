@@ -139,3 +139,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 16 code committed: slightly larger icons, headings and normal values, paired metallic rails, beveled segment dividers and four corner studs per band.
 - [ ] Owner tests iteration 16 in Forever and shares screenshot confirming no overlaps or Lua errors; check long titles and BG favorite text when available.
 - [ ] Continue ornamental header, rank and approved reference parity work; automated Lua tests remain NOT RUN.
+
+## Iteration 16 screenshot / iteration 17 rank ribbon
+
+- [x] Owner screenshot confirms iteration 16 larger band icons, trims and dividers render without obvious clipping; HK/deaths/HK-D unchanged. Full UI acceptance still pending.
+- [x] Iteration 17: add bordered faction badge and layered metallic ribbon accents to rank plaque, retaining unavailable rank state.
+- [ ] Owner tests iteration 17 in Forever: rank text not occluded, shield/badge alignment, no overlap with next divider, no Lua errors and main stats unchanged.
+- [ ] Continue faithful painted ornament assets, exact original reference image storage and multi-resolution QA; automated Lua tests remain NOT RUN.
