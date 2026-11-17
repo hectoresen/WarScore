@@ -402,3 +402,12 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] **Owner tests iteration 44 in WoW Forever** and submits screenshot, checks loading of transparent images, centered columns, rank plaque geometry, zero/green formats and no Lua errors.
 - [ ] Full reference fidelity still pending; keep banners frozen; consider further sculpted rank and WoW-native border refinements after screenshot.
 - [ ] Alternative scale, long populated favorite name, Alliance, automated Lua tests and data-retrieval QA remain open.
+
+## Iteration 44 rejection and iteration 45 corrective rollback
+
+- [x] Owner screenshot of 44: clip-art metric icons and orange rank rectangle **REJECTED**, despite successful texture loading.
+- [x] Iteration 45 restores small unobtrusive native placeholder icons and subdued leather rank ribbon while preserving iteration 43 structure, stats and formatting.
+- [x] CI rebuilt clean ZIP; 15 runtime entries and packaged Lua CRC match source; no rejected experimental art assets in install package.
+- [ ] Owner validates /ws version 45, visual rollback, no errors, and sends screenshot.
+- [ ] Long-term artwork must look like native Warcraft premium iconography rather than simplistic geometric symbols; rank plaque silhouette and pictogram art still need substantial work.
+- [ ] Banner redesign frozen; preserve outer and inner frames, centered columns, top gold/bottom green values and no-data display semantics.
