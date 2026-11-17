@@ -280,16 +280,43 @@ local function build()
     medallion:SetPoint("TOPLEFT", window, "TOPLEFT", 18, -2)
     medallion:EnableMouse(false)
 
+    -- Use circular masks for BOTH the dark disc and the swords icon; the native
+    -- square icon should never become a visible square plate inside the ring.
     local medallionDisc = medallion:CreateTexture(nil, "BACKGROUND")
     medallionDisc:SetTexture("Interface\\Buttons\\WHITE8X8")
-    medallionDisc:SetVertexColor(0.17, 0.035, 0.025, 0.94)
-    medallionDisc:SetSize(46, 46)
+    medallionDisc:SetVertexColor(0.17, 0.035, 0.025, 0.96)
+    medallionDisc:SetSize(58, 58)
     medallionDisc:SetPoint("CENTER", medallion, "CENTER", 0, 0)
 
     local swords = medallion:CreateTexture(nil, "ARTWORK")
     swords:SetTexture("Interface\\Icons\\Ability_DualWield")
-    swords:SetSize(42, 42)
+    swords:SetSize(51, 51)
     swords:SetPoint("CENTER", medallion, "CENTER", 0, 0)
+
+    local function maskMedallionTexture(texture)
+        if type(medallion.CreateMaskTexture) ~= "function"
+            or type(texture.AddMaskTexture) ~= "function" then
+            return false
+        end
+        local ok = pcall(function()
+            local mask = medallion:CreateMaskTexture(nil, "ARTWORK")
+            mask:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_mask")
+            mask:SetAllPoints(texture)
+            texture:AddMaskTexture(mask)
+        end)
+        return ok
+    end
+
+    local discMasked = maskMedallionTexture(medallionDisc)
+    local iconMasked = maskMedallionTexture(swords)
+    if not discMasked then
+        -- Avoid the previous visibly square dark background on older clients.
+        medallionDisc:Hide()
+    end
+    if not iconMasked then
+        -- Unmasked icon is a temporary, smaller fallback, not a circular claim.
+        swords:SetSize(36, 36)
+    end
 
     local medallionRing = medallion:CreateTexture(nil, "OVERLAY")
     medallionRing:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring_transparent")
