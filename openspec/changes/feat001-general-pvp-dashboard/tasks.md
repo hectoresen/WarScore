@@ -251,3 +251,11 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Rebuilt `dist/WarScore.zip` with only 15 runtime files. GitHub confirms binary SHA; separate remote-content check was inconclusive due connector returning empty content.
 - [ ] Owner tests iteration 29 in Forever and sends screenshot, validates ratios, secondary deaths, icon mounts and no Lua errors.
 - [ ] Keep development docs/OpenSpec outside install ZIP; run automated Lua tests and multi-faction/scale QA before approval.
+
+## Distribution hotfix after iteration 29
+
+- [x] User reports manually assembled ZIP cannot be extracted by Windows. Mark old package invalid.
+- [x] Added GitHub Actions standard-Python packaging + `unzip -t` + `ZipFile.testzip()`; committed a fresh Deflate ZIP with 15 runtime files and no development folders.
+- [x] Verified new ZIP structure via GitHub connector readback (107,767 bytes, standard compression, valid central directory).
+- [ ] Owner downloads corrected ZIP from raw.githubusercontent.com and confirms Windows extraction and in-game loading.
+- [ ] Keep future packages CI-produced; no ad hoc ZIP assembly.
