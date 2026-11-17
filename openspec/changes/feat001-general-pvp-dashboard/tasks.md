@@ -242,3 +242,12 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Owner tests clean ZIP in Forever, confirms rank tip/death-section cleanup, no missing resources, no Lua errors and preserved stats.
 - [ ] **For every future code/media iteration:** rebuild `dist/WarScore.zip` and share only the clean package link, never source `main.zip`.
 - [ ] Full mockup parity, other characters/factions, high-digit numbers and automated tests remain outstanding.
+
+## Iteration 28 clean-ZIP screenshot / iteration 29 style pass
+
+- [x] Owner screenshot: the clean ZIP loads, shows new order HK → PvP deaths → ratios, and keeps six lower indicators, banners, rank and portrait. Stats remain 32/8/4.00; no error reported.
+- [x] Owner requests visually smaller, less important PvP deaths.
+- [x] Iteration 29: reduce death title/value/soft plaque; remove isolated rank studs, improve rank/header typography, add dark mounts to lower-band icons.
+- [x] Rebuilt `dist/WarScore.zip` with only 15 runtime files. GitHub confirms binary SHA; separate remote-content check was inconclusive due connector returning empty content.
+- [ ] Owner tests iteration 29 in Forever and sends screenshot, validates ratios, secondary deaths, icon mounts and no Lua errors.
+- [ ] Keep development docs/OpenSpec outside install ZIP; run automated Lua tests and multi-faction/scale QA before approval.
