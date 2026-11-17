@@ -245,3 +245,7 @@ Salida de `/wsdiag list 122`: `60` Muertes propias = **38** (no utilizar como mu
 **Lectura:** las 32 HK históricas están reflejadas en el contador de mundo, sin registros numéricos de BG en esta prueba. Los `--` no se interpretan automáticamente como cero. La discrepancia de `1487` KB=882 frente a HK=32 sigue abierta; no calcular KB/D todavía.
 
 **Diagnóstico corregido:** la categoría `128` estaba bloqueada por una lista de permitidas del propio addon, no por la API del juego. Habilitada en `Core/Diagnostics.lua` para próxima prueba.
+
+## Prueba real — categoría Víctimas 128 (2026-11-17)
+
+`/wsdiag list 128` devuelve `1197` «Muertes realizadas» = **3936** y `1198` «Cantidad de muertes que te han otorgado experiencia u honor» = **3687**. Son contadores generales de víctimas, no eliminaciones PvP demostradas: **no utilizarlos para KB/D**. Se completó la enumeración de categorías 21, 153, 137, 122, 136 y 128. Queda por explorar la categoría 154 (PvP mundo) y localizar la categoría del ID 319 (duelos). Preguntar si el personaje ha participado en BG antes de interpretar `--` como ausencia de partidas.
