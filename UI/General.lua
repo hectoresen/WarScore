@@ -36,7 +36,7 @@ local function line(parent, y, width)
     texture:SetPoint("TOP", parent, "TOP", 0, y)
 end
 
-local function card(parent, x, y, w, h, title, color)
+local function card(parent, x, y, w, h, title, color, iconPath)
     local panel = CreateFrame("Frame", nil, parent, "BackdropTemplate")
     panel:SetSize(w, h)
     panel:SetPoint("TOP", parent, "TOP", x, y)
@@ -49,6 +49,14 @@ local function card(parent, x, y, w, h, title, color)
     edge:SetHeight(2)
     panel:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 15 })
     panel:SetBackdropBorderColor(0.64, 0.43, 0.19, 0.95)
+    if iconPath then
+        local emblem = panel:CreateTexture(nil, "ARTWORK")
+        emblem:SetTexture(iconPath)
+        emblem:SetSize(28, 28)
+        emblem:SetPoint("TOP", panel, "TOP", 0, -7)
+        label(panel, title, 11, CREAM, 0, -35, w - 12, 28)
+        return label(panel, "—", 25, color or GOLD, 0, -67, w - 10, 35)
+    end
     label(panel, title, 12, CREAM, 0, -12, w - 12, 34)
     return label(panel, "—", 26, color or GOLD, 0, -51, w - 10, 38)
 end
@@ -145,6 +153,8 @@ local function build()
     local portrait = portraitRing:CreateTexture(nil, "ARTWORK")
     portrait:SetSize(108, 108)
     portrait:SetPoint("CENTER")
+    -- A true circular crop requires an alpha-mask asset compatible with Forever.
+    -- Keep the portrait centered and avoid misleading offset minimap art.
     fields.portrait = portrait
     -- The minimap tracking border is an offset atlas and cannot frame portraits.
     -- Use a stable symmetric border until a dedicated circular TGA/BLP is supplied.
@@ -191,14 +201,14 @@ local function build()
     fields.deaths = label(window, "—", 45, RED, 0, -650, 420, 60)
     line(window, -714, 650)
 
-    fields.duels = card(window, -237, -727, 225, 112, "DUELOS GANADOS")
-    fields.bgPlayed = card(window, 0, -727, 225, 112, "CAMPOS DE BATALLA JUGADOS")
-    fields.bgWon = card(window, 237, -727, 225, 112, "BG GANADOS")
+    fields.duels = card(window, -237, -727, 225, 112, "DUELOS GANADOS", GOLD, "Interface\\Icons\\Ability_DualWield")
+    fields.bgPlayed = card(window, 0, -727, 225, 112, "CAMPOS DE BATALLA JUGADOS", GOLD, "Interface\\Icons\\INV_BannerPVP_02")
+    fields.bgWon = card(window, 237, -727, 225, 112, "BG GANADOS", GOLD, "Interface\\Icons\\Achievement_BG_WinWSG")
     -- Compact second row: remains a distinct ornamental row.
     -- The frame is tall enough to contain both rows; game UI scale can reduce size.
-    fields.bgRate = card(window, -237, -846, 225, 112, "WIN RATE BG", GREEN)
-    fields.duelRate = card(window, 0, -846, 225, 112, "WIN RATE DUELOS", GREEN)
-    fields.favorite = card(window, 237, -846, 225, 112, "CAMPO DE BATALLA FAVORITO", CREAM)
+    fields.bgRate = card(window, -237, -846, 225, 112, "WIN RATE BG", GREEN, "Interface\\Icons\\INV_BannerPVP_01")
+    fields.duelRate = card(window, 0, -846, 225, 112, "WIN RATE DUELOS", GREEN, "Interface\\Icons\\Ability_DualWield")
+    fields.favorite = card(window, 237, -846, 225, 112, "CAMPO DE BATALLA FAVORITO", CREAM, "Interface\\Icons\\INV_BannerPVP_02")
     fields.favorite:SetFont("Fonts\\FRIZQT__.TTF", 16, "OUTLINE")
 
     -- The reference's tall two-row composition needs additional height.
