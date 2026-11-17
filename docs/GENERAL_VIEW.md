@@ -131,3 +131,23 @@ Wowhead confirma que la pestaña de estadísticas **nativa de WoW Forever 1.60.1
 - **Diseño:** mantener el pie de la referencia con duelos ganados y BG jugados; no añadir automáticamente las otras métricas.
 
 Fuentes: https://www.wowhead.com/forever/news/statistics-pane-now-available-in-wow-forever-beta-383102 ; https://www.wowhead.com/forever/achievement=319/duels-won
+
+
+## Prueba real en cliente Forever — 2026-11-17
+
+El usuario instaló WarScore y ejecutó `/wsdiag` dentro del juego. Salida literal (cada llamada muestra hasta cuatro retornos):
+
+```
+GetPVPLifetimeStats: 32 | 0 | nil | nil
+GetPVPSessionStats: 0 | 0 | nil | nil
+GetPVPYesterdayStats: 6 | 0 | nil | nil
+GetStatistic(319): -- | false | 319 | nil
+GetStatistic(1487): 882 | false | 1487 | nil
+GetStatistic(1501): 8 | false | 1501 | nil
+```
+
+**Probado:** las tres funciones PvP responden y `GetStatistic` devuelve valores para los IDs 1487 y 1501. `319` devuelve `--`, por lo que **no está validado como contador de duelos ganados**. El segundo retorno de `GetStatistic` es `false` en los tres casos; investigar su significado antes de interpretar ese booleano.
+
+**Alerta de semántica:** HK históricas = 32 mientras KB ID 1487 = 882. No usar 882 para KB/D hasta averiguar si cuenta PvE, distintos periodos o tiene otra semántica. El valor 8 del ID 1501 parece utilizable como candidato de muertes PvP históricas, pero contrastar con panel nativo.
+
+**Siguiente diagnóstico:** imprimir nombre, descripción y categoría de los logros/estadísticas para IDs conocidos; enumerar estadísticas de duelos y BG con sus IDs reales; contrastar los valores visibles en panel de estadísticas; probar cambios diarios entre logins y cruce de medianoche.
