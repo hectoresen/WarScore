@@ -471,3 +471,16 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - **Clean packaged build:** CI commit `5bd041deaa49e495f5377abcf5fec37e9621ea8b`, `dist/WarScore.zip` blob SHA `636fea24f85775a49576702a05f1dbc994681360`; ZIP readback 109,051 bytes, 15 Deflate entries under `WarScore/`, source `UI/General.lua` CRC32 `5c36c921` matches packaged version. No source docs/OpenSpec/tools in install ZIP.
 - **Owner QA pending:** replace `WarScore` folder with ZIP, `/reload`, `/ws version` should display 36, `/ws`, check small ornate corners, no detached divider caps, icons/titles/values alignment, particularly long middle and final title or a nonempty favorite BG name. Check main values 32/8/4.00 stable; report any Lua errors. Send screenshot.
 - Client validation for iteration 36 NOT RUN, automated Lua tests NOT RUN; Alliance/multiple scales and full design fidelity remain open.
+
+## Iteration #36 — screenshot review (2026-11-17)
+
+- Owner screenshot shows the revised ornamental band corners, 3 columns in each of two strips, and fully readable labels/counters. Crucially, **live stats have advanced** to 32 honorable kills, **9** PvP deaths and HK/D **3.56**, consistent with 32/9 rounded to 2 decimal places. This is positive visual evidence of the refresh/update path, but not proof that every data path works. KB/D, battlegrounds and favorite remain unavailable; do not invent these values. No explicit /ws version output or Lua error report.
+- Remaining gap to the reference: the two lower strips have nearly identical visual weight although their semantics differ (absolute totals vs secondary rates/favorite). Gold native-style geometry still appears less sophisticated than painted source mockup. The owner has not approved final aesthetics.
+
+## Iteration #37 — first-row counts vs second-row secondary insights (2026-11-17)
+
+- UI commit `af09c4a83547454e9f310592a9d8d9dca8790e06` in `UI/General.lua`. Diagnostic `UI_ITERATION` updated to `37`.
+- `statBand` now accepts a fourth optional `secondary` flag; the second strip passes `true`. Its backdrop is subtly darker, border and separators are quieter, icon alpha is reduced, value default size is 29px instead of 33px (first strip), and captions are smaller and slightly muted. The upper totals strip remains the priority. Favorite BG retains its custom 17px size for long names.
+- Both strips retain the exact two-band / three-segment architecture, TGA corner ornaments, six data bindings, original icons and all tab/nav/core metrics. Inner icon mounts are slightly reduced to de-emphasize blockiness; caption/value columns adjusted in lockstep. No extra new assets, new API dependence or calculations added.
+- **Owner QA pending:** install latest CI-built clean ZIP, `/reload`, `/ws version` should display 37, then `/ws`. Check that the first strip looks stronger than the second and values/text still fit all six segments; observe 32 HK/9 deaths/3.56 HK-D if same character state. Other values may evolve naturally, so do not hardcode screenshots as test assertions.
+- Client iteration 37 NOT RUN. Lua automated tests, Alliance view, nonempty BG favorite and alternate UI scales remain untested. Preserve this handoff for the next agent, and do not equate visual checks with final acceptance.
