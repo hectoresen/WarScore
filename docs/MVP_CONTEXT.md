@@ -164,3 +164,20 @@ No se han identificado APIs diarias específicas para golpes de gracia PvP ni mu
 6. Si los contadores históricos disminuyen, no calcular deltas negativos: marcar discontinuidad y reinicializar la referencia con indicación al usuario.
 
 **Pendientes:** confirmar en cliente el comportamiento real de `GetPVPSessionStats()` entre logins y a medianoche; identificar APIs de fecha/reinicio, IDs de duelos y campos de batalla; verificar que `1487` contabiliza exclusivamente KB PvP.
+
+
+## Investigación adicional — estadísticas nativas Forever (2026-11-17)
+
+**Hallazgo de alto valor:** Wowhead publicó el 24/09/2026 el inventario de estadísticas que la pestaña nativa de Forever 1.60.1 ya registra. Incluye explícitamente:
+- Duelos ganados y perdidos.
+- Campos de batalla jugados y ganados, además de partidas/victorias por campo.
+- Golpes de gracia totales, de mundo y de campos de batalla; muertes con honor totales.
+- Muertes totales causadas por otros jugadores y por facción opuesta.
+
+Fuente principal: https://www.wowhead.com/forever/news/statistics-pane-now-available-in-wow-forever-beta-383102
+
+**ID localizado:** `319` = *Duels won* en base de datos de Forever: https://www.wowhead.com/forever/achievement=319/duels-won . Pendiente de comprobar `GetStatistic(319)` dentro del cliente. **No extrapolar IDs** para duelos perdidos ni campos de batalla.
+
+**Corrección de certeza:** que una estadística exista en el panel nativo **no demuestra** que el ID publicado funcione con `GetStatistic` ni que represente todos los eventos previos a su introducción. Probar lectura y semántica en Forever. El nombre `Total Killing Blows` (ID candidato 1487) aparece bajo la categoría *Killing Blows*, junto a *World Killing Blows* y *Battleground Killing Blows*, lo que apoya que sea PvP, pero confirmar experimentalmente antes de usarlo para KB/D.
+
+**Plan de comprobación:** inspeccionar IDs exactos de duelos perdidos, BG jugados/ganados y World/BG KB; validar `GetStatistic` con datos visibles en el panel del personaje; comprobar persistencia y actualización al jugar; contrastar KB total frente a KB mundo+BG (sin asumir equivalencia si hay otras modalidades).
