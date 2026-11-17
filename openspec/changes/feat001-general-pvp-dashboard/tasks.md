@@ -203,3 +203,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 25: paired inset frame rails, feathered ornamental header title plate and improved typographic shadow, replace rank ribbon line accents with smaller mirrored TGA laurels.
 - [ ] Owner tests iteration 25 in Forever for frame/header/rank layer order, label readability, ornament alignment, no Lua errors and unchanged stats.
 - [ ] Full pixel parity, all data scenarios, alternate UI scales and deterministic Lua checks remain pending.
+
+## Iteration 25 owner feedback / iteration 26 visual cleanup
+
+- [x] Owner screenshot shows iteration 25 renders but rejects upper circular swords medallion (clipped and unnecessary), incomplete faction banners, redundant '(i)' ratio marks, and uneven small rank laurel. Overall design is not accepted.
+- [x] Iteration 26 removes upper medallion, removes both '(i)' marks, repositions tabs with shared rule, removes rank laurel fragments, widens/enlarges banners and adds metal fitting. Alliance uses neutral placeholder rather than Horde cloth.
+- [ ] Owner tests iteration 26 on Forever; check banner fit, no text overlap, correct active tab, ratio headings, rank ribbon, all lower data, Lua errors.
+- [ ] Create original faction-specific banner artwork, finish approved ceremonial rank ribbon, inspect multiple UI scales, validate long labels and run deterministic Lua tests. Do not close this OpenSpec change yet.
