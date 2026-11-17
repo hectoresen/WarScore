@@ -280,3 +280,20 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - **No changes** to Lua statistics, HK/deaths labels, ratio logic, portrait, banners, lower two segmented bands, or saved character data. This pass introduces no new binary assets or unknown game API.
 - **Owner QA PENDING:** download latest main; `/reload`, `/ws`; inspect header title plate for clipping/layering, close button, both perimeter rails and four corners, rank label/badge/laurels for overlapping, no Lua errors. Confirm previous HK 32 / deaths 8 / HK-D 4.00 and the two bottom bands remain unaffected. Send screenshot.
 - **Automated Lua tests: NOT RUN.** Native-client iteration #25: NOT RUN. Full ornamental fidelity/pixel matching, long rank labels and alternative display scales remain unverified.
+
+## Iteration #25 — owner screenshot and explicit visual rejections (2026-11-17)
+
+- Owner screenshot shows existing frame, main stats and segmented lower bands intact (HK=32, PvP deaths=8, HK/D=4.00). It also shows a tiny, one-sided remnant of a laurel on the right of the rank ribbon: the rank ornament from iteration 25 is **NOT approved**.
+- Owner explicitly **rejects the upper-left circular swords medallion** (unnecessary and clipped), considers faction flags unfinished, and requests removal of redundant '(i)' next to both HK/D and KB/D because definitions already appear below each value. Owner says overall visual fidelity is still far from the expanded mockup and authorizes larger cohesive style iterations. Do not label those assets accepted.
+
+## Iteration #26 — visual cleanup and enlarged banners; owner QA pending (2026-11-17)
+
+- Code commit: `8bcddedfe0186d3f4e4cb7ea26f76b10f86232d1` in `UI/General.lua` (published to `main`).
+- Removed the **entire top-left circular swords medallion** and its local masking code; no upper-left icon remains. Returned General/Hoy tabs from x115 to x38 and added a shared 296×2 metallic rail below them. General remains selected; Hoy remains a coming-soon action.
+- Removed '(i)' from both ratio headings; descriptive lines beneath the ratios are unchanged.
+- Removed the small, uneven ribbon laurel attachments; retained the actual faction emblem on the left and a slightly wider unobscured `Rango PvP · No disponible` label. No unverified PvP rank introduced.
+- Banner presentation: enlarged each banner frame from 106×198 to 126×228 and shifted it slightly upward, enlarged faction emblems from 48 to 56, with metallic top fittings. Horde continues to use the original `banner_horde.tga` (still provisional/far from the approved reference). For Alliance a neutral dark blue-grey rectangular fallback replaces the incorrect Horde cloth until authored Alliance banner art exists; **this fallback is not final artwork**.
+- Data contracts, main HK laurel texture, portrait and two segmented lower statistics bands are unchanged. No new asset files were added.
+- **Owner QA:** install latest main, `/reload`, `/ws`; confirm no upper medallion, tabs are unobstructed, both ratios have no '(i)', rank label readable without dangling small laurel, and both flags have visible irregular hem without crowding portrait/identity. Verify 32 HK / 8 PvP deaths / HK-D 4.00 in tested character; check no Lua errors. Test Alliance later to ensure its temporary flag does not display Horde cloth.
+- **Automated Lua runtime/syntax checks NOT RUN** (no Lua binary in agent environment). **Native-client iteration 26 QA NOT RUN**; screenshot comparison and owner acceptance pending. Do not represent larger banners as final painted cloth or pixel parity.
+- Next substantive iteration after screenshot: create/verify genuine faction-specific cloth art, richer rank ribbon and frame treatment with original alpha textures; avoid replacing rejected medallion or restoring redundant info symbols.
