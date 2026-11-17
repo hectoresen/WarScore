@@ -110,3 +110,11 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 11 committed: header trim, General selected underline, rank-plate side accents.
 - [ ] Owner screenshot of iteration 11: verify accents render without obscuring text or tabs.
 - [ ] Continue with authored ornate header/frame assets and comparison against original mockup; UI not accepted.
+
+## Iteration 11 screenshot / iteration 12 larger visual batch
+
+- [x] Owner screenshot confirms iteration 11 header, selected tab underline, rank accents render and stats remain correct.
+- [x] Owner explicitly requests larger visual changes per test cycle.
+- [x] Implemented four outer corners, multi-layer header, diamond divider ornaments and section shading in iteration 12.
+- [ ] Owner tests iteration 12 in Forever, checks Lua errors (especially `Texture:SetRotation`), layer order and overall appearance.
+- [ ] Continue with actual painted ornamental assets and compare against reference PNG; no final UI acceptance.
