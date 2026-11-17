@@ -218,6 +218,8 @@ local function statBand(parent, y, definitions)
         label(segment, definition.title, 12, CREAM, 33, -12, segmentWidth - 80, 37)
         local value = label(segment, "—", definition.valueSize or 28,
             definition.color or GOLD, 33, -52, segmentWidth - 80, 47)
+        value:SetShadowColor(0.26, 0.14, 0.045, 0.68)
+        value:SetShadowOffset(1, -1)
         values[i] = value
     end
     return values
@@ -399,6 +401,16 @@ local function build()
     ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
     ribbon:SetAlpha(0.98)
 
+    -- Subtle edge studs in the rank ribbon reinforce the shield and end detail,
+    -- using stable WoW-native textures instead of another untested art asset.
+    for _, x in ipairs({ -197, 197 }) do
+        local stud = rankPlate:CreateTexture(nil, "ARTWORK")
+        stud:SetTexture("Interface\\Buttons\\WHITE8X8")
+        stud:SetVertexColor(0.95, 0.72, 0.28, 0.9)
+        stud:SetSize(4, 4)
+        stud:SetPoint("CENTER", rankPlate, "CENTER", x, 0)
+    end
+
     local emblemHolder = CreateFrame("Frame", nil, rankPlate, "BackdropTemplate")
     emblemHolder:SetSize(48, 48)
     emblemHolder:SetPoint("LEFT", rankPlate, "LEFT", 19, 0)
@@ -450,7 +462,19 @@ local function build()
 
     sectionPlaque(window, -482, 570, 108, 0.72)
     label(window, "MUERTES PvP SUFRIDAS", 20, RED, 0, -483, 460, 31)
-    fields.deaths = label(window, "—", 48, RED, 0, -518, 420, 62)
+    fields.deaths = label(window, "—", 52, RED, 0, -518, 420, 62)
+    fields.deaths:SetShadowColor(0.42, 0.05, 0.035, 0.85)
+    fields.deaths:SetShadowOffset(2, -2)
+
+    -- Fine metallic brackets keep the second lifetime counter visually paired
+    -- with HK, without competing with the more prominent HK laurels.
+    for _, side in ipairs({ -1, 1 }) do
+        local bracket = window:CreateTexture(nil, "ARTWORK")
+        bracket:SetTexture("Interface\\Buttons\\WHITE8X8")
+        bracket:SetVertexColor(0.56, 0.29, 0.13, 0.75)
+        bracket:SetSize(34, 2)
+        bracket:SetPoint("TOP", window, "TOP", side * 182, -553)
+    end
 
     line(window, -590, 650)
     ornamentDiamond(window, -588, 8)
@@ -461,12 +485,18 @@ local function build()
     centerDivider:SetSize(2, 93)
     centerDivider:SetPoint("TOP", window, "TOP", 0, -603)
 
-    label(window, "HK/D", 19, CREAM, -165, -602, 270, 29)
-    label(window, "KB/D", 19, CREAM, 165, -602, 270, 29)
-    fields.hkd = label(window, "—", 37, GOLD, -165, -634, 270, 48)
-    fields.kbd = label(window, "—", 37, GOLD, 165, -634, 270, 48)
-    label(window, "HK / muertes PvP sufridas", 12, CREAM, -165, -677, 300, 24)
-    label(window, "Golpes de gracia / muertes PvP", 12, CREAM, 165, -677, 300, 24)
+    label(window, "HK/D", 20, GOLD, -165, -601, 270, 29)
+    label(window, "KB/D", 20, GOLD, 165, -601, 270, 29)
+    fields.hkd = label(window, "—", 39, CREAM, -165, -632, 270, 50)
+    fields.kbd = label(window, "—", 39, CREAM, 165, -632, 270, 50)
+    fields.hkd:SetShadowColor(0.34, 0.19, 0.06, 0.72)
+    fields.hkd:SetShadowOffset(1, -1)
+    fields.kbd:SetShadowColor(0.34, 0.19, 0.06, 0.72)
+    fields.kbd:SetShadowOffset(1, -1)
+    local hkDescription = label(window, "HK / muertes PvP sufridas", 12, CREAM, -165, -680, 300, 24)
+    hkDescription:SetTextColor(0.77, 0.69, 0.58)
+    local kbDescription = label(window, "Golpes de gracia / muertes PvP", 12, CREAM, 165, -680, 300, 24)
+    kbDescription:SetTextColor(0.77, 0.69, 0.58)
 
     line(window, -714, 650)
     ornamentDiamond(window, -712, 8)
