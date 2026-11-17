@@ -329,3 +329,14 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 38 simplifies icon mounts, crops native icon edges, softens frame glint and maintains aligned text columns.
 - [ ] Verify the CI-rebuilt clean ZIP includes UI iteration 38, then owner tests in-game screenshots/no Lua errors.
 - [ ] Final original-reference fidelity, Alliance UI, other scales, nonempty BG history and Lua automated tests remain pending.
+
+## Iteration 38 screenshot / iteration 39 real textile heraldry
+
+- [x] Owner screenshot: 38 keeps HK=32/deaths=9/HK-D=3.56 and 2x3 stat bands intact; icon tiles remain square-looking.
+- [x] Owner explicitly rejects any Horde banner emblem that appears pasted on top. Acceptance requires cloth-integrated heraldry or a logo-less fallback.
+- [x] Iteration 39: authored an original 128x256 transparent TGA with the Horde-inspired angular mark baked into the existing folded fabric; removed the Horde inventory-icon/mask overlay entirely; Alliance remains provisional.
+- [x] Rank ribbon backing and band contrast polished in same batch, core data and layout unchanged.
+- [x] CI-generated clean distribution verified (15 files, current Lua and new textile TGA CRCs match repository blobs).
+- [ ] Owner tests `/ws version` 39 and sends screenshot; accept banner only if integrated mark actually resembles faction heraldry naturally.
+- [ ] If mark is weak or still sticker-like, **remove banner symbol** rather than returning to icon overlay; finalize Alliance art separately.
+- [ ] Longer value layouts, alternate UI scale, Lua automated tests and mockup fidelity outstanding.
