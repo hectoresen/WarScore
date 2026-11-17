@@ -328,3 +328,13 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - Static source verification confirmed one death field, ordering HK → PvP deaths → HK/D → lower stats, and preservation of the removed medallion and '(i)' UI elements. **This is code inspection, NOT a client render test.**
 - **Owner QA pending:** install latest main, run `/reload`, `/ws`; inspect HK laurels and number, new PvP-deaths position, ratio headings/values/descriptions and all separator lines for overlaps. Check rank ribbon tips and legibility, both segmented lower rows, 32 HK / 8 deaths / HK-D 4.00 on the known character and absence of Lua errors. Send screenshot.
 - Automated Lua tests and actual iteration 28 native-client tests: NOT RUN. Other UI scales, long numbers and Alliance banner still not verified; feature remains open and visually unaccepted.
+
+## Iteration #28 — extended ornamental polish before owner QA (2026-11-17)
+
+- Owner requested **expand the current iteration before their next screenshot**, so the previously recorded iteration 28 reorder and ribbon fit are still UNTESTED in Forever. This is the second commit of the same pending iteration, **not a new accepted visual baseline**.
+- Second code commit: `715ce908ef877a87ea2b365649f84df71c26c29a` in `UI/General.lua`.
+- Increased PvP-deaths value from 48 to 52 logical font pixels, added restrained red shadow and two thin symmetrical bracket lines to give the second primary lifetime counter more hierarchy.
+- Ratios after deaths: changed HK/D and KB/D headings to 20 px gold, numbers to 39 px cream with soft shadow, and descriptive captions to muted cream, while retaining the exact same meaning, read order and unavailable values.
+- Added small native gold studs on the rank-ribbon ends and soft value shadows in both lower segmented bands. No change to banner textures, faction identity, portrait, cards layout, statistics APIs or denominator semantics.
+- **Combined QA to perform once after both iteration-28 commits:** install latest main; `/reload`, `/ws`; ensure HK → PvP deaths → ratios are vertically clear without overlapping separators, thin death-section brackets are subtle, rank studs and ribbon tips do not clip, six lower values remain legible, and main metrics are unchanged (32 HK / 8 deaths / 4.00 HK/D in current test character). Check no Lua errors and send screenshot.
+- **NOT RUN:** automated Lua tests, WoW Forever client test for both iteration-28 code commits, high-digit and different-scale tests. Not owner-approved or pixel matched.
