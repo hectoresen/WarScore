@@ -167,3 +167,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 20: replace templated General/Hoy buttons with plain Button frames and custom decorative FontStrings/rules to avoid unintended bright red inactive skin.
 - [ ] Owner tests iteration 20: General visually active, Hoy muted, click handler works, no Lua errors or overlay issues.
 - [ ] Continue original ornamental art and visual parity work; automated Lua tests and cross-resolution QA remain NOT RUN.
+
+## Iteration 20 screenshot / iteration 21 HK emphasis
+
+- [x] Owner screenshot confirms General gold active and Hoy dark inactive; medallion, rank, historical counters and segmented bands remain visible.
+- [x] Iteration 21 increases HK typography and adds subtle paired gold flourishes/FontString shadows, without altering data.
+- [ ] Owner tests iteration 21 in Forever, checking large HK numbers, side decoration, overlaps, Lua errors and baseline stats.
+- [ ] Original laurel artwork, full reference-image parity, deterministic Lua tests and cross-resolution testing remain pending.
