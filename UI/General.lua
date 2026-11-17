@@ -326,17 +326,48 @@ local function build()
     ring:SetPoint("CENTER", portraitRing, "CENTER", 0, 0)
     fields.name = label(window, "—", 24, CREAM, 0, -233, 360, 34)
     fields.level = label(window, "—", 15, CREAM, 0, -269, 360, 25)
+    -- Iteration 17: ornamental rank ribbon with a faction emblem, but NO
+    -- fabricated PvP rank. The badge signifies faction only, not rank status.
     local rankPlate = CreateFrame("Frame", nil, window, "BackdropTemplate")
-    rankPlate:SetSize(440, 36)
-    rankPlate:SetPoint("TOP", window, "TOP", 0, -297)
+    rankPlate:SetSize(452, 38)
+    rankPlate:SetPoint("TOP", window, "TOP", 0, -296)
     backdrop(rankPlate, 0.95)
     rankPlate:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16 })
-    rankPlate:SetBackdropBorderColor(0.58, 0.35, 0.12, 0.9)
-    accent(rankPlate, "TOP", "TOP", 0, 0, 320, 2, { 0.72, 0.45, 0.14 })
-    accent(rankPlate, "BOTTOM", "BOTTOM", 0, 0, 320, 2, { 0.55, 0.34, 0.10 })
-    accent(rankPlate, "LEFT", "LEFT", 10, 0, 4, 24, GOLD)
-    accent(rankPlate, "RIGHT", "RIGHT", -10, 0, 4, 24, GOLD)
-    fields.rank = label(rankPlate, "Rango PvP · No disponible", 17, GOLD, 0, -3, 430, 30)
+    rankPlate:SetBackdropBorderColor(0.72, 0.46, 0.15, 0.96)
+
+    local rankInset = CreateFrame("Frame", nil, rankPlate)
+    rankInset:SetPoint("TOPLEFT", rankPlate, "TOPLEFT", 8, -5)
+    rankInset:SetPoint("BOTTOMRIGHT", rankPlate, "BOTTOMRIGHT", -8, 5)
+    backdrop(rankInset, 0.45)
+    -- Double-tier metallic trim frames the ribbon, with short gold endcaps.
+    accent(rankPlate, "TOP", "TOP", 0, -2, 350, 2, { 0.86, 0.58, 0.19 })
+    accent(rankPlate, "BOTTOM", "BOTTOM", 0, 2, 350, 2, { 0.69, 0.42, 0.12 })
+    accent(rankPlate, "LEFT", "LEFT", 12, 0, 4, 25, GOLD)
+    accent(rankPlate, "RIGHT", "RIGHT", -12, 0, 4, 25, GOLD)
+
+    local emblemHolder = CreateFrame("Frame", nil, rankPlate, "BackdropTemplate")
+    emblemHolder:SetSize(48, 48)
+    emblemHolder:SetPoint("LEFT", rankPlate, "LEFT", 19, 0)
+    backdrop(emblemHolder, 1)
+    emblemHolder:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 13 })
+    emblemHolder:SetBackdropBorderColor(0.9, 0.62, 0.22, 1)
+    local emblem = emblemHolder:CreateTexture(nil, "ARTWORK")
+    local faction = UnitFactionGroup("player")
+    emblem:SetTexture(faction == "Alliance"
+        and "Interface\\Icons\\INV_BannerPVP_02"
+        or "Interface\\Icons\\INV_BannerPVP_01")
+    emblem:SetSize(32, 32)
+    emblem:SetPoint("CENTER", emblemHolder, "CENTER", 0, 0)
+
+    -- Short side filigree evokes laurel wings without claiming a real rank.
+    for _, side in ipairs({ -1, 1 }) do
+        local x = side * 193
+        accent(rankPlate, "CENTER", "CENTER", x, 7, 17, 2, { 0.79, 0.50, 0.16 })
+        accent(rankPlate, "CENTER", "CENTER", x - side * 5, 1, 24, 2, { 0.63, 0.39, 0.12 })
+        accent(rankPlate, "CENTER", "CENTER", x - side * 8, -5, 14, 2, { 0.79, 0.50, 0.16 })
+    end
+
+    fields.rank = label(rankPlate, "Rango PvP · No disponible", 17, GOLD, 25, -4, 335, 32)
     line(window, -341, 650)
     ornamentDiamond(window, -339, 8)
     sectionPlaque(window, -353, 570, 116, 0.92)
