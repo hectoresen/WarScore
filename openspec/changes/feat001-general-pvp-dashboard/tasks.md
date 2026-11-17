@@ -146,3 +146,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 17: add bordered faction badge and layered metallic ribbon accents to rank plaque, retaining unavailable rank state.
 - [ ] Owner tests iteration 17 in Forever: rank text not occluded, shield/badge alignment, no overlap with next divider, no Lua errors and main stats unchanged.
 - [ ] Continue faithful painted ornament assets, exact original reference image storage and multi-resolution QA; automated Lua tests remain NOT RUN.
+
+## Iteration 17 screenshot / iteration 18 header medallion
+
+- [x] Owner screenshot: iteration 17 faction emblem and rank label render legibly; HK=32, PvP deaths=8, HK/D=4.00 and lower bands intact. This is not final visual acceptance.
+- [x] Iteration 18: add decorative crossed-swords header medallion reusing supported ring TGA and icon; reposition tabs to avoid its footprint.
+- [ ] Owner tests iteration 18 in Forever and sends screenshot checking square artifacts, icon/ring alignment, tab labels and interaction, close button, and Lua errors.
+- [ ] Continue improving ornamental art and source-image fidelity; automated Lua checks and multi-resolution QA remain NOT RUN.
