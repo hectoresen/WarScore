@@ -261,3 +261,7 @@ El usuario confirma en el panel nativo de WoW Forever: «Veces que te han matado
 También confirma **cero duelos realizados** y que el panel muestra 0 ganados/0 perdidos aunque `GetStatistic(319)` y `(320)` devuelvan `--`. **No ha jugado ningún campo de batalla**, lo que es coherente con los `--` de IDs 839 y 840; aún no está contrastado el valor numérico del panel BG. No puede hacer duelos ahora: no bloquear el desarrollo por esta prueba.
 
 **Pendiente crítico:** contrastar `GetStatistic(1487)=882` golpes de gracia con el panel nativo y explicar por qué supera las 32 HK; no calcular KB/D con ese contador hasta resolverlo. La coincidencia de estadísticas históricas entre API y panel en este personaje no garantiza automáticamente la cobertura de toda la vida del personaje en otros casos.
+
+## Alcance funcional confirmado para MVP — 2026-11-17
+
+Avanzar sin esperar a resolver KB: HK históricas `588`, muertes PvP sufridas `1501`, HK/D calculado, HK mundo abierto `381`, duelos ganados/perdidos `319`/`320`, BG jugados/ganados globales `839`/`840`. Desglose de partidas/victorias por BG: Valle de Alterac `53`/`49`, Cuenca de Arathi `55`/`51`, Garganta Grito de Guerra `52`/`105`, Islas Lanza Negra `64179`/`64176`. Win rate por BG = victorias / partidas cuando partidas > 0; sin partidas mostrar 0 o estado vacío de forma consistente. Todos estos IDs aparecen en el cliente; solo se han contrastado valores numéricos para HK y muertes PvP, no para BG. La API de KB `1487` sigue sin alcance PvP aclarado: excluir KB/D del cálculo hasta investigación adicional.
