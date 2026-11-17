@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "46"
+local UI_ITERATION = "47"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -308,8 +308,8 @@ local function statBand(parent, y, definitions, secondary)
         -- Preserve the native WoW illustration instead of rejected clip art.
         -- A supported alpha mask removes the square inventory-tile corners
         -- without zoom-cropping blades and heraldry. Graceful client fallback.
-        icon:SetSize(37, 37)
-        icon:SetPoint("LEFT", segment, "LEFT", 10, -1)
+        icon:SetSize(43, 43)
+        icon:SetPoint("LEFT", segment, "LEFT", 8, -1)
         icon:SetTexCoord(0, 1, 0, 1)
         icon:SetAlpha(secondary and 0.78 or 0.91)
         if type(segment.CreateMaskTexture) == "function"
@@ -518,24 +518,16 @@ local function build()
     local backing = rankPlate:CreateTexture(nil, "BACKGROUND")
     backing:SetTexture("Interface\\Buttons\\WHITE8X8")
     backing:SetVertexColor(0.045, 0.024, 0.018, 0.92)
-    backing:SetSize(408, 31)
+    backing:SetSize(403, 30)
     backing:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
     local ribbon = rankPlate:CreateTexture(nil, "BORDER")
     ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
     ribbon:SetTexCoord(0.12, 0.88, 0.13, 0.87)
-    ribbon:SetSize(438, 44)
+    ribbon:SetSize(432, 44)
     ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
     ribbon:SetAlpha(0.92)
-    -- The proven transparent laurel is mirrored at the plaque's outer ends,
-    -- making the rank treatment ornamental rather than a plain rectangle.
-    for _, side in ipairs({ -1, 1 }) do
-        local wreath = rankPlate:CreateTexture(nil, "ARTWORK")
-        wreath:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\hk_laurel")
-        wreath:SetSize(43, 43)
-        wreath:SetPoint("CENTER", rankPlate, "CENTER", side * 207, 0)
-        if side == 1 then wreath:SetTexCoord(1, 0, 0, 1) end
-        wreath:SetAlpha(0.84)
-    end
+    -- Deliberately omit side laurels: in the client they rendered as tiny
+    -- disconnected branches. The dark ribbon must remain understated.
 
     -- Keep the ribbon art continuous: no disconnected gold strokes at its ends.
     -- The two-line caption and real faction crest remain above the artwork.
