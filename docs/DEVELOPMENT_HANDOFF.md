@@ -1,6 +1,6 @@
 # WarScore — live development handoff
 
-**Last updated:** 2026-11-17 (iteration 10 native mask trial, awaiting client QA). **Active work:** `feat001-general-pvp-dashboard` — OWNER APPROVED, implementation IN PROGRESS, NOT accepted. **Current branch:** `main` (all changes committed directly to main by the chat assistant so far; do not claim a feature branch exists).
+**Last updated:** 2026-11-17 (iteration 11 accents, pending owner QA).
 
 ## Read in this order
 1. `AGENTS.md`, `openspec/README.md` — lightweight SDD and approval boundaries.
@@ -102,3 +102,11 @@ Git commit: `b20ddb00e9ced29b2d17dc8caa26e61b6c1fe07e`.
 
 ## Current user instruction
 The owner explicitly wants ongoing incremental development, in-game testing feedback and a durable step-by-step agent handoff because ChatGPT conversations have context limits. This document is the **entry point for future chats/agents**.
+
+## Iteration #10 — owner screenshot PASS (2026-11-17)
+
+Owner screenshot confirms the square dark portrait background is gone and the gold circular frame renders correctly. This is **visual evidence of circular masking** but does not by itself prove which mask API path executed. Banners, HK=32, PvP deaths=8, HK/D=4.00 and lower cards remain stable. Screenshot supplied in chat, not committed to repo.
+
+## Iteration #11 — committed, AWAITING OWNER TEST
+
+Commit `e1353241894e48931294dbaad878175f07ca7742`: added subtle metallic horizontal header trim, gold selected-General-tab underline and rank-plate side accents using client-tested WHITE8X8. No changes to stats, portrait masking or banner files. **NOT TESTED in client**. Owner should download latest main, run `/reload` and `/ws`, and check header/title, General/Hoy tabs, rank text and new gold accents for layering or clipping. Continue with original ornamental asset pack and reference-image fidelity afterward; do not treat this as final design.
