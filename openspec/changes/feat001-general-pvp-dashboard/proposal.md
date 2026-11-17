@@ -1,6 +1,6 @@
 # feat001 — General PvP dashboard
 
-**Status: DRAFT — OWNER APPROVAL REQUIRED. No implementation authorized yet.**
+**Status: APPROVED by owner in conversation (2026-11-17); implementation IN PROGRESS, pending real-client verification.**
 
 ## Why
 WarScore currently has a Lua scaffold and diagnostics but no functioning General view. Real Forever 1.60.1 tests have confirmed lifetime HK and PvP deaths and identified duel/BG statistic IDs. A chosen ornate Warcraft-style reference and measured reconstruction guide exist. The next increment is a working General tab that reads real character data and resembles that reference.
@@ -23,4 +23,4 @@ WarScore currently has a Lua scaffold and diagnostics but no functioning General
 ## Acceptance and risks
 Acceptance is defined by `specs/general-dashboard/spec.md`. The largest risks are real-client support for portraits/masks, texture assets and visual fidelity, font differences and API semantics. Fallbacks must be documented and reviewed rather than fabricated.
 
-**Approval request:** approve scope, exclusion of multi-character selector from v1, and implementation plan. No code/UI changes in this proposal phase.
+**Approval:** owner approved proceeding on 2026-11-17. Implementation is underway. Native-client acceptance remains outstanding.
