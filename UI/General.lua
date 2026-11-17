@@ -89,32 +89,40 @@ local function cornerAccent(parent, xSide, ySide)
         ySide == "TOP" and 0 or 1, ySide == "TOP" and 1 or 0)
 end
 
-local function skinTab(button, selected)
-    -- Full tab skin rather than the default grey/red UIPanelButton look.
-    button:SetNormalTexture("")
-    button:SetPushedTexture("")
-    button:SetHighlightTexture("")
-    button:SetDisabledTexture("")
+-- Iteration 20: standalone native buttons prevent the UIPanelButtonTemplate's
+-- grey/red state textures from leaking through our ornamental tab skin.
+local function skinTab(button, text, selected)
     local bg = button:CreateTexture(nil, "BACKGROUND")
     bg:SetTexture("Interface\\Buttons\\WHITE8X8")
-    bg:SetVertexColor(selected and 0.28 or 0.12, selected and 0.13 or 0.08, 0.035, 0.97)
-    bg:SetAllPoints(button)
-    local top = button:CreateTexture(nil, "BORDER")
-    top:SetTexture("Interface\\Buttons\\WHITE8X8")
-    top:SetVertexColor(0.84, 0.58, 0.19, 0.95)
-    top:SetHeight(selected and 3 or 2)
-    top:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
-    top:SetPoint("TOPRIGHT", button, "TOPRIGHT", 0, 0)
-    local bottom = button:CreateTexture(nil, "BORDER")
-    bottom:SetTexture("Interface\\Buttons\\WHITE8X8")
-    bottom:SetVertexColor(0.70, 0.42, 0.12, selected and 1 or 0.55)
-    bottom:SetHeight(selected and 3 or 1)
-    bottom:SetPoint("BOTTOMLEFT", button, "BOTTOMLEFT", 0, 0)
-    bottom:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
-    local text = button:GetFontString()
-    if text then
-        text:SetTextColor(selected and 1 or 0.80, selected and 0.78 or 0.72, selected and 0.35 or 0.55)
+    if selected then
+        bg:SetVertexColor(0.30, 0.16, 0.045, 0.98)
+    else
+        bg:SetVertexColor(0.075, 0.055, 0.045, 0.98)
     end
+    bg:SetAllPoints(button)
+
+    local function edge(pointA, pointB, width, height, color)
+        local tex = button:CreateTexture(nil, "BORDER")
+        tex:SetTexture("Interface\\Buttons\\WHITE8X8")
+        tex:SetVertexColor(unpack(color))
+        if width then tex:SetWidth(width) end
+        if height then tex:SetHeight(height) end
+        tex:SetPoint(pointA, button, pointA, 0, 0)
+        tex:SetPoint(pointB, button, pointB, 0, 0)
+    end
+    local borderColor = selected and {0.96, 0.68, 0.23, 1} or {0.48, 0.32, 0.13, 0.85}
+    edge("TOPLEFT", "TOPRIGHT", nil, selected and 3 or 2, borderColor)
+    edge("BOTTOMLEFT", "BOTTOMRIGHT", nil, selected and 3 or 1, borderColor)
+    edge("TOPLEFT", "BOTTOMLEFT", selected and 2 or 1, nil, borderColor)
+    edge("TOPRIGHT", "BOTTOMRIGHT", selected and 2 or 1, nil, borderColor)
+
+    local title = button:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    title:SetFont("Fonts\\FRIZQT__.TTF", 15, "OUTLINE")
+    title:SetTextColor(selected and 1 or 0.75, selected and 0.82 or 0.69, selected and 0.45 or 0.57)
+    title:SetAllPoints(button)
+    title:SetJustifyH("CENTER")
+    title:SetJustifyV("MIDDLE")
+    title:SetText(text)
 end
 
 local function sectionPlaque(parent, y, width, height, alpha)
@@ -326,17 +334,15 @@ local function build()
     close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -12, -11)
     close:SetScript("OnClick", function() window:Hide() end)
 
-    local general = CreateFrame("Button", nil, window, "UIPanelButtonTemplate")
+    local general = CreateFrame("Button", nil, window)
     general:SetSize(140, 32)
     general:SetPoint("TOPLEFT", window, "TOPLEFT", 115, -67)
-    general:SetText("General")
-    general:Disable()
-    skinTab(general, true)
-    local today = CreateFrame("Button", nil, window, "UIPanelButtonTemplate")
+    skinTab(general, "General", true)
+    -- Selected tab has no click handler; its active style does not depend on a disabled state.
+    local today = CreateFrame("Button", nil, window)
     today:SetSize(140, 32)
     today:SetPoint("LEFT", general, "RIGHT", 7, 0)
-    today:SetText("Hoy")
-    skinTab(today, false)
+    skinTab(today, "Hoy", false)
     today:SetScript("OnClick", function()
         if DEFAULT_CHAT_FRAME then DEFAULT_CHAT_FRAME:AddMessage("|cffffc34dWarScore:|r La pestaña Hoy estará disponible en una próxima versión.") end
     end)
