@@ -69,12 +69,29 @@ local function ornament(parent, side)
         rivet:SetPoint("TOP", banner, "TOP", x, -10)
     end
 
+    -- Blend the faction emblem into the cloth instead of showing a hard,
+    -- square inventory-icon tile. Reuse the mask already proven on portraits.
     local icon = banner:CreateTexture(nil, "ARTWORK")
     icon:SetTexture(isAlliance and "Interface\\Icons\\INV_BannerPVP_02"
         or "Interface\\Icons\\INV_BannerPVP_01")
-    icon:SetSize(59, 59)
-    icon:SetPoint("TOP", banner, "TOP", 0, -43)
-    icon:SetAlpha(0.94)
+    icon:SetSize(70, 70)
+    icon:SetPoint("TOP", banner, "TOP", 0, -38)
+    icon:SetAlpha(0.86)
+    local masked = false
+    if type(banner.CreateMaskTexture) == "function"
+        and type(icon.AddMaskTexture) == "function" then
+        masked = pcall(function()
+            local mask = banner:CreateMaskTexture(nil, "ARTWORK")
+            mask:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_mask")
+            mask:SetAllPoints(icon)
+            icon:AddMaskTexture(mask)
+        end)
+    end
+    if not masked then
+        -- Keep the fallback conservative on clients without masking support.
+        icon:SetSize(52, 52)
+        icon:SetPoint("TOP", banner, "TOP", 0, -43)
+    end
     return banner
 end
 
@@ -217,6 +234,12 @@ local function statBand(parent, y, definitions)
         iconMount:SetVertexColor(0.13, 0.09, 0.045, 0.95)
         iconMount:SetSize(48, 48)
         iconMount:SetPoint("LEFT", segment, "LEFT", 10, 0)
+        -- Thin inner ornament visually ties the icon cell to the shared band.
+        local iconAccent = segment:CreateTexture(nil, "BORDER")
+        iconAccent:SetTexture("Interface\\Buttons\\WHITE8X8")
+        iconAccent:SetVertexColor(0.65, 0.43, 0.17, 0.74)
+        iconAccent:SetSize(2, 40)
+        iconAccent:SetPoint("LEFT", segment, "LEFT", 8, 0)
         local icon = segment:CreateTexture(nil, "ARTWORK")
         icon:SetTexture(definition.icon)
         icon:SetSize(40, 40)
@@ -258,7 +281,7 @@ local function refresh()
     fields.deaths:SetText(formatNumber(data.pvpDeaths))
     fields.hkd:SetText(formatRatio(data.hkDeathRatio))
     fields.kbd:SetText("—")
-    fields.rank:SetText("Rango PvP · No disponible")
+    fields.rank:SetText("No disponible")
     fields.duels:SetText(formatNumber(data.duelsWon))
     fields.bgPlayed:SetText(formatNumber(data.battlegroundsPlayed))
     fields.bgWon:SetText(formatNumber(data.battlegroundsWon))
@@ -325,7 +348,7 @@ local function build()
     local headerPlate = header:CreateTexture(nil, "BORDER")
     headerPlate:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\section_plaque")
     headerPlate:SetSize(470, 49)
-    headerPlate:SetVertexColor(0.80, 0.69, 0.48, 0.52)
+    headerPlate:SetVertexColor(0.80, 0.69, 0.48, 0.66)
     headerPlate:SetPoint("CENTER", header, "CENTER", 0, 0)
     local brandTitle = label(header, "WarScore", 33, GOLD, 0, -2, 350, 42)
     brandTitle:SetShadowColor(0.42, 0.22, 0.03, 0.9)
@@ -413,23 +436,11 @@ local function build()
 
     -- Keep ribbon ends clean: the tiny studs read as isolated pixels in game.
 
-    local emblemHolder = CreateFrame("Frame", nil, rankPlate, "BackdropTemplate")
-    emblemHolder:SetSize(48, 48)
-    emblemHolder:SetPoint("LEFT", rankPlate, "LEFT", 19, 0)
-    backdrop(emblemHolder, 1)
-    emblemHolder:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 13 })
-    emblemHolder:SetBackdropBorderColor(0.9, 0.62, 0.22, 1)
-    local emblem = emblemHolder:CreateTexture(nil, "ARTWORK")
-    local faction = UnitFactionGroup("player")
-    emblem:SetTexture(faction == "Alliance"
-        and "Interface\\Icons\\INV_BannerPVP_02"
-        or "Interface\\Icons\\INV_BannerPVP_01")
-    emblem:SetSize(32, 32)
-    emblem:SetPoint("CENTER", emblemHolder, "CENTER", 0, 0)
-
-    -- The rank has no confirmed value. Keep the ribbon balanced, not covered
-    -- by tiny ornamental laurel fragments or a misleading achievement badge.
-    fields.rank = label(rankPlate, "Rango PvP · No disponible", 17, GOLD, 27, -4, 320, 32)
+    -- Clean centered rank inscription: a small section name and an honest
+    -- unavailable value, like the two-tier reference ribbon.
+    local rankCaption = label(rankPlate, "Rango PvP", 12, CREAM, 0, -2, 370, 17)
+    rankCaption:SetTextColor(0.93, 0.72, 0.37)
+    fields.rank = label(rankPlate, "No disponible", 18, GOLD, 0, -18, 350, 24)
     fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
     fields.rank:SetShadowOffset(1, -1)
     line(window, -341, 650)
