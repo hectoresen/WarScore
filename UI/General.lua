@@ -394,7 +394,8 @@ local function build()
 
     local ribbon = rankPlate:CreateTexture(nil, "BACKGROUND")
     ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
-    ribbon:SetSize(484, 58)
+    -- Fit the ribbon within the rank area to avoid clipped angular tips.
+    ribbon:SetSize(452, 52)
     ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
     ribbon:SetAlpha(0.98)
 
@@ -442,26 +443,31 @@ local function build()
         end
         laurel:SetAlpha(0.94)
     end
-    line(window, -475, 650)
-    ornamentDiamond(window, -473, 8)
+    -- Iteration 28: show both lifetime counters first, then their derived ratios.
+    -- Keep this whole section inside the original space above the lower bands.
+    line(window, -477, 650)
+    ornamentDiamond(window, -475, 8)
+
+    sectionPlaque(window, -482, 570, 108, 0.72)
+    label(window, "MUERTES PvP SUFRIDAS", 20, RED, 0, -483, 460, 31)
+    fields.deaths = label(window, "—", 48, RED, 0, -518, 420, 62)
+
+    line(window, -590, 650)
+    ornamentDiamond(window, -588, 8)
+
     local centerDivider = window:CreateTexture(nil, "BORDER")
     centerDivider:SetTexture("Interface\\Buttons\\WHITE8X8")
     centerDivider:SetVertexColor(0.6, 0.39, 0.14, 0.8)
-    centerDivider:SetSize(2, 116)
-    centerDivider:SetPoint("TOP", window, "TOP", 0, -490)
+    centerDivider:SetSize(2, 93)
+    centerDivider:SetPoint("TOP", window, "TOP", 0, -603)
 
-    label(window, "HK/D", 19, CREAM, -165, -490, 270, 30)
-    label(window, "KB/D", 19, CREAM, 165, -490, 270, 30)
-    fields.hkd = label(window, "—", 37, GOLD, -165, -524, 270, 53)
-    fields.kbd = label(window, "—", 37, GOLD, 165, -524, 270, 53)
-    label(window, "HK / muertes PvP sufridas", 12, CREAM, -165, -576, 300, 25)
-    label(window, "Golpes de gracia / muertes PvP", 12, CREAM, 165, -576, 300, 25)
-    line(window, -607, 650)
-    ornamentDiamond(window, -605, 8)
+    label(window, "HK/D", 19, CREAM, -165, -602, 270, 29)
+    label(window, "KB/D", 19, CREAM, 165, -602, 270, 29)
+    fields.hkd = label(window, "—", 37, GOLD, -165, -634, 270, 48)
+    fields.kbd = label(window, "—", 37, GOLD, 165, -634, 270, 48)
+    label(window, "HK / muertes PvP sufridas", 12, CREAM, -165, -677, 300, 24)
+    label(window, "Golpes de gracia / muertes PvP", 12, CREAM, 165, -677, 300, 24)
 
-    sectionPlaque(window, -618, 570, 90, 0.72)
-    label(window, "MUERTES PvP SUFRIDAS", 20, RED, 0, -619, 460, 30)
-    fields.deaths = label(window, "—", 45, RED, 0, -650, 420, 60)
     line(window, -714, 650)
     ornamentDiamond(window, -712, 8)
 
