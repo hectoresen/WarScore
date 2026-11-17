@@ -322,3 +322,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 37 differentiates two lower strips: first absolute totals, second lower-weight win rates/favorite; retains data bindings and previous layout.
 - [ ] Verify CI-generated clean ZIP includes iteration 37 source; owner tests `/ws version` 37 and submits screenshot.
 - [ ] Final approved design fidelity, nonempty BG history, additional factions and deterministic Lua testing remain pending.
+
+## Iteration 37 screenshot / iteration 38 icon treatment
+
+- [x] Owner screenshot confirms the first/second lower bands present different visual hierarchy, with no visible text clipping and stable HK=32, deaths=9, HK/D=3.56.
+- [x] Iteration 38 simplifies icon mounts, crops native icon edges, softens frame glint and maintains aligned text columns.
+- [ ] Verify the CI-rebuilt clean ZIP includes UI iteration 38, then owner tests in-game screenshots/no Lua errors.
+- [ ] Final original-reference fidelity, Alliance UI, other scales, nonempty BG history and Lua automated tests remain pending.
