@@ -1,6 +1,6 @@
 # WarScore — live development handoff
 
-**Last updated:** 2026-11-17 (iteration 12 larger ornament batch, awaiting owner QA).
+**Last updated:** 2026-11-17 (iteration 13 authored TGA ornament batch; awaiting owner QA).
 
 ## Read in this order
 1. `AGENTS.md`, `openspec/README.md` — lightweight SDD and approval boundaries.
@@ -118,3 +118,14 @@ Owner screenshot shows header gold trim, General tab underline, rank plate accen
 ## Iteration #12 — larger ornamental pass committed, AWAITING OWNER TEST
 
 Commits `73238105b21acc864700e51d3bbef7a5b6ca07d8`, `89f9a87004a2c4e30f7a417e36126497d37dc912`. Added in one batch: four metallic outer corner accents, layered header trim, small diamond ornaments on four major dividers, shaded main HK and PvP-death section plaques. All drawn using previously tested WHITE8X8; text-background layering fixed before requesting QA. No stats or masking changes. **NOT TESTED IN CLIENT.** Potential compatibility risk: `Texture:SetRotation` on the decorative diamonds. Owner should test `/ws` for Lua errors, title/rank/number visibility, all diamonds and corner accents. If `SetRotation` unsupported, remove/replace rotation. Still not the final painted WoW ornamental texture pack or approved reference parity. Next batch should integrate substantial authored assets, not tiny line adjustments.
+
+## Iteration #12 — owner screenshot PASS (2026-11-17)
+
+Four divider diamonds and outer metallic corner lines render; main HK and death sections have rectangular dark plates that look too abrupt compared to approved mockup. Data still HK=32, PvP deaths=8, HK/D=4.00. User supplied screenshot in chat. **Do not add more square opaque plates.**
+
+## Iteration #13 — substantial original asset batch, AWAITING OWNER TEST
+
+- Commit `9c96af3635fc4257b4fc42513ee3f6f54cd850b4`: created original 128×128 transparent 32-bit TGA `Media/General/ornate_corner.tga` and 256×128 feathered alpha `Media/General/section_plaque.tga` with subtle gold strokes; both use the proven TGA format but their particular render is **not yet client-tested**.
+- Commit `c45e0bdfa25047957fd0477dda44e69f73073224`: replaced all four simple corner L-shapes with mirrored ornate corner textures; replaced abrupt HK/death rectangular shading with softer feathered art; enhanced header horizontal metalwork; added small gold studs on all six cards. Historical data, portrait masking and banner textures unchanged.
+- **Next owner QA:** update from main, `/reload`, `/ws`. Inspect four corners (correct mirrored orientation and texture loading), HK/death soft plaques (no harsh rectangles or obscured labels), header accents, card studs and Lua errors. If textures don't load, inspect paths and TGA alpha. No final visual parity claim.
+- **Further planned work:** source and commit exact approved mockup PNG; produce authored title/header frame and WoW-like tabs, integrated rank ribbon and proper faction art, and consider fewer/more compact lower cards without removing approved metrics. Maintain large meaningful iterations.
