@@ -349,3 +349,12 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Verify CI-generated clean ZIP matches source and includes new woven TGA, then owner tests in Forever.
 - [ ] Owner judges whether integrated heraldry is acceptable; if not, consider cleaner logo-less cloth rather than reverting to pasted native inventory icon.
 - [ ] Full reference art, Alliance integration and automated Lua/scale/data scenarios remain pending.
+
+## Iteration 40 screenshot / iteration 41 original embroidered banners
+
+- [x] Owner screenshot validates all six lower icons once more visible in full; Horde heraldry is directly integrated in cloth but still subdued.
+- [x] Iteration 41 paints stronger worn copper/red threading into original textile TGA, avoiding any separate inventory emblem layer.
+- [x] Tab/rank and first/second lower-row typographic hierarchy refined without modifying data.
+- [x] Verified CI-built clean ZIP (15 files) matches both current Lua and new original TGA through CRC32.
+- [ ] Owner tests `/ws version` 41, sends screenshot of faction flags, rank and lower bands, checks for Lua errors.
+- [ ] Banner acceptance, Alliance art, alternative scales, real BG data scenarios, automated Lua QA and full reference fidelity remain pending.
