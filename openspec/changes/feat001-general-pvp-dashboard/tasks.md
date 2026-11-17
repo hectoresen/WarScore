@@ -358,3 +358,11 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Verified CI-built clean ZIP (15 files) matches both current Lua and new original TGA through CRC32.
 - [ ] Owner tests `/ws version` 41, sends screenshot of faction flags, rank and lower bands, checks for Lua errors.
 - [ ] Banner acceptance, Alliance art, alternative scales, real BG data scenarios, automated Lua QA and full reference fidelity remain pending.
+
+## Iteration 41 screenshot / iteration 42 visibility
+
+- [x] User screenshot confirms woven Horde cloth logo and all six lower icons render, values HK 32 / PvP deaths 9 / HK-D 3.56; not final banner approval.
+- [x] Screenshot reveals excessive world/nameplate visibility behind center stats; iteration 42 makes window background opaque and adds dark central background behind lifetime metrics and ratios.
+- [x] Secondary caption contrast and band top highlight adjusted slightly without changing bindings.
+- [ ] Verify fresh clean packaged ZIP includes iteration 42 UI and no development files; owner tests in game with visible world activity behind panel.
+- [ ] Full design parity, Alliance fabric, nonempty BG stats, multiple scales and Lua tests remain pending.
