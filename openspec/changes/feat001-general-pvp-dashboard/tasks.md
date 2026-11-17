@@ -366,3 +366,15 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Secondary caption contrast and band top highlight adjusted slightly without changing bindings.
 - [ ] Verify fresh clean packaged ZIP includes iteration 42 UI and no development files; owner tests in game with visible world activity behind panel.
 - [ ] Full design parity, Alliance fabric, nonempty BG stats, multiple scales and Lua tests remain pending.
+
+## Owner-approved structural redesign — iteration 43 (2026-11-17)
+
+- [x] Lock decision: **faction banners frozen**, not accepted and not being modified until frame/rank/band milestones complete.
+- [ ] Replace visual outer-limit black/background with native WoW-style **outer frame** and inset opaque background, flush with border.
+- [ ] Add **separate inner content frame** containing tabs and stats; maintain breathing room and avoid collisions.
+- [ ] Rework rank two-line caption padding down and improve silhouette/metal trim; never invent rank.
+- [ ] Bottom strips: center captions and values in each full segment irrespective of icons; all top values gold and titles cream; all bottom values green, titles cream.
+- [ ] Display nil as 0 for top counts and 0% for both win rates; favorite null becomes green dash; preserve nil/unknown in Stats.lua.
+- [ ] Remove fake lower icon backing slots, but retain full silhouettes; real cutout/alpha icons remain design target, not automatic.
+- [ ] Verify /ws version = 43, archive integrity, in-client layout, all empty-data cases and no Lua errors.
+- [ ] Later: genuine native-border fidelity, transparent painted icon assets, unified rank silhouette, Alliance/banner graphics only AFTER other milestones; high numeric values and other scaling remain open.
