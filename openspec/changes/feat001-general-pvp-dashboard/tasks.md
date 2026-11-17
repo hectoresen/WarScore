@@ -62,3 +62,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Owner tests commit `170abf6` and reports whether all six provisional native card icons load and labels fit.
 - [ ] Replace provisional iconography with vetted Warcraft-compatible assets; obtain approved PNG and implement real circular portrait crop if supported.
 - No final UI acceptance; automated tests still NOT RUN.
+
+## Iteration 6 — pending client verification
+
+- **Iteration 5 owner screenshot:** all six native PvP icons render and no text/value overlaps; historical stats unchanged.
+- [ ] Owner tests commit `b20ddb0`: two provisional faction side banners, no occlusion or Lua errors.
+- [ ] Replace provisional banners with authored alpha-textured assets; implement circular portrait and ornate details against original PNG when available.
+- UI fidelity not accepted; automated tests NOT RUN.
