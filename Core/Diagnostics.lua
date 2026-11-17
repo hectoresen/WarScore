@@ -69,9 +69,9 @@ end
 
 
 local function listStats(category)
-    local allowed = { [21]=true, [153]=true, [154]=true, [137]=true, [136]=true, [122]=true }
+    local allowed = { [21]=true, [153]=true, [154]=true, [137]=true, [136]=true, [122]=true, [128]=true }
     if not allowed[category] then
-        output("Categoria no admitida. Usa 21, 153, 154, 137, 136 o 122")
+        output("Categoria no admitida. Usa 21, 153, 154, 137, 136, 122 o 128")
         return
     end
     if type(GetCategoryNumAchievements) ~= "function" or type(GetAchievementInfo) ~= "function" then
