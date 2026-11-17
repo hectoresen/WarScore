@@ -195,3 +195,11 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 24 shifts and scales the two laurels closer to HK, maintaining the single mirrored asset and dynamic stats.
 - [ ] Owner tests iteration 24 positions, separator clearance and absence of errors in Forever.
 - [ ] Full reference-image parity, multiple UI scales and deterministic Lua tests remain pending.
+
+## Iteration 24 screenshot / iteration 25 broader ornamental pass
+
+- [x] Owner screenshot: HK TGA laurels look balanced after size/position adjustment, without clipping or collisions. Previous counters and bands intact.
+- [x] Owner requested larger visual iterations.
+- [x] Iteration 25: paired inset frame rails, feathered ornamental header title plate and improved typographic shadow, replace rank ribbon line accents with smaller mirrored TGA laurels.
+- [ ] Owner tests iteration 25 in Forever for frame/header/rank layer order, label readability, ornament alignment, no Lua errors and unchanged stats.
+- [ ] Full pixel parity, all data scenarios, alternate UI scales and deterministic Lua checks remain pending.
