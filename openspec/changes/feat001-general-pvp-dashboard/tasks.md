@@ -429,3 +429,11 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] CI-generated runtime-only ZIP verified (15 entries, current Lua CRC match).
 - [ ] Owner tests `/ws version` 47 in Forever and reports icon scale, rank edge clarity and any Lua errors.
 - [ ] Frozen banners, alternative faction/scale QA, nonempty BG values, automated Lua tests, high-fidelity art still outstanding.
+
+## Iteration 47 screenshot and iteration 48 rank pass
+
+- [x] Owner screenshot shows icon size 43px and no detached rank laurels, stable double-frame and value conventions; no explicit final art acceptance.
+- [x] Iteration 48 adjusts rank inset backing, adds restrained continuous metallic lines within plaque, centers rank text horizontally at x=0 and slightly compacts crest holder.
+- [x] Clean CI build ZIP validated: 15 runtime Deflate files and `General.lua` CRC32 matches current repo.
+- [ ] Owner tests `/ws version` 48 in WoW Forever, checks metal highlights, centered rank text/crest and any Lua errors.
+- [ ] Banners remain frozen. Additional realistic artwork, long value, alternative-scale, Alliance and automated Lua QA remain outstanding.
