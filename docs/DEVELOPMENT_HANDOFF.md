@@ -456,3 +456,18 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - Slightly softened provisional native lower icon opacity; no statistical data, saved variables, banner textures, portrait or character-scoped logic changes.
 - CI packaging commit `ffebcf6604e2d826530ebfdefc4e855e5b84ee5a` rebuilt `dist/WarScore.zip`. Blob SHA `0f06c5213ce216d122c7fcba0e78727b50004609`, size 109,062 bytes. Read-back confirms 15 Deflate files only under `WarScore/`, valid ZIP central directory, `UI/General.lua` CRC32 `90ff51aa` matches current source. No OpenSpec/docs/tooling included.
 - **Owner QA pending:** install clean ZIP, `/reload`, verify `/ws version` reports 35, then `/ws`. Look at shared divider caps, ribbon ends, six icon/value alignments, intact stats and absence of Lua errors. Send screenshot. Automated Lua gameplay tests, varied UI scales and Alliance art tests still outstanding. Visual mockup remains a preview, not approved final.
+
+## Iteration #35 — owner screenshot review (2026-11-17)
+
+- Owner screenshot demonstrates continued stable runtime presentation of HK=32, PvP deaths=8, HK/D=4.00, with `No disponible` for KB/D and PvP rank and both 3-segment lower bands visible. Gold divider caps and two-band frames are visible; no obvious clipping in the shown state. This is limited *visual* evidence, not final acceptance, not proof of error-free scripting or multi-faction layouts.
+- The lower rows remain more like technical metric bars than the approved high-fantasy ornamental reference: titles and icon mount hierarchy are undersized, and geometric gold pixels/caps detract from a coherent border.
+
+## Iteration #36 — lower-band hierarchy and ornamental corners (2026-11-17)
+
+- Implementation commit `1fe280b8bb86f1d4c4f1f1e1ae9efb7cfa0311e4` on `main`, changes only `UI/General.lua`. `UI_ITERATION` now `36` for `/ws version`.
+- Replaced four square metal studs at each shared lower band with small 30×30 mirrored instances of the **existing proven** `Media/General/ornate_corner.tga`, preserving shared 3-segment bands rather than returning to six boxed cards.
+- Removed detached short horizontal caps at internal dividers, keeping the 2-pixel gold separator and adjacent dark bevel. Increased icons 44→47px and mount 52→55px; increased regular value font 30→32px and titles 12→13px, adjusting text column widths and offsets to remain inside each segment. Favorite BG value font remains separately small (16→17px) to allow long battleground names. No new artwork or API dependencies.
+- No changes to data calculations, SavedVariables, historical counters, PvP deaths hierarchy, portrait, banners, rank or navigation. Do not restore rejected upper-left medallion or redundant ratio info symbols.
+- **Clean packaged build:** CI commit `5bd041deaa49e495f5377abcf5fec37e9621ea8b`, `dist/WarScore.zip` blob SHA `636fea24f85775a49576702a05f1dbc994681360`; ZIP readback 109,051 bytes, 15 Deflate entries under `WarScore/`, source `UI/General.lua` CRC32 `5c36c921` matches packaged version. No source docs/OpenSpec/tools in install ZIP.
+- **Owner QA pending:** replace `WarScore` folder with ZIP, `/reload`, `/ws version` should display 36, `/ws`, check small ornate corners, no detached divider caps, icons/titles/values alignment, particularly long middle and final title or a nonempty favorite BG name. Check main values 32/8/4.00 stable; report any Lua errors. Send screenshot.
+- Client validation for iteration 36 NOT RUN, automated Lua tests NOT RUN; Alliance/multiple scales and full design fidelity remain open.
