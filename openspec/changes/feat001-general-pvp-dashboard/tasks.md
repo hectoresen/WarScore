@@ -233,3 +233,12 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Second iteration 28 commit adds stronger death-number hierarchy, gold ratio headings/cream values, softer captions, subtle rank studs, and lower-band value shadows while preserving HK → deaths → ratios ordering.
 - [ ] Owner tests the combined iteration 28 changes in one Forever screenshot, checks layout, value readability, rank ribbon ends, no errors and unchanged historical counters.
 - [ ] Native client test and automated Lua tests are still NOT RUN; maintain open spec until accepted.
+
+## Iteration 28 owner screenshot / clean addon release ZIP
+
+- [x] Owner screenshot confirms HK → PvP deaths → two ratios ordering renders clearly without major overlaps; lower bands intact. Final design not approved.
+- [x] Removed disconnected PvP-deaths side lines and cropped stripe artifacts from existing rank ribbon (new visual QA pending).
+- [x] Added reproducible `tools/package_addon.py` and published `dist/WarScore.zip` with exactly 15 runtime files under a single `WarScore/` root, excluding OpenSpec/docs/tools. ZIP contents independently validated.
+- [ ] Owner tests clean ZIP in Forever, confirms rank tip/death-section cleanup, no missing resources, no Lua errors and preserved stats.
+- [ ] **For every future code/media iteration:** rebuild `dist/WarScore.zip` and share only the clean package link, never source `main.zip`.
+- [ ] Full mockup parity, other characters/factions, high-digit numbers and automated tests remain outstanding.
