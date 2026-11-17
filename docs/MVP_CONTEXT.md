@@ -201,3 +201,15 @@ GetStatistic(1501): 8 | false | 1501 | nil
 **Alerta de semántica:** HK históricas = 32 mientras KB ID 1487 = 882. No usar 882 para KB/D hasta averiguar si cuenta PvE, distintos periodos o tiene otra semántica. El valor 8 del ID 1501 parece utilizable como candidato de muertes PvP históricas, pero contrastar con panel nativo.
 
 **Siguiente diagnóstico:** imprimir nombre, descripción y categoría de los logros/estadísticas para IDs conocidos; enumerar estadísticas de duelos y BG con sus IDs reales; contrastar los valores visibles en panel de estadísticas; probar cambios diarios entre logins y cruce de medianoche.
+
+
+## Prueba en cliente — categorías PvP y campos de batalla (2026-11-17)
+
+El usuario ejecutó `/wsdiag list 21` y `/wsdiag list 153`:
+
+- Categoría **21, Jugador contra Jugador**: ID `1501`, «Veces que te han matado otros jugadores» = **8**; ID `318`, «Veces que te ha matado la facción contraria» = **8**.
+- Categoría **153, Campos de batalla**: ID `839`, «Campos de batalla jugados» = `--`; ID `840`, «Campos de batalla ganados» = `--`. Todos los demás contadores enumerados de esta categoría también devolvieron `--` (19 entradas en total).
+
+**Interpretación:** IDs `839` y `840` identificados en la API del cliente; el valor `--` no equivale a cero ni demuestra que el contador sea inutilizable. Contrastar con la interfaz nativa y, si es posible, tras jugar un BG. HK/D provisional = `32 / 8 = 4,00` usando las respuestas de las APIs; no implica que las estadísticas tengan necesariamente el mismo horizonte histórico, que debe contrastarse.
+
+**Siguiente prueba:** `/wsdiag list 137` (golpes de gracia), `/wsdiag list 122` (muertes), y captura/lectura del panel nativo de estadísticas para BG y KB. Revisar categoría `128` para duelos y KB si las anteriores no bastan.
