@@ -210,3 +210,11 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 26 removes upper medallion, removes both '(i)' marks, repositions tabs with shared rule, removes rank laurel fragments, widens/enlarges banners and adds metal fitting. Alliance uses neutral placeholder rather than Horde cloth.
 - [ ] Owner tests iteration 26 on Forever; check banner fit, no text overlap, correct active tab, ratio headings, rank ribbon, all lower data, Lua errors.
 - [ ] Create original faction-specific banner artwork, finish approved ceremonial rank ribbon, inspect multiple UI scales, validate long labels and run deterministic Lua tests. Do not close this OpenSpec change yet.
+
+## Iteration 26 screenshot / iteration 27 faction artwork and ribbon
+
+- [x] Owner screenshot confirms medallion absent, ratio labels cleaned, navigation and rank legible, larger Horde banners visible, data stable. Final flag/rank appearance not accepted.
+- [x] Iteration 27 adds original transparent Horde and Alliance 128×256 TGA banner art plus original 512×128 metallic PvP ribbon art.
+- [x] Updated General.lua to use faction-specific fabrics and new ribbon, keeping current rank unavailable and all other metrics unchanged.
+- [ ] Owner tests iteration 27 in Forever: banner alpha/tears, faction emblem placement, rank ribbon texture visibility and layering, no overlap or Lua errors, stable stats.
+- [ ] Confirm Alliance appearance in client; run syntax/behavior tests and compare at other scales; full mockup fidelity remains pending.
