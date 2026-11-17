@@ -36,46 +36,43 @@ local function line(parent, y, width)
     texture:SetPoint("TOP", parent, "TOP", 0, y)
 end
 
--- Iteration 26: larger faction cloths with their own mounting hardware.
--- Horde cloth remains provisional. Do not display Horde cloth on Alliance characters.
+-- Iteration 27: one authored transparent torn-cloth texture per faction.
+-- The faction emblems are still provisional native icons, separate from the art.
 local function ornament(parent, side)
     local sign = side == "LEFT" and -1 or 1
     local faction = UnitFactionGroup("player")
+    local isAlliance = faction == "Alliance"
     local banner = CreateFrame("Frame", nil, parent)
     banner:SetSize(126, 228)
     banner:SetPoint("TOP", parent, "TOP", sign * 270, -125)
 
-    if faction == "Horde" then
-        local cloth = banner:CreateTexture(nil, "BACKGROUND")
-        cloth:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\banner_horde")
-        cloth:SetAllPoints(banner)
-        cloth:SetAlpha(0.96)
-    else
-        -- No Alliance cloth art has been approved yet: neutral fallback is intentional.
-        local cloth = banner:CreateTexture(nil, "BACKGROUND")
-        cloth:SetTexture("Interface\\Buttons\\WHITE8X8")
-        cloth:SetVertexColor(0.09, 0.12, 0.17, 0.9)
-        cloth:SetSize(100, 174)
-        cloth:SetPoint("TOP", banner, "TOP", 0, -8)
+    local cloth = banner:CreateTexture(nil, "BACKGROUND")
+    cloth:SetTexture(isAlliance
+        and "Interface\\AddOns\\WarScore\\Media\\General\\banner_alliance_v2"
+        or "Interface\\AddOns\\WarScore\\Media\\General\\banner_horde_v2")
+    cloth:SetAllPoints(banner)
+    cloth:SetAlpha(0.97)
+
+    -- Metal hook and attachment, all within the banner's own bounding box.
+    local mount = banner:CreateTexture(nil, "BORDER")
+    mount:SetTexture("Interface\\Buttons\\WHITE8X8")
+    mount:SetVertexColor(0.39, 0.27, 0.11, 0.94)
+    mount:SetSize(108, 2)
+    mount:SetPoint("TOP", banner, "TOP", 0, -4)
+    for _, x in ipairs({ -44, 44 }) do
+        local rivet = banner:CreateTexture(nil, "OVERLAY")
+        rivet:SetTexture("Interface\\Buttons\\WHITE8X8")
+        rivet:SetVertexColor(0.98, 0.77, 0.34, 0.94)
+        rivet:SetSize(5, 5)
+        rivet:SetPoint("TOP", banner, "TOP", x, -10)
     end
 
-    local fitting = banner:CreateTexture(nil, "BORDER")
-    fitting:SetTexture("Interface\\Buttons\\WHITE8X8")
-    fitting:SetVertexColor(0.88, 0.60, 0.20, 0.95)
-    fitting:SetSize(108, 3)
-    fitting:SetPoint("TOP", banner, "TOP", 0, -3)
-    local shade = banner:CreateTexture(nil, "BORDER")
-    shade:SetTexture("Interface\\Buttons\\WHITE8X8")
-    shade:SetVertexColor(0.23, 0.14, 0.06, 0.95)
-    shade:SetSize(108, 2)
-    shade:SetPoint("TOP", banner, "TOP", 0, -7)
-
     local icon = banner:CreateTexture(nil, "ARTWORK")
-    icon:SetTexture(faction == "Alliance" and "Interface\\Icons\\INV_BannerPVP_02"
+    icon:SetTexture(isAlliance and "Interface\\Icons\\INV_BannerPVP_02"
         or "Interface\\Icons\\INV_BannerPVP_01")
-    icon:SetSize(56, 56)
-    icon:SetPoint("TOP", banner, "TOP", 0, -38)
-    icon:SetAlpha(0.90)
+    icon:SetSize(59, 59)
+    icon:SetPoint("TOP", banner, "TOP", 0, -43)
+    icon:SetAlpha(0.94)
     return banner
 end
 
@@ -389,26 +386,17 @@ local function build()
     ring:SetPoint("CENTER", portraitRing, "CENTER", 0, 0)
     fields.name = label(window, "—", 24, CREAM, 0, -233, 360, 34)
     fields.level = label(window, "—", 15, CREAM, 0, -269, 360, 25)
-    -- Iteration 17: ornamental rank ribbon with a faction emblem, but NO
-    -- fabricated PvP rank. The badge signifies faction only, not rank status.
-    local rankPlate = CreateFrame("Frame", nil, window, "BackdropTemplate")
+    -- Iteration 27: authored metallic ribbon artwork, with independent text
+    -- and faction crest. A faction badge never indicates verified PvP rank.
+    local rankPlate = CreateFrame("Frame", nil, window)
     rankPlate:SetSize(452, 38)
     rankPlate:SetPoint("TOP", window, "TOP", 0, -296)
-    backdrop(rankPlate, 0.95)
-    rankPlate:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16 })
-    rankPlate:SetBackdropBorderColor(0.72, 0.46, 0.15, 0.96)
 
-    -- Background texture, not a child Frame: it must never cover rank text.
-    local rankInset = rankPlate:CreateTexture(nil, "BACKGROUND")
-    rankInset:SetTexture("Interface\\Buttons\\WHITE8X8")
-    rankInset:SetVertexColor(0.12, 0.065, 0.025, 0.8)
-    rankInset:SetPoint("TOPLEFT", rankPlate, "TOPLEFT", 8, -5)
-    rankInset:SetPoint("BOTTOMRIGHT", rankPlate, "BOTTOMRIGHT", -8, 5)
-    -- Double-tier metallic trim frames the ribbon, with short gold endcaps.
-    accent(rankPlate, "TOP", "TOP", 0, -2, 350, 2, { 0.86, 0.58, 0.19 })
-    accent(rankPlate, "BOTTOM", "BOTTOM", 0, 2, 350, 2, { 0.69, 0.42, 0.12 })
-    accent(rankPlate, "LEFT", "LEFT", 12, 0, 4, 25, GOLD)
-    accent(rankPlate, "RIGHT", "RIGHT", -12, 0, 4, 25, GOLD)
+    local ribbon = rankPlate:CreateTexture(nil, "BACKGROUND")
+    ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
+    ribbon:SetSize(484, 58)
+    ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
+    ribbon:SetAlpha(0.98)
 
     local emblemHolder = CreateFrame("Frame", nil, rankPlate, "BackdropTemplate")
     emblemHolder:SetSize(48, 48)
@@ -426,7 +414,7 @@ local function build()
 
     -- The rank has no confirmed value. Keep the ribbon balanced, not covered
     -- by tiny ornamental laurel fragments or a misleading achievement badge.
-    fields.rank = label(rankPlate, "Rango PvP · No disponible", 17, GOLD, 26, -4, 320, 32)
+    fields.rank = label(rankPlate, "Rango PvP · No disponible", 17, GOLD, 27, -4, 320, 32)
     line(window, -341, 650)
     ornamentDiamond(window, -339, 8)
     sectionPlaque(window, -353, 570, 116, 0.92)
