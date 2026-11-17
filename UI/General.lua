@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "38"
+local UI_ITERATION = "39"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -50,7 +50,7 @@ local function ornament(parent, side)
     local cloth = banner:CreateTexture(nil, "BACKGROUND")
     cloth:SetTexture(isAlliance
         and "Interface\\AddOns\\WarScore\\Media\\General\\banner_alliance_v2"
-        or "Interface\\AddOns\\WarScore\\Media\\General\\banner_horde_v2")
+        or "Interface\\AddOns\\WarScore\\Media\\General\\banner_horde_embossed")
     cloth:SetAllPoints(banner)
     cloth:SetAlpha(0.97)
     -- A dark hanging rod and two small side clasps keep the banner looking
@@ -82,30 +82,33 @@ local function ornament(parent, side)
         rivet:SetPoint("TOP", banner, "TOP", x, -10)
     end
 
-    -- Blend the faction emblem into the cloth instead of showing a hard,
-    -- square inventory-icon tile. Reuse the mask already proven on portraits.
-    local icon = banner:CreateTexture(nil, "ARTWORK")
-    icon:SetTexture(isAlliance and "Interface\\Icons\\INV_BannerPVP_02"
-        or "Interface\\Icons\\INV_BannerPVP_01")
-    -- Less sticker-like: soften the icon and leave more textured cloth around it.
-    icon:SetSize(68, 68)
-    icon:SetPoint("TOP", banner, "TOP", 0, -42)
-    icon:SetAlpha(0.68)
-    local masked = false
-    if type(banner.CreateMaskTexture) == "function"
-        and type(icon.AddMaskTexture) == "function" then
-        masked = pcall(function()
-            local mask = banner:CreateMaskTexture(nil, "ARTWORK")
-            mask:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_mask")
-            mask:SetAllPoints(icon)
-            icon:AddMaskTexture(mask)
-        end)
-    end
-    if not masked then
-        -- Keep the fallback conservative on clients without masking support.
-        icon:ClearAllPoints()
-        icon:SetSize(52, 52)
-        icon:SetPoint("TOP", banner, "TOP", 0, -43)
+    -- Horde heraldry is baked into the textile TGA: no separate inventory icon.
+    -- Alliance retains a provisional masked emblem pending integrated artwork.
+    if isAlliance then
+        -- Blend the faction emblem into the cloth instead of showing a hard,
+        -- square inventory-icon tile. Reuse the mask already proven on portraits.
+        local icon = banner:CreateTexture(nil, "ARTWORK")
+        icon:SetTexture("Interface\\Icons\\INV_BannerPVP_02")
+        -- Less sticker-like: soften the icon and leave more textured cloth around it.
+        icon:SetSize(68, 68)
+        icon:SetPoint("TOP", banner, "TOP", 0, -42)
+        icon:SetAlpha(0.68)
+        local masked = false
+        if type(banner.CreateMaskTexture) == "function"
+            and type(icon.AddMaskTexture) == "function" then
+            masked = pcall(function()
+                local mask = banner:CreateMaskTexture(nil, "ARTWORK")
+                mask:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_mask")
+                mask:SetAllPoints(icon)
+                icon:AddMaskTexture(mask)
+            end)
+        end
+        if not masked then
+            -- Keep the fallback conservative on clients without masking support.
+            icon:ClearAllPoints()
+            icon:SetSize(52, 52)
+            icon:SetPoint("TOP", banner, "TOP", 0, -43)
+        end
     end
     -- Subtle horizontal seam under the heraldry, like an embroidered patch
     -- integrated with the fabric. Do not add a square badge behind the logo.
@@ -236,10 +239,10 @@ local function statBand(parent, y, definitions, secondary)
     bandInset:SetVertexColor(0.025, 0.017, 0.012, secondary and 0.43 or 0.25)
     bandInset:SetPoint("TOPLEFT", band, "TOPLEFT", 8, -8)
     bandInset:SetPoint("BOTTOMRIGHT", band, "BOTTOMRIGHT", -8, 8)
-    trim("TOP", 9, -4, 2, { 0.92, 0.64, 0.22, 0.95 })
-    trim("TOP", 13, -8, 1, { 0.38, 0.22, 0.08, 0.85 })
-    trim("BOTTOM", 9, 4, 2, { 0.71, 0.43, 0.13, 0.95 })
-    trim("BOTTOM", 13, 8, 1, { 0.32, 0.20, 0.07, 0.85 })
+    trim("TOP", 9, -4, 2, { 0.88, 0.59, 0.20, secondary and 0.76 or 0.96 })
+    trim("TOP", 13, -8, 1, { 0.38, 0.22, 0.08, 0.73 })
+    trim("BOTTOM", 9, 4, 2, { 0.71, 0.43, 0.13, secondary and 0.70 or 0.92 })
+    trim("BOTTOM", 13, 8, 1, { 0.32, 0.20, 0.07, 0.73 })
 
     -- An inner top glint creates a more integrated full-width gold frame.
     local glint = band:CreateTexture(nil, "BORDER")
@@ -299,8 +302,8 @@ local function statBand(parent, y, definitions, secondary)
         icon:SetTexture(definition.icon)
         icon:SetSize(48, 48)
         icon:SetPoint("LEFT", segment, "LEFT", 14, -1)
-        icon:SetTexCoord(0.075, 0.925, 0.075, 0.925)
-        icon:SetAlpha(secondary and 0.78 or 0.93)
+        icon:SetTexCoord(0.09, 0.91, 0.09, 0.91)
+        icon:SetAlpha(secondary and 0.82 or 0.96)
 
         -- Two typographic levels: first strip counts, second strip insights.
         -- Titles remain centered in the available text column, including
@@ -490,8 +493,8 @@ local function build()
     -- A low-key inner shadow makes the ribbon read as metal over dark leather.
     local ribbonShadow = rankPlate:CreateTexture(nil, "BACKGROUND")
     ribbonShadow:SetTexture("Interface\\Buttons\\WHITE8X8")
-    ribbonShadow:SetVertexColor(0.07, 0.035, 0.02, 0.60)
-    ribbonShadow:SetSize(422, 34)
+    ribbonShadow:SetVertexColor(0.07, 0.035, 0.02, 0.42)
+    ribbonShadow:SetSize(408, 30)
     ribbonShadow:SetPoint("CENTER", rankPlate, "CENTER", 0, -1)
     local ribbon = rankPlate:CreateTexture(nil, "BORDER")
     ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
