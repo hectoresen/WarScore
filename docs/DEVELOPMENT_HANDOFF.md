@@ -217,3 +217,16 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - The icon/medallion, stats, faction banners, rank ribbon, portrait and segmented lower rows are unchanged.
 - **Owner QA pending:** install current main, `/reload`, `/ws`, verify General appears selected, Hoy does NOT appear bright red, both labels are legible, Hoy click still shows coming-soon message, and no Lua error appears. Send screenshot.
 - Native-client iteration 20: NOT RUN. Automated Lua tests: NOT RUN (Lua interpreter unavailable). Do not mark overall design or MVP accepted.
+
+## Iteration #20 — owner screenshot review (2026-11-17)
+
+- Screenshot from Forever confirms General now has the gold selected look and Hoy is dark/inactive rather than red. Labels are readable; header medallion, portrait, rank plaque, main stats, and two lower bands render normally. HK=32, PvP deaths=8, HK/D=4.00 remain unchanged.
+- **Limited visual PASS** for tab styling. Hoy click-message functionality not independently demonstrated in the screenshot; no Lua error was reported, but this is not full runtime QA or owner acceptance.
+
+## Iteration #21 — HK hero emphasis, awaiting owner client QA (2026-11-17)
+
+- Code commit: `335dd171e3d5412077a2d4751652f452d7148ac8` in `UI/General.lua`.
+- Increased the honorable-kills headline from 23 to 24 px and the main lifetime HK number from 57 to 64 px. Added native FontString drop shadows and three symmetric, graduated gold strokes on both sides of the number. These flourishes are provisional ornaments, not the approved painted laurel art.
+- Left the historical statistics adapter, refresh values, denominator semantics, portrait masking, tabs, rank, PvP-deaths block and two bottom bands untouched.
+- **Owner test:** latest main, `/reload`, `/ws`; check all three HK digits and longer lifetime values remain centered/legible, the decorative lines do not collide with ratios or labels, and no Lua errors occur. Send screenshot; compare HK's new visual emphasis with target. Positive/high-digit value layout still requires testing.
+- **Status:** iteration 21 native-client QA NOT RUN, automated Lua tests NOT RUN, not visually approved or pixel-matched.
