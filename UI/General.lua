@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "32"
+local UI_ITERATION = "33"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -53,8 +53,20 @@ local function ornament(parent, side)
         or "Interface\\AddOns\\WarScore\\Media\\General\\banner_horde_v2")
     cloth:SetAllPoints(banner)
     cloth:SetAlpha(0.97)
-    -- Fabric shading stays inside the authored transparent cloth silhouette;
-    -- no additional opaque rectangular background is introduced.
+    -- A dark hanging rod and two small side clasps keep the banner looking
+    -- suspended from the window instead of pasted onto its background.
+    local rodShadow = banner:CreateTexture(nil, "BORDER")
+    rodShadow:SetTexture("Interface\\Buttons\\WHITE8X8")
+    rodShadow:SetVertexColor(0.18, 0.10, 0.045, 0.92)
+    rodShadow:SetSize(116, 4)
+    rodShadow:SetPoint("TOP", banner, "TOP", 0, 0)
+    for _, hangerX in ipairs({ -47, 47 }) do
+        local hanger = banner:CreateTexture(nil, "ARTWORK")
+        hanger:SetTexture("Interface\\Buttons\\WHITE8X8")
+        hanger:SetVertexColor(0.73, 0.50, 0.18, 0.91)
+        hanger:SetSize(5, 13)
+        hanger:SetPoint("TOP", banner, "TOP", hangerX, -5)
+    end
 
     -- Metal hook and attachment, all within the banner's own bounding box.
     local mount = banner:CreateTexture(nil, "BORDER")
@@ -76,9 +88,9 @@ local function ornament(parent, side)
     icon:SetTexture(isAlliance and "Interface\\Icons\\INV_BannerPVP_02"
         or "Interface\\Icons\\INV_BannerPVP_01")
     -- Less sticker-like: soften the icon and leave more textured cloth around it.
-    icon:SetSize(63, 63)
-    icon:SetPoint("TOP", banner, "TOP", 0, -43)
-    icon:SetAlpha(0.76)
+    icon:SetSize(68, 68)
+    icon:SetPoint("TOP", banner, "TOP", 0, -42)
+    icon:SetAlpha(0.68)
     local masked = false
     if type(banner.CreateMaskTexture) == "function"
         and type(icon.AddMaskTexture) == "function" then
@@ -95,6 +107,13 @@ local function ornament(parent, side)
         icon:SetSize(52, 52)
         icon:SetPoint("TOP", banner, "TOP", 0, -43)
     end
+    -- Subtle horizontal seam under the heraldry, like an embroidered patch
+    -- integrated with the fabric. Do not add a square badge behind the logo.
+    local seam = banner:CreateTexture(nil, "BORDER")
+    seam:SetTexture("Interface\\Buttons\\WHITE8X8")
+    seam:SetVertexColor(0.60, 0.34, 0.12, 0.38)
+    seam:SetSize(63, 1)
+    seam:SetPoint("TOP", banner, "TOP", 0, -113)
     return banner
 end
 
@@ -194,7 +213,12 @@ local function statBand(parent, y, definitions)
         rule:SetPoint(point .. "LEFT", band, point .. "LEFT", inset, offset)
         rule:SetPoint(point .. "RIGHT", band, point .. "RIGHT", -inset, offset)
     end
-    -- Paired metallic rails give the frame a slight inset/bevel without a new asset.
+    -- Inset leather-like center and paired metallic rails share one band border.
+    local bandInset = band:CreateTexture(nil, "BACKGROUND")
+    bandInset:SetTexture("Interface\\Buttons\\WHITE8X8")
+    bandInset:SetVertexColor(0.025, 0.017, 0.012, 0.33)
+    bandInset:SetPoint("TOPLEFT", band, "TOPLEFT", 8, -8)
+    bandInset:SetPoint("BOTTOMRIGHT", band, "BOTTOMRIGHT", -8, 8)
     trim("TOP", 9, -4, 2, { 0.92, 0.64, 0.22, 0.95 })
     trim("TOP", 13, -8, 1, { 0.38, 0.22, 0.08, 0.85 })
     trim("BOTTOM", 9, 4, 2, { 0.71, 0.43, 0.13, 0.95 })
@@ -248,8 +272,9 @@ local function statBand(parent, y, definitions)
         icon:SetSize(40, 40)
         icon:SetPoint("LEFT", segment, "LEFT", 14, 0)
 
-        -- Text occupies a separate column, leaving the icon fully visible.
-        label(segment, definition.title, 12, CREAM, 33, -12, segmentWidth - 80, 37)
+        -- Title and value share one reading column, like the approved mockup.
+        local caption = label(segment, definition.title, 12, CREAM, 33, -12, segmentWidth - 80, 37)
+        caption:SetTextColor(0.88, 0.78, 0.60)
         local value = label(segment, "—", definition.valueSize or 28,
             definition.color or GOLD, 33, -52, segmentWidth - 80, 47)
         value:SetShadowColor(0.26, 0.14, 0.045, 0.68)
@@ -428,7 +453,13 @@ local function build()
     rankPlate:SetSize(452, 42)
     rankPlate:SetPoint("TOP", window, "TOP", 0, -296)
 
-    local ribbon = rankPlate:CreateTexture(nil, "BACKGROUND")
+    -- A low-key inner shadow makes the ribbon read as metal over dark leather.
+    local ribbonShadow = rankPlate:CreateTexture(nil, "BACKGROUND")
+    ribbonShadow:SetTexture("Interface\\Buttons\\WHITE8X8")
+    ribbonShadow:SetVertexColor(0.07, 0.035, 0.02, 0.60)
+    ribbonShadow:SetSize(422, 34)
+    ribbonShadow:SetPoint("CENTER", rankPlate, "CENTER", 0, -1)
+    local ribbon = rankPlate:CreateTexture(nil, "BORDER")
     ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
     -- Crop the old striped terminal ornaments, which looked like rendering errors.
     -- The remaining central bevel provides a quieter rank ribbon silhouette.
@@ -437,7 +468,14 @@ local function build()
     ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
     ribbon:SetAlpha(0.98)
 
-    -- Keep ribbon ends clean: the tiny studs read as isolated pixels in game.
+    -- Paired short gold endcaps are less distracting than long parallel lines.
+    for _, side in ipairs({ -1, 1 }) do
+        local endcap = rankPlate:CreateTexture(nil, "ARTWORK")
+        endcap:SetTexture("Interface\\Buttons\\WHITE8X8")
+        endcap:SetVertexColor(0.82, 0.53, 0.19, 0.82)
+        endcap:SetSize(3, 20)
+        endcap:SetPoint("CENTER", rankPlate, "CENTER", side * 206, 0)
+    end
 
     -- The faction crest identifies the character but never claims a rank.
     local crestHolder = CreateFrame("Frame", nil, rankPlate, "BackdropTemplate")
