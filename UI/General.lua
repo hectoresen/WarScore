@@ -56,6 +56,16 @@ local function ornament(parent, side)
     return banner
 end
 
+-- Native decorative accents: no additional assets or client-only APIs required.
+local function accent(parent, point, relativePoint, x, y, width, height, color)
+    local tex = parent:CreateTexture(nil, "BORDER")
+    tex:SetTexture("Interface\\Buttons\\WHITE8X8")
+    tex:SetVertexColor(unpack(color or GOLD))
+    tex:SetSize(width, height)
+    tex:SetPoint(point, parent, relativePoint, x, y)
+    return tex
+end
+
 local function card(parent, x, y, w, h, title, color, iconPath)
     local panel = CreateFrame("Frame", nil, parent, "BackdropTemplate")
     panel:SetSize(w, h)
@@ -149,6 +159,8 @@ local function build()
     header:SetHeight(45)
     backdrop(header, 1)
     label(header, "WarScore", 31, GOLD, 0, -2, 350, 42)
+    accent(header, "BOTTOM", "BOTTOM", 0, 0, 700, 2, { 0.50, 0.32, 0.13 })
+    accent(header, "BOTTOM", "BOTTOM", 0, 1, 180, 1, GOLD)
     local close = CreateFrame("Button", nil, window, "UIPanelCloseButton")
     close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -12, -11)
     close:SetScript("OnClick", function() window:Hide() end)
@@ -158,6 +170,7 @@ local function build()
     general:SetPoint("TOPLEFT", window, "TOPLEFT", 30, -67)
     general:SetText("General")
     general:Disable()
+    accent(window, "TOPLEFT", "TOPLEFT", 30, -101, 140, 3, GOLD)
     local today = CreateFrame("Button", nil, window, "UIPanelButtonTemplate")
     today:SetSize(140, 32)
     today:SetPoint("LEFT", general, "RIGHT", 7, 0)
@@ -207,6 +220,8 @@ local function build()
     backdrop(rankPlate, 0.95)
     rankPlate:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16 })
     rankPlate:SetBackdropBorderColor(0.58, 0.35, 0.12, 0.9)
+    accent(rankPlate, "LEFT", "LEFT", 10, 0, 4, 24, GOLD)
+    accent(rankPlate, "RIGHT", "RIGHT", -10, 0, 4, 24, GOLD)
     fields.rank = label(rankPlate, "Rango PvP · No disponible", 17, GOLD, 0, -3, 430, 30)
     line(window, -341, 650)
 
