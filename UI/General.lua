@@ -272,13 +272,36 @@ local function build()
     accent(header, "BOTTOM", "BOTTOM", 0, 0, 700, 2, { 0.50, 0.32, 0.13 })
     accent(header, "BOTTOM", "BOTTOM", 0, 1, 180, 1, GOLD)
     accent(header, "TOP", "TOP", 0, 0, 320, 1, { 0.45, 0.31, 0.13 })
+    -- Iteration 18: compact header medallion, based on the approved crossed-swords
+    -- composition. Reuses the confirmed transparent portrait-ring texture.
+    -- Its icon is decorative only; it does not imply a PvP rank or achievement.
+    local medallion = CreateFrame("Frame", nil, window)
+    medallion:SetSize(76, 76)
+    medallion:SetPoint("TOPLEFT", window, "TOPLEFT", 18, -2)
+    medallion:EnableMouse(false)
+
+    local medallionDisc = medallion:CreateTexture(nil, "BACKGROUND")
+    medallionDisc:SetTexture("Interface\\Buttons\\WHITE8X8")
+    medallionDisc:SetVertexColor(0.17, 0.035, 0.025, 0.94)
+    medallionDisc:SetSize(46, 46)
+    medallionDisc:SetPoint("CENTER", medallion, "CENTER", 0, 0)
+
+    local swords = medallion:CreateTexture(nil, "ARTWORK")
+    swords:SetTexture("Interface\\Icons\\Ability_DualWield")
+    swords:SetSize(42, 42)
+    swords:SetPoint("CENTER", medallion, "CENTER", 0, 0)
+
+    local medallionRing = medallion:CreateTexture(nil, "OVERLAY")
+    medallionRing:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring_transparent")
+    medallionRing:SetAllPoints(medallion)
+
     local close = CreateFrame("Button", nil, window, "UIPanelCloseButton")
     close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -12, -11)
     close:SetScript("OnClick", function() window:Hide() end)
 
     local general = CreateFrame("Button", nil, window, "UIPanelButtonTemplate")
     general:SetSize(140, 32)
-    general:SetPoint("TOPLEFT", window, "TOPLEFT", 30, -67)
+    general:SetPoint("TOPLEFT", window, "TOPLEFT", 115, -67)
     general:SetText("General")
     general:Disable()
     skinTab(general, true)
