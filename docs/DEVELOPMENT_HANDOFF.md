@@ -242,3 +242,14 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - Artwork is **provisional** and not claimed to match the reference's actual painted laurel wreaths. If the leaf shapes remain unconvincing, prefer an original transparent TGA laurel asset rather than stacking more rectangular primitives.
 - **Owner QA pending:** install current main, `/reload`, `/ws`; check leaf spacing around HK, number legibility, no clipping/artifacts or Lua errors; verify stats, portrait, tabs, rank plate and lower bands unchanged. Send screenshot.
 - Client test iteration 22: NOT RUN. Automated Lua checks: NOT RUN. No full visual acceptance.
+
+## Iteration #22 — owner screenshot visual review (2026-11-17)
+
+- Owner screenshot confirms the mirrored handmade HK sprigs render in Forever. The motifs are blocky, angular and significantly unlike the approved painted laurel wreaths; **visual FAIL for fidelity**. The HK value 32, PvP deaths 8 and HK/D 4.00 remain readable, with both lower statistic bands intact. No Lua error was reported, but automated tests remain unrun.
+
+## Iteration #23 — original transparent HK laurel artwork, awaiting client QA (2026-11-17)
+
+- Asset commit `c73a15f1e2be0fa8fd7c350b5bcee96d5a202544`: created `Media/General/hk_laurel.tga` as original programmatically drawn 128×128 uncompressed 32-bit BGRA TGA, top-left origin, alpha transparency. It uses curved golden stems and small tapered leaves; not copied from WoW or third-party textures.
+- UI commit `52281582e82c8cecc23b818516e8622bbab98c44`: removed the native WHITE8X8 HK sprigs and rendered the authored TGA twice, mirrored horizontally for symmetry. Each is displayed at 108×108 logical pixels, at ±190 x from window center, top -384. No modification to HK dynamic number, data adapter, rank, tabs, portrait, or two lower bands.
+- **Client QA NOT RUN** for iteration 23. Owner should install current main, `/reload`, `/ws`; check both laurels load with transparency, no square backgrounds, correct mirror orientation, no text collision and no Lua errors. Also inspect whether the arrangement resembles the approved reference better than iteration 22. If not, refine TGA artwork/position rather than returning to primitive rectangle stacks.
+- Automated Lua tests: NOT RUN. No claim of pixel parity or overall MVP acceptance; known rank and KB/D remain unavailable.
