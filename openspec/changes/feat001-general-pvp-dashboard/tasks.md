@@ -103,3 +103,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Add circular alpha mask and fully transparent ring TGA; conditionally use native mask API with legacy fallback.
 - [ ] Owner tests iteration 10: does dark square disappear? If not, record unsupported mask behavior and investigate alternative.
 - Visual fidelity and full game acceptance remain pending.
+
+## Iteration 10 screenshot / iteration 11 pending test
+
+- [x] Owner screenshot: circular portrait now visually clean without dark square; banners and HK/deaths/ratio stable. Underlying native mask API execution not independently diagnosed.
+- [x] Iteration 11 committed: header trim, General selected underline, rank-plate side accents.
+- [ ] Owner screenshot of iteration 11: verify accents render without obscuring text or tabs.
+- [ ] Continue with authored ornate header/frame assets and comparison against original mockup; UI not accepted.
