@@ -109,3 +109,13 @@ Los valores y el personaje del boceto son **ficticios**. La fidelidad de textura
 - La incorporación de la pestaña no debe cambiar la distribución de las estadísticas de «General» más allá del espacio de navegación requerido.
 
 **Nota para agentes:** documentar aquí nuevas decisiones cuando se acuerden; no implementar ninguna de las dos pestañas a partir del boceto sin autorización explícita.
+
+## Actualización técnica para «Hoy» (2026-11-17)
+
+- **HK del día:** API específica documentada en Forever 1.60.1: `GetPVPSessionStats()` (primer retorno). Se describe como HK de «hoy», incluso aunque el nombre diga «Session». Pendiente de prueba en el cliente; no usar restas de históricos si funciona.
+- **Muertes PvP sufridas / golpes de gracia del día:** no se han identificado APIs diarias equivalentes. Posible seguimiento por snapshots de históricos con SavedVariables, pero puede ofrecer **datos parciales** cuando no hay línea base del comienzo del día.
+- **Ratios diarios:** no calcular mezclando HK completas con muertes/KB parciales. Mostrar «—» o un estado de seguimiento parcial si los intervalos no son comparables.
+- **Persistencia:** el día no termina al cerrar sesión. Resolver cambio de fecha según calendario del juego y persistir por personaje.
+- **Estado de diseño:** estas decisiones funcionales no aprueban la implementación visual ni alteran el boceto objetivo.
+
+Fuentes: https://wowlua.dev/api/global/GetPVPSessionStats ; https://warcraft.wiki.gg/wiki/API_GetPVPSessionStats ; https://warcraft.wiki.gg/wiki/API_GetPVPYesterdayStats
