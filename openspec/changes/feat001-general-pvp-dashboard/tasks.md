@@ -411,3 +411,12 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Owner validates /ws version 45, visual rollback, no errors, and sends screenshot.
 - [ ] Long-term artwork must look like native Warcraft premium iconography rather than simplistic geometric symbols; rank plaque silhouette and pictogram art still need substantial work.
 - [ ] Banner redesign frozen; preserve outer and inner frames, centered columns, top gold/bottom green values and no-data display semantics.
+
+## Iteration 45 screenshot / iteration 46 QA
+
+- [x] User screenshot shows visual rollback of rejected 44 art succeeded, with dual frames, correctly formatted lower values and historic stats intact.
+- [x] Iteration 46: optional masked native glyphs to soften square tile outlines; no invented icons.
+- [x] Iteration 46: remove stray rank gold endcaps, mirror existing gilded laurel at ribbon ends; crest and two-line rank retained.
+- [x] Banner freeze and data behaviors preserved; GitHub Actions built clean ZIP, 15 runtime entries verified against source CRC.
+- [ ] Owner tests `/ws version` 46 and returns screenshot; assess masks, ornament overlap and whether design genuinely improves.
+- [ ] True premium icon artwork and sculpted single-piece rank still not fully achieved; banners remain deferred; multi-scale, Alliance, populated BG metrics and automated Lua tests pending.
