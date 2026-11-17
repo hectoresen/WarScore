@@ -420,3 +420,12 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Banner freeze and data behaviors preserved; GitHub Actions built clean ZIP, 15 runtime entries verified against source CRC.
 - [ ] Owner tests `/ws version` 46 and returns screenshot; assess masks, ornament overlap and whether design genuinely improves.
 - [ ] True premium icon artwork and sculpted single-piece rank still not fully achieved; banners remain deferred; multi-scale, Alliance, populated BG metrics and automated Lua tests pending.
+
+## Iteration 46 screenshot → iteration 47 icon size / rank cleanup
+
+- [x] Owner screenshot: circularly masked native glyphs render but remain too small; rank-end laurels look detached, not integrated.
+- [x] Increase native lower icon sizes 37→43px without moving centered text; retain fallback for masking.
+- [x] Remove poorly integrated mini-laurels from PvP rank; modestly slim ribbon/backing.
+- [x] CI-generated runtime-only ZIP verified (15 entries, current Lua CRC match).
+- [ ] Owner tests `/ws version` 47 in Forever and reports icon scale, rank edge clarity and any Lua errors.
+- [ ] Frozen banners, alternative faction/scale QA, nonempty BG values, automated Lua tests, high-fidelity art still outstanding.
