@@ -392,3 +392,13 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] **Owner tests /ws version 43 in Forever** with reference mockup alongside; check native border and inner frame render, dark background confined to frame, no hard-edged central rectangle, tab/close functionality, correct text centering and absent data colors, and send screenshot.
 - [ ] Sculpted rank plaque / gold ends, true cutout pictogram assets, and more precise spellbook-like frame are NEXT visual milestones after QA. Banners stay frozen, NOT accepted.
 - [ ] Nonempty BG stats/long favorite names, other UI scales and Alliance client test, automated Lua tests still open.
+
+## Iteration 43 screenshot / iteration 44 actual image assets
+
+- [x] Owner screenshot demonstrates dual nested frames and uniform interior, and confirms the 0 / 0% / green dash display rules and centered metric values with original historical statistics untouched.
+- [x] Generated five original transparent cutout metric images and one original sculpted PvP rank plate TGA.
+- [x] Updated `UI/General.lua` to load all six assets; retained dynamic two-tier rank, original character data, bottom band centering and frozen flags; `/ws version` = 44.
+- [x] Fixed packaging workflow to check exact TOC+media runtime file set rather than fixed 15-file count; fresh GitHub Actions ZIP verified with 20 Deflate files, all six new assets, and UI CRC match.
+- [ ] **Owner tests iteration 44 in WoW Forever** and submits screenshot, checks loading of transparent images, centered columns, rank plaque geometry, zero/green formats and no Lua errors.
+- [ ] Full reference fidelity still pending; keep banners frozen; consider further sculpted rank and WoW-native border refinements after screenshot.
+- [ ] Alternative scale, long populated favorite name, Alliance, automated Lua tests and data-retrieval QA remain open.
