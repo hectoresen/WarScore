@@ -440,15 +440,33 @@ local function build()
     fields.hk:SetShadowColor(0.60, 0.30, 0.035, 0.9)
     fields.hk:SetShadowOffset(2, -2)
 
-    -- Subtle side flourishes surround the number without obscuring it.
+    -- Iteration 22: replace the detached horizontal strokes with small,
+    -- symmetric laurel-like sprigs. Still provisional native artwork: the
+    -- reference's painted wreaths will require dedicated transparent assets.
+    local leafPositions = {
+        { x = 192, y = -402, angle = 0.28 },
+        { x = 208, y = -413, angle = 0.46 },
+        { x = 219, y = -427, angle = 0.66 },
+        { x = 222, y = -441, angle = 0.90 },
+    }
     for _, direction in ipairs({ -1, 1 }) do
-        for step = 1, 3 do
-            local flourish = window:CreateTexture(nil, "ARTWORK")
-            flourish:SetTexture("Interface\\Buttons\\WHITE8X8")
-            flourish:SetVertexColor(0.72, 0.47, 0.14, 0.82 - step * 0.12)
-            flourish:SetSize(34 - step * 6, 2)
-            flourish:SetPoint("TOP", window, "TOP",
-                direction * (189 + step * 9), -413 - step * 10)
+        for _, pos in ipairs(leafPositions) do
+            local stem = window:CreateTexture(nil, "ARTWORK")
+            stem:SetTexture("Interface\\Buttons\\WHITE8X8")
+            stem:SetVertexColor(0.62, 0.40, 0.12, 0.75)
+            stem:SetSize(3, 18)
+            stem:SetRotation(direction * pos.angle)
+            stem:SetPoint("TOP", window, "TOP", direction * pos.x, pos.y)
+
+            for _, branch in ipairs({ -1, 1 }) do
+                local leaf = window:CreateTexture(nil, "ARTWORK")
+                leaf:SetTexture("Interface\\Buttons\\WHITE8X8")
+                leaf:SetVertexColor(0.90, 0.66, 0.23, 0.88)
+                leaf:SetSize(5, 13)
+                leaf:SetRotation(direction * pos.angle + branch * 0.53)
+                leaf:SetPoint("TOP", window, "TOP",
+                    direction * (pos.x + branch * 5), pos.y - 3)
+            end
         end
     end
     line(window, -475, 650)
