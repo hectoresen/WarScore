@@ -3,6 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
+local UI_ITERATION = "31"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -423,7 +424,7 @@ local function build()
     -- Iteration 27: authored metallic ribbon artwork, with independent text
     -- and faction crest. A faction badge never indicates verified PvP rank.
     local rankPlate = CreateFrame("Frame", nil, window)
-    rankPlate:SetSize(452, 38)
+    rankPlate:SetSize(452, 42)
     rankPlate:SetPoint("TOP", window, "TOP", 0, -296)
 
     local ribbon = rankPlate:CreateTexture(nil, "BACKGROUND")
@@ -454,9 +455,9 @@ local function build()
 
     -- Clean centered rank inscription: a small section name and an honest
     -- unavailable value, like the two-tier reference ribbon.
-    local rankCaption = label(rankPlate, "Rango PvP", 12, CREAM, 0, -2, 370, 17)
+    local rankCaption = label(rankPlate, "Rango PvP", 12, CREAM, 17, -3, 330, 16)
     rankCaption:SetTextColor(0.93, 0.72, 0.37)
-    fields.rank = label(rankPlate, "No disponible", 18, GOLD, 0, -18, 350, 24)
+    fields.rank = label(rankPlate, "No disponible", 17, GOLD, 17, -20, 330, 20)
     fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
     fields.rank:SetShadowOffset(1, -1)
     line(window, -341, 650)
@@ -552,6 +553,13 @@ end
 
 SLASH_WARSCORE1 = "/warscore"
 SLASH_WARSCORE2 = "/ws"
-SlashCmdList.WARSCORE = function()
+SlashCmdList.WARSCORE = function(message)
+    local command = type(message) == "string" and message:match("^%s*(%S+)") or nil
+    if command and command:lower() == "version" then
+        if DEFAULT_CHAT_FRAME then
+            DEFAULT_CHAT_FRAME:AddMessage("|cffffc34dWarScore|r UI iteración " .. UI_ITERATION)
+        end
+        return
+    end
     ns.UI.ShowGeneral()
 end
