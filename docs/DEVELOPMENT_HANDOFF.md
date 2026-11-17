@@ -147,3 +147,11 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - **Automated Lua syntax/runtime tests: NOT RUN** (Lua interpreter unavailable in this agent runtime). **Forever client QA: NOT RUN** as of commit. No claim of screenshot parity or visual acceptance.
 - **Owner test:** download latest `main`, replace addon, `/reload`, `/ws`. Check both lower rows render as continuous bands with three legible segments, no icon/text overlap, no Lua errors; specifically verify long favorite BG names and `—` unavailable values. Confirm HK 32, PvP deaths 8, HK/D 4.00 unaffected on the known character.
 - If successful, next iterations can replace temporary native icons with authored visuals, improve banner/rank/header ornamentation and match the approved reference. Do not erase any client findings from the previous iteration; #14 was pending owner QA in this document.
+
+## Iteration #15 — owner screenshot review (2026-11-17)
+
+- **OWNER SCREENSHOT #15:** two full-width lower bands render in Forever, each with three separated statistics and visible vertical gold dividers. All six icons, headings and values are visible; no obvious clipping or significant text overlap. Existing HK=32, PvP deaths=8, HK/D=4.00 remain unchanged. No Lua error reported with screenshot.
+- **Visual PASS (limited):** segmented-band layout is closer to approved reference than six independent cards. Owner has supplied screenshot; this is visual QA evidence, **not explicit final owner acceptance** of the design or proof of every runtime path.
+- **Remaining differences:** icons are relatively small; headings in the lower bands need stronger hierarchy; borders are simpler than the ornate beveled reference. Favorite BG long-name content and positive battleground values remain untested in this screenshot.
+- **Suggested next pass:** retain the two-band structure; refine content hierarchy and ornamental border styling without altering data sources or recreating six separate cards. All other open visual work remains pending.
+- **Automated tests NOT RUN**; no claim of pixel parity or full client QA.
