@@ -430,8 +430,27 @@ local function build()
     ornamentDiamond(window, -339, 8)
     sectionPlaque(window, -353, 570, 116, 0.92)
 
-    label(window, "MUERTES CON HONOR", 23, GOLD, 0, -355, 460, 35)
-    fields.hk = label(window, "—", 57, GOLD, 0, -388, 500, 78)
+    -- Iteration 21: strengthen the main lifetime-HK hero section without
+    -- introducing fake values or baking the changing number into artwork.
+    local hkTitle = label(window, "MUERTES CON HONOR", 24, GOLD, 0, -355, 460, 35)
+    hkTitle:SetShadowColor(0.22, 0.10, 0.02, 0.9)
+    hkTitle:SetShadowOffset(1, -1)
+
+    fields.hk = label(window, "—", 64, GOLD, 0, -388, 500, 78)
+    fields.hk:SetShadowColor(0.60, 0.30, 0.035, 0.9)
+    fields.hk:SetShadowOffset(2, -2)
+
+    -- Subtle side flourishes surround the number without obscuring it.
+    for _, direction in ipairs({ -1, 1 }) do
+        for step = 1, 3 do
+            local flourish = window:CreateTexture(nil, "ARTWORK")
+            flourish:SetTexture("Interface\\Buttons\\WHITE8X8")
+            flourish:SetVertexColor(0.72, 0.47, 0.14, 0.82 - step * 0.12)
+            flourish:SetSize(34 - step * 6, 2)
+            flourish:SetPoint("TOP", window, "TOP",
+                direction * (189 + step * 9), -413 - step * 10)
+        end
+    end
     line(window, -475, 650)
     ornamentDiamond(window, -473, 8)
     local centerDivider = window:CreateTexture(nil, "BORDER")
