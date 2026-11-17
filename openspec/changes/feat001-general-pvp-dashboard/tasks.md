@@ -274,3 +274,11 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] GitHub Actions rebuilt ZIP; independently checked ZIP central directory and UI source CRC/length match (15 clean addon files).
 - [ ] Owner installs by replacing the complete `WarScore/` folder, runs `/ws version` expecting 31, opens `/ws`, sends screenshot.
 - [ ] If diagnostic confirms 31 but visuals do not match, debug actual in-game render and alpha-mask support. Automated Lua and multi-faction QA still outstanding.
+
+## Iteration 31 owner screenshot / iteration 32 refinement
+
+- [x] Owner ran `/ws version`: confirms build 31. Two-tier rank text and circular banner emblems render; main stats and both lower bands remain intact.
+- [x] Iteration 32 adjusts rank typography for bottom clearance, reduces banner badge visual dominance, softens lower-band accents, updates version diagnostic.
+- [x] CI rebuilt the clean install ZIP; verified 15 Deflate files and current Lua file CRC matches its packaged copy.
+- [ ] Owner tests build 32 in Forever, checks `/ws version`, rank clearance, mask appearance and absence of errors.
+- [ ] Continue richer heraldic art/fidelity and test other factions, values, UI scales and Lua behavior before acceptance.
