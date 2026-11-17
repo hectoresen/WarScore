@@ -126,39 +126,59 @@ local function sectionPlaque(parent, y, width, height, alpha)
     return shade
 end
 
-local function card(parent, x, y, w, h, title, color, iconPath)
-    local panel = CreateFrame("Frame", nil, parent, "BackdropTemplate")
-    panel:SetSize(w, h)
-    panel:SetPoint("TOP", parent, "TOP", x, y)
-    backdrop(panel, 0.92)
-    local edge = panel:CreateTexture(nil, "BORDER")
-    edge:SetTexture("Interface\\Buttons\\WHITE8X8")
-    edge:SetVertexColor(0.63, 0.40, 0.16, 0.85)
-    edge:SetPoint("TOPLEFT", panel, "TOPLEFT", 0, 0)
-    edge:SetPoint("TOPRIGHT", panel, "TOPRIGHT", 0, 0)
-    edge:SetHeight(2)
-    panel:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 15 })
-    panel:SetBackdropBorderColor(0.64, 0.43, 0.19, 0.95)
-    local leftStud = panel:CreateTexture(nil, "OVERLAY")
-    leftStud:SetTexture("Interface\\Buttons\\WHITE8X8")
-    leftStud:SetVertexColor(0.92, 0.67, 0.27, 0.9)
-    leftStud:SetSize(5, 5)
-    leftStud:SetPoint("TOPLEFT", panel, "TOPLEFT", 5, -5)
-    local rightStud = panel:CreateTexture(nil, "OVERLAY")
-    rightStud:SetTexture("Interface\\Buttons\\WHITE8X8")
-    rightStud:SetVertexColor(0.92, 0.67, 0.27, 0.9)
-    rightStud:SetSize(5, 5)
-    rightStud:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -5, -5)
-    if iconPath then
-        local emblem = panel:CreateTexture(nil, "ARTWORK")
-        emblem:SetTexture(iconPath)
-        emblem:SetSize(28, 28)
-        emblem:SetPoint("TOP", panel, "TOP", 0, -7)
-        label(panel, title, 11, CREAM, 0, -35, w - 12, 28)
-        return label(panel, "—", 25, color or GOLD, 0, -67, w - 10, 35)
+-- Iteration 15: each lower statistics row is a single ornamental band.
+-- Each segment owns only content; one shared outer border keeps the row cohesive.
+local function statBand(parent, y, definitions)
+    local band = CreateFrame("Frame", nil, parent, "BackdropTemplate")
+    band:SetSize(704, 112)
+    band:SetPoint("TOP", parent, "TOP", 0, y)
+    backdrop(band, 0.92)
+    band:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 18 })
+    band:SetBackdropBorderColor(0.76, 0.51, 0.20, 0.96)
+
+    -- Inner metallic rules and studs are shared by the entire band.
+    local function bandRule(point, height, offset)
+        local rule = band:CreateTexture(nil, "BORDER")
+        rule:SetTexture("Interface\\Buttons\\WHITE8X8")
+        rule:SetVertexColor(0.78, 0.51, 0.16, 0.88)
+        rule:SetHeight(height)
+        rule:SetPoint(point .. "LEFT", band, point .. "LEFT", 9, offset)
+        rule:SetPoint(point .. "RIGHT", band, point .. "RIGHT", -9, offset)
     end
-    label(panel, title, 12, CREAM, 0, -12, w - 12, 34)
-    return label(panel, "—", 26, color or GOLD, 0, -51, w - 10, 38)
+    bandRule("TOP", 2, -4)
+    bandRule("BOTTOM", 2, 4)
+
+    for _, side in ipairs({ "LEFT", "RIGHT" }) do
+        local stud = band:CreateTexture(nil, "OVERLAY")
+        stud:SetTexture("Interface\\Buttons\\WHITE8X8")
+        stud:SetVertexColor(0.98, 0.73, 0.30, 1)
+        stud:SetSize(5, 5)
+        stud:SetPoint("TOP" .. side, band, "TOP" .. side, side == "LEFT" and 10 or -10, -10)
+    end
+
+    local values = {}
+    local segmentWidth = 704 / 3
+    for i, definition in ipairs(definitions) do
+        local segment = CreateFrame("Frame", nil, band)
+        segment:SetSize(segmentWidth, 108)
+        segment:SetPoint("TOPLEFT", band, "TOPLEFT", (i - 1) * segmentWidth, -2)
+        if i > 1 then
+            local divider = band:CreateTexture(nil, "BORDER")
+            divider:SetTexture("Interface\\Buttons\\WHITE8X8")
+            divider:SetVertexColor(0.66, 0.42, 0.15, 0.9)
+            divider:SetSize(2, 86)
+            divider:SetPoint("CENTER", band, "LEFT", (i - 1) * segmentWidth, 0)
+        end
+        local icon = segment:CreateTexture(nil, "ARTWORK")
+        icon:SetTexture(definition.icon)
+        icon:SetSize(34, 34)
+        icon:SetPoint("LEFT", segment, "LEFT", 18, 0)
+        label(segment, definition.title, 11, CREAM, 30, -14, segmentWidth - 74, 34)
+        local value = label(segment, "—", definition.valueSize or 26, definition.color or GOLD,
+            30, -54, segmentWidth - 74, 40)
+        values[i] = value
+    end
+    return values
 end
 
 local function formatNumber(value)
@@ -332,15 +352,18 @@ local function build()
     line(window, -714, 650)
     ornamentDiamond(window, -712, 8)
 
-    fields.duels = card(window, -237, -727, 225, 112, "DUELOS GANADOS", GOLD, "Interface\\Icons\\Ability_DualWield")
-    fields.bgPlayed = card(window, 0, -727, 225, 112, "CAMPOS DE BATALLA JUGADOS", GOLD, "Interface\\Icons\\INV_BannerPVP_02")
-    fields.bgWon = card(window, 237, -727, 225, 112, "BG GANADOS", GOLD, "Interface\\Icons\\Achievement_BG_WinWSG")
-    -- Compact second row: remains a distinct ornamental row.
-    -- The frame is tall enough to contain both rows; game UI scale can reduce size.
-    fields.bgRate = card(window, -237, -846, 225, 112, "WIN RATE BG", GREEN, "Interface\\Icons\\INV_BannerPVP_01")
-    fields.duelRate = card(window, 0, -846, 225, 112, "WIN RATE DUELOS", GREEN, "Interface\\Icons\\Ability_DualWield")
-    fields.favorite = card(window, 237, -846, 225, 112, "CAMPO DE BATALLA FAVORITO", CREAM, "Interface\\Icons\\INV_BannerPVP_02")
-    fields.favorite:SetFont("Fonts\\FRIZQT__.TTF", 16, "OUTLINE")
+    local firstRow = statBand(window, -727, {
+        { title = "DUELOS GANADOS", color = GOLD, icon = "Interface\\Icons\\Ability_DualWield" },
+        { title = "CAMPOS DE BATALLA JUGADOS", color = GOLD, icon = "Interface\\Icons\\INV_BannerPVP_02" },
+        { title = "BG GANADOS", color = GOLD, icon = "Interface\\Icons\\Achievement_BG_WinWSG" },
+    })
+    fields.duels, fields.bgPlayed, fields.bgWon = unpack(firstRow)
+    local secondRow = statBand(window, -846, {
+        { title = "WIN RATE BG", color = GREEN, icon = "Interface\\Icons\\INV_BannerPVP_01" },
+        { title = "WIN RATE DUELOS", color = GREEN, icon = "Interface\\Icons\\Ability_DualWield" },
+        { title = "CAMPO DE BATALLA FAVORITO", color = CREAM, icon = "Interface\\Icons\\INV_BannerPVP_02", valueSize = 16 },
+    })
+    fields.bgRate, fields.duelRate, fields.favorite = unpack(secondRow)
 
     -- The reference's tall two-row composition needs additional height.
     window:SetHeight(990)
