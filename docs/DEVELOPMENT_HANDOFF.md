@@ -627,3 +627,17 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - All banner textures and logic untouched per freeze. Outer/inner frames, zero/gold/green rules, real data, ratio calculations and storage unchanged.
 - Fresh CI-produced ZIP commit `ea2cda9ea16b04a8e2dce329cb9cfa902f149916`, blob `8ba33b9ccf5633f267b476b6a9db30e406b990b8`, 116,298 bytes. Readback verified 15 Deflate files under `WarScore/`, no development files, valid central-directory structure, packed `General.lua` CRC32 `12e8f885` equals current source; no rejected clip-art TGAs included.
 - **Owner QA:** replace old addon folder with clean ZIP; `/reload`, `/ws version` expected 46, then `/ws`. Check six masked icons have no ugly cutoff/empty tiles, both rank laurels actually render in correct direction/without overlap, no reintroduction of orange slab or stray line, historic counters still read correctly, and no Lua errors. Should this be worse than 45, revert only ornaments/masks rather than compromising approved structure. No automated in-game Lua tests or final fidelity approval.
+
+## Iteration #46 — owner screenshot review (2026-11-17)
+
+- Owner screenshot shows the six circularly masked native icons loading in Forever, and explicitly requests making them **slightly larger**. The rank's mirrored miniature laurel decorations resemble disconnected branches on the ribbon instead of coherent ornamental endcaps. HK=32, PvP deaths=9 and HK/D=3.56 remain consistent; upper gold and lower green empty-value conventions, centered labels and nested frames remain intact. This is limited owner visual feedback, not sign-off of final rank/icon fidelity.
+- Owner wants uninterrupted implementation rather than lengthy plans or asking to proceed. After any in-game screenshot, continue directly with implementation and deliver installable ZIP when possible. Do not promise autonomous work after responding. Banner work remains **frozen** until other milestones are accepted.
+
+## Iteration #47 — bigger icons and cleaner rank silhouette (2026-11-17)
+
+- Code commit `03bbdeb476d55ef4d29df485b5abdae830a6760a` in `UI/General.lua`; `/ws version` now 47.
+- Increase six lower native icons 37px→43px, shift left anchor 10px→8px, retain already client-tested circular alpha-mask path and fallback; decorative icon stays independent from text/value centering.
+- Remove both little `hk_laurel` ornaments from the rank plate, reducing ribbon width 438px→432px and dark backing 408×31→403×30 to keep one restrained coherent shape. Preserve the actual faction crest, genuine unavailable rank text and two-line layout.
+- No gameplay, saved-variable, PvP calculations, colors, empty-data formatting, main structure or banners changed.
+- **Package verified:** GitHub Actions refreshed ZIP commit `289c4d7e4aec728dd94e178d438c5905faa8eb4b`, ZIP blob `203bdcd85adaf9cbf93a1de114577b508706f473`, 116,253 bytes, 15 deflated runtime files, with packaged `UI/General.lua` CRC32 `c150ec3e` matching repo source. No docs/OpenSpec/tools in the package.
+- **Owner QA pending:** completely replace addon folder, `/reload`, `/ws version` should display 47; check 43px icons no longer look tiny and don't overlap centered text, and rank no longer has detached gold foliage. Send screenshot and note any Lua errors. Further proper art direction remains pending after validation; banners remain frozen.
