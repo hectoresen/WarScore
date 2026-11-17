@@ -41,3 +41,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Owner installs latest main and tests background, card panels, separators, portrait border and window scale after commit `70aca9f`.
 - [ ] Record actual screenshot/error result in `docs/DEVELOPMENT_HANDOFF.md` and this checklist.
 - **Changes made, not yet validated:** `WHITE8X8` texture with vertex colors, tooltip-border portrait frame, 0.86 window scale. See `docs/DEVELOPMENT_HANDOFF.md` for complete handoff.
+
+## Iteration 3 — pending client verification
+
+- **Iteration 2 owner screenshot:** dark background, card panels, dividers and scale now render correctly; portrait tracking ring remains misplaced; ornate reference not matched. See `docs/DEVELOPMENT_HANDOFF.md`.
+- [ ] Owner tests commit `e845257` in game: confirm tracking ring gone and new portrait border, header, rank plate and ratio divider render.
+- [ ] Develop actual circular portrait framing and licensed ornamental texture assets; compare against the target screenshot.
+- Automated Lua tests and OpenSpec CLI validation remain **NOT RUN**.
