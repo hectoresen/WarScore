@@ -230,3 +230,15 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - Left the historical statistics adapter, refresh values, denominator semantics, portrait masking, tabs, rank, PvP-deaths block and two bottom bands untouched.
 - **Owner test:** latest main, `/reload`, `/ws`; check all three HK digits and longer lifetime values remain centered/legible, the decorative lines do not collide with ratios or labels, and no Lua errors occur. Send screenshot; compare HK's new visual emphasis with target. Positive/high-digit value layout still requires testing.
 - **Status:** iteration 21 native-client QA NOT RUN, automated Lua tests NOT RUN, not visually approved or pixel-matched.
+
+## Iteration #21 — owner screenshot visual review (2026-11-17)
+
+- Owner screenshot confirms increased HK number and heading render clearly, with HK=32, deaths=8, HK/D=4.00 unchanged. No obvious label overlap in this example. The new horizontal side strokes are visibly disconnected and do not resemble the reference's laurels. No Lua error reported; automated checks and large HK values remain untested. **Limited visual PASS for typography, FAIL for ornamental fidelity**.
+
+## Iteration #22 — mirrored HK laurel sprigs, awaiting owner QA (2026-11-17)
+
+- Commit: `4ecf70535e32e2c7ee07c01897706ca09261a683` in `UI/General.lua`.
+- Replaced six detached horizontal bars around lifetime HK with eight small symmetrical stem-and-leaf motifs (four per side) made with existing WHITE8X8 native textures and `Texture:SetRotation`, previously observed working for divider diamonds. Kept the HK headline and 64 px FontString number. No new assets or data/API changes.
+- Artwork is **provisional** and not claimed to match the reference's actual painted laurel wreaths. If the leaf shapes remain unconvincing, prefer an original transparent TGA laurel asset rather than stacking more rectangular primitives.
+- **Owner QA pending:** install current main, `/reload`, `/ws`; check leaf spacing around HK, number legibility, no clipping/artifacts or Lua errors; verify stats, portrait, tabs, rank plate and lower bands unchanged. Send screenshot.
+- Client test iteration 22: NOT RUN. Automated Lua checks: NOT RUN. No full visual acceptance.
