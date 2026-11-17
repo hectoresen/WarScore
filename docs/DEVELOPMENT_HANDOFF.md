@@ -137,3 +137,13 @@ Owner screenshot: new corner TGA, soft section plaques and card studs render; co
 ## Iteration #14 — visual batch committed, awaiting owner screenshot
 
 Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners by 8 logical pixels from frame edges; replace default General/Hoy grey/red button appearance with a custom dark-and-gold tab skin using native texture layers; add layered metallic top/bottom rules to PvP rank plate. Existing HK/death soft plaques and stats untouched. **NOT TESTED in Forever**. Check corner clipping, tab labels/selected state, rank text, any Lua errors. Today's tab remains intentionally a non-functional placeholder and should not appear active. Next large batch: approved source mockup PNG, painted ornamental frame/title and true faction-specific flags. No full UI approval yet.
+
+
+## Iteration #15 — unified lower statistics bands, awaiting owner QA (2026-11-17)
+
+- Implementation commit: `412afe0870da13b1c5cf74d5ba7defa6cfa97c3b`.
+- Changed only `UI/General.lua`: replaced six separate bordered cards with two full-width ornamental bands, each containing three segments separated by vertical gold rules. Retained existing six field bindings, titles, icons, numbers, unavailable states and refresh logic.
+- Both rows use the already client-proven `WHITE8X8` background/rules and native tooltip border, without adding external assets. This is a *structural visual iteration*, not yet faithful painted/bespoke reference artwork.
+- **Automated Lua syntax/runtime tests: NOT RUN** (Lua interpreter unavailable in this agent runtime). **Forever client QA: NOT RUN** as of commit. No claim of screenshot parity or visual acceptance.
+- **Owner test:** download latest `main`, replace addon, `/reload`, `/ws`. Check both lower rows render as continuous bands with three legible segments, no icon/text overlap, no Lua errors; specifically verify long favorite BG names and `—` unavailable values. Confirm HK 32, PvP deaths 8, HK/D 4.00 unaffected on the known character.
+- If successful, next iterations can replace temporary native icons with authored visuals, improve banner/rank/header ornamentation and match the approved reference. Do not erase any client findings from the previous iteration; #14 was pending owner QA in this document.
