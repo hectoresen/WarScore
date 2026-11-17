@@ -1,6 +1,6 @@
 # WarScore — live development handoff
 
-**Last updated:** 2026-11-17 (iteration 6). **Active work:** `feat001-general-pvp-dashboard` — OWNER APPROVED, implementation IN PROGRESS, NOT accepted. **Current branch:** `main` (all changes committed directly to main by the chat assistant so far; do not claim a feature branch exists).
+**Last updated:** 2026-11-17 (iteration 6 client QA; next iteration 7 asset pipeline). **Active work:** `feat001-general-pvp-dashboard` — OWNER APPROVED, implementation IN PROGRESS, NOT accepted. **Current branch:** `main` (all changes committed directly to main by the chat assistant so far; do not claim a feature branch exists).
 
 ## Read in this order
 1. `AGENTS.md`, `openspec/README.md` — lightweight SDD and approval boundaries.
@@ -55,14 +55,23 @@ Git commit: `170abf6ad66bb4eef6fff6862ef952f546951db7`.
 - **OWNER SCREENSHOT #5:** all six provisional card icons render, labels and numbers fit without visible overlap; stats remain HK=32, PvP deaths=8, HK/D=4.00. **PENDING:** custom ornaments, accurate circular portrait and screenshot fidelity. Icon assets are temporary.
 - Circular portrait masking, custom ornaments, banners and reference PNG are still pending; no claim of visual parity.
 
-## Iteration #6 — committed, AWAITING OWNER TEST
+## Iteration #6 — client-tested by owner
 
 Git commit: `b20ddb00e9ced29b2d17dc8caa26e61b6c1fe07e`.
 - Added two **temporary** side banner blocks behind character content, with gold trim and faction-aware native PvP icon. This is an incremental layout test, **not** final torn-cloth/banner art.
-- **NOT TESTED** in Forever. Must inspect visual overlap, opacity and faction icon selection. True circular portrait and approved custom assets remain pending.
+- **OWNER SCREENSHOT #6:** both red rectangular banners and Horde emblems render, no overlap with portrait or statistics. HK=32, deaths=8, HK/D=4.00 remain stable. **VISUAL FAIL:** rectangles/icons are placeholders, unlike torn-fabric flags in target. True circular portrait and approved custom assets remain pending.
+
+## Iteration #7 — PLANNED, NOT IMPLEMENTED
+
+- Prepare original transparent faction-banner artwork with torn lower edges, integrated emblem, metallic attachment and shading; do not simply stretch a solid color block or screenshot.
+- Test a single TGA/BLP texture in WoW Forever before producing the whole asset pack; verify dimensions, alpha and loading.
+- Add asset files to repo with provenance, update UI/General.lua to use native Texture:SetTexture paths; keep fallback only if verified.
+- Then address circular portrait framing with compatible alpha overlay/mask and remaining ornamental elements.
+- Original expanded reference PNG still needs to be committed for meaningful screenshot overlay comparisons.
+- **No code changes in iteration 7 yet; no client tests claimed.**
 
 ## Exact next actions for any agent
-1. **Wait for owner screenshot of iteration #6.** Check faction banners appear at both sides without obscuring portrait, name or tabs, and that the addon still opens without Lua errors. Note whether faction icon is correct.
+1. **Iteration 6 is confirmed.** Next, stop polishing rectangular placeholders: create proper transparent torn-cloth banner assets, validate WoW Forever texture format, integrate them in UI/General.lua, and request next owner screenshot.
 2. The `WHITE8X8` + vertex-color technique is now supported by the owner's screenshot; keep it for opaque panels. Do not reintroduce minimap tracking border for portrait.
 3. Then improve layout proportions and asset pipeline toward reference; ensure readable second row, no action-bar overlap, real faction banners and ornaments, correct portrait framing.
 4. Add Lua deterministic tests when runtime available, then run; don't mark NOT RUN as PASS.
