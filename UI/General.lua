@@ -113,6 +113,11 @@ local function build()
     border:SetBackdropBorderColor(rgb(GOLD))
     border:EnableMouse(false)
 
+    local header = CreateFrame("Frame", nil, window, "BackdropTemplate")
+    header:SetPoint("TOPLEFT", window, "TOPLEFT", 10, -10)
+    header:SetPoint("TOPRIGHT", window, "TOPRIGHT", -10, -10)
+    header:SetHeight(45)
+    backdrop(header, 1)
     label(window, "WarScore", 31, GOLD, 0, -14, 350, 42)
     local close = CreateFrame("Button", nil, window, "UIPanelCloseButton")
     close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -12, -11)
@@ -139,18 +144,38 @@ local function build()
     portrait:SetSize(108, 108)
     portrait:SetPoint("CENTER")
     fields.portrait = portrait
-    local ring = portraitRing:CreateTexture(nil, "OVERLAY")
-    ring:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
-    ring:SetSize(150, 150)
-    ring:SetPoint("CENTER", portraitRing, "CENTER", 0, 0)
+    -- The minimap tracking border is an offset atlas and cannot frame portraits.
+    -- Use a stable symmetric border until a dedicated circular TGA/BLP is supplied.
+    local portraitBorder = CreateFrame("Frame", nil, portraitRing, "BackdropTemplate")
+    portraitBorder:SetAllPoints(portraitRing)
+    portraitBorder:SetBackdrop({
+        bgFile = "Interface\\Buttons\\WHITE8X8",
+        edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+        tile = false, edgeSize = 22,
+        insets = { left = 7, right = 7, top = 7, bottom = 7 }
+    })
+    portraitBorder:SetBackdropColor(0.03, 0.02, 0.02, 0)
+    portraitBorder:SetBackdropBorderColor(0.91, 0.66, 0.24, 1)
+    portraitBorder:EnableMouse(false)
     fields.name = label(window, "—", 24, CREAM, 0, -233, 360, 34)
     fields.level = label(window, "—", 15, CREAM, 0, -269, 360, 25)
+    local rankPlate = CreateFrame("Frame", nil, window, "BackdropTemplate")
+    rankPlate:SetSize(440, 36)
+    rankPlate:SetPoint("TOP", window, "TOP", 0, -297)
+    backdrop(rankPlate, 0.95)
+    rankPlate:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16 })
+    rankPlate:SetBackdropBorderColor(0.58, 0.35, 0.12, 0.9)
     fields.rank = label(window, "Rango PvP · No disponible", 17, GOLD, 0, -302, 440, 30)
     line(window, -341, 650)
 
     label(window, "MUERTES CON HONOR", 23, GOLD, 0, -355, 460, 35)
     fields.hk = label(window, "—", 57, GOLD, 0, -388, 500, 78)
     line(window, -475, 650)
+    local centerDivider = window:CreateTexture(nil, "BORDER")
+    centerDivider:SetTexture("Interface\\Buttons\\WHITE8X8")
+    centerDivider:SetVertexColor(0.6, 0.39, 0.14, 0.8)
+    centerDivider:SetSize(2, 116)
+    centerDivider:SetPoint("TOP", window, "TOP", 0, -490)
 
     label(window, "HK/D  ⓘ", 19, CREAM, -165, -490, 270, 30)
     label(window, "KB/D  ⓘ", 19, CREAM, 165, -490, 270, 30)
