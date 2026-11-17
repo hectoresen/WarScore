@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "35"
+local UI_ITERATION = "36"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -247,14 +247,20 @@ local function statBand(parent, y, definitions)
     glint:SetSize(624, 1)
     glint:SetPoint("TOP", band, "TOP", 0, -12)
 
+    -- Use the existing transparent ornamental corner art instead of square
+    -- gold pixels. This is shared by both rows, not six separate cards.
     for _, side in ipairs({ "LEFT", "RIGHT" }) do
         for _, vertical in ipairs({ "TOP", "BOTTOM" }) do
-            local stud = band:CreateTexture(nil, "OVERLAY")
-            stud:SetTexture("Interface\\Buttons\\WHITE8X8")
-            stud:SetVertexColor(0.98, 0.73, 0.30, 1)
-            stud:SetSize(5, 5)
-            stud:SetPoint(vertical .. side, band, vertical .. side,
-                side == "LEFT" and 10 or -10, vertical == "TOP" and -10 or 10)
+            local corner = band:CreateTexture(nil, "OVERLAY")
+            corner:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\ornate_corner")
+            corner:SetSize(30, 30)
+            corner:SetPoint(vertical .. side, band, vertical .. side,
+                side == "LEFT" and 3 or -3, vertical == "TOP" and -3 or 3)
+            corner:SetTexCoord(side == "LEFT" and 0 or 1,
+                side == "LEFT" and 1 or 0,
+                vertical == "TOP" and 0 or 1,
+                vertical == "TOP" and 1 or 0)
+            corner:SetAlpha(0.87)
         end
     end
 
@@ -276,42 +282,34 @@ local function statBand(parent, y, definitions)
             bevel:SetVertexColor(0.23, 0.13, 0.06, 0.95)
             bevel:SetSize(1, 84)
             bevel:SetPoint("CENTER", band, "LEFT", dividerX + 3, 0)
-            -- Continuous inset separator with short end caps, not pixel-sized
-            -- floating rivets (which looked detached in iteration 34).
-            for _, offset in ipairs({ -11, -100 }) do
-                local cap = band:CreateTexture(nil, "OVERLAY")
-                cap:SetTexture("Interface\\Buttons\\WHITE8X8")
-                cap:SetVertexColor(0.75, 0.49, 0.19, 0.82)
-                cap:SetSize(12, 2)
-                cap:SetPoint("TOP", band, "TOPLEFT", dividerX, offset)
-            end
+            -- The vertical rules now terminate cleanly inside the outer
+            -- border; no disconnected studs or caps at either end.
         end
 
         -- Dark mount behind each icon gives the lower bands one visual language.
         local iconMount = segment:CreateTexture(nil, "BORDER")
         iconMount:SetTexture("Interface\\Buttons\\WHITE8X8")
-        iconMount:SetVertexColor(0.13, 0.09, 0.045, 0.95)
-        iconMount:SetSize(52, 52)
-        iconMount:SetPoint("LEFT", segment, "LEFT", 9, 0)
-        -- Thin inner ornament visually ties the icon cell to the shared band.
+        iconMount:SetVertexColor(0.11, 0.065, 0.03, 0.88)
+        iconMount:SetSize(55, 55)
+        iconMount:SetPoint("LEFT", segment, "LEFT", 10, -1)
+        -- An embedded horizontal accent echoes the central metal dividers.
         local iconAccent = segment:CreateTexture(nil, "BORDER")
         iconAccent:SetTexture("Interface\\Buttons\\WHITE8X8")
-        iconAccent:SetVertexColor(0.50, 0.33, 0.13, 0.68)
-        iconAccent:SetSize(2, 40)
-        iconAccent:SetPoint("LEFT", segment, "LEFT", 8, 0)
+        iconAccent:SetVertexColor(0.68, 0.44, 0.14, 0.50)
+        iconAccent:SetSize(2, 47)
+        iconAccent:SetPoint("LEFT", segment, "LEFT", 9, -1)
         local icon = segment:CreateTexture(nil, "ARTWORK")
         icon:SetTexture(definition.icon)
-        icon:SetSize(44, 44)
-        icon:SetPoint("LEFT", segment, "LEFT", 13, 0)
-        -- Slightly mute native square icons, which are still placeholders for
-        -- the dedicated battle/duel artwork in the original mockup.
-        icon:SetAlpha(0.94)
+        icon:SetSize(47, 47)
+        icon:SetPoint("LEFT", segment, "LEFT", 14, -1)
+        icon:SetAlpha(0.95)
 
-        -- Title and value share one reading column, like the approved mockup.
-        local caption = label(segment, definition.title, 12, CREAM, 38, -12, segmentWidth - 83, 37)
-        caption:SetTextColor(0.88, 0.78, 0.60)
-        local value = label(segment, "—", definition.valueSize or 30,
-            definition.color or GOLD, 38, -52, segmentWidth - 83, 47)
+        -- Bigger titles and values, with the icon visually embedded in the
+        -- continuous band. Text never crosses into the next segment.
+        local caption = label(segment, definition.title, 13, CREAM, 40, -11, segmentWidth - 91, 40)
+        caption:SetTextColor(0.94, 0.82, 0.60)
+        local value = label(segment, "—", definition.valueSize or 32,
+            definition.color or GOLD, 40, -55, segmentWidth - 91, 44)
         value:SetShadowColor(0.26, 0.14, 0.045, 0.68)
         value:SetShadowOffset(1, -1)
         values[i] = value
@@ -605,7 +603,7 @@ local function build()
     local secondRow = statBand(window, -846, {
         { title = "WIN RATE BG", color = GREEN, icon = "Interface\\Icons\\INV_BannerPVP_01" },
         { title = "WIN RATE DUELOS", color = GREEN, icon = "Interface\\Icons\\Ability_DualWield" },
-        { title = "CAMPO DE BATALLA FAVORITO", color = CREAM, icon = "Interface\\Icons\\INV_BannerPVP_02", valueSize = 16 },
+        { title = "CAMPO DE BATALLA FAVORITO", color = CREAM, icon = "Interface\\Icons\\INV_BannerPVP_02", valueSize = 17 },
     })
     fields.bgRate, fields.duelRate, fields.favorite = unpack(secondRow)
 
