@@ -66,6 +66,44 @@ local function accent(parent, point, relativePoint, x, y, width, height, color)
     return tex
 end
 
+-- Decorative primitives, grouped so the whole visual pass can be QA'd together.
+local function ornamentDiamond(parent, y, size)
+    local d = parent:CreateTexture(nil, "OVERLAY")
+    d:SetTexture("Interface\\Buttons\\WHITE8X8")
+    d:SetVertexColor(0.88, 0.59, 0.19, 1)
+    d:SetSize(size or 10, size or 10)
+    d:SetRotation(math.pi / 4)
+    d:SetPoint("TOP", parent, "TOP", 0, y)
+    return d
+end
+
+local function cornerAccent(parent, xSide, ySide)
+    local x = xSide == "LEFT" and 1 or -1
+    local y = ySide == "TOP" and -1 or 1
+    local corner = parent:CreateTexture(nil, "OVERLAY")
+    corner:SetTexture("Interface\\Buttons\\WHITE8X8")
+    corner:SetVertexColor(0.88, 0.57, 0.17, 0.9)
+    corner:SetSize(22, 3)
+    corner:SetPoint(ySide .. xSide, parent, ySide .. xSide, -x * 13, -y * 13)
+    local upright = parent:CreateTexture(nil, "OVERLAY")
+    upright:SetTexture("Interface\\Buttons\\WHITE8X8")
+    upright:SetVertexColor(0.88, 0.57, 0.17, 0.9)
+    upright:SetSize(3, 22)
+    upright:SetPoint(ySide .. xSide, parent, ySide .. xSide, -x * 13, -y * 13)
+end
+
+local function sectionPlaque(parent, y, width, height, alpha)
+    local panel = CreateFrame("Frame", nil, parent)
+    panel:SetSize(width, height)
+    panel:SetPoint("TOP", parent, "TOP", 0, y)
+    local shade = panel:CreateTexture(nil, "BACKGROUND")
+    shade:SetTexture("Interface\\Buttons\\WHITE8X8")
+    shade:SetVertexColor(0.035, 0.022, 0.018, alpha or 0.65)
+    shade:SetAllPoints(panel)
+    accent(panel, "TOP", "TOP", 0, 0, width - 12, 1, { 0.44, 0.27, 0.09 })
+    return panel
+end
+
 local function card(parent, x, y, w, h, title, color, iconPath)
     local panel = CreateFrame("Frame", nil, parent, "BackdropTemplate")
     panel:SetSize(w, h)
@@ -152,6 +190,10 @@ local function build()
     border:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 25 })
     border:SetBackdropBorderColor(rgb(GOLD))
     border:EnableMouse(false)
+    cornerAccent(window, "LEFT", "TOP")
+    cornerAccent(window, "RIGHT", "TOP")
+    cornerAccent(window, "LEFT", "BOTTOM")
+    cornerAccent(window, "RIGHT", "BOTTOM")
 
     local header = CreateFrame("Frame", nil, window, "BackdropTemplate")
     header:SetPoint("TOPLEFT", window, "TOPLEFT", 10, -10)
@@ -161,6 +203,7 @@ local function build()
     label(header, "WarScore", 31, GOLD, 0, -2, 350, 42)
     accent(header, "BOTTOM", "BOTTOM", 0, 0, 700, 2, { 0.50, 0.32, 0.13 })
     accent(header, "BOTTOM", "BOTTOM", 0, 1, 180, 1, GOLD)
+    accent(header, "TOP", "TOP", 0, 0, 320, 1, { 0.45, 0.31, 0.13 })
     local close = CreateFrame("Button", nil, window, "UIPanelCloseButton")
     close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -12, -11)
     close:SetScript("OnClick", function() window:Hide() end)
@@ -224,10 +267,13 @@ local function build()
     accent(rankPlate, "RIGHT", "RIGHT", -10, 0, 4, 24, GOLD)
     fields.rank = label(rankPlate, "Rango PvP · No disponible", 17, GOLD, 0, -3, 430, 30)
     line(window, -341, 650)
+    ornamentDiamond(window, -339, 8)
+    sectionPlaque(window, -353, 480, 116, 0.37)
 
     label(window, "MUERTES CON HONOR", 23, GOLD, 0, -355, 460, 35)
     fields.hk = label(window, "—", 57, GOLD, 0, -388, 500, 78)
     line(window, -475, 650)
+    ornamentDiamond(window, -473, 8)
     local centerDivider = window:CreateTexture(nil, "BORDER")
     centerDivider:SetTexture("Interface\\Buttons\\WHITE8X8")
     centerDivider:SetVertexColor(0.6, 0.39, 0.14, 0.8)
@@ -241,10 +287,13 @@ local function build()
     label(window, "HK / muertes PvP sufridas", 12, CREAM, -165, -576, 300, 25)
     label(window, "Golpes de gracia / muertes PvP", 12, CREAM, 165, -576, 300, 25)
     line(window, -607, 650)
+    ornamentDiamond(window, -605, 8)
 
+    sectionPlaque(window, -618, 480, 90, 0.24)
     label(window, "MUERTES PvP SUFRIDAS", 20, RED, 0, -619, 460, 30)
     fields.deaths = label(window, "—", 45, RED, 0, -650, 420, 60)
     line(window, -714, 650)
+    ornamentDiamond(window, -712, 8)
 
     fields.duels = card(window, -237, -727, 225, 112, "DUELOS GANADOS", GOLD, "Interface\\Icons\\Ability_DualWield")
     fields.bgPlayed = card(window, 0, -727, 225, 112, "CAMPOS DE BATALLA JUGADOS", GOLD, "Interface\\Icons\\INV_BannerPVP_02")
