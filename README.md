@@ -21,4 +21,8 @@ No hay servicios externos, CI ni reglas de contribución por ahora.
 
 ## Spec-driven development
 
-WarScore uses a lightweight OpenSpec workflow adapted from CraftAtlas. Start with [AGENTS.md](AGENTS.md) and [openspec/README.md](openspec/README.md). The first [General dashboard proposal](openspec/changes/feat001-general-pvp-dashboard/proposal.md) is a **draft awaiting owner approval**; no UI implementation has been authorized or started by this proposal. The permanent [PvP statistics contract](docs/PVP_STATISTICS.md) and [visual reconstruction specification](docs/GENERAL_VISUAL_SPEC.md) define its data and appearance targets.
+WarScore uses a lightweight OpenSpec workflow adapted from CraftAtlas. Start with [AGENTS.md](AGENTS.md) and [openspec/README.md](openspec/README.md). The first [General dashboard proposal](openspec/changes/feat001-general-pvp-dashboard/proposal.md) has **owner approval and an initial implementation in progress**, pending native-client tests and visual assets. The permanent [PvP statistics contract](docs/PVP_STATISTICS.md) and [visual reconstruction specification](docs/GENERAL_VISUAL_SPEC.md) define its data and appearance targets.
+
+## Initial General view (in progress)
+
+Install the addon under `_forever_/Interface/AddOns/WarScore/` and run `/ws` or `/warscore` to open the **unverified native UI prototype**. It reads lifetime HK, PvP deaths, HK/D, duel and BG counters and derived rates from local Forever APIs. KB/D and PvP rank are intentionally unavailable. Hoy is a nonfunctional placeholder. The ornamental reference textures are **not yet implemented**; the in-game UI has **not yet been tested**. Use `/wsdiag` for existing API diagnostics.
