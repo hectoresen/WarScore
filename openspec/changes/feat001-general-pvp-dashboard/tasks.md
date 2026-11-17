@@ -188,3 +188,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 23: commit original transparent 128x128 TGA laurel art; replace primitive sprigs with mirrored textures in UI/General.lua.
 - [ ] Owner tests iteration 23: both transparent laurels load, orientations match, HK stays readable, no Lua errors or unexpected occlusion.
 - [ ] Full painted-reference fidelity, multi-resolution tests and automated Lua checks remain pending.
+
+## Iteration 23 screenshot / iteration 24 laurel alignment
+
+- [x] Owner screenshot confirms transparent authored TGA laurels render symmetrically without square artifacts; they sit too close to the ratio divider.
+- [x] Iteration 24 shifts and scales the two laurels closer to HK, maintaining the single mirrored asset and dynamic stats.
+- [ ] Owner tests iteration 24 positions, separator clearance and absence of errors in Forever.
+- [ ] Full reference-image parity, multiple UI scales and deterministic Lua tests remain pending.
