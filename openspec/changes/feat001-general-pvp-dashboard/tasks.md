@@ -306,3 +306,12 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] CI rebuilt and ZIP central directory/15 entries/current Lua CRC independently verified; deliver only `dist/WarScore.zip`.
 - [ ] Owner tests iteration 35 in Forever, checks `/ws version`, visible frame finish and absence of Lua errors.
 - [ ] Full mockup matching, automated Lua QA and Alliance/varied UI-scale coverage outstanding.
+
+## Iteration 35 screenshot / iteration 36 larger metric bands
+
+- [x] Owner screenshot confirms both 3-section bands still render without obvious collisions, and HK=32/deaths=8/HK-D=4.00 remain visible. Overall artwork still far from approved reference.
+- [x] Iteration 36 replaces scattered corner studs with mirrored transparent ornamental corners and removes disconnected divider caps.
+- [x] Enlarges lower icons, headings and values while constraining text within each segment; dynamic bindings unchanged.
+- [x] GitHub Actions ZIP rebuilt, verified 15 runtime entries and Lua CRC matched current UI source.
+- [ ] Owner tests `/ws version` 36 in Forever and shares screenshot to check lower heading wrapping, icon/value spacing, corner textures, no Lua errors.
+- [ ] Continue original reference parity and multi-faction, nonempty metrics, different resolutions and Lua tests before final sign-off.
