@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "37"
+local UI_ITERATION = "38"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -244,8 +244,8 @@ local function statBand(parent, y, definitions, secondary)
     -- An inner top glint creates a more integrated full-width gold frame.
     local glint = band:CreateTexture(nil, "BORDER")
     glint:SetTexture("Interface\\Buttons\\WHITE8X8")
-    glint:SetVertexColor(0.93, 0.68, 0.28, secondary and 0.22 or 0.48)
-    glint:SetSize(624, 1)
+    glint:SetVertexColor(0.93, 0.68, 0.28, secondary and 0.16 or 0.33)
+    glint:SetSize(600, 1)
     glint:SetPoint("TOP", band, "TOP", 0, -12)
 
     -- Use the existing transparent ornamental corner art instead of square
@@ -287,35 +287,30 @@ local function statBand(parent, y, definitions, secondary)
             -- border; no disconnected studs or caps at either end.
         end
 
-        -- Dark mount behind each icon gives the lower bands one visual language.
-        -- Inner mounts are intentionally modest: the shared band stays the
-        -- visual container and the metric remains more important than its icon.
-        local iconMount = segment:CreateTexture(nil, "BORDER")
-        iconMount:SetTexture("Interface\\Buttons\\WHITE8X8")
-        iconMount:SetVertexColor(0.09, 0.055, 0.03, secondary and 0.78 or 0.91)
-        iconMount:SetSize(53, 53)
-        iconMount:SetPoint("LEFT", segment, "LEFT", 11, -1)
-        -- An embedded horizontal accent echoes the central metal dividers.
-        local iconAccent = segment:CreateTexture(nil, "BORDER")
-        iconAccent:SetTexture("Interface\\Buttons\\WHITE8X8")
-        iconAccent:SetVertexColor(0.68, 0.44, 0.14, 0.50)
-        iconAccent:SetSize(2, 47)
-        iconAccent:SetPoint("LEFT", segment, "LEFT", 9, -1)
+        -- Iteration 38: one restrained icon recess, rather than a floating
+        -- square inventory-icon tile surrounded by several hard rectangles.
+        local recess = segment:CreateTexture(nil, "BORDER")
+        recess:SetTexture("Interface\\Buttons\\WHITE8X8")
+        recess:SetVertexColor(0.12, 0.072, 0.036, secondary and 0.32 or 0.46)
+        recess:SetSize(50, 50)
+        recess:SetPoint("LEFT", segment, "LEFT", 13, -1)
+
         local icon = segment:CreateTexture(nil, "ARTWORK")
         icon:SetTexture(definition.icon)
-        icon:SetSize(45, 45)
-        icon:SetPoint("LEFT", segment, "LEFT", 15, -1)
-        icon:SetAlpha(secondary and 0.80 or 0.96)
+        icon:SetSize(48, 48)
+        icon:SetPoint("LEFT", segment, "LEFT", 14, -1)
+        icon:SetTexCoord(0.075, 0.925, 0.075, 0.925)
+        icon:SetAlpha(secondary and 0.78 or 0.93)
 
         -- Two typographic levels: first strip counts, second strip insights.
         -- Titles remain centered in the available text column, including
         -- the deliberately wrapped longer battleground labels.
         local caption = label(segment, definition.title, secondary and 12 or 13,
-            CREAM, 42, -12, segmentWidth - 94, 38)
+            CREAM, 43, -12, segmentWidth - 96, 38)
         caption:SetTextColor(secondary and 0.82 or 0.96,
             secondary and 0.75 or 0.85, secondary and 0.64 or 0.61)
         local value = label(segment, "—", definition.valueSize or (secondary and 29 or 33),
-            definition.color or GOLD, 42, -54, segmentWidth - 94, 45)
+            definition.color or GOLD, 43, -54, segmentWidth - 96, 45)
         value:SetShadowColor(0.26, 0.14, 0.045, 0.68)
         value:SetShadowOffset(1, -1)
         values[i] = value
