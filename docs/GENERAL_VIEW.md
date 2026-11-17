@@ -180,3 +180,18 @@ Salida de `/wsdiag list 122`: `60` Muertes propias = **38** (no utilizar como mu
 **Hallazgo:** `1487` tiene desglose por mundo y campos de batalla, pero **882 KB frente a 32 HK** de `GetPVPLifetimeStats()` es una discrepancia fuerte. No afirmar aún que ambos contadores tengan el mismo horizonte temporal ni utilizar `1487` en KB/D. `1501` = 8 sigue siendo el candidato más específico para muertes sufridas en PvP. Los `--` no equivalen a cero.
 
 **Prueba siguiente recomendada:** comprobar en el panel nativo las cifras HK históricas, KB, muertes PvP y, si hay historial, BG; registrar si el personaje ha participado en BG. Investigar también categoría `128` (víctimas) y `136` (HK) y la procedencia del total de HK (puede reflejar distintos periodos).
+
+
+## Prueba real — categoría HK (2026-11-17)
+
+`/wsdiag list 136` devolvió:
+- `588` Muertes con honor = **32**, coincide con el primer retorno de `GetPVPLifetimeStats()`.
+- `381` Muertes con honor en el mundo = **32**.
+- `1458` Continente con más HK = **25 (Kalimdor)**.
+- `382` HK en campos de batalla = `--`.
+- `1719` BG con más HK = `--`.
+- `1113`, `1114`, `1115`, `64180` HK por BG = `--`.
+
+**Lectura:** las 32 HK históricas están reflejadas en el contador de mundo, sin registros numéricos de BG en esta prueba. Los `--` no se interpretan automáticamente como cero. La discrepancia de `1487` KB=882 frente a HK=32 sigue abierta; no calcular KB/D todavía.
+
+**Diagnóstico corregido:** la categoría `128` estaba bloqueada por una lista de permitidas del propio addon, no por la API del juego. Habilitada en `Core/Diagnostics.lua` para próxima prueba.
