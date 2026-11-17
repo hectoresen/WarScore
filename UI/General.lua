@@ -440,34 +440,17 @@ local function build()
     fields.hk:SetShadowColor(0.60, 0.30, 0.035, 0.9)
     fields.hk:SetShadowOffset(2, -2)
 
-    -- Iteration 22: replace the detached horizontal strokes with small,
-    -- symmetric laurel-like sprigs. Still provisional native artwork: the
-    -- reference's painted wreaths will require dedicated transparent assets.
-    local leafPositions = {
-        { x = 192, y = -402, angle = 0.28 },
-        { x = 208, y = -413, angle = 0.46 },
-        { x = 219, y = -427, angle = 0.66 },
-        { x = 222, y = -441, angle = 0.90 },
-    }
-    for _, direction in ipairs({ -1, 1 }) do
-        for _, pos in ipairs(leafPositions) do
-            local stem = window:CreateTexture(nil, "ARTWORK")
-            stem:SetTexture("Interface\\Buttons\\WHITE8X8")
-            stem:SetVertexColor(0.62, 0.40, 0.12, 0.75)
-            stem:SetSize(3, 18)
-            stem:SetRotation(direction * pos.angle)
-            stem:SetPoint("TOP", window, "TOP", direction * pos.x, pos.y)
-
-            for _, branch in ipairs({ -1, 1 }) do
-                local leaf = window:CreateTexture(nil, "ARTWORK")
-                leaf:SetTexture("Interface\\Buttons\\WHITE8X8")
-                leaf:SetVertexColor(0.90, 0.66, 0.23, 0.88)
-                leaf:SetSize(5, 13)
-                leaf:SetRotation(direction * pos.angle + branch * 0.53)
-                leaf:SetPoint("TOP", window, "TOP",
-                    direction * (pos.x + branch * 5), pos.y - 3)
-            end
+    -- Iteration 23: original transparent TGA laurel artwork, one mirrored copy
+    -- per side. Keeps dynamic HK FontString unobstructed.
+    for _, side in ipairs({ -1, 1 }) do
+        local laurel = window:CreateTexture(nil, "ARTWORK")
+        laurel:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\hk_laurel")
+        laurel:SetSize(108, 108)
+        laurel:SetPoint("TOP", window, "TOP", side * 190, -384)
+        if side == 1 then
+            laurel:SetTexCoord(1, 0, 0, 1)
         end
+        laurel:SetAlpha(0.94)
     end
     line(window, -475, 650)
     ornamentDiamond(window, -473, 8)
