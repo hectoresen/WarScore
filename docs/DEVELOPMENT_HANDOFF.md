@@ -189,3 +189,17 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - Shifted the General/Hoy tab pair rightward from x=30 to x=115 so the new medallion does not occlude the selected tab. All data bindings, portrait, banner and rank rendering, lower bands, and tab click behavior remain unchanged.
 - **QA pending:** install latest main; `/reload` then `/ws`. Check the medallion texture loads, the crossed swords remain visually centered, there is no square/opaque halo outside the circular ring, tabs remain clickable/readable, and title, corners, portrait and close control remain unobstructed. Especially inspect the medallion's dark square backing at 46×46 relative to the ring aperture. Send screenshot.
 - **Tests:** automated Lua syntax/runtime NOT RUN (no Lua binary available); no Forever-client QA for iteration 18 yet. Do not claim visual fidelity to the original ornate medallion; this is an intermediate step with native icon art.
+
+## Iteration #18 — owner screenshot review (2026-11-17)
+
+- Owner screenshot confirms header medallion (ring + swords icon) renders in Forever, tabs remain readable and placed to its right, and close button/title are unobstructed. HK=32, PvP deaths=8, HK/D=4.00 and two lower bands unchanged.
+- **Visual defect:** swords icon and dark backing have noticeable square edges inside the circular medallion, unlike reference ornamental round badge. No Lua error was reported in screenshot, but test coverage is limited and not full acceptance.
+
+## Iteration #19 — header medallion circular masking, awaiting client QA (2026-11-17)
+
+- Code commit: `2bff115d70203997b63feb09e11b29645ad76b77` (`UI/General.lua`).
+- Applied guarded `CreateMaskTexture`/`AddMaskTexture` with existing `portrait_mask` TGA individually to swords icon and dark backing disc. Ring remains `portrait_ring_transparent`. Avoids new assets and leaves previous location/size of outer medallion untouched.
+- If masking is unavailable, hides the square dark backing and reduces the unmasked icon to 36 × 36 (intentional limited fallback); does **not** claim circular rendering in fallback mode. The artwork still uses a provisional native `Ability_DualWield` icon, not the final hand-painted crossed-swords reference.
+- No statistical data, tab behaviors, rank state, banners, or two-band layout changed.
+- **Owner QA pending:** download latest main, `/reload`, `/ws`; check both the swords icon and its dark disc are visibly circular with no square edges, and the medallion remains correctly aligned. Watch for missing icon/black artifacts and confirm existing metrics are unaffected. Send screenshot. Exact masks not yet client tested.
+- **Automated tests NOT RUN;** in-game iteration #19 QA NOT RUN; full visual fidelity and MVP acceptance remain outstanding.
