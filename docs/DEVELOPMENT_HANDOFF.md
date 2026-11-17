@@ -1,6 +1,6 @@
 # WarScore — live development handoff
 
-**Last updated:** 2026-11-17 (iteration 7 code committed, awaiting client QA). **Active work:** `feat001-general-pvp-dashboard` — OWNER APPROVED, implementation IN PROGRESS, NOT accepted. **Current branch:** `main` (all changes committed directly to main by the chat assistant so far; do not claim a feature branch exists).
+**Last updated:** 2026-11-17 (iteration 8 TGA asset committed, awaiting client QA). **Active work:** `feat001-general-pvp-dashboard` — OWNER APPROVED, implementation IN PROGRESS, NOT accepted. **Current branch:** `main` (all changes committed directly to main by the chat assistant so far; do not claim a feature branch exists).
 
 ## Read in this order
 1. `AGENTS.md`, `openspec/README.md` — lightweight SDD and approval boundaries.
@@ -61,7 +61,7 @@ Git commit: `b20ddb00e9ced29b2d17dc8caa26e61b6c1fe07e`.
 - Added two **temporary** side banner blocks behind character content, with gold trim and faction-aware native PvP icon. This is an incremental layout test, **not** final torn-cloth/banner art.
 - **OWNER SCREENSHOT #6:** both red rectangular banners and Horde emblems render, no overlap with portrait or statistics. HK=32, deaths=8, HK/D=4.00 remain stable. **VISUAL FAIL:** rectangles/icons are placeholders, unlike torn-fabric flags in target. True circular portrait and approved custom assets remain pending.
 
-## Iteration #7 — native silhouette committed, awaiting owner screenshot
+## Iteration #7 — client-tested, visual improvement FAILED
 
 - Prepare original transparent faction-banner artwork with torn lower edges, integrated emblem, metallic attachment and shading; do not simply stretch a solid color block or screenshot.
 - Test a single TGA/BLP texture in WoW Forever before producing the whole asset pack; verify dimensions, alpha and loading.
@@ -69,10 +69,17 @@ Git commit: `b20ddb00e9ced29b2d17dc8caa26e61b6c1fe07e`.
 - Then address circular portrait framing with compatible alpha overlay/mask and remaining ornamental elements.
 - Original expanded reference PNG still needs to be committed for meaningful screenshot overlay comparisons.
 - **Implementation commit:** `b19a0113899e36633689469bfaded2261a6702dd`. Replaced the two flat rectangular banners with a layered, vertically ragged cloth silhouette made from client-tested WHITE8X8 texture strips. No external asset dependency; same faction icon retained. **This is not final painted cloth** and has not been client-tested.
-- Next: owner downloads latest main and screenshots /ws; verify banner shape and that there are no rendering artifacts. Actual alpha-textured TGA assets still needed for full fidelity.
+- **OWNER SCREENSHOT #7:** banners still appear as flat red rectangles, no discernible torn-fabric silhouette. Faction emblems render and stats remain stable. Do not continue approximating painted fabric with solid strips.
+
+## Iteration #8 — TGA asset committed, awaiting owner test
+
+- `Media/General/banner_horde.tga` added as a genuine 128×256 uncompressed 32-bit BGRA TGA with alpha, top-left origin. Artwork is an original programmatically drawn dark red cloth with folds, gold top seam, irregular hem and tears; not copied from WoW artwork. Commit `a96d23235e6eb7ab57f428d7c2a03ada806224bb`.
+- `UI/General.lua` now uses `Interface\\AddOns\\WarScore\\Media\\General\\banner_horde` as native Texture and retains separate native faction icon. Commit `198cb598a70d01da928f97f86887246d5c0c2846`.
+- **NOT TESTED in Forever**: texture loading, alpha transparency, dimensions and perceived quality. The current red texture is Horde-specific; Alliance-specific cloth art is still pending (icon alone changes).
+- Next after asset verification: circular portrait frame and ornate border/corners. Original reference PNG remains uncommitted.
 
 ## Exact next actions for any agent
-1. **Wait for owner screenshot of iteration 7.** Confirm ragged banners render without overlap. Then create proper transparent torn-cloth TGA assets, validate Forever format and integrate them; do not call procedural strips final art.
+1. **Wait for owner screenshot of iteration 8.** Check whether the custom transparent TGA banners actually load and show jagged hem; if invisible, test supported TGA pixel format/origin/path in Forever. Do not assume the asset works without in-game confirmation.
 2. The `WHITE8X8` + vertex-color technique is now supported by the owner's screenshot; keep it for opaque panels. Do not reintroduce minimap tracking border for portrait.
 3. Then improve layout proportions and asset pipeline toward reference; ensure readable second row, no action-bar overlap, real faction banners and ornaments, correct portrait framing.
 4. Add Lua deterministic tests when runtime available, then run; don't mark NOT RUN as PASS.
