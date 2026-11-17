@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "34"
+local UI_ITERATION = "35"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -240,6 +240,13 @@ local function statBand(parent, y, definitions)
     trim("BOTTOM", 9, 4, 2, { 0.71, 0.43, 0.13, 0.95 })
     trim("BOTTOM", 13, 8, 1, { 0.32, 0.20, 0.07, 0.85 })
 
+    -- An inner top glint creates a more integrated full-width gold frame.
+    local glint = band:CreateTexture(nil, "BORDER")
+    glint:SetTexture("Interface\\Buttons\\WHITE8X8")
+    glint:SetVertexColor(0.93, 0.68, 0.28, 0.42)
+    glint:SetSize(624, 1)
+    glint:SetPoint("TOP", band, "TOP", 0, -12)
+
     for _, side in ipairs({ "LEFT", "RIGHT" }) do
         for _, vertical in ipairs({ "TOP", "BOTTOM" }) do
             local stud = band:CreateTexture(nil, "OVERLAY")
@@ -269,13 +276,14 @@ local function statBand(parent, y, definitions)
             bevel:SetVertexColor(0.23, 0.13, 0.06, 0.95)
             bevel:SetSize(1, 84)
             bevel:SetPoint("CENTER", band, "LEFT", dividerX + 3, 0)
-            for _, vertical in ipairs({ "TOP", "BOTTOM" }) do
-                local rivet = band:CreateTexture(nil, "OVERLAY")
-                rivet:SetTexture("Interface\\Buttons\\WHITE8X8")
-                rivet:SetVertexColor(0.92, 0.66, 0.23, 0.84)
-                rivet:SetSize(4, 4)
-                rivet:SetPoint("TOP", band, "TOPLEFT", dividerX,
-                    vertical == "TOP" and -13 or -99)
+            -- Continuous inset separator with short end caps, not pixel-sized
+            -- floating rivets (which looked detached in iteration 34).
+            for _, offset in ipairs({ -11, -100 }) do
+                local cap = band:CreateTexture(nil, "OVERLAY")
+                cap:SetTexture("Interface\\Buttons\\WHITE8X8")
+                cap:SetVertexColor(0.75, 0.49, 0.19, 0.82)
+                cap:SetSize(12, 2)
+                cap:SetPoint("TOP", band, "TOPLEFT", dividerX, offset)
             end
         end
 
@@ -295,6 +303,9 @@ local function statBand(parent, y, definitions)
         icon:SetTexture(definition.icon)
         icon:SetSize(44, 44)
         icon:SetPoint("LEFT", segment, "LEFT", 13, 0)
+        -- Slightly mute native square icons, which are still placeholders for
+        -- the dedicated battle/duel artwork in the original mockup.
+        icon:SetAlpha(0.94)
 
         -- Title and value share one reading column, like the approved mockup.
         local caption = label(segment, definition.title, 12, CREAM, 38, -12, segmentWidth - 83, 37)
@@ -492,14 +503,8 @@ local function build()
     ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
     ribbon:SetAlpha(0.98)
 
-    -- Paired short gold endcaps are less distracting than long parallel lines.
-    for _, side in ipairs({ -1, 1 }) do
-        local endcap = rankPlate:CreateTexture(nil, "ARTWORK")
-        endcap:SetTexture("Interface\\Buttons\\WHITE8X8")
-        endcap:SetVertexColor(0.82, 0.53, 0.19, 0.82)
-        endcap:SetSize(3, 20)
-        endcap:SetPoint("CENTER", rankPlate, "CENTER", side * 206, 0)
-    end
+    -- Keep the ribbon art continuous: no disconnected gold strokes at its ends.
+    -- The two-line caption and real faction crest remain above the artwork.
 
     -- The faction crest identifies the character but never claims a rank.
     local crestHolder = CreateFrame("Frame", nil, rankPlate, "BackdropTemplate")
