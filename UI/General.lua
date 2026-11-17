@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "41"
+local UI_ITERATION = "42"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -257,12 +257,12 @@ local function statBand(parent, y, definitions, secondary)
     -- An inner top glint creates a more integrated full-width gold frame.
     local glint = band:CreateTexture(nil, "BORDER")
     glint:SetTexture("Interface\\Buttons\\WHITE8X8")
-    glint:SetVertexColor(0.93, 0.68, 0.28, secondary and 0.16 or 0.33)
+    glint:SetVertexColor(0.93, 0.68, 0.28, secondary and 0.12 or 0.24)
     glint:SetSize(600, 1)
     glint:SetPoint("TOP", band, "TOP", 0, -12)
 
-    -- Use the existing transparent ornamental corner art instead of square
-    -- gold pixels. This is shared by both rows, not six separate cards.
+    -- Use one coherent corner treatment for each full-width bar, instead
+    -- of giving each of the three statistics a separate mini-card.
     for _, side in ipairs({ "LEFT", "RIGHT" }) do
         for _, vertical in ipairs({ "TOP", "BOTTOM" }) do
             local corner = band:CreateTexture(nil, "OVERLAY")
@@ -322,8 +322,8 @@ local function statBand(parent, y, definitions, secondary)
         -- the deliberately wrapped longer battleground labels.
         local caption = label(segment, definition.title, secondary and 12 or 13,
             CREAM, 43, -12, segmentWidth - 96, 38)
-        caption:SetTextColor(secondary and 0.82 or 0.96,
-            secondary and 0.75 or 0.85, secondary and 0.64 or 0.61)
+        caption:SetTextColor(secondary and 0.87 or 0.96,
+            secondary and 0.77 or 0.85, secondary and 0.65 or 0.61)
         local value = label(segment, "—", definition.valueSize or (secondary and 29 or 35),
             definition.color or GOLD, 43, -53, segmentWidth - 96, 45)
         value:SetShadowColor(0.26, 0.14, 0.045, secondary and 0.45 or 0.72)
@@ -384,7 +384,15 @@ local function build()
     window:SetScript("OnDragStart", function(self) self:StartMoving() end)
     window:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
     window:SetClampedToScreen(true)
-    backdrop(window)
+    backdrop(window, 1)
+    -- Readability first: the moving 3D world and green nameplates must not
+    -- compete with the lifetime counters in the middle of the dashboard.
+    -- This near-opaque panel is behind ALL borders, labels and stat widgets.
+    local centralShade = window:CreateTexture(nil, "BACKGROUND")
+    centralShade:SetTexture("Interface\\Buttons\\WHITE8X8")
+    centralShade:SetVertexColor(0.030, 0.018, 0.014, 0.94)
+    centralShade:SetPoint("TOPLEFT", window, "TOPLEFT", 27, -346)
+    centralShade:SetPoint("BOTTOMRIGHT", window, "BOTTOMRIGHT", -27, 278)
     window:Hide()
 
     -- Metallic outer perimeter is provisional until dedicated texture slices are supplied.
