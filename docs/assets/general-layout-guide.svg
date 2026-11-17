@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1199 1312" width="1199" height="1312">
+<title>WarScore General — layout measurement overlay (not final artwork)</title>
+<desc>Vector guide of approximate measured boxes from the approved reference. Use with original image for alignment, not as a game texture.</desc>
+<rect width="1199" height="1312" fill="#18110f"/>
+<g fill="none" stroke="#d4a44d" stroke-width="2">
+<rect x="126" y="24" width="915" height="1188"/><rect x="141" y="156" width="888" height="1039"/>
+<rect x="237" y="27" width="753" height="51"/><rect x="989" y="26" width="53" height="56"/>
+<rect x="273" y="106" width="183" height="56"/><circle cx="583" cy="258" r="103"/>
+<rect x="342" y="435" width="484" height="77"/>
+<rect x="162" y="894" width="837" height="134"/><rect x="162" y="1043" width="837" height="127"/>
+<path d="M443 894v134 M753 894v134 M382 1043v127 M613 1043v127 M584 647v128"/>
+<path d="M225 519h722 M225 641h722 M225 778h722 M225 882h722"/>
+</g>
+<g fill="#ead8b6" font-family="serif" text-anchor="middle">
+<text x="583" y="63" font-size="30">WarScore / Header</text>
+<text x="364" y="141" font-size="22">General</text>
+<text x="583" y="382" font-size="21">Portrait / Name</text>
+<text x="583" y="474" font-size="21">PvP Rank</text>
+<text x="583" y="562" font-size="23">HONORABLE KILLS</text>
+<text x="583" y="614" font-size="32">HK VALUE</text>
+<text x="410" y="712" font-size="24">HK/D</text>
+<text x="752" y="712" font-size="24">KB/D</text>
+<text x="583" y="829" font-size="23">PVP DEATHS</text>
+<text x="302" y="965" font-size="21">DUELS WON</text>
+<text x="598" y="965" font-size="21">BG PLAYED</text>
+<text x="870" y="965" font-size="21">BG WON</text>
+<text x="272" y="1110" font-size="18">BG WIN RATE</text>
+<text x="498" y="1110" font-size="18">DUEL WIN RATE</text>
+<text x="805" y="1110" font-size="19">FAVOURITE BG + COUNT</text>
+</g>
+<g fill="none" stroke="#bd342d" stroke-dasharray="8 5" stroke-width="2">
+<rect x="166" y="176" width="139" height="354"/><rect x="863" y="176" width="139" height="354"/>
+<circle cx="184" cy="65" r="64"/>
+</g>
+<path d="M583 0V1312" stroke="#79d5ee" stroke-opacity=".5" stroke-dasharray="4 6"/>
+</svg>
