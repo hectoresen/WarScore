@@ -9,3 +9,4 @@ Core/Bootstrap.lua
 Core/Storage.lua
 Core/Stats.lua
 UI/General.lua
+Core/Diagnostics.lua
