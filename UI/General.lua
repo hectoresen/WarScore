@@ -23,13 +23,15 @@ end
 local function backdrop(frame, alpha)
     local tex = frame:CreateTexture(nil, "BACKGROUND")
     tex:SetAllPoints(frame)
-    tex:SetTexture(0.065, 0.048, 0.038, alpha or 0.96)
+    tex:SetTexture("Interface\\\\Buttons\\\\WHITE8X8")
+    tex:SetVertexColor(0.065, 0.048, 0.038, alpha or 0.96)
     return tex
 end
 
 local function line(parent, y, width)
     local texture = parent:CreateTexture(nil, "BORDER")
-    texture:SetTexture(0.72, 0.48, 0.17, 0.85)
+    texture:SetTexture("Interface\\\\Buttons\\\\WHITE8X8")
+    texture:SetVertexColor(0.72, 0.48, 0.17, 0.85)
     texture:SetSize(width or 620, 2)
     texture:SetPoint("TOP", parent, "TOP", 0, y)
 end
@@ -40,7 +42,8 @@ local function card(parent, x, y, w, h, title, color)
     panel:SetPoint("TOP", parent, "TOP", x, y)
     backdrop(panel, 0.92)
     local edge = panel:CreateTexture(nil, "BORDER")
-    edge:SetTexture(0.63, 0.40, 0.16, 0.85)
+    edge:SetTexture("Interface\\\\Buttons\\\\WHITE8X8")
+    edge:SetVertexColor(0.63, 0.40, 0.16, 0.85)
     edge:SetPoint("TOPLEFT", panel, "TOPLEFT", 0, 0)
     edge:SetPoint("TOPRIGHT", panel, "TOPRIGHT", 0, 0)
     edge:SetHeight(2)
@@ -89,7 +92,8 @@ end
 
 local function build()
     window = CreateFrame("Frame", "WarScoreGeneralFrame", UIParent, "BackdropTemplate")
-    window:SetSize(750, 860)
+    window:SetSize(750, 990)
+    window:SetScale(0.86)
     window:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
     window:SetFrameStrata("DIALOG")
     window:SetMovable(true)
