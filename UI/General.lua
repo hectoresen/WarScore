@@ -264,6 +264,23 @@ local function build()
     border:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 25 })
     border:SetBackdropBorderColor(rgb(GOLD))
     border:EnableMouse(false)
+
+    -- Iteration 25: subtle paired inside rails make the outer perimeter read as
+    -- one metallic frame rather than a thin flat outline. Do not cover corners.
+    for _, side in ipairs({ "LEFT", "RIGHT" }) do
+        local inside = window:CreateTexture(nil, "BORDER")
+        inside:SetTexture("Interface\\Buttons\\WHITE8X8")
+        inside:SetVertexColor(0.42, 0.27, 0.09, 0.83)
+        inside:SetSize(2, 836)
+        inside:SetPoint("TOP" .. side, window, "TOP" .. side,
+            side == "LEFT" and 12 or -12, -92)
+        local innerShadow = window:CreateTexture(nil, "BORDER")
+        innerShadow:SetTexture("Interface\\Buttons\\WHITE8X8")
+        innerShadow:SetVertexColor(0.025, 0.018, 0.010, 0.88)
+        innerShadow:SetSize(2, 836)
+        innerShadow:SetPoint("TOP" .. side, window, "TOP" .. side,
+            side == "LEFT" and 16 or -16, -92)
+    end
     cornerAccent(window, "LEFT", "TOP")
     cornerAccent(window, "RIGHT", "TOP")
     cornerAccent(window, "LEFT", "BOTTOM")
@@ -274,7 +291,15 @@ local function build()
     header:SetPoint("TOPRIGHT", window, "TOPRIGHT", -10, -10)
     header:SetHeight(45)
     backdrop(header, 1)
-    label(header, "WarScore", 31, GOLD, 0, -2, 350, 42)
+    -- Feathered metallic nameplate; all text stays a live FontString.
+    local headerPlate = header:CreateTexture(nil, "BORDER")
+    headerPlate:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\section_plaque")
+    headerPlate:SetSize(470, 49)
+    headerPlate:SetVertexColor(0.80, 0.69, 0.48, 0.52)
+    headerPlate:SetPoint("CENTER", header, "CENTER", 0, 0)
+    local brandTitle = label(header, "WarScore", 32, GOLD, 0, -2, 350, 42)
+    brandTitle:SetShadowColor(0.42, 0.22, 0.03, 0.9)
+    brandTitle:SetShadowOffset(1, -1)
     accent(header, "LEFT", "LEFT", 24, 0, 90, 2, { 0.65, 0.43, 0.15 })
     accent(header, "RIGHT", "RIGHT", -24, 0, 90, 2, { 0.65, 0.43, 0.15 })
     accent(header, "BOTTOM", "BOTTOM", 0, 0, 700, 2, { 0.50, 0.32, 0.13 })
@@ -417,15 +442,18 @@ local function build()
     emblem:SetSize(32, 32)
     emblem:SetPoint("CENTER", emblemHolder, "CENTER", 0, 0)
 
-    -- Short side filigree evokes laurel wings without claiming a real rank.
+    -- Small mirrored laurel tips replace the mechanical horizontal strokes.
+    -- They are decorative only and must never imply a PvP rank award.
     for _, side in ipairs({ -1, 1 }) do
-        local x = side * 193
-        accent(rankPlate, "CENTER", "CENTER", x, 7, 17, 2, { 0.79, 0.50, 0.16 })
-        accent(rankPlate, "CENTER", "CENTER", x - side * 5, 1, 24, 2, { 0.63, 0.39, 0.12 })
-        accent(rankPlate, "CENTER", "CENTER", x - side * 8, -5, 14, 2, { 0.79, 0.50, 0.16 })
+        local leaf = rankPlate:CreateTexture(nil, "ARTWORK")
+        leaf:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\hk_laurel")
+        leaf:SetVertexColor(0.84, 0.71, 0.48, 0.90)
+        leaf:SetSize(44, 44)
+        leaf:SetPoint("CENTER", rankPlate, "CENTER", side * 170, 0)
+        if side == 1 then leaf:SetTexCoord(1, 0, 0, 1) end
     end
 
-    fields.rank = label(rankPlate, "Rango PvP · No disponible", 17, GOLD, 25, -4, 335, 32)
+    fields.rank = label(rankPlate, "Rango PvP · No disponible", 17, GOLD, 22, -4, 295, 32)
     line(window, -341, 650)
     ornamentDiamond(window, -339, 8)
     sectionPlaque(window, -353, 570, 116, 0.92)
