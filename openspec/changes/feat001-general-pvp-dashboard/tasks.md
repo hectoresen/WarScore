@@ -282,3 +282,11 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] CI rebuilt the clean install ZIP; verified 15 Deflate files and current Lua file CRC matches its packaged copy.
 - [ ] Owner tests build 32 in Forever, checks `/ws version`, rank clearance, mask appearance and absence of errors.
 - [ ] Continue richer heraldic art/fidelity and test other factions, values, UI scales and Lua behavior before acceptance.
+
+## Iteration 32 screenshot / iteration 33 ornamental batch
+
+- [x] Owner screenshot explicitly confirms iteration 32 and shows two-line rank and smaller circular masked Horde emblems without obvious collisions; stats and lower bands intact.
+- [x] Iteration 33: add visible banner hanging/mounting details, slightly soften icon badging, strengthen rank ribbon depth and ends, improve shared band surfaces and captions.
+- [x] CI rebuilt verified clean ZIP; inspected 15 Deflate entries, updated Lua CRC and no development files.
+- [ ] Owner tests iteration 33 in Forever, checks `/ws version` returns 33 and no visual clipping/errors.
+- [ ] Full original mockup fidelity, Alliance and varied UI-scale/large-number test cases and automated Lua checks remain outstanding.
