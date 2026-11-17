@@ -36,30 +36,41 @@ local function line(parent, y, width)
     texture:SetPoint("TOP", parent, "TOP", 0, y)
 end
 
--- Temporary faction ornaments using textures confirmed to render in Forever.
--- Replace with authored transparent banner assets after source PNG is committed.
+-- Iteration 7: native layered torn-banner silhouette, no external texture dependency.
+-- Original transparent TGA art is still needed for the approved final visual.
 local function ornament(parent, side)
     local sign = side == "LEFT" and -1 or 1
     local banner = CreateFrame("Frame", nil, parent)
-    banner:SetSize(90, 190)
+    banner:SetSize(100, 190)
     banner:SetPoint("TOP", parent, "TOP", sign * 270, -130)
-    local cloth = banner:CreateTexture(nil, "BACKGROUND")
-    cloth:SetTexture("Interface\\Buttons\\WHITE8X8")
-    cloth:SetVertexColor(0.29, 0.035, 0.025, 0.76)
-    cloth:SetPoint("TOPLEFT", banner, "TOPLEFT", 0, 0)
-    cloth:SetPoint("BOTTOMRIGHT", banner, "BOTTOMRIGHT", 0, 0)
-    local trim = banner:CreateTexture(nil, "BORDER")
-    trim:SetTexture("Interface\\Buttons\\WHITE8X8")
-    trim:SetVertexColor(0.65, 0.38, 0.12, 0.8)
-    trim:SetPoint("TOPLEFT", banner, "TOPLEFT", 0, 0)
-    trim:SetPoint("TOPRIGHT", banner, "TOPRIGHT", 0, 0)
-    trim:SetHeight(3)
+
+    local function strip(x, y, width, height, r, g, b, alpha, layer)
+        local tex = banner:CreateTexture(nil, layer or "BACKGROUND")
+        tex:SetTexture("Interface\\Buttons\\WHITE8X8")
+        tex:SetVertexColor(r, g, b, alpha)
+        tex:SetPoint("TOPLEFT", banner, "TOPLEFT", x, -y)
+        tex:SetSize(width, height)
+        return tex
+    end
+
+    -- Tapered vertical sections create a ragged hem rather than a rectangle.
+    -- They are deliberately drawn behind the emblem and portrait.
+    strip(6, 0, 88, 4, 0.76, 0.48, 0.17, 0.95, "BORDER")
+    strip(9, 4, 82, 12, 0.24, 0.025, 0.02, 0.94)
+    for i = 1, 10 do
+        local x = 9 + (i - 1) * 8
+        local lengths = { 148, 163, 178, 158, 185, 166, 153, 176, 160, 141 }
+        strip(x, 16, 8, lengths[i] - 16, 0.35 + (i % 3) * 0.025, 0.035, 0.025, 0.80)
+        strip(x, 16, 2, lengths[i] - 16, 0.53, 0.07, 0.035, 0.30, "BORDER")
+    end
+    strip(9, 16, 82, 4, 0.61, 0.23, 0.07, 0.85, "BORDER")
+
     local icon = banner:CreateTexture(nil, "ARTWORK")
     local faction = UnitFactionGroup("player")
     icon:SetTexture(faction == "Alliance" and "Interface\\Icons\\INV_BannerPVP_02" or "Interface\\Icons\\INV_BannerPVP_01")
-    icon:SetSize(48, 48)
-    icon:SetPoint("TOP", banner, "TOP", 0, -26)
-    icon:SetAlpha(0.75)
+    icon:SetSize(54, 54)
+    icon:SetPoint("TOP", banner, "TOP", 0, -35)
+    icon:SetAlpha(0.88)
     return banner
 end
 
