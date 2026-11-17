@@ -44,10 +44,35 @@ local function details()
     inspect("GetCategoryList", GetCategoryList)
 end
 
+
+local function categories()
+    if type(GetStatisticsCategoryList) ~= "function" then
+        output("GetStatisticsCategoryList no disponible")
+        return
+    end
+    local ok, ids = pcall(GetStatisticsCategoryList)
+    if not ok or type(ids) ~= "table" then
+        output("Categorias: " .. show(ids))
+        return
+    end
+    output("Categorias de estadisticas: " .. #ids .. " (primeras 40)")
+    for i = 1, math.min(#ids, 40) do
+        local id = ids[i]
+        local name, parent
+        if type(GetCategoryInfo) == "function" then
+            local success, a, b = pcall(GetCategoryInfo, id)
+            if success then name, parent = a, b end
+        end
+        output(i .. ". ID " .. show(id) .. " | " .. show(name) .. " | padre " .. show(parent))
+    end
+end
+
 SLASH_WARSCOREDIAG1 = "/wsdiag"
 SlashCmdList.WARSCOREDIAG = function(message)
     local mode = (message or ""):match("^%s*(%S+)") or ""
-    if mode == "detail" then
+    if mode == "categories" then
+        categories()
+    elseif mode == "detail" then
         details()
     elseif mode == "daily" then
         output("Fecha cliente: " .. (type(date) == "function" and show(date("%Y-%m-%d %H:%M")) or "API no disponible"))
@@ -55,6 +80,6 @@ SlashCmdList.WARSCOREDIAG = function(message)
         inspect("GetPVPYesterdayStats", GetPVPYesterdayStats)
     else
         basics()
-        output("Opciones: /wsdiag detail | /wsdiag daily")
+        output("Opciones: /wsdiag categories | detail | daily")
     end
 end
