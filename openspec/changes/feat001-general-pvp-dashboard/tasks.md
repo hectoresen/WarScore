@@ -132,3 +132,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 14: inset ornate corners, custom gold General/Hoy tab skin, layered rank-plate borders.
 - [ ] Owner tests iteration 14 for clipped corners, correct selected tab styling, text readability and Lua errors.
 - [ ] Continue approved visual parity work with original art assets; Hoy remains future functionality.
+
+## Iteration 15 owner QA / iteration 16 pending
+
+- [x] Owner screenshot: both unified statistic bands render with three segments; HK=32, PvP deaths=8 and HK/D=4.00 still visible. Layout is visually closer to target; owner has not explicitly accepted overall design.
+- [x] Iteration 16 code committed: slightly larger icons, headings and normal values, paired metallic rails, beveled segment dividers and four corner studs per band.
+- [ ] Owner tests iteration 16 in Forever and shares screenshot confirming no overlaps or Lua errors; check long titles and BG favorite text when available.
+- [ ] Continue ornamental header, rank and approved reference parity work; automated Lua tests remain NOT RUN.
