@@ -249,3 +249,7 @@ Salida de `/wsdiag list 122`: `60` Muertes propias = **38** (no utilizar como mu
 ## Prueba real — categoría Víctimas 128 (2026-11-17)
 
 `/wsdiag list 128` devuelve `1197` «Muertes realizadas» = **3936** y `1198` «Cantidad de muertes que te han otorgado experiencia u honor» = **3687**. Son contadores generales de víctimas, no eliminaciones PvP demostradas: **no utilizarlos para KB/D**. Se completó la enumeración de categorías 21, 153, 137, 122, 136 y 128. Queda por explorar la categoría 154 (PvP mundo) y localizar la categoría del ID 319 (duelos). Preguntar si el personaje ha participado en BG antes de interpretar `--` como ausencia de partidas.
+
+## Prueba real — duelos, categoría 154 (2026-11-17)
+
+`/wsdiag list 154` muestra `319` «Duelos ganados» = `--` y `320` «Duelos perdidos» = `--`. El usuario confirma que **nunca ha jugado un duelo con ese personaje** y que la interfaz nativa de WoW muestra **0 ganados / 0 perdidos**. En este caso concreto, `--` corresponde a ausencia de actividad (0 en la UI). **No generalizar todavía** `--` a cero para cualquier ID sin contraste; diseñar normalización específica por estadística tras más pruebas. IDs 319 y 320 ya identificados y sus etiquetas verificadas en el cliente. Próximo paso útil: comparar valores antes/después de un duelo, y verificar si el personaje ha jugado BG; investigar la discrepancia 882 KB vs 32 HK.
