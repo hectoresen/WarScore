@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "36"
+local UI_ITERATION = "37"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -205,13 +205,14 @@ end
 
 -- Iteration 16: refine the tested two-band layout without changing data bindings.
 -- All ornament layers use native textures confirmed by earlier client screenshots.
-local function statBand(parent, y, definitions)
+local function statBand(parent, y, definitions, secondary)
     local band = CreateFrame("Frame", nil, parent, "BackdropTemplate")
     band:SetSize(704, 112)
     band:SetPoint("TOP", parent, "TOP", 0, y)
     backdrop(band, 0.92)
     band:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 18 })
-    band:SetBackdropBorderColor(0.76, 0.51, 0.20, 0.96)
+    band:SetBackdropBorderColor(secondary and 0.62 or 0.82,
+        secondary and 0.41 or 0.55, 0.20, 0.96)
     -- Shared side rails strengthen the single-piece metallic frame.
     for _, side in ipairs({ "LEFT", "RIGHT" }) do
         local insetRule = band:CreateTexture(nil, "BORDER")
@@ -232,7 +233,7 @@ local function statBand(parent, y, definitions)
     -- Inset leather-like center and paired metallic rails share one band border.
     local bandInset = band:CreateTexture(nil, "BACKGROUND")
     bandInset:SetTexture("Interface\\Buttons\\WHITE8X8")
-    bandInset:SetVertexColor(0.025, 0.017, 0.012, 0.33)
+    bandInset:SetVertexColor(0.025, 0.017, 0.012, secondary and 0.43 or 0.25)
     bandInset:SetPoint("TOPLEFT", band, "TOPLEFT", 8, -8)
     bandInset:SetPoint("BOTTOMRIGHT", band, "BOTTOMRIGHT", -8, 8)
     trim("TOP", 9, -4, 2, { 0.92, 0.64, 0.22, 0.95 })
@@ -243,7 +244,7 @@ local function statBand(parent, y, definitions)
     -- An inner top glint creates a more integrated full-width gold frame.
     local glint = band:CreateTexture(nil, "BORDER")
     glint:SetTexture("Interface\\Buttons\\WHITE8X8")
-    glint:SetVertexColor(0.93, 0.68, 0.28, 0.42)
+    glint:SetVertexColor(0.93, 0.68, 0.28, secondary and 0.22 or 0.48)
     glint:SetSize(624, 1)
     glint:SetPoint("TOP", band, "TOP", 0, -12)
 
@@ -274,7 +275,7 @@ local function statBand(parent, y, definitions)
             local dividerX = (i - 1) * segmentWidth
             local divider = band:CreateTexture(nil, "BORDER")
             divider:SetTexture("Interface\\Buttons\\WHITE8X8")
-            divider:SetVertexColor(0.81, 0.53, 0.18, 0.92)
+            divider:SetVertexColor(0.81, 0.53, 0.18, secondary and 0.66 or 0.84)
             divider:SetSize(2, 84)
             divider:SetPoint("CENTER", band, "LEFT", dividerX, 0)
             local bevel = band:CreateTexture(nil, "BORDER")
@@ -287,11 +288,13 @@ local function statBand(parent, y, definitions)
         end
 
         -- Dark mount behind each icon gives the lower bands one visual language.
+        -- Inner mounts are intentionally modest: the shared band stays the
+        -- visual container and the metric remains more important than its icon.
         local iconMount = segment:CreateTexture(nil, "BORDER")
         iconMount:SetTexture("Interface\\Buttons\\WHITE8X8")
-        iconMount:SetVertexColor(0.11, 0.065, 0.03, 0.88)
-        iconMount:SetSize(55, 55)
-        iconMount:SetPoint("LEFT", segment, "LEFT", 10, -1)
+        iconMount:SetVertexColor(0.09, 0.055, 0.03, secondary and 0.78 or 0.91)
+        iconMount:SetSize(53, 53)
+        iconMount:SetPoint("LEFT", segment, "LEFT", 11, -1)
         -- An embedded horizontal accent echoes the central metal dividers.
         local iconAccent = segment:CreateTexture(nil, "BORDER")
         iconAccent:SetTexture("Interface\\Buttons\\WHITE8X8")
@@ -300,16 +303,19 @@ local function statBand(parent, y, definitions)
         iconAccent:SetPoint("LEFT", segment, "LEFT", 9, -1)
         local icon = segment:CreateTexture(nil, "ARTWORK")
         icon:SetTexture(definition.icon)
-        icon:SetSize(47, 47)
-        icon:SetPoint("LEFT", segment, "LEFT", 14, -1)
-        icon:SetAlpha(0.95)
+        icon:SetSize(45, 45)
+        icon:SetPoint("LEFT", segment, "LEFT", 15, -1)
+        icon:SetAlpha(secondary and 0.80 or 0.96)
 
-        -- Bigger titles and values, with the icon visually embedded in the
-        -- continuous band. Text never crosses into the next segment.
-        local caption = label(segment, definition.title, 13, CREAM, 40, -11, segmentWidth - 91, 40)
-        caption:SetTextColor(0.94, 0.82, 0.60)
-        local value = label(segment, "—", definition.valueSize or 32,
-            definition.color or GOLD, 40, -55, segmentWidth - 91, 44)
+        -- Two typographic levels: first strip counts, second strip insights.
+        -- Titles remain centered in the available text column, including
+        -- the deliberately wrapped longer battleground labels.
+        local caption = label(segment, definition.title, secondary and 12 or 13,
+            CREAM, 42, -12, segmentWidth - 94, 38)
+        caption:SetTextColor(secondary and 0.82 or 0.96,
+            secondary and 0.75 or 0.85, secondary and 0.64 or 0.61)
+        local value = label(segment, "—", definition.valueSize or (secondary and 29 or 33),
+            definition.color or GOLD, 42, -54, segmentWidth - 94, 45)
         value:SetShadowColor(0.26, 0.14, 0.045, 0.68)
         value:SetShadowOffset(1, -1)
         values[i] = value
@@ -604,7 +610,7 @@ local function build()
         { title = "WIN RATE BG", color = GREEN, icon = "Interface\\Icons\\INV_BannerPVP_01" },
         { title = "WIN RATE DUELOS", color = GREEN, icon = "Interface\\Icons\\Ability_DualWield" },
         { title = "CAMPO DE BATALLA FAVORITO", color = CREAM, icon = "Interface\\Icons\\INV_BannerPVP_02", valueSize = 17 },
-    })
+    }, true)
     fields.bgRate, fields.duelRate, fields.favorite = unpack(secondRow)
 
     -- The reference's tall two-row composition needs additional height.
