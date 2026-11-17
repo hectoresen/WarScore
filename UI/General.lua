@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "45"
+local UI_ITERATION = "46"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -305,13 +305,22 @@ local function statBand(parent, y, definitions, secondary)
         -- replaces these with transparent cutouts, not destructive cropping.
         local icon = segment:CreateTexture(nil, "ARTWORK")
         icon:SetTexture(definition.icon)
-        -- Iteration 44 custom clip-art glyphs were rejected in client QA.
-        -- Use restrained classic WoW icons as a temporary fallback instead.
-        -- Do not magnify/crop them or give them extra inventory-slot frames.
-        icon:SetSize(32, 32)
-        icon:SetPoint("LEFT", segment, "LEFT", 13, -1)
+        -- Preserve the native WoW illustration instead of rejected clip art.
+        -- A supported alpha mask removes the square inventory-tile corners
+        -- without zoom-cropping blades and heraldry. Graceful client fallback.
+        icon:SetSize(37, 37)
+        icon:SetPoint("LEFT", segment, "LEFT", 10, -1)
         icon:SetTexCoord(0, 1, 0, 1)
-        icon:SetAlpha(secondary and 0.73 or 0.86)
+        icon:SetAlpha(secondary and 0.78 or 0.91)
+        if type(segment.CreateMaskTexture) == "function"
+            and type(icon.AddMaskTexture) == "function" then
+            pcall(function()
+                local mask = segment:CreateMaskTexture(nil, "ARTWORK")
+                mask:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_mask")
+                mask:SetAllPoints(icon)
+                icon:AddMaskTexture(mask)
+            end)
+        end
 
         -- x=0 means centered on the FULL segment, not offset by its icon.
         -- Width reserves a small gap from the left decorative pictogram.
@@ -504,26 +513,28 @@ local function build()
     rankPlate:SetSize(452, 42)
     rankPlate:SetPoint("TOP", window, "TOP", 0, -296)
 
-    -- Reject the flat orange rectangular plate from iteration 44.
-    -- Restore subdued leather ribbon with native metallic outline and
-    -- small side bevels; keep center slim and transparent.
+    -- Iteration 46: a restrained, contained ribbon. No bright orange slab
+    -- and no isolated 2px vertical strokes at either end of the plaque.
     local backing = rankPlate:CreateTexture(nil, "BACKGROUND")
     backing:SetTexture("Interface\\Buttons\\WHITE8X8")
-    backing:SetVertexColor(0.065, 0.028, 0.016, 0.88)
-    backing:SetSize(412, 34)
+    backing:SetVertexColor(0.045, 0.024, 0.018, 0.92)
+    backing:SetSize(408, 31)
     backing:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
     local ribbon = rankPlate:CreateTexture(nil, "BORDER")
     ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
-    ribbon:SetTexCoord(0.09, 0.91, 0.10, 0.90)
-    ribbon:SetSize(448, 44)
+    ribbon:SetTexCoord(0.12, 0.88, 0.13, 0.87)
+    ribbon:SetSize(438, 44)
     ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
-    ribbon:SetAlpha(0.95)
+    ribbon:SetAlpha(0.92)
+    -- The proven transparent laurel is mirrored at the plaque's outer ends,
+    -- making the rank treatment ornamental rather than a plain rectangle.
     for _, side in ipairs({ -1, 1 }) do
-        local bevel = rankPlate:CreateTexture(nil, "ARTWORK")
-        bevel:SetTexture("Interface\\Buttons\\WHITE8X8")
-        bevel:SetVertexColor(0.72, 0.47, 0.17, 0.80)
-        bevel:SetSize(2, 25)
-        bevel:SetPoint("CENTER", rankPlate, "CENTER", side * 204, 0)
+        local wreath = rankPlate:CreateTexture(nil, "ARTWORK")
+        wreath:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\hk_laurel")
+        wreath:SetSize(43, 43)
+        wreath:SetPoint("CENTER", rankPlate, "CENTER", side * 207, 0)
+        if side == 1 then wreath:SetTexCoord(1, 0, 0, 1) end
+        wreath:SetAlpha(0.84)
     end
 
     -- Keep the ribbon art continuous: no disconnected gold strokes at its ends.
