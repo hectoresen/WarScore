@@ -52,6 +52,8 @@ local function ornament(parent, side)
         or "Interface\\AddOns\\WarScore\\Media\\General\\banner_horde_v2")
     cloth:SetAllPoints(banner)
     cloth:SetAlpha(0.97)
+    -- Fabric shading stays inside the authored transparent cloth silhouette;
+    -- no additional opaque rectangular background is introduced.
 
     -- Metal hook and attachment, all within the banner's own bounding box.
     local mount = banner:CreateTexture(nil, "BORDER")
@@ -209,10 +211,16 @@ local function statBand(parent, y, definitions)
             bevel:SetPoint("CENTER", band, "LEFT", dividerX + 3, 0)
         end
 
+        -- Dark mount behind each icon gives the lower bands one visual language.
+        local iconMount = segment:CreateTexture(nil, "BORDER")
+        iconMount:SetTexture("Interface\\Buttons\\WHITE8X8")
+        iconMount:SetVertexColor(0.13, 0.09, 0.045, 0.95)
+        iconMount:SetSize(48, 48)
+        iconMount:SetPoint("LEFT", segment, "LEFT", 10, 0)
         local icon = segment:CreateTexture(nil, "ARTWORK")
         icon:SetTexture(definition.icon)
-        icon:SetSize(42, 42)
-        icon:SetPoint("LEFT", segment, "LEFT", 13, 0)
+        icon:SetSize(40, 40)
+        icon:SetPoint("LEFT", segment, "LEFT", 14, 0)
 
         -- Text occupies a separate column, leaving the icon fully visible.
         label(segment, definition.title, 12, CREAM, 33, -12, segmentWidth - 80, 37)
@@ -319,7 +327,7 @@ local function build()
     headerPlate:SetSize(470, 49)
     headerPlate:SetVertexColor(0.80, 0.69, 0.48, 0.52)
     headerPlate:SetPoint("CENTER", header, "CENTER", 0, 0)
-    local brandTitle = label(header, "WarScore", 32, GOLD, 0, -2, 350, 42)
+    local brandTitle = label(header, "WarScore", 33, GOLD, 0, -2, 350, 42)
     brandTitle:SetShadowColor(0.42, 0.22, 0.03, 0.9)
     brandTitle:SetShadowOffset(1, -1)
     accent(header, "LEFT", "LEFT", 24, 0, 90, 2, { 0.65, 0.43, 0.15 })
@@ -403,15 +411,7 @@ local function build()
     ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
     ribbon:SetAlpha(0.98)
 
-    -- Subtle edge studs in the rank ribbon reinforce the shield and end detail,
-    -- using stable WoW-native textures instead of another untested art asset.
-    for _, x in ipairs({ -197, 197 }) do
-        local stud = rankPlate:CreateTexture(nil, "ARTWORK")
-        stud:SetTexture("Interface\\Buttons\\WHITE8X8")
-        stud:SetVertexColor(0.95, 0.72, 0.28, 0.9)
-        stud:SetSize(4, 4)
-        stud:SetPoint("CENTER", rankPlate, "CENTER", x, 0)
-    end
+    -- Keep ribbon ends clean: the tiny studs read as isolated pixels in game.
 
     local emblemHolder = CreateFrame("Frame", nil, rankPlate, "BackdropTemplate")
     emblemHolder:SetSize(48, 48)
@@ -430,6 +430,8 @@ local function build()
     -- The rank has no confirmed value. Keep the ribbon balanced, not covered
     -- by tiny ornamental laurel fragments or a misleading achievement badge.
     fields.rank = label(rankPlate, "Rango PvP · No disponible", 17, GOLD, 27, -4, 320, 32)
+    fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
+    fields.rank:SetShadowOffset(1, -1)
     line(window, -341, 650)
     ornamentDiamond(window, -339, 8)
     sectionPlaque(window, -353, 570, 116, 0.92)
@@ -462,11 +464,13 @@ local function build()
     line(window, -477, 650)
     ornamentDiamond(window, -475, 8)
 
-    sectionPlaque(window, -482, 570, 108, 0.72)
-    label(window, "MUERTES PvP SUFRIDAS", 20, RED, 0, -483, 460, 31)
-    fields.deaths = label(window, "—", 52, RED, 0, -518, 420, 62)
-    fields.deaths:SetShadowColor(0.42, 0.05, 0.035, 0.85)
-    fields.deaths:SetShadowOffset(2, -2)
+    -- Iteration 29: deaths are a secondary lifetime counter, not another hero.
+    -- Keep them directly below HK while deliberately lowering visual weight.
+    sectionPlaque(window, -490, 500, 91, 0.48)
+    label(window, "MUERTES PvP SUFRIDAS", 17, { 0.85, 0.51, 0.46 }, 0, -497, 430, 27)
+    fields.deaths = label(window, "—", 39, RED, 0, -525, 390, 54)
+    fields.deaths:SetShadowColor(0.32, 0.05, 0.035, 0.64)
+    fields.deaths:SetShadowOffset(1, -1)
 
     -- No floating side strokes: the soft plaque and red number carry this KPI.
 
