@@ -48,3 +48,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Owner tests commit `e845257` in game: confirm tracking ring gone and new portrait border, header, rank plate and ratio divider render.
 - [ ] Develop actual circular portrait framing and licensed ornamental texture assets; compare against the target screenshot.
 - Automated Lua tests and OpenSpec CLI validation remain **NOT RUN**.
+
+## Iteration 4 — pending client verification
+
+- **Iteration 3 owner screenshot:** centered square portrait, ring fixed, vertical ratio divider visible; title disappeared and rank label is obscured by child frame layers; stats remain correct.
+- [ ] Owner tests commit `f76b559`: WarScore title and rank readable, all six card borders visible, (i) glyphs render without squares.
+- [ ] Next: proper circular portrait and actual ornate texture assets; screenshot comparison with source mockup (PNG not yet in repo).
+- Automated tests and client visual acceptance remain **NOT RUN / NOT ACCEPTED**.
