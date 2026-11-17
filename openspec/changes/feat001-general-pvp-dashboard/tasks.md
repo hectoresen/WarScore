@@ -315,3 +315,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] GitHub Actions ZIP rebuilt, verified 15 runtime entries and Lua CRC matched current UI source.
 - [ ] Owner tests `/ws version` 36 in Forever and shares screenshot to check lower heading wrapping, icon/value spacing, corner textures, no Lua errors.
 - [ ] Continue original reference parity and multi-faction, nonempty metrics, different resolutions and Lua tests before final sign-off.
+
+## Iteration 36 screenshot / iteration 37 hierarchy
+
+- [x] Owner screenshot confirms HK=32, PvP deaths=9, HK/D=3.56 (correctly rounded from 32/9) and readable lower bands; live state differs legitimately from earlier 32/8/4.00 screenshots.
+- [x] Iteration 37 differentiates two lower strips: first absolute totals, second lower-weight win rates/favorite; retains data bindings and previous layout.
+- [ ] Verify CI-generated clean ZIP includes iteration 37 source; owner tests `/ws version` 37 and submits screenshot.
+- [ ] Final approved design fidelity, nonempty BG history, additional factions and deterministic Lua testing remain pending.
