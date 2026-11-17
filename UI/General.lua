@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "44"
+local UI_ITERATION = "45"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -305,12 +305,13 @@ local function statBand(parent, y, definitions, secondary)
         -- replaces these with transparent cutouts, not destructive cropping.
         local icon = segment:CreateTexture(nil, "ARTWORK")
         icon:SetTexture(definition.icon)
-        -- These files are original alpha-cutout glyphs, not square inventory
-        -- sprites, so they can be displayed larger without a false slot.
-        icon:SetSize(49, 49)
-        icon:SetPoint("LEFT", segment, "LEFT", 1, -1)
+        -- Iteration 44 custom clip-art glyphs were rejected in client QA.
+        -- Use restrained classic WoW icons as a temporary fallback instead.
+        -- Do not magnify/crop them or give them extra inventory-slot frames.
+        icon:SetSize(32, 32)
+        icon:SetPoint("LEFT", segment, "LEFT", 13, -1)
         icon:SetTexCoord(0, 1, 0, 1)
-        icon:SetAlpha(secondary and 0.90 or 1)
+        icon:SetAlpha(secondary and 0.73 or 0.86)
 
         -- x=0 means centered on the FULL segment, not offset by its icon.
         -- Width reserves a small gap from the left decorative pictogram.
@@ -503,14 +504,27 @@ local function build()
     rankPlate:SetSize(452, 42)
     rankPlate:SetPoint("TOP", window, "TOP", 0, -296)
 
-    -- A low-key inner shadow makes the ribbon read as metal over dark leather.
-    -- One original bevelled transparent TGA replaces all cropped/ragged
-    -- ribbon art and separate rectangular shadows. Its tapered contour
-    -- defines the plaque shape, independent of the dynamic rank text.
+    -- Reject the flat orange rectangular plate from iteration 44.
+    -- Restore subdued leather ribbon with native metallic outline and
+    -- small side bevels; keep center slim and transparent.
+    local backing = rankPlate:CreateTexture(nil, "BACKGROUND")
+    backing:SetTexture("Interface\\Buttons\\WHITE8X8")
+    backing:SetVertexColor(0.065, 0.028, 0.016, 0.88)
+    backing:SetSize(412, 34)
+    backing:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
     local ribbon = rankPlate:CreateTexture(nil, "BORDER")
-    ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_plate_sculpted")
-    ribbon:SetSize(460, 54)
+    ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
+    ribbon:SetTexCoord(0.09, 0.91, 0.10, 0.90)
+    ribbon:SetSize(448, 44)
     ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
+    ribbon:SetAlpha(0.95)
+    for _, side in ipairs({ -1, 1 }) do
+        local bevel = rankPlate:CreateTexture(nil, "ARTWORK")
+        bevel:SetTexture("Interface\\Buttons\\WHITE8X8")
+        bevel:SetVertexColor(0.72, 0.47, 0.17, 0.80)
+        bevel:SetSize(2, 25)
+        bevel:SetPoint("CENTER", rankPlate, "CENTER", side * 204, 0)
+    end
 
     -- Keep the ribbon art continuous: no disconnected gold strokes at its ends.
     -- The two-line caption and real faction crest remain above the artwork.
@@ -606,15 +620,15 @@ local function build()
     ornamentDiamond(window, -712, 8)
 
     local firstRow = statBand(window, -727, {
-        { title = "DUELOS GANADOS", color = GOLD, icon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duels" },
-        { title = "CAMPOS DE BATALLA JUGADOS", color = GOLD, icon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_battle" },
-        { title = "BG GANADOS", color = GOLD, icon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_trophy" },
+        { title = "DUELOS GANADOS", color = GOLD, icon = "Interface\\Icons\\Ability_DualWield" },
+        { title = "CAMPOS DE BATALLA JUGADOS", color = GOLD, icon = "Interface\\Icons\\INV_BannerPVP_02" },
+        { title = "BG GANADOS", color = GOLD, icon = "Interface\\Icons\\Achievement_BG_WinWSG" },
     })
     fields.duels, fields.bgPlayed, fields.bgWon = unpack(firstRow)
     local secondRow = statBand(window, -846, {
-        { title = "WIN RATE BG", color = GREEN, icon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_rates" },
-        { title = "WIN RATE DUELOS", color = GREEN, icon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duels" },
-        { title = "CAMPO DE BATALLA FAVORITO", color = GREEN, icon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_favorite", valueSize = 17 },
+        { title = "WIN RATE BG", color = GREEN, icon = "Interface\\Icons\\INV_BannerPVP_01" },
+        { title = "WIN RATE DUELOS", color = GREEN, icon = "Interface\\Icons\\Ability_DualWield" },
+        { title = "CAMPO DE BATALLA FAVORITO", color = GREEN, icon = "Interface\\Icons\\INV_BannerPVP_02", valueSize = 17 },
     }, true)
     fields.bgRate, fields.duelRate, fields.favorite = unpack(secondRow)
 
