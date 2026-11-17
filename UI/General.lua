@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "42"
+local UI_ITERATION = "43"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -300,32 +300,23 @@ local function statBand(parent, y, definitions, secondary)
             -- border; no disconnected studs or caps at either end.
         end
 
-        -- Iteration 38: one restrained icon recess, rather than a floating
-        -- square inventory-icon tile surrounded by several hard rectangles.
-        local recess = segment:CreateTexture(nil, "BORDER")
-        recess:SetTexture("Interface\\Buttons\\WHITE8X8")
-        recess:SetVertexColor(0.12, 0.072, 0.036, secondary and 0.25 or 0.36)
-        recess:SetSize(48, 48)
-        recess:SetPoint("LEFT", segment, "LEFT", 14, -1)
-
+        -- Decorative icon is never part of the text layout. Native WoW
+        -- inventory glyphs still have baked square art; future asset task
+        -- replaces these with transparent cutouts, not destructive cropping.
         local icon = segment:CreateTexture(nil, "ARTWORK")
         icon:SetTexture(definition.icon)
-        -- Previous texture-coordinate cropping zoomed in and amputated swords,
-        -- banners and shields. Restore their full recognizable silhouettes.
-        icon:SetSize(44, 44)
-        icon:SetPoint("LEFT", segment, "LEFT", 16, -1)
+        icon:SetSize(36, 36)
+        icon:SetPoint("LEFT", segment, "LEFT", 7, -1)
         icon:SetTexCoord(0, 1, 0, 1)
-        icon:SetAlpha(secondary and 0.84 or 0.96)
+        icon:SetAlpha(secondary and 0.80 or 0.93)
 
-        -- Two typographic levels: first strip counts, second strip insights.
-        -- Titles remain centered in the available text column, including
-        -- the deliberately wrapped longer battleground labels.
+        -- x=0 means centered on the FULL segment, not offset by its icon.
+        -- Width reserves a small gap from the left decorative pictogram.
         local caption = label(segment, definition.title, secondary and 12 or 13,
-            CREAM, 43, -12, segmentWidth - 96, 38)
-        caption:SetTextColor(secondary and 0.87 or 0.96,
-            secondary and 0.77 or 0.85, secondary and 0.65 or 0.61)
+            CREAM, 0, -12, 145, 38)
+        caption:SetTextColor(0.94, 0.84, 0.65)
         local value = label(segment, "—", definition.valueSize or (secondary and 29 or 35),
-            definition.color or GOLD, 43, -53, segmentWidth - 96, 45)
+            secondary and GREEN or GOLD, 0, -53, 145, 45)
         value:SetShadowColor(0.26, 0.14, 0.045, secondary and 0.45 or 0.72)
         value:SetShadowOffset(1, -1)
         values[i] = value
@@ -337,12 +328,18 @@ local function formatNumber(value)
     if type(value) ~= "number" then return "—" end
     return tostring(math.floor(value))
 end
+local function formatCountOrZero(value)
+    -- UI presentation only: nil is still nil in the domain model.
+    if type(value) ~= "number" then return "0" end
+    return formatNumber(value)
+end
 local function formatRatio(value)
     if type(value) ~= "number" then return "—" end
     return string.format("%.2f", value):gsub("%.", ",")
 end
 local function formatPercent(value)
-    if type(value) ~= "number" then return "—" end
+    -- Display an empty rate as 0%; absence does NOT imply a real measured 0%.
+    if type(value) ~= "number" then return "0%" end
     return string.format("%.1f%%", value):gsub("%.", ",")
 end
 
@@ -359,9 +356,9 @@ local function refresh()
     fields.hkd:SetText(formatRatio(data.hkDeathRatio))
     fields.kbd:SetText("—")
     fields.rank:SetText("No disponible")
-    fields.duels:SetText(formatNumber(data.duelsWon))
-    fields.bgPlayed:SetText(formatNumber(data.battlegroundsPlayed))
-    fields.bgWon:SetText(formatNumber(data.battlegroundsWon))
+    fields.duels:SetText(formatCountOrZero(data.duelsWon))
+    fields.bgPlayed:SetText(formatCountOrZero(data.battlegroundsPlayed))
+    fields.bgWon:SetText(formatCountOrZero(data.battlegroundsWon))
     fields.bgRate:SetText(formatPercent(data.bgWinRate))
     fields.duelRate:SetText(formatPercent(data.duelWinRate))
     local favorite = data.favoriteBattleground
@@ -384,41 +381,35 @@ local function build()
     window:SetScript("OnDragStart", function(self) self:StartMoving() end)
     window:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
     window:SetClampedToScreen(true)
-    backdrop(window, 1)
-    -- Readability first: the moving 3D world and green nameplates must not
-    -- compete with the lifetime counters in the middle of the dashboard.
-    -- This near-opaque panel is behind ALL borders, labels and stat widgets.
-    local centralShade = window:CreateTexture(nil, "BACKGROUND")
-    centralShade:SetTexture("Interface\\Buttons\\WHITE8X8")
-    centralShade:SetVertexColor(0.030, 0.018, 0.014, 0.94)
-    centralShade:SetPoint("TOPLEFT", window, "TOPLEFT", 27, -346)
-    centralShade:SetPoint("BOTTOMRIGHT", window, "BOTTOMRIGHT", -27, 278)
+    -- Iteration 43: one dark panel INSIDE an actual native WoW dialog border.
+    -- The frame bounds, not a slightly oversized black rectangle, define
+    -- the visible window. The old central overlay created a hard-edged box.
+    local shellBackground = window:CreateTexture(nil, "BACKGROUND")
+    shellBackground:SetTexture("Interface\\Buttons\\WHITE8X8")
+    shellBackground:SetVertexColor(0.034, 0.023, 0.019, 1)
+    shellBackground:SetPoint("TOPLEFT", window, "TOPLEFT", 12, -12)
+    shellBackground:SetPoint("BOTTOMRIGHT", window, "BOTTOMRIGHT", -12, 12)
     window:Hide()
 
-    -- Metallic outer perimeter is provisional until dedicated texture slices are supplied.
+    -- WoW-native dialog chrome; this is the OUTERMOST visible perimeter.
     local border = CreateFrame("Frame", nil, window, "BackdropTemplate")
-    border:SetPoint("TOPLEFT", window, "TOPLEFT", 5, -5)
-    border:SetPoint("BOTTOMRIGHT", window, "BOTTOMRIGHT", -5, 5)
-    border:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 25 })
-    border:SetBackdropBorderColor(rgb(GOLD))
+    border:SetPoint("TOPLEFT", window, "TOPLEFT", 2, -2)
+    border:SetPoint("BOTTOMRIGHT", window, "BOTTOMRIGHT", -2, 2)
+    border:SetBackdrop({ edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", edgeSize = 28 })
+    border:SetBackdropBorderColor(0.91, 0.80, 0.63, 1)
     border:EnableMouse(false)
 
-    -- Iteration 25: subtle paired inside rails make the outer perimeter read as
-    -- one metallic frame rather than a thin flat outline. Do not cover corners.
-    for _, side in ipairs({ "LEFT", "RIGHT" }) do
-        local inside = window:CreateTexture(nil, "BORDER")
-        inside:SetTexture("Interface\\Buttons\\WHITE8X8")
-        inside:SetVertexColor(0.42, 0.27, 0.09, 0.83)
-        inside:SetSize(2, 836)
-        inside:SetPoint("TOP" .. side, window, "TOP" .. side,
-            side == "LEFT" and 12 or -12, -92)
-        local innerShadow = window:CreateTexture(nil, "BORDER")
-        innerShadow:SetTexture("Interface\\Buttons\\WHITE8X8")
-        innerShadow:SetVertexColor(0.025, 0.018, 0.010, 0.88)
-        innerShadow:SetSize(2, 836)
-        innerShadow:SetPoint("TOP" .. side, window, "TOP" .. side,
-            side == "LEFT" and 16 or -16, -92)
-    end
+    -- Separate INSIDE frame embracing navigation and metrics, like the
+    -- reference spellbook/panel composition. Keep it under all widgets.
+    local innerPanel = CreateFrame("Frame", nil, window, "BackdropTemplate")
+    innerPanel:SetPoint("TOPLEFT", window, "TOPLEFT", 22, -60)
+    innerPanel:SetPoint("BOTTOMRIGHT", window, "BOTTOMRIGHT", -22, 17)
+    innerPanel:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 14 })
+    innerPanel:SetBackdropBorderColor(0.62, 0.45, 0.24, 0.80)
+    innerPanel:EnableMouse(false)
+
+    -- No parallel square rails competing with the native exterior border
+    -- and the separate framed inner content area.
     cornerAccent(window, "LEFT", "TOP")
     cornerAccent(window, "RIGHT", "TOP")
     cornerAccent(window, "LEFT", "BOTTOM")
@@ -546,9 +537,9 @@ local function build()
     -- Clean centered rank inscription: a small section name and an honest
     -- unavailable value, like the two-tier reference ribbon.
     -- Reserve a visible margin below the rank value and above the HK divider.
-    local rankCaption = label(rankPlate, "Rango PvP", 12, CREAM, 10, -1, 330, 14)
+    local rankCaption = label(rankPlate, "Rango PvP", 12, CREAM, 10, -4, 330, 14)
     rankCaption:SetTextColor(0.89, 0.70, 0.39)
-    fields.rank = label(rankPlate, "No disponible", 17, GOLD, 10, -16, 330, 19)
+    fields.rank = label(rankPlate, "No disponible", 17, GOLD, 10, -19, 330, 19)
     fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
     fields.rank:SetShadowOffset(1, -1)
     line(window, -341, 650)
@@ -627,7 +618,7 @@ local function build()
     local secondRow = statBand(window, -846, {
         { title = "WIN RATE BG", color = GREEN, icon = "Interface\\Icons\\INV_BannerPVP_01" },
         { title = "WIN RATE DUELOS", color = GREEN, icon = "Interface\\Icons\\Ability_DualWield" },
-        { title = "CAMPO DE BATALLA FAVORITO", color = CREAM, icon = "Interface\\Icons\\INV_BannerPVP_02", valueSize = 17 },
+        { title = "CAMPO DE BATALLA FAVORITO", color = GREEN, icon = "Interface\\Icons\\INV_BannerPVP_02", valueSize = 17 },
     }, true)
     fields.bgRate, fields.duelRate, fields.favorite = unpack(secondRow)
 
