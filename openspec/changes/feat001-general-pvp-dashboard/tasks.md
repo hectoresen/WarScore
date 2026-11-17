@@ -160,3 +160,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 19: apply guarded circular alpha mask to both medallion disc and swords icon, with smaller icon/no square backing as fallback.
 - [ ] Owner test iteration 19 medallion masking and fallback/no artifacts in Forever; ensure other stats/UI stay intact.
 - [ ] Final hand-painted swords artwork, ornamental asset fidelity, Lua tests and multi-resolution QA remain pending.
+
+## Iteration 19 screenshot / iteration 20 tab skin
+
+- [x] Owner screenshot: circular medallion now renders without a square backing; main stats and lower rows remain stable. Native mask API path still uninstrumented.
+- [x] Iteration 20: replace templated General/Hoy buttons with plain Button frames and custom decorative FontStrings/rules to avoid unintended bright red inactive skin.
+- [ ] Owner tests iteration 20: General visually active, Hoy muted, click handler works, no Lua errors or overlay issues.
+- [ ] Continue original ornamental art and visual parity work; automated Lua tests and cross-resolution QA remain NOT RUN.
