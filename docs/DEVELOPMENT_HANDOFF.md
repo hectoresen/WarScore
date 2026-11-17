@@ -265,3 +265,18 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - Kept existing `Media/General/hk_laurel.tga` and two mirrored instances; changed display dimensions 108×108 to 96×96 logical pixels, x centers ±190 to ±183, and top position -384 to -371. The goal is to raise laurels above the ratio separator and visually frame the HK number more closely. No new assets, API usage or data changes.
 - **Awaiting owner screenshot** in Forever: `/reload`, `/ws`; verify laurel positions are better balanced, neither touches divider or HK text, no texture or Lua errors, same stats. This adjustment has NOT been client-tested; large HK values and different scales remain untested.
 - Automated Lua tests: NOT RUN. Full UI fidelity and MVP acceptance still outstanding.
+
+## Iteration #24 — owner screenshot review (2026-11-17)
+
+- Owner screenshot confirms the smaller 96×96, higher-positioned TGA laurels frame the HK number without reaching the ratios divider. Both render with alpha, correct mirrored orientation and no opaque square. HK=32, PvP deaths=8, HK/D=4.00; lower bands and portrait remain visible. **Limited visual PASS**, not final UI acceptance. No Lua errors reported, but automated checks and other UI scales not exercised.
+- Owner explicitly permits **more substantial iteration batches**, provided changes remain focused, traceable and owner-tested.
+
+## Iteration #25 — combined frame, header and rank ornamental pass; client QA pending (2026-11-17)
+
+- Code commit: `9544b6ce4d20bdce8e783f8ca2ddd0a5a1355ec1` (`UI/General.lua`).
+- **Outer frame:** added paired thin gold/dark vertical inset rails on both sides (within frame corners) to increase metallic depth, keeping the proven tooltip border and mirrored corner TGA.
+- **Title header:** added a subtle 470×49 feathered `section_plaque` texture under the dynamically rendered title, increased title 31→32 and added a restrained shadow. Maintained medallion, close button, and General/Hoy tabs and their click behavior.
+- **PvP rank ribbon:** removed the three disconnected mechanical line accents on both sides; replaced them with two small 44×44 mirrored instances of the client-tested `hk_laurel.tga` texture. Narrowed/recentered rank label within the existing ribbon so it stays distinct from side ornaments and left faction badge. Rank still says `Rango PvP · No disponible` until historical semantics have been verified; do not conflate the faction emblem with actual rank.
+- **No changes** to Lua statistics, HK/deaths labels, ratio logic, portrait, banners, lower two segmented bands, or saved character data. This pass introduces no new binary assets or unknown game API.
+- **Owner QA PENDING:** download latest main; `/reload`, `/ws`; inspect header title plate for clipping/layering, close button, both perimeter rails and four corners, rank label/badge/laurels for overlapping, no Lua errors. Confirm previous HK 32 / deaths 8 / HK-D 4.00 and the two bottom bands remain unaffected. Send screenshot.
+- **Automated Lua tests: NOT RUN.** Native-client iteration #25: NOT RUN. Full ornamental fidelity/pixel matching, long rank labels and alternative display scales remain unverified.
