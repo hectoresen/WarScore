@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "47"
+local UI_ITERATION = "48"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -517,8 +517,8 @@ local function build()
     -- and no isolated 2px vertical strokes at either end of the plaque.
     local backing = rankPlate:CreateTexture(nil, "BACKGROUND")
     backing:SetTexture("Interface\\Buttons\\WHITE8X8")
-    backing:SetVertexColor(0.045, 0.024, 0.018, 0.92)
-    backing:SetSize(403, 30)
+    backing:SetVertexColor(0.052, 0.029, 0.019, 0.90)
+    backing:SetSize(404, 32)
     backing:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
     local ribbon = rankPlate:CreateTexture(nil, "BORDER")
     ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
@@ -526,16 +526,26 @@ local function build()
     ribbon:SetSize(432, 44)
     ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
     ribbon:SetAlpha(0.92)
-    -- Deliberately omit side laurels: in the client they rendered as tiny
-    -- disconnected branches. The dark ribbon must remain understated.
+    -- Continuous metallic highlight and shadow within the ribbon.
+    -- Avoid isolated line ends, square orange tiles and side laurels.
+    local topGlint = rankPlate:CreateTexture(nil, "ARTWORK")
+    topGlint:SetTexture("Interface\\Buttons\\WHITE8X8")
+    topGlint:SetVertexColor(0.83, 0.57, 0.23, 0.78)
+    topGlint:SetSize(362, 1)
+    topGlint:SetPoint("TOP", rankPlate, "TOP", 0, -4)
+    local bottomInset = rankPlate:CreateTexture(nil, "BORDER")
+    bottomInset:SetTexture("Interface\\Buttons\\WHITE8X8")
+    bottomInset:SetVertexColor(0.50, 0.29, 0.10, 0.72)
+    bottomInset:SetSize(362, 1)
+    bottomInset:SetPoint("BOTTOM", rankPlate, "BOTTOM", 0, 5)
 
     -- Keep the ribbon art continuous: no disconnected gold strokes at its ends.
     -- The two-line caption and real faction crest remain above the artwork.
 
     -- The faction crest identifies the character but never claims a rank.
     local crestHolder = CreateFrame("Frame", nil, rankPlate, "BackdropTemplate")
-    crestHolder:SetSize(40, 40)
-    crestHolder:SetPoint("LEFT", rankPlate, "LEFT", 15, 0)
+    crestHolder:SetSize(39, 39)
+    crestHolder:SetPoint("LEFT", rankPlate, "LEFT", 14, 0)
     backdrop(crestHolder, 1)
     crestHolder:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 12 })
     crestHolder:SetBackdropBorderColor(0.78, 0.51, 0.19, 0.85)
@@ -550,9 +560,9 @@ local function build()
     -- Clean centered rank inscription: a small section name and an honest
     -- unavailable value, like the two-tier reference ribbon.
     -- Reserve a visible margin below the rank value and above the HK divider.
-    local rankCaption = label(rankPlate, "Rango PvP", 12, CREAM, 10, -4, 330, 14)
+    local rankCaption = label(rankPlate, "Rango PvP", 12, CREAM, 0, -4, 320, 14)
     rankCaption:SetTextColor(0.89, 0.70, 0.39)
-    fields.rank = label(rankPlate, "No disponible", 17, GOLD, 10, -19, 330, 19)
+    fields.rank = label(rankPlate, "No disponible", 17, GOLD, 0, -19, 320, 19)
     fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
     fields.rank:SetShadowOffset(1, -1)
     line(window, -341, 650)
