@@ -207,3 +207,17 @@ El usuario confirma en el panel nativo de WoW Forever: «Veces que te han matado
 También confirma **cero duelos realizados** y que el panel muestra 0 ganados/0 perdidos aunque `GetStatistic(319)` y `(320)` devuelvan `--`. **No ha jugado ningún campo de batalla**, lo que es coherente con los `--` de IDs 839 y 840; aún no está contrastado el valor numérico del panel BG. No puede hacer duelos ahora: no bloquear el desarrollo por esta prueba.
 
 **Pendiente crítico:** contrastar `GetStatistic(1487)=882` golpes de gracia con el panel nativo y explicar por qué supera las 32 HK; no calcular KB/D con ese contador hasta resolverlo. La coincidencia de estadísticas históricas entre API y panel en este personaje no garantiza automáticamente la cobertura de toda la vida del personaje en otros casos.
+
+## Decisión aprobada — ampliación de General (2026-11-17)
+
+**ÚNICAS cinco métricas nuevas autorizadas para la vista General** (además de las ya acordadas):
+
+1. **BG ganados:** `GetStatistic(840)`.
+2. **Win rate BG:** `GetStatistic(840) / GetStatistic(839) × 100`, si hay partidas y datos válidos.
+3. **Win rate duelos:** `GetStatistic(319) / (GetStatistic(319) + GetStatistic(320)) × 100`, si hay duelos y datos válidos.
+4. **Campo de batalla favorito:** BG con mayor número de partidas disputadas, usando IDs 53 (Valle de Alterac), 55 (Cuenca de Arathi), 52 (Garganta Grito de Guerra) y 64179 (Islas Lanza Negra).
+5. **Veces jugado el BG favorito:** valor del contador correspondiente.
+
+Presentar estas métricas en la **zona secundaria inferior** y mantener intacta la composición principal y el boceto de referencia. Esto define alcance funcional, **no aprueba una nueva maqueta**. No añadir las otras métricas propuestas (HK mundo, HK BG, duelos perdidos como tarjeta independiente, etc.) a General. Reservar nuevas estadísticas para futuras pestañas.
+
+**Sin actividad:** mostrar `—` en porcentajes y BG favorito cuando no exista denominador o partidas; no inventar porcentaje 0%. En empate de partidas máximas, no elegir arbitrariamente un favorito: mostrar empate o estado explícito pendiente de decisión visual. IDs de BG identificados en el cliente pero todavía sin valores positivos probados.
