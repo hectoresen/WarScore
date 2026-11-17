@@ -335,10 +335,12 @@ local function build()
     rankPlate:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16 })
     rankPlate:SetBackdropBorderColor(0.72, 0.46, 0.15, 0.96)
 
-    local rankInset = CreateFrame("Frame", nil, rankPlate)
+    -- Background texture, not a child Frame: it must never cover rank text.
+    local rankInset = rankPlate:CreateTexture(nil, "BACKGROUND")
+    rankInset:SetTexture("Interface\\Buttons\\WHITE8X8")
+    rankInset:SetVertexColor(0.12, 0.065, 0.025, 0.8)
     rankInset:SetPoint("TOPLEFT", rankPlate, "TOPLEFT", 8, -5)
     rankInset:SetPoint("BOTTOMRIGHT", rankPlate, "BOTTOMRIGHT", -8, 5)
-    backdrop(rankInset, 0.45)
     -- Double-tier metallic trim frames the ribbon, with short gold endcaps.
     accent(rankPlate, "TOP", "TOP", 0, -2, 350, 2, { 0.86, 0.58, 0.19 })
     accent(rankPlate, "BOTTOM", "BOTTOM", 0, 2, 350, 2, { 0.69, 0.42, 0.12 })
