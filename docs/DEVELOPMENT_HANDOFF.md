@@ -349,3 +349,19 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - **Critical for future agents:** after EVERY addon code or referenced media change, rebuild and replace `dist/WarScore.zip` BEFORE giving the download link; docs-only changes do not require rebuilding. `main.zip` is NOT the addon distribution.
 - **Next owner QA:** download just the clean ZIP, unzip its `WarScore` folder under `Interface/AddOns/`, replace previous folder, run `/reload` then `/ws`. Check that missing development files do not affect runtime, HUD loads, new death-section cleanup and cropped ribbon render correctly, all six lower stats and historical numbers remain visible, no Lua errors. Send screenshot.
 - No in-game client validation of this last cleanup/clean ZIP yet. Automated tests NOT RUN, full visual parity NOT accepted.
+
+## Iteration #28 clean distribution — owner screenshot review (2026-11-17)
+
+- Owner screenshot of the clean `WarScore.zip` confirms the addon launches in Forever; the layout is HK → PvP deaths → ratios → two lower rows, with Horde banners, portrait, rank ribbon and counters HK=32, deaths=8, HK/D=4.00 visible. This visually validates the clean packaging flow at least for the tested Horde character.
+- The floating death brackets were removed and no longer appear. Ribbon is readable, though exact mockup fidelity is still pending. Owner explicitly wants **PvP deaths smaller and less visually dominant** while keeping the section visible, plus continued styling work.
+- No Lua errors reported in screenshot, but automated test status remains unverified. Alliance banner, nonempty BG history and large numbers still untested.
+
+## Iteration #29 — subdued PvP deaths and visual consistency (2026-11-17)
+
+- UI commit `4648656484625a85eee6a4870ca85eb67d208dbc` on `main`.
+- Deaths secondary KPI: softened the `section_plaque` (570×108 alpha 0.72 → 500×91 alpha 0.48), reduced the title 20→17 pixels with muted dusty-red and the number 52→39 pixels, moved title/value slightly down, and softened the text shadow. HK continues to dominate visually. The order HK → deaths → HK/D and KB/D is untouched.
+- Removed tiny isolated gold studs from the rank ribbon (appeared like rendering artifacts); kept rank label and added subtle text shadow. Header name increased 32→33. Lower band icons now have dark 48×48 mounts with 40×40 icons for consistent visual weight across six segments; values and bindings unchanged.
+- Neither Lua statistics nor SavedVariables, TGA artwork, faction selection, portrait masking, lower-band layout or tab behavior changed. No rejected sword medallion or redundant '(i)' was restored.
+- **Clean distribution rebuilt:** ZIP commit `bc269a4c1c601928bead438a1173d0931d73ca18` updates `dist/WarScore.zip` on `main`, with one `WarScore/` top-level directory holding 15 files: 1 TOC, 5 Lua and 9 TGA. GitHub confirms the new binary SHA `d7e528a5fa874c255e281cd5eb12d61c1dad8131`. The ZIP was constructed with correct local headers, central directory, CRC32 values and entry counts before upload. Note: GitHub contents connector returned zero bytes on the attempted readback for this updated ZIP, so independent remote byte revalidation was not possible this time; do not claim it passed a separate downloaded ZIP check.
+- **Owner QA pending:** install `https://github.com/hectoresen/WarScore/raw/refs/heads/main/dist/WarScore.zip`, `/reload`, `/ws`. Check the deaths KPI feels appropriately secondary, all six lower icons render on dark mounts without overlap, rank/header remain legible, and original HK=32, deaths=8, HK/D=4.00 persist. Confirm no Lua errors. The user should receive ONLY the clean ZIP, never source `main.zip`.
+- Automated Lua tests NOT RUN; client test for iteration #29 NOT RUN; overall visual fidelity NOT approved.
