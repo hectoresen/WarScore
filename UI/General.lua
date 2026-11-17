@@ -176,10 +176,27 @@ local function build()
     portrait:SetSize(108, 108)
     portrait:SetPoint("CENTER")
     fields.portrait = portrait
-    -- Overlay occludes the square portrait corners while leaving a transparent
-    -- circular aperture; unlike SetMaskTexture this works on older clients.
+    -- Prefer a real alpha mask: it removes the square portrait corners without
+    -- painting an opaque square over the varying background.
+    -- The Forever client may not expose this API; keep the tested old overlay.
+    local maskApplied = false
+    if type(portraitRing.CreateMaskTexture) == "function"
+        and type(portrait.AddMaskTexture) == "function" then
+        local ok = pcall(function()
+            local mask = portraitRing:CreateMaskTexture(nil, "ARTWORK")
+            mask:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_mask")
+            mask:SetSize(108, 108)
+            mask:SetPoint("CENTER", portrait, "CENTER", 0, 0)
+            portrait:AddMaskTexture(mask)
+        end)
+        maskApplied = ok
+    end
     local ring = portraitRing:CreateTexture(nil, "OVERLAY")
-    ring:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring")
+    if maskApplied then
+        ring:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring_transparent")
+    else
+        ring:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring")
+    end
     ring:SetSize(126, 126)
     ring:SetPoint("CENTER", portraitRing, "CENTER", 0, 0)
     fields.name = label(window, "—", 24, CREAM, 0, -233, 360, 34)
