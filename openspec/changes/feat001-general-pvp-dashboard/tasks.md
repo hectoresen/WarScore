@@ -118,3 +118,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Implemented four outer corners, multi-layer header, diamond divider ornaments and section shading in iteration 12.
 - [ ] Owner tests iteration 12 in Forever, checks Lua errors (especially `Texture:SetRotation`), layer order and overall appearance.
 - [ ] Continue with actual painted ornamental assets and compare against reference PNG; no final UI acceptance.
+
+## Iteration 12 screenshot / iteration 13 authored texture batch
+
+- [x] Owner screenshot: iteration 12 corners/diamonds/section shading render; **issue** harsh rectangular HK/death backgrounds.
+- [x] Add original TGA ornate corner and feathered section plaque assets; integrate four mirrored corners, softer HK/death sections, header detailing and six card studs.
+- [ ] Owner tests iteration 13: texture loading, corner mirroring, feathering, text layering and no Lua errors.
+- [ ] Continue with approved reference fidelity; no final visual acceptance.
