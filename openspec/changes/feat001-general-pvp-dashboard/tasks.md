@@ -174,3 +174,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 21 increases HK typography and adds subtle paired gold flourishes/FontString shadows, without altering data.
 - [ ] Owner tests iteration 21 in Forever, checking large HK numbers, side decoration, overlaps, Lua errors and baseline stats.
 - [ ] Original laurel artwork, full reference-image parity, deterministic Lua tests and cross-resolution testing remain pending.
+
+## Iteration 21 screenshot / iteration 22 HK laurel pass
+
+- [x] Owner screenshot: larger HK number and title visible, stats unchanged; horizontal side strokes appear disconnected and don't resemble the reference laurels.
+- [x] Iteration 22: replace side bars with mirrored small leaf/stem ornaments around HK, preserving text and statistics.
+- [ ] Owner tests iteration 22 ornament visibility, no clipping, and absence of Lua errors.
+- [ ] Create dedicated transparent painted laurel textures if native primitives remain insufficient; full design parity and automated tests outstanding.
