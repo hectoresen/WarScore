@@ -82,3 +82,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - Commit `b19a011`: replace rectangular flags with layered ragged-edge silhouettes built from known-working WHITE8X8 textures, keeping faction icons. This is a provisional visual improvement, not actual alpha-textured art.
 - [ ] Owner tests `/ws` and sends screenshot of ragged flags.
 - [ ] Source proper original TGA banner textures and verify compatibility; add circular portrait frame and ornamental details.
+
+## Iteration 7 owner QA and iteration 8 TGA test
+
+- **Iteration 7 screenshot:** banners remain visually flat red rectangles despite strip-based ragged hem. Do not repeat strip approach.
+- [x] Add original 128×256 32-bit transparent TGA `Media/General/banner_horde.tga` and integrate it into `UI/General.lua`.
+- [ ] **Owner tests iteration 8** in Forever: custom cloth alpha, ragged bottom edge, faction icon, no Lua errors. Texture compatibility NOT YET VERIFIED.
+- [ ] Add Alliance cloth variant, circular portrait framing, ornamental frame and screenshot QA.
