@@ -298,3 +298,11 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Confirm clean GitHub Actions package regenerated after iteration 34 changes; verify shipped `General.lua` matches source.
 - [ ] Owner tests iteration 34 in Forever and shares screenshot; assess long label clipping, icon/value spacing, rivets, banner edges, errors.
 - [ ] Full original reference parity, automated Lua tests and additional faction/scale testing outstanding.
+
+## Iteration 34 screenshot / iteration 35 band-frame cleanup
+
+- [x] Owner screenshot shows iteration 34 style with new lower icons and values, but divider rivets resemble isolated pixels; historical counters remain HK=32/deaths=8/HK-D=4.00.
+- [x] Iteration 35 removes detached divider rivets and ribbon endcap strokes, adds continuous lower frame glint and uses short divider caps; no changes to statistics.
+- [x] CI rebuilt and ZIP central directory/15 entries/current Lua CRC independently verified; deliver only `dist/WarScore.zip`.
+- [ ] Owner tests iteration 35 in Forever, checks `/ws version`, visible frame finish and absence of Lua errors.
+- [ ] Full mockup matching, automated Lua QA and Alliance/varied UI-scale coverage outstanding.
