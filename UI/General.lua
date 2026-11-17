@@ -445,8 +445,9 @@ local function build()
     for _, side in ipairs({ -1, 1 }) do
         local laurel = window:CreateTexture(nil, "ARTWORK")
         laurel:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\hk_laurel")
-        laurel:SetSize(108, 108)
-        laurel:SetPoint("TOP", window, "TOP", side * 190, -384)
+        -- Lift and slightly compact the wreaths so they frame HK, not the ratio divider.
+        laurel:SetSize(96, 96)
+        laurel:SetPoint("TOP", window, "TOP", side * 183, -371)
         if side == 1 then
             laurel:SetTexCoord(1, 0, 0, 1)
         end
