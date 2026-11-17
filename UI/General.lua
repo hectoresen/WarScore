@@ -89,6 +89,7 @@ local function ornament(parent, side)
     end
     if not masked then
         -- Keep the fallback conservative on clients without masking support.
+        icon:ClearAllPoints()
         icon:SetSize(52, 52)
         icon:SetPoint("TOP", banner, "TOP", 0, -43)
     end
@@ -435,6 +436,21 @@ local function build()
     ribbon:SetAlpha(0.98)
 
     -- Keep ribbon ends clean: the tiny studs read as isolated pixels in game.
+
+    -- The faction crest identifies the character but never claims a rank.
+    local crestHolder = CreateFrame("Frame", nil, rankPlate, "BackdropTemplate")
+    crestHolder:SetSize(44, 44)
+    crestHolder:SetPoint("LEFT", rankPlate, "LEFT", 14, 0)
+    backdrop(crestHolder, 1)
+    crestHolder:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 12 })
+    crestHolder:SetBackdropBorderColor(0.82, 0.55, 0.20, 0.96)
+    local crest = crestHolder:CreateTexture(nil, "ARTWORK")
+    local rankFaction = UnitFactionGroup("player")
+    crest:SetTexture(rankFaction == "Alliance"
+        and "Interface\\Icons\\INV_BannerPVP_02"
+        or "Interface\\Icons\\INV_BannerPVP_01")
+    crest:SetSize(30, 30)
+    crest:SetPoint("CENTER", crestHolder, "CENTER", 0, 0)
 
     -- Clean centered rank inscription: a small section name and an honest
     -- unavailable value, like the two-tier reference ribbon.
