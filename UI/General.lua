@@ -126,8 +126,8 @@ local function sectionPlaque(parent, y, width, height, alpha)
     return shade
 end
 
--- Iteration 15: each lower statistics row is a single ornamental band.
--- Each segment owns only content; one shared outer border keeps the row cohesive.
+-- Iteration 16: refine the tested two-band layout without changing data bindings.
+-- All ornament layers use native textures confirmed by earlier client screenshots.
 local function statBand(parent, y, definitions)
     local band = CreateFrame("Frame", nil, parent, "BackdropTemplate")
     band:SetSize(704, 112)
@@ -136,24 +136,29 @@ local function statBand(parent, y, definitions)
     band:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 18 })
     band:SetBackdropBorderColor(0.76, 0.51, 0.20, 0.96)
 
-    -- Inner metallic rules and studs are shared by the entire band.
-    local function bandRule(point, height, offset)
+    local function trim(point, inset, offset, height, color)
         local rule = band:CreateTexture(nil, "BORDER")
         rule:SetTexture("Interface\\Buttons\\WHITE8X8")
-        rule:SetVertexColor(0.78, 0.51, 0.16, 0.88)
+        rule:SetVertexColor(unpack(color))
         rule:SetHeight(height)
-        rule:SetPoint(point .. "LEFT", band, point .. "LEFT", 9, offset)
-        rule:SetPoint(point .. "RIGHT", band, point .. "RIGHT", -9, offset)
+        rule:SetPoint(point .. "LEFT", band, point .. "LEFT", inset, offset)
+        rule:SetPoint(point .. "RIGHT", band, point .. "RIGHT", -inset, offset)
     end
-    bandRule("TOP", 2, -4)
-    bandRule("BOTTOM", 2, 4)
+    -- Paired metallic rails give the frame a slight inset/bevel without a new asset.
+    trim("TOP", 9, -4, 2, { 0.92, 0.64, 0.22, 0.95 })
+    trim("TOP", 13, -8, 1, { 0.38, 0.22, 0.08, 0.85 })
+    trim("BOTTOM", 9, 4, 2, { 0.71, 0.43, 0.13, 0.95 })
+    trim("BOTTOM", 13, 8, 1, { 0.32, 0.20, 0.07, 0.85 })
 
     for _, side in ipairs({ "LEFT", "RIGHT" }) do
-        local stud = band:CreateTexture(nil, "OVERLAY")
-        stud:SetTexture("Interface\\Buttons\\WHITE8X8")
-        stud:SetVertexColor(0.98, 0.73, 0.30, 1)
-        stud:SetSize(5, 5)
-        stud:SetPoint("TOP" .. side, band, "TOP" .. side, side == "LEFT" and 10 or -10, -10)
+        for _, vertical in ipairs({ "TOP", "BOTTOM" }) do
+            local stud = band:CreateTexture(nil, "OVERLAY")
+            stud:SetTexture("Interface\\Buttons\\WHITE8X8")
+            stud:SetVertexColor(0.98, 0.73, 0.30, 1)
+            stud:SetSize(5, 5)
+            stud:SetPoint(vertical .. side, band, vertical .. side,
+                side == "LEFT" and 10 or -10, vertical == "TOP" and -10 or 10)
+        end
     end
 
     local values = {}
@@ -163,19 +168,28 @@ local function statBand(parent, y, definitions)
         segment:SetSize(segmentWidth, 108)
         segment:SetPoint("TOPLEFT", band, "TOPLEFT", (i - 1) * segmentWidth, -2)
         if i > 1 then
+            local dividerX = (i - 1) * segmentWidth
             local divider = band:CreateTexture(nil, "BORDER")
             divider:SetTexture("Interface\\Buttons\\WHITE8X8")
-            divider:SetVertexColor(0.66, 0.42, 0.15, 0.9)
-            divider:SetSize(2, 86)
-            divider:SetPoint("CENTER", band, "LEFT", (i - 1) * segmentWidth, 0)
+            divider:SetVertexColor(0.81, 0.53, 0.18, 0.92)
+            divider:SetSize(2, 84)
+            divider:SetPoint("CENTER", band, "LEFT", dividerX, 0)
+            local bevel = band:CreateTexture(nil, "BORDER")
+            bevel:SetTexture("Interface\\Buttons\\WHITE8X8")
+            bevel:SetVertexColor(0.23, 0.13, 0.06, 0.95)
+            bevel:SetSize(1, 84)
+            bevel:SetPoint("CENTER", band, "LEFT", dividerX + 3, 0)
         end
+
         local icon = segment:CreateTexture(nil, "ARTWORK")
         icon:SetTexture(definition.icon)
-        icon:SetSize(34, 34)
-        icon:SetPoint("LEFT", segment, "LEFT", 18, 0)
-        label(segment, definition.title, 11, CREAM, 30, -14, segmentWidth - 74, 34)
-        local value = label(segment, "—", definition.valueSize or 26, definition.color or GOLD,
-            30, -54, segmentWidth - 74, 40)
+        icon:SetSize(42, 42)
+        icon:SetPoint("LEFT", segment, "LEFT", 13, 0)
+
+        -- Text occupies a separate column, leaving the icon fully visible.
+        label(segment, definition.title, 12, CREAM, 33, -12, segmentWidth - 80, 37)
+        local value = label(segment, "—", definition.valueSize or 28,
+            definition.color or GOLD, 33, -52, segmentWidth - 80, 47)
         values[i] = value
     end
     return values
