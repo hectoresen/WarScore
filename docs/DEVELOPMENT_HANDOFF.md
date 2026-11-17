@@ -155,3 +155,12 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - **Remaining differences:** icons are relatively small; headings in the lower bands need stronger hierarchy; borders are simpler than the ornate beveled reference. Favorite BG long-name content and positive battleground values remain untested in this screenshot.
 - **Suggested next pass:** retain the two-band structure; refine content hierarchy and ornamental border styling without altering data sources or recreating six separate cards. All other open visual work remains pending.
 - **Automated tests NOT RUN**; no claim of pixel parity or full client QA.
+
+## Iteration #16 — lower-band visual polish, awaiting owner client QA (2026-11-17)
+
+- Implementation commit: `e76c704fb15e417f322dc02881434173d88faa02` (`UI/General.lua`). Iteration #15 owner screenshot confirmed both bands were visible and data remained stable, but final fidelity was not accepted.
+- Kept both segmented bands and all six original data bindings. Enlarged native icons from 34 to 42 logical pixels; increased title typography 11 to 12 and regular value size 26 to 28, with a dedicated text column. Favorite BG retains custom 16 font size.
+- Added paired metallic horizontal inset rules, dark bevel beside both vertical dividers, and studs on all four band corners. Uses existing native `WHITE8X8` and tooltip border; no new image textures or WoW API dependencies.
+- **NOT RUN:** automated Lua syntax/runtime tests (no Lua binary in execution environment). **NOT YET TESTED:** Forever client screenshots and positive/long-name BG examples. This commit is an unverified visual change, not final acceptance.
+- **Owner QA:** download latest main; install, `/reload`, `/ws`. Check bands, gold rails, enlarged icons, top/bottom studs, no title/value/icon overlap, especially the longer center and favorite labels; verify numeric data unchanged and no Lua error. Capture screenshot.
+- Next action: use screenshot to decide whether to adjust band text spacing or continue with painted header/rank assets. Preserve the owner-approved reference layout and never claim pixel parity without matching-scale comparison.
