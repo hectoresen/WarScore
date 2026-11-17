@@ -164,3 +164,15 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - **NOT RUN:** automated Lua syntax/runtime tests (no Lua binary in execution environment). **NOT YET TESTED:** Forever client screenshots and positive/long-name BG examples. This commit is an unverified visual change, not final acceptance.
 - **Owner QA:** download latest main; install, `/reload`, `/ws`. Check bands, gold rails, enlarged icons, top/bottom studs, no title/value/icon overlap, especially the longer center and favorite labels; verify numeric data unchanged and no Lua error. Capture screenshot.
 - Next action: use screenshot to decide whether to adjust band text spacing or continue with painted header/rank assets. Preserve the owner-approved reference layout and never claim pixel parity without matching-scale comparison.
+
+## Iteration #16 — owner screenshot PASS for visual continuity (2026-11-17)
+
+- Owner screenshot confirms both segmented statistic bands still render after the icon and border refinements. Increased icon size, dual rails, dividers and corner studs are visible; no obvious text/icon collisions in shown empty-stat states. HK=32, PvP deaths=8, HK/D=4.00 unchanged. This is limited visual QA only, not full UI acceptance. Long favorite BG names and nonempty BG values remain untested.
+
+## Iteration #17 — faction rank ribbon; client QA pending (2026-11-17)
+
+- Implementation commits: `e0439827811041940853f51dd9cba95bee60b4cf` and layer correction `5c5cae29fdf579ad4ce30f84ee57b3b81a100c2c`.
+- Modified only `UI/General.lua`. The rank plaque is now 452 × 38 logical pixels with dark inset BACKGROUND texture, double horizontal metallic trim, a small native faction emblem in a 48 × 48 bordered badge overlapping its left side, and short symmetrical gold side details. Still displays `Rango PvP · No disponible`; the emblem signifies faction **not an awarded rank**. No change to statistical APIs, data sources, or lower bands.
+- Prevented a known child-frame stacking hazard by rendering the inset as a parent BACKGROUND texture rather than a child Frame (which could occlude rank text). Uses previously working native UI textures; however this exact composition has not been tested in Forever.
+- **QA status:** native-client test NOT RUN, automated Lua tests NOT RUN, overall visual acceptance still pending. No claim that laurel or ceremonial ribbon parity is achieved.
+- **Owner QA next:** install latest main, run `/reload` and `/ws`; check rank text fully legible, emblem and frame centered without collisions with the level text or gold divider underneath, correct Horde icon, unaffected portrait and bands, no Lua error. Send screenshot. If badge overlaps/visually weakens the rank label, iterate geometry; keep rank unavailable until API is verified.
