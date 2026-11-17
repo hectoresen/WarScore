@@ -484,3 +484,16 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - Both strips retain the exact two-band / three-segment architecture, TGA corner ornaments, six data bindings, original icons and all tab/nav/core metrics. Inner icon mounts are slightly reduced to de-emphasize blockiness; caption/value columns adjusted in lockstep. No extra new assets, new API dependence or calculations added.
 - **Owner QA pending:** install latest CI-built clean ZIP, `/reload`, `/ws version` should display 37, then `/ws`. Check that the first strip looks stronger than the second and values/text still fit all six segments; observe 32 HK/9 deaths/3.56 HK-D if same character state. Other values may evolve naturally, so do not hardcode screenshots as test assertions.
 - Client iteration 37 NOT RUN. Lua automated tests, Alliance view, nonempty BG favorite and alternate UI scales remain untested. Preserve this handoff for the next agent, and do not equate visual checks with final acceptance.
+
+## Iteration #37 — owner screenshot review (2026-11-17)
+
+- Screenshot confirms two unified lower bands with an intentional difference in prominence between totals and secondary insights. No apparent clipping with the wrapped `CAMPOS DE BATALLA JUGADOS` or `CAMPO DE BATALLA FAVORITO` headings in shown empty-stat state. HK=32, PvP deaths=9, HK/D=3.56, and unknown KB/D remain visible and internally consistent. This is a **limited visual QA PASS**, not complete gameplay QA or final design approval.
+- Remaining visual mismatch: the six small inventory icons still look like squared tiles inside rectangular mounts, unlike the freer ornamental icon treatment of the reference.
+
+## Iteration #38 — softer icon presentation and restrained band glint (2026-11-17)
+
+- Code commit `1ca616dde82c97af029cf26fa64570704da69e9a` modifies `UI/General.lua`. `UI_ITERATION` is now `38`.
+- Reduced the hard-edged framing of the six native icon tiles: replaced the layered icon square and thin vertical gold line with a single low-opacity 50×50 recess, a 48×48 icon, and slight cropping of the outer inventory icon border via `SetTexCoord(0.075, 0.925, 0.075, 0.925)`. Upper totals retain greater icon opacity than secondary insights. Adjusted label/value columns together by 1–2 logical pixels to maintain breathing room; reduced inner top gold glint from 624 to 600 px and softened its alpha.
+- No data changes, no new artwork or client-only APIs, no movement of HK/PvP deaths/ratio sections, and no impact on two 3-column bands or their dynamic text bindings. Existing banner and rank artwork unchanged.
+- **QA pending:** owner must replace the entire addon folder with the CI-produced clean package, run `/reload`, verify `/ws version` shows 38, and screenshot `/ws`. Inspect six icons: are square icon borders less obvious, is contrast sufficient on both strips, are labels/values intact, and are there any Lua errors? Long favorite BG values and alternative UI scales remain untested.
+- **CI packaging requirement:** only share the verified new `dist/WarScore.zip` after the updated UI CRC matches source; never send the source-repository archive.
