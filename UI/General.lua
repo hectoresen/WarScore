@@ -396,8 +396,10 @@ local function build()
 
     local ribbon = rankPlate:CreateTexture(nil, "BACKGROUND")
     ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
-    -- Fit the ribbon within the rank area to avoid clipped angular tips.
-    ribbon:SetSize(452, 52)
+    -- Crop the old striped terminal ornaments, which looked like rendering errors.
+    -- The remaining central bevel provides a quieter rank ribbon silhouette.
+    ribbon:SetTexCoord(0.09, 0.91, 0.10, 0.90)
+    ribbon:SetSize(446, 46)
     ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
     ribbon:SetAlpha(0.98)
 
@@ -466,15 +468,7 @@ local function build()
     fields.deaths:SetShadowColor(0.42, 0.05, 0.035, 0.85)
     fields.deaths:SetShadowOffset(2, -2)
 
-    -- Fine metallic brackets keep the second lifetime counter visually paired
-    -- with HK, without competing with the more prominent HK laurels.
-    for _, side in ipairs({ -1, 1 }) do
-        local bracket = window:CreateTexture(nil, "ARTWORK")
-        bracket:SetTexture("Interface\\Buttons\\WHITE8X8")
-        bracket:SetVertexColor(0.56, 0.29, 0.13, 0.75)
-        bracket:SetSize(34, 2)
-        bracket:SetPoint("TOP", window, "TOP", side * 182, -553)
-    end
+    -- No floating side strokes: the soft plaque and red number carry this KPI.
 
     line(window, -590, 650)
     ornamentDiamond(window, -588, 8)
