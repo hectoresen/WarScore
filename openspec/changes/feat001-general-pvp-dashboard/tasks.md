@@ -226,3 +226,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Iteration 28: move death section below HK, move ratios lower, update separators within existing window height; narrow rank-ribbon rendered dimensions.
 - [ ] Owner validates iteration 28 in Forever with screenshot: no overlap, stable numbers, readability of rank, ratios and lower bands.
 - [ ] Continue original art fidelity, Alliance tests, automated Lua tests and UI-scale/large-value QA; no acceptance or archive yet.
+
+## Iteration 28 — additional styling before first client QA
+
+- [x] Owner requested a more complete iteration before testing.
+- [x] Second iteration 28 commit adds stronger death-number hierarchy, gold ratio headings/cream values, softer captions, subtle rank studs, and lower-band value shadows while preserving HK → deaths → ratios ordering.
+- [ ] Owner tests the combined iteration 28 changes in one Forever screenshot, checks layout, value readability, rank ribbon ends, no errors and unchanged historical counters.
+- [ ] Native client test and automated Lua tests are still NOT RUN; maintain open spec until accepted.
