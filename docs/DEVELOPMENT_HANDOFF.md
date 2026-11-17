@@ -203,3 +203,17 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - No statistical data, tab behaviors, rank state, banners, or two-band layout changed.
 - **Owner QA pending:** download latest main, `/reload`, `/ws`; check both the swords icon and its dark disc are visibly circular with no square edges, and the medallion remains correctly aligned. Watch for missing icon/black artifacts and confirm existing metrics are unaffected. Send screenshot. Exact masks not yet client tested.
 - **Automated tests NOT RUN;** in-game iteration #19 QA NOT RUN; full visual fidelity and MVP acceptance remain outstanding.
+
+## Iteration #19 — owner screenshot review (2026-11-17)
+
+- Owner screenshot shows the crossed-swords icon visually clipped within the circular gold medallion, with the previous square framing no longer visible. Portrait, banners, rank unavailable label and segmented lower bands remain visible; HK=32, PvP deaths=8 and HK/D=4.00 unchanged.
+- **Limited visual PASS** for circular medallion appearance; underlying mask API path not instrumented, no automated tests, and no final acceptance of painted reference parity.
+- **Observed issue:** the inactive "Hoy" tab again appears red in this screenshot, likely caused by the native `UIPanelButtonTemplate` state textures competing with the custom skin. General's active styling is not clearly distinguishable.
+
+## Iteration #20 — independent tab styling, awaiting owner QA (2026-11-17)
+
+- Code commit: `c1c634b69ceba8afec2afe9bf3a27b89dcf8e2b8` in `UI/General.lua`.
+- Replaced `UIPanelButtonTemplate` with plain native `Button` frames for General and Hoy. Rebuilt `skinTab` with explicit native `WHITE8X8` background and gold perimeter rules, plus dedicated FontString. General has an amber/dark active panel; Hoy has a muted charcoal inactive panel. General remains visually selected without invoking `:Disable()`; Hoy keeps its existing placeholder click message.
+- The icon/medallion, stats, faction banners, rank ribbon, portrait and segmented lower rows are unchanged.
+- **Owner QA pending:** install current main, `/reload`, `/ws`, verify General appears selected, Hoy does NOT appear bright red, both labels are legible, Hoy click still shows coming-soon message, and no Lua error appears. Send screenshot.
+- Native-client iteration 20: NOT RUN. Automated Lua tests: NOT RUN (Lua interpreter unavailable). Do not mark overall design or MVP accepted.
