@@ -33,7 +33,13 @@ jobs:
           p = Path("dist/WarScore.zip")
           with ZipFile(p) as z:
               names = z.namelist()
-              assert len(names) == 15, f"Unexpected file count: {len(names)}"
+              # Do not hardcode asset counts: new alpha-cutout art is expected.
+              from importlib.util import spec_from_file_location, module_from_spec
+              spec = spec_from_file_location("package_addon", "tools/package_addon.py")
+              module = module_from_spec(spec)
+              spec.loader.exec_module(module)
+              expected = {"WarScore/" + str(p).replace("\\", "/") for p in module.source_files()}
+              assert set(names) == expected, f"Missing/excess runtime files: {set(names) ^ expected}"
               assert all(n.startswith("WarScore/") for n in names)
               assert all(not any(part in n.lower() for part in ["openspec", "docs/", "tools/"]) for n in names)
               assert z.testzip() is None
