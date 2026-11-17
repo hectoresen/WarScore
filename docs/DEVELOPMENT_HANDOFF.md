@@ -1,6 +1,6 @@
 # WarScore — live development handoff
 
-**Last updated:** 2026-11-17 (iteration 13 authored TGA ornament batch; awaiting owner QA).
+**Last updated:** 2026-11-17 (iteration 14 client QA pending).
 
 ## Read in this order
 1. `AGENTS.md`, `openspec/README.md` — lightweight SDD and approval boundaries.
@@ -129,3 +129,11 @@ Four divider diamonds and outer metallic corner lines render; main HK and death 
 - Commit `c45e0bdfa25047957fd0477dda44e69f73073224`: replaced all four simple corner L-shapes with mirrored ornate corner textures; replaced abrupt HK/death rectangular shading with softer feathered art; enhanced header horizontal metalwork; added small gold studs on all six cards. Historical data, portrait masking and banner textures unchanged.
 - **Next owner QA:** update from main, `/reload`, `/ws`. Inspect four corners (correct mirrored orientation and texture loading), HK/death soft plaques (no harsh rectangles or obscured labels), header accents, card studs and Lua errors. If textures don't load, inspect paths and TGA alpha. No final visual parity claim.
 - **Further planned work:** source and commit exact approved mockup PNG; produce authored title/header frame and WoW-like tabs, integrated rank ribbon and proper faction art, and consider fewer/more compact lower cards without removing approved metrics. Maintain large meaningful iterations.
+
+## Iteration #13 — owner screenshot PASS with corner clipping issue
+
+Owner screenshot: new corner TGA, soft section plaques and card studs render; corners visually extend outside the outer frame and clip at screen edges. Stats remain HK=32, deaths=8, HK/D=4.00; banners and circular portrait stable. Screenshot in conversation, not repo.
+
+## Iteration #14 — visual batch committed, awaiting owner screenshot
+
+Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners by 8 logical pixels from frame edges; replace default General/Hoy grey/red button appearance with a custom dark-and-gold tab skin using native texture layers; add layered metallic top/bottom rules to PvP rank plate. Existing HK/death soft plaques and stats untouched. **NOT TESTED in Forever**. Check corner clipping, tab labels/selected state, rank text, any Lua errors. Today's tab remains intentionally a non-functional placeholder and should not appear active. Next large batch: approved source mockup PNG, painted ornamental frame/title and true faction-specific flags. No full UI approval yet.
