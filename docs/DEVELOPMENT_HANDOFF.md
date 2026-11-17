@@ -176,3 +176,16 @@ Commit `1bac348a3b3011ebcd8704d00b8e2b253d4a0321`: inset four ornate TGA corners
 - Prevented a known child-frame stacking hazard by rendering the inset as a parent BACKGROUND texture rather than a child Frame (which could occlude rank text). Uses previously working native UI textures; however this exact composition has not been tested in Forever.
 - **QA status:** native-client test NOT RUN, automated Lua tests NOT RUN, overall visual acceptance still pending. No claim that laurel or ceremonial ribbon parity is achieved.
 - **Owner QA next:** install latest main, run `/reload` and `/ws`; check rank text fully legible, emblem and frame centered without collisions with the level text or gold divider underneath, correct Horde icon, unaffected portrait and bands, no Lua error. Send screenshot. If badge overlaps/visually weakens the rank label, iterate geometry; keep rank unavailable until API is verified.
+
+## Iteration #17 — owner screenshot visual review (2026-11-17)
+
+- Screenshot confirms the rank plaque, left Horde emblem and unavailable-rank label are visible in Forever. Main counters remain HK=32, PvP deaths=8, HK/D=4.00; both segmented lower rows still render. No obvious blocking overlap with adjacent elements. Short gold strokes at the right of the plaque appear less like the approved ornate ribbon; further asset-based polish remains pending.
+- **LIMITED VISUAL PASS**, not final owner acceptance; the PvP rank is still correctly unavailable and no automated tests were performed.
+
+## Iteration #18 — crossed-swords header medallion, awaiting owner QA (2026-11-17)
+
+- Implementation commit: `798950d80103c68e42a9c06663caa76be75e00c5` in `UI/General.lua`.
+- Added an ornamental crossed-swords medallion overlapping the top-left part of the header, using a native `Ability_DualWield` icon and the existing client-tested transparent portrait-ring TGA. It is purely decorative, not a rank indication. The new element intentionally avoids introducing fresh binary assets or new client API dependencies.
+- Shifted the General/Hoy tab pair rightward from x=30 to x=115 so the new medallion does not occlude the selected tab. All data bindings, portrait, banner and rank rendering, lower bands, and tab click behavior remain unchanged.
+- **QA pending:** install latest main; `/reload` then `/ws`. Check the medallion texture loads, the crossed swords remain visually centered, there is no square/opaque halo outside the circular ring, tabs remain clickable/readable, and title, corners, portrait and close control remain unobstructed. Especially inspect the medallion's dark square backing at 46×46 relative to the ring aperture. Send screenshot.
+- **Tests:** automated Lua syntax/runtime NOT RUN (no Lua binary available); no Forever-client QA for iteration 18 yet. Do not claim visual fidelity to the original ornate medallion; this is an intermediate step with native icon art.
