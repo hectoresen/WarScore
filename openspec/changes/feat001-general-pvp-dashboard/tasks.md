@@ -340,3 +340,12 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Owner tests `/ws version` 39 and sends screenshot; accept banner only if integrated mark actually resembles faction heraldry naturally.
 - [ ] If mark is weak or still sticker-like, **remove banner symbol** rather than returning to icon overlay; finalize Alliance art separately.
 - [ ] Longer value layouts, alternate UI scale, Lua automated tests and mockup fidelity outstanding.
+
+## Iteration 39 screenshot / iteration 40 integrated cloth plus icon repair
+
+- [x] Owner screenshot confirms emblem integrated into fabric but too dark; lower band icons are visibly cropped/zoomed.
+- [x] New original woven Horda cloth TGA with enhanced pigment contrast and fabric-edge wear, no separate icon.
+- [x] Restore full 0..1 texcoords for six stat icons, reduce mount/tile dominance, modestly rebalance rank crest and caption; `/ws version` now 40.
+- [ ] Verify CI-generated clean ZIP matches source and includes new woven TGA, then owner tests in Forever.
+- [ ] Owner judges whether integrated heraldry is acceptable; if not, consider cleaner logo-less cloth rather than reverting to pasted native inventory icon.
+- [ ] Full reference art, Alliance integration and automated Lua/scale/data scenarios remain pending.
