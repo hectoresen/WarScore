@@ -55,3 +55,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Owner tests commit `f76b559`: WarScore title and rank readable, all six card borders visible, (i) glyphs render without squares.
 - [ ] Next: proper circular portrait and actual ornate texture assets; screenshot comparison with source mockup (PNG not yet in repo).
 - Automated tests and client visual acceptance remain **NOT RUN / NOT ACCEPTED**.
+
+## Iteration 5 — pending client verification
+
+- **Iteration 4 owner screenshot:** title/rank/card borders/(i) render, stats stable; square portrait and missing ornate assets remain.
+- [ ] Owner tests commit `170abf6` and reports whether all six provisional native card icons load and labels fit.
+- [ ] Replace provisional iconography with vetted Warcraft-compatible assets; obtain approved PNG and implement real circular portrait crop if supported.
+- No final UI acceptance; automated tests still NOT RUN.
