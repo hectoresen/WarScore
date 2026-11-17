@@ -378,3 +378,17 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Remove fake lower icon backing slots, but retain full silhouettes; real cutout/alpha icons remain design target, not automatic.
 - [ ] Verify /ws version = 43, archive integrity, in-client layout, all empty-data cases and no Lua errors.
 - [ ] Later: genuine native-border fidelity, transparent painted icon assets, unified rank silhouette, Alliance/banner graphics only AFTER other milestones; high numeric values and other scaling remain open.
+
+## Iteration 43 — implemented, awaiting in-client QA
+
+- [x] Document owner-approved visual redesign and freeze banner work.
+- [x] Code: native WoW dialog outer frame with inset uniform background; remove hard-edged central rectangular overlay and redundant old side rails.
+- [x] Code: second inner border around navigation and statistics.
+- [x] Code: lower rank caption/value 3 px while keeping truthful rank unavailable.
+- [x] Code: center text/value at each full lower-band segment's x=0, independent of decorative left icon.
+- [x] Code: first-row counts nil→display 0 (gold), second-row rates nil→display 0% (green); favorite absent→green dash; all titles cream; backend nil semantics preserved.
+- [x] Code: remove additional square icon mounts; leave full native icons (real transparent cutout art is future work).
+- [x] CI clean ZIP verified, 15 runtime files, current General.lua CRC match; banners unchanged.
+- [ ] **Owner tests /ws version 43 in Forever** with reference mockup alongside; check native border and inner frame render, dark background confined to frame, no hard-edged central rectangle, tab/close functionality, correct text centering and absent data colors, and send screenshot.
+- [ ] Sculpted rank plaque / gold ends, true cutout pictogram assets, and more precise spellbook-like frame are NEXT visual milestones after QA. Banners stay frozen, NOT accepted.
+- [ ] Nonempty BG stats/long favorite names, other UI scales and Alliance client test, automated Lua tests still open.
