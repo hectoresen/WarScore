@@ -259,3 +259,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Verified new ZIP structure via GitHub connector readback (107,767 bytes, standard compression, valid central directory).
 - [ ] Owner downloads corrected ZIP from raw.githubusercontent.com and confirms Windows extraction and in-game loading.
 - [ ] Keep future packages CI-produced; no ad hoc ZIP assembly.
+
+## Iteration 29 screenshot / iteration 30 banner and rank polish
+
+- [x] Owner screenshot confirms the repaired standard-Python distribution ZIP extracts and loads in Forever. The smaller deaths counter and existing stats render as intended; final style still unapproved.
+- [x] Iteration 30 code: masked faction emblem over banners with compatibility fallback; two-tier PvP rank caption/value with retained faction crest; subtle icon accents within both lower bands.
+- [ ] Owner validates iteration 30 rank alignment, banner emblem masking, lower icon details and no Lua errors in Forever.
+- [ ] Regenerate and verify clean ZIP after Lua changes; continue final art parity and Alliance/multiple-UI-scale QA.
