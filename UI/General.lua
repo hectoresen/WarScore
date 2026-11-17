@@ -36,23 +36,46 @@ local function line(parent, y, width)
     texture:SetPoint("TOP", parent, "TOP", 0, y)
 end
 
--- Iteration 8: original 32-bit TGA with alpha; validate actual loading in Forever.
--- Keep native faction emblem on top; Alliance banner art is still pending.
+-- Iteration 26: larger faction cloths with their own mounting hardware.
+-- Horde cloth remains provisional. Do not display Horde cloth on Alliance characters.
 local function ornament(parent, side)
     local sign = side == "LEFT" and -1 or 1
-    local banner = CreateFrame("Frame", nil, parent)
-    banner:SetSize(106, 198)
-    banner:SetPoint("TOP", parent, "TOP", sign * 270, -130)
-    local cloth = banner:CreateTexture(nil, "BACKGROUND")
-    cloth:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\banner_horde")
-    cloth:SetAllPoints(banner)
-    cloth:SetAlpha(0.92)
-    local icon = banner:CreateTexture(nil, "ARTWORK")
     local faction = UnitFactionGroup("player")
-    icon:SetTexture(faction == "Alliance" and "Interface\\Icons\\INV_BannerPVP_02" or "Interface\\Icons\\INV_BannerPVP_01")
-    icon:SetSize(48, 48)
-    icon:SetPoint("TOP", banner, "TOP", 0, -36)
-    icon:SetAlpha(0.85)
+    local banner = CreateFrame("Frame", nil, parent)
+    banner:SetSize(126, 228)
+    banner:SetPoint("TOP", parent, "TOP", sign * 270, -125)
+
+    if faction == "Horde" then
+        local cloth = banner:CreateTexture(nil, "BACKGROUND")
+        cloth:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\banner_horde")
+        cloth:SetAllPoints(banner)
+        cloth:SetAlpha(0.96)
+    else
+        -- No Alliance cloth art has been approved yet: neutral fallback is intentional.
+        local cloth = banner:CreateTexture(nil, "BACKGROUND")
+        cloth:SetTexture("Interface\\Buttons\\WHITE8X8")
+        cloth:SetVertexColor(0.09, 0.12, 0.17, 0.9)
+        cloth:SetSize(100, 174)
+        cloth:SetPoint("TOP", banner, "TOP", 0, -8)
+    end
+
+    local fitting = banner:CreateTexture(nil, "BORDER")
+    fitting:SetTexture("Interface\\Buttons\\WHITE8X8")
+    fitting:SetVertexColor(0.88, 0.60, 0.20, 0.95)
+    fitting:SetSize(108, 3)
+    fitting:SetPoint("TOP", banner, "TOP", 0, -3)
+    local shade = banner:CreateTexture(nil, "BORDER")
+    shade:SetTexture("Interface\\Buttons\\WHITE8X8")
+    shade:SetVertexColor(0.23, 0.14, 0.06, 0.95)
+    shade:SetSize(108, 2)
+    shade:SetPoint("TOP", banner, "TOP", 0, -7)
+
+    local icon = banner:CreateTexture(nil, "ARTWORK")
+    icon:SetTexture(faction == "Alliance" and "Interface\\Icons\\INV_BannerPVP_02"
+        or "Interface\\Icons\\INV_BannerPVP_01")
+    icon:SetSize(56, 56)
+    icon:SetPoint("TOP", banner, "TOP", 0, -38)
+    icon:SetAlpha(0.90)
     return banner
 end
 
@@ -305,55 +328,8 @@ local function build()
     accent(header, "BOTTOM", "BOTTOM", 0, 0, 700, 2, { 0.50, 0.32, 0.13 })
     accent(header, "BOTTOM", "BOTTOM", 0, 1, 180, 1, GOLD)
     accent(header, "TOP", "TOP", 0, 0, 320, 1, { 0.45, 0.31, 0.13 })
-    -- Iteration 18: compact header medallion, based on the approved crossed-swords
-    -- composition. Reuses the confirmed transparent portrait-ring texture.
-    -- Its icon is decorative only; it does not imply a PvP rank or achievement.
-    local medallion = CreateFrame("Frame", nil, window)
-    medallion:SetSize(76, 76)
-    medallion:SetPoint("TOPLEFT", window, "TOPLEFT", 18, -2)
-    medallion:EnableMouse(false)
-
-    -- Use circular masks for BOTH the dark disc and the swords icon; the native
-    -- square icon should never become a visible square plate inside the ring.
-    local medallionDisc = medallion:CreateTexture(nil, "BACKGROUND")
-    medallionDisc:SetTexture("Interface\\Buttons\\WHITE8X8")
-    medallionDisc:SetVertexColor(0.17, 0.035, 0.025, 0.96)
-    medallionDisc:SetSize(58, 58)
-    medallionDisc:SetPoint("CENTER", medallion, "CENTER", 0, 0)
-
-    local swords = medallion:CreateTexture(nil, "ARTWORK")
-    swords:SetTexture("Interface\\Icons\\Ability_DualWield")
-    swords:SetSize(51, 51)
-    swords:SetPoint("CENTER", medallion, "CENTER", 0, 0)
-
-    local function maskMedallionTexture(texture)
-        if type(medallion.CreateMaskTexture) ~= "function"
-            or type(texture.AddMaskTexture) ~= "function" then
-            return false
-        end
-        local ok = pcall(function()
-            local mask = medallion:CreateMaskTexture(nil, "ARTWORK")
-            mask:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_mask")
-            mask:SetAllPoints(texture)
-            texture:AddMaskTexture(mask)
-        end)
-        return ok
-    end
-
-    local discMasked = maskMedallionTexture(medallionDisc)
-    local iconMasked = maskMedallionTexture(swords)
-    if not discMasked then
-        -- Avoid the previous visibly square dark background on older clients.
-        medallionDisc:Hide()
-    end
-    if not iconMasked then
-        -- Unmasked icon is a temporary, smaller fallback, not a circular claim.
-        swords:SetSize(36, 36)
-    end
-
-    local medallionRing = medallion:CreateTexture(nil, "OVERLAY")
-    medallionRing:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring_transparent")
-    medallionRing:SetAllPoints(medallion)
+    -- No decorative upper-left medallion: rejected by owner in iteration 25.
+    -- Preserve this clear header for the native close button and title.
 
     local close = CreateFrame("Button", nil, window, "UIPanelCloseButton")
     close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -12, -11)
@@ -361,7 +337,7 @@ local function build()
 
     local general = CreateFrame("Button", nil, window)
     general:SetSize(140, 32)
-    general:SetPoint("TOPLEFT", window, "TOPLEFT", 115, -67)
+    general:SetPoint("TOPLEFT", window, "TOPLEFT", 38, -67)
     skinTab(general, "General", true)
     -- Selected tab has no click handler; its active style does not depend on a disabled state.
     local today = CreateFrame("Button", nil, window)
@@ -371,6 +347,12 @@ local function build()
     today:SetScript("OnClick", function()
         if DEFAULT_CHAT_FRAME then DEFAULT_CHAT_FRAME:AddMessage("|cffffc34dWarScore:|r La pestaña Hoy estará disponible en una próxima versión.") end
     end)
+    -- Shared metallic tab rail ties both tabs to the same navigation area.
+    local tabRail = window:CreateTexture(nil, "BORDER")
+    tabRail:SetTexture("Interface\\Buttons\\WHITE8X8")
+    tabRail:SetVertexColor(0.66, 0.43, 0.16, 0.86)
+    tabRail:SetSize(296, 2)
+    tabRail:SetPoint("TOPLEFT", window, "TOPLEFT", 38, -101)
 
     fields = {}
     ornament(window, "LEFT")
@@ -442,18 +424,9 @@ local function build()
     emblem:SetSize(32, 32)
     emblem:SetPoint("CENTER", emblemHolder, "CENTER", 0, 0)
 
-    -- Small mirrored laurel tips replace the mechanical horizontal strokes.
-    -- They are decorative only and must never imply a PvP rank award.
-    for _, side in ipairs({ -1, 1 }) do
-        local leaf = rankPlate:CreateTexture(nil, "ARTWORK")
-        leaf:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\hk_laurel")
-        leaf:SetVertexColor(0.84, 0.71, 0.48, 0.90)
-        leaf:SetSize(44, 44)
-        leaf:SetPoint("CENTER", rankPlate, "CENTER", side * 170, 0)
-        if side == 1 then leaf:SetTexCoord(1, 0, 0, 1) end
-    end
-
-    fields.rank = label(rankPlate, "Rango PvP · No disponible", 17, GOLD, 22, -4, 295, 32)
+    -- The rank has no confirmed value. Keep the ribbon balanced, not covered
+    -- by tiny ornamental laurel fragments or a misleading achievement badge.
+    fields.rank = label(rankPlate, "Rango PvP · No disponible", 17, GOLD, 26, -4, 320, 32)
     line(window, -341, 650)
     ornamentDiamond(window, -339, 8)
     sectionPlaque(window, -353, 570, 116, 0.92)
@@ -489,8 +462,8 @@ local function build()
     centerDivider:SetSize(2, 116)
     centerDivider:SetPoint("TOP", window, "TOP", 0, -490)
 
-    label(window, "HK/D  (i)", 19, CREAM, -165, -490, 270, 30)
-    label(window, "KB/D  (i)", 19, CREAM, 165, -490, 270, 30)
+    label(window, "HK/D", 19, CREAM, -165, -490, 270, 30)
+    label(window, "KB/D", 19, CREAM, 165, -490, 270, 30)
     fields.hkd = label(window, "—", 37, GOLD, -165, -524, 270, 53)
     fields.kbd = label(window, "—", 37, GOLD, 165, -524, 270, 53)
     label(window, "HK / muertes PvP sufridas", 12, CREAM, -165, -576, 300, 25)
