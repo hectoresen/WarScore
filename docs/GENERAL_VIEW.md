@@ -119,3 +119,15 @@ Los valores y el personaje del boceto son **ficticios**. La fidelidad de textura
 - **Estado de diseño:** estas decisiones funcionales no aprueban la implementación visual ni alteran el boceto objetivo.
 
 Fuentes: https://wowlua.dev/api/global/GetPVPSessionStats ; https://warcraft.wiki.gg/wiki/API_GetPVPSessionStats ; https://warcraft.wiki.gg/wiki/API_GetPVPYesterdayStats
+
+
+## Evidencia adicional — métricas de General (2026-11-17)
+
+Wowhead confirma que la pestaña de estadísticas **nativa de WoW Forever 1.60.1** incluye *Duels won*, *Duels lost*, *Battlegrounds played*, *Battlegrounds won*, *Total Killing Blows*, *World Killing Blows*, *Battleground Killing Blows*, *Total Honorable Kills* y *Total deaths from other players*. Esto eleva la certeza de **existencia del contador**, pero **no** valida aún su lectura desde Lua ni su historial completo anterior al lanzamiento de las estadísticas.
+
+- **Duelos ganados:** ID candidato `319` publicado para Forever; probar `GetStatistic(319)`.
+- **Duelos perdidos / BG jugados / BG ganados:** contadores nativos confirmados; IDs y lectura Lua pendientes.
+- **Golpes de gracia PvP:** la categoría nativa desglosa mundo/BG y total; confirmar semántica del ID `1487` antes de calcular KB/D.
+- **Diseño:** mantener el pie de la referencia con duelos ganados y BG jugados; no añadir automáticamente las otras métricas.
+
+Fuentes: https://www.wowhead.com/forever/news/statistics-pane-now-available-in-wow-forever-beta-383102 ; https://www.wowhead.com/forever/achievement=319/duels-won
