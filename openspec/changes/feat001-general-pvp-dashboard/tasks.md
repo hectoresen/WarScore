@@ -96,3 +96,10 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Added original 128×128 TGA portrait ring with transparent circular aperture and gold border; integrated into `UI/General.lua`.
 - [ ] Owner tests iteration 9: portrait visually circular, no black square artifacts or texture errors.
 - [ ] Continue approved ornamentation and layout comparison after screenshot; full visual acceptance still pending.
+
+## Iteration 9 owner QA / iteration 10 mask test
+
+- [x] Owner screenshot: gold circular ring loads; **FAIL** opaque dark square outside the ring remains obvious.
+- [x] Add circular alpha mask and fully transparent ring TGA; conditionally use native mask API with legacy fallback.
+- [ ] Owner tests iteration 10: does dark square disappear? If not, record unsupported mask behavior and investigate alternative.
+- Visual fidelity and full game acceptance remain pending.
