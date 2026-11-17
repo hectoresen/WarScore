@@ -199,3 +199,11 @@ Salida de `/wsdiag list 122`: `60` Muertes propias = **38** (no utilizar como mu
 ## Prueba real — duelos, categoría 154 (2026-11-17)
 
 `/wsdiag list 154` muestra `319` «Duelos ganados» = `--` y `320` «Duelos perdidos» = `--`. El usuario confirma que **nunca ha jugado un duelo con ese personaje** y que la interfaz nativa de WoW muestra **0 ganados / 0 perdidos**. En este caso concreto, `--` corresponde a ausencia de actividad (0 en la UI). **No generalizar todavía** `--` a cero para cualquier ID sin contraste; diseñar normalización específica por estadística tras más pruebas. IDs 319 y 320 ya identificados y sus etiquetas verificadas en el cliente. Próximo paso útil: comparar valores antes/después de un duelo, y verificar si el personaje ha jugado BG; investigar la discrepancia 882 KB vs 32 HK.
+
+## Contraste con interfaz nativa — 2026-11-17
+
+El usuario confirma en el panel nativo de WoW Forever: «Veces que te han matado otros jugadores» **8**, «Veces que te ha matado la facción contraria» **8**, «Muertes con honor» **32**, «Muertes con honor en el mundo» **32**. Coinciden con `GetStatistic(1501)=8`, `GetStatistic(318)=8`, `GetStatistic(588)=32` y `GetStatistic(381)=32`. HK/D calculable para este personaje: **32/8 = 4,00**.
+
+También confirma **cero duelos realizados** y que el panel muestra 0 ganados/0 perdidos aunque `GetStatistic(319)` y `(320)` devuelvan `--`. **No ha jugado ningún campo de batalla**, lo que es coherente con los `--` de IDs 839 y 840; aún no está contrastado el valor numérico del panel BG. No puede hacer duelos ahora: no bloquear el desarrollo por esta prueba.
+
+**Pendiente crítico:** contrastar `GetStatistic(1487)=882` golpes de gracia con el panel nativo y explicar por qué supera las 32 HK; no calcular KB/D con ese contador hasta resolverlo. La coincidencia de estadísticas históricas entre API y panel en este personaje no garantiza automáticamente la cobertura de toda la vida del personaje en otros casos.
