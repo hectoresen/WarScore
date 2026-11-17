@@ -274,7 +274,7 @@ local function statBand(parent, y, definitions)
                 rivet:SetTexture("Interface\\Buttons\\WHITE8X8")
                 rivet:SetVertexColor(0.92, 0.66, 0.23, 0.84)
                 rivet:SetSize(4, 4)
-                rivet:SetPoint("TOP", band, "LEFT", dividerX,
+                rivet:SetPoint("TOP", band, "TOPLEFT", dividerX,
                     vertical == "TOP" and -13 or -99)
             end
         end
