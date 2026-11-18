@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "63"
+local UI_ITERATION = "64"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -305,34 +305,30 @@ local function build()
     -- Iteration 58: treat both owner assets as a single geometric hierarchy.
     -- The outer frame is the visible window perimeter and header, not a
     -- native tooltip/dialog frame stretched over another painting.
-    -- Iteration 63: use the owner's measured 1199x1312 composition:
-    -- inner frame x=66, y=101, width=1067, height=1167 (approximately
-    -- 89% of the outer frame), projected into WoW frame coordinates.
-    -- The old leather remains only as a background behind the transparent
-    -- central recess. No generated composition image is used as an asset.
+    -- Iteration 64: exactly the owner's supplied source PNG assets.
+    -- The leather matte is derived ONLY from their previously supplied
+    -- leather PNG, alpha-limited to the interior of the source outer frame.
+    -- All three assets share the exact outer canvas, so no hard-edged
+    -- rectangular backing can protrude through its transparent outline.
     window:Hide()
     local interiorBacking = window:CreateTexture(nil, "BACKGROUND", nil, -7)
-    interiorBacking:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\panel_dark_leather_v55")
-    interiorBacking:SetSize(784, 930)
-    interiorBacking:SetPoint("TOP", window, "TOP", 0, -97)
-    interiorBacking:SetVertexColor(0.88, 0.82, 0.76, 1)
+    interiorBacking:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\leather_backing_owner_v64")
+    interiorBacking:SetAllPoints(window)
+    interiorBacking:SetVertexColor(1, 1, 1, 1)
 
-    -- The supplied inner gold frame has its own cloth, tabs and material.
-    -- Position it under the exterior frame, leaving a real inset on all
-    -- sides; do not add old corner textures or duplicated border files.
-    local innerArt = window:CreateTexture(nil, "BACKGROUND")
-    innerArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\inner_frame_owner_v63")
+    -- Match the designer's authoritative 1199x1312 reference:
+    -- child center anchored to parent center, 0.89 scale, top gap 101px.
+    -- Keep the source art independent: the reference composite is NOT used.
+    local outerArt = window:CreateTexture(nil, "BACKGROUND", nil, -1)
+    outerArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\outer_frame_owner_v64")
+    outerArt:SetAllPoints(window)
+    outerArt:SetAlpha(1)
+
+    local innerArt = window:CreateTexture(nil, "BORDER")
+    innerArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\inner_frame_owner_v64")
     innerArt:SetSize(774, 943)
     innerArt:SetPoint("TOP", window, "TOP", 0, -82)
     innerArt:SetAlpha(1)
-
-    -- Exterior art has a pre-painted close X, swords medallion and header.
-    -- Its obsolete inner ring was removed from the texture to avoid a
-    -- duplicate frame around the actual inner asset.
-    local outerArt = window:CreateTexture(nil, "BORDER")
-    outerArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\outer_frame_owner_v58")
-    outerArt:SetAllPoints(window)
-    outerArt:SetAlpha(1)
 
     -- Keep brand text dynamic. The background plate is supplied artwork.
     local brandTitle = label(window, "WarScore", 33, GOLD, 0, -27, 360, 43)
