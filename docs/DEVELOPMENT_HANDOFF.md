@@ -976,3 +976,12 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - Geometry-only correction: for top-row owner icon i=1 increase left inset 10→24 UI units (+14) while leaving it 50×50, original y=-8, full alpha. Other top-row owner icons stay x=10; second-row native icons stay x=8 with their existing masks.
 - Preserve both stat-card owner artwork and dimensions, typography, counters, data binding, and every other previously accepted UI element. Bump diagnostic to 78.
 - **CLIENT QA NOT RUN:** install the new complete ZIP, `/reload`, `/ws version`=78, `/ws`; confirm that crossed swords have breathing space without colliding with the title/counter; inspect that flags/trophy remain unchanged.
+
+
+## Iteration #78 approved → #79 owner icon trio for secondary row (2026-11-18)
+
+- Owner accepted v78 top card icon positions and supplied three transparent 1254×1254 source PNGs for lower row: crossed white gold-trimmed flags to represent **WIN RATE BG**, gold-hilt crossed swords for **WIN RATE DUELOS**, and blue-and-gold battleground pennant for **CAMPO DE BATALLA FAVORITO**.
+- Preserve the entire already accepted v78 General layout: both owner frame textures, first-row icons, width 688, column proportions, dynamic texts and values, and all statistics calculations.
+- Only secondary row gets the three new texture paths (via `definition.ownerIcon`). Remove the native icon mask for owner icons, render at alpha 1. Lower row sizes 46×46 for first two and 52×52 for favorite BG; x-insets 13/11/16 respectively; y offset -7. Top owner swords retain their v78 x-inset 24.
+- Transport PNGs: `docs/assets/icon_bg_rate_owner_v79_source.png`, `icon_duel_rate_owner_v79_source.png`, `icon_favorite_bg_owner_v79_source.png`, compact palette-reduced 64×64 transparent images from the owner's originals. Convert via `tools/prepare_bottom_icons.py` to 128×128 RGBA TGA in `Media/General` before verified ZIP packaging. Source artwork is provisional for fidelity; original uploads are the high-quality master.
+- Version diagnostic = 79. **WoW CLIENT QA NOT RUN:** install full ZIP, `/reload`, `/ws version` 79, `/ws`; verify all three icons are correct, not obscured by dividers and do not overlap the titles or rate values, then refine using the owner's screenshot.

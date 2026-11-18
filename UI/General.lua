@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "78"
+local UI_ITERATION = "79"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -161,18 +161,22 @@ local function statBand(parent, y, definitions, secondary)
         -- replaces these with transparent cutouts, not destructive cropping.
         local icon = segment:CreateTexture(nil, "ARTWORK")
         local ownerTopIcon = not secondary and definition.ownerIcon
-        icon:SetTexture(ownerTopIcon or definition.icon)
+        local ownerBottomIcon = secondary and definition.ownerIcon
+        local ownerIcon = ownerTopIcon or ownerBottomIcon
+        icon:SetTexture(ownerIcon or definition.icon)
         -- Preserve the native WoW illustration instead of rejected clip art.
         -- A supported alpha mask removes the square inventory-tile corners
         -- without zoom-cropping blades and heraldry. Graceful client fallback.
-        icon:SetSize(ownerTopIcon and 50 or 43, ownerTopIcon and 50 or 43)
+        local iconSize = ownerTopIcon and 50 or (ownerBottomIcon and (i == 3 and 52 or 46) or 43)
+        icon:SetSize(iconSize, iconSize)
         -- v78: move only the crossed swords inward, clear of the left gold bevel.
-        local iconInset = ownerTopIcon and (i == 1 and 24 or 10) or 8
-        icon:SetPoint("LEFT", segment, "LEFT", iconInset, ownerTopIcon and -8 or -1)
+        local iconInset = ownerTopIcon and (i == 1 and 24 or 10)
+            or (ownerBottomIcon and (i == 1 and 13 or (i == 2 and 11 or 16)) or 8)
+        icon:SetPoint("LEFT", segment, "LEFT", iconInset, ownerIcon and -7 or -1)
         icon:SetTexCoord(0, 1, 0, 1)
         -- Owner art has real alpha; avoid circular masking and opacity reduction.
-        icon:SetAlpha(ownerTopIcon and 1 or (secondary and 0.78 or 0.91))
-        if not ownerTopIcon and type(segment.CreateMaskTexture) == "function"
+        icon:SetAlpha(ownerIcon and 1 or (secondary and 0.78 or 0.91))
+        if not ownerIcon and type(segment.CreateMaskTexture) == "function"
             and type(icon.AddMaskTexture) == "function" then
             pcall(function()
                 local mask = segment:CreateMaskTexture(nil, "ARTWORK")
@@ -488,9 +492,9 @@ local function build()
     })
     fields.duels, fields.bgPlayed, fields.bgWon = unpack(firstRow)
     local secondRow = statBand(window, -878, {
-        { title = "WIN RATE BG", color = GREEN, icon = "Interface\\Icons\\INV_BannerPVP_01" },
-        { title = "WIN RATE DUELOS", color = GREEN, icon = "Interface\\Icons\\Ability_DualWield" },
-        { title = "CAMPO DE BATALLA FAVORITO", color = GREEN, icon = "Interface\\Icons\\INV_BannerPVP_02", valueSize = 17 },
+        { title = "WIN RATE BG", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_rate_owner_v79" },
+        { title = "WIN RATE DUELOS", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duel_rate_owner_v79" },
+        { title = "CAMPO DE BATALLA FAVORITO", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_favorite_bg_owner_v79", valueSize = 17 },
     }, true)
     fields.bgRate, fields.duelRate, fields.favorite = unpack(secondRow)
 
