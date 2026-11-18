@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "57"
+local UI_ITERATION = "58"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -292,7 +292,7 @@ end
 
 local function build()
     window = CreateFrame("Frame", "WarScoreGeneralFrame", UIParent, "BackdropTemplate")
-    window:SetSize(750, 990)
+    window:SetSize(870, 1060)
     window:SetScale(0.86)
     window:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
     window:SetFrameStrata("DIALOG")
@@ -302,87 +302,56 @@ local function build()
     window:SetScript("OnDragStart", function(self) self:StartMoving() end)
     window:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
     window:SetClampedToScreen(true)
-    -- Iteration 43: one dark panel INSIDE an actual native WoW dialog border.
-    -- The frame bounds, not a slightly oversized black rectangle, define
-    -- the visible window. The old central overlay created a hard-edged box.
-    -- Original opaque warm-grey/aged-stone texture: low contrast grain and
-    -- soft vignette replace the previous flat almost-black slab. Keep the
-    -- art inset inside the native dialog border and retain legibility.
+    -- Iteration 58: treat both owner assets as a single geometric hierarchy.
+    -- The outer frame is the visible window perimeter and header, not a
+    -- native tooltip/dialog frame stretched over another painting.
     local shellBackground = window:CreateTexture(nil, "BACKGROUND")
     shellBackground:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\panel_dark_leather_v55")
-    -- Iteration 54: the untouched grey 49 texture reads flat compared to
-    -- the mockup. Return to a deep near-black leather base but preserve a
-    -- restrained trace of organic grain instead of pure featureless black.
-    shellBackground:SetVertexColor(1, 1, 1, 1)
-    shellBackground:SetPoint("TOPLEFT", window, "TOPLEFT", 12, -12)
-    shellBackground:SetPoint("BOTTOMRIGHT", window, "BOTTOMRIGHT", -12, 12)
-    -- Authored opaque organic dark leather/stone texture includes its own
-    -- vignette and grain. No flat overlay obscuring the material.
+    shellBackground:SetAllPoints(window)
+    shellBackground:SetVertexColor(0.84, 0.79, 0.71, 1)
     window:Hide()
 
-    -- WoW-native dialog chrome; this is the OUTERMOST visible perimeter.
-    local border = CreateFrame("Frame", nil, window, "BackdropTemplate")
-    border:SetPoint("TOPLEFT", window, "TOPLEFT", 2, -2)
-    border:SetPoint("BOTTOMRIGHT", window, "BOTTOMRIGHT", -2, 2)
-    border:SetBackdrop({ edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", edgeSize = 28 })
-    border:SetBackdropBorderColor(0.91, 0.80, 0.63, 1)
-    border:EnableMouse(false)
-
-    -- Iteration 57: owner-supplied complete inner-frame painting contains
-    -- both faction banners anchored to its upper ornamental rail, and two
-    -- blank tabs that project above the rail. Do NOT draw a second frame or
-    -- independent hanging banners on top of it.
+    -- The supplied inner gold frame has its own cloth, tabs and material.
+    -- Position it under the exterior frame, leaving a real inset on all
+    -- sides; do not add old corner textures or duplicated border files.
     local innerArt = window:CreateTexture(nil, "BACKGROUND")
     innerArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\inner_frame_owner_v57")
-    innerArt:SetSize(710, 920)
-    innerArt:SetPoint("TOP", window, "TOP", 0, -59)
+    innerArt:SetSize(760, 890)
+    innerArt:SetPoint("TOP", window, "TOP", 0, -110)
     innerArt:SetAlpha(1)
 
-    -- Invisible positioning frame for the future settings feature. Its border
-    -- is already present in the integrated painting.
-    local innerPanel = CreateFrame("Frame", nil, window)
-    innerPanel:SetPoint("TOPLEFT", window, "TOPLEFT", 22, -109)
-    innerPanel:SetPoint("BOTTOMRIGHT", window, "BOTTOMRIGHT", -22, 22)
-    innerPanel:EnableMouse(false)
+    -- Exterior art has a pre-painted close X, swords medallion and header.
+    -- Its obsolete inner ring was removed from the texture to avoid a
+    -- duplicate frame around the actual inner asset.
+    local outerArt = window:CreateTexture(nil, "BORDER")
+    outerArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\outer_frame_owner_v58")
+    outerArt:SetAllPoints(window)
+    outerArt:SetAlpha(1)
 
-    local header = CreateFrame("Frame", nil, window, "BackdropTemplate")
-    header:SetPoint("TOPLEFT", window, "TOPLEFT", 10, -10)
-    header:SetPoint("TOPRIGHT", window, "TOPRIGHT", -10, -10)
-    header:SetHeight(45)
-    backdrop(header, 1)
-    -- Feathered metallic nameplate; all text stays a live FontString.
-    local headerPlate = header:CreateTexture(nil, "BORDER")
-    headerPlate:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\section_plaque")
-    headerPlate:SetSize(470, 49)
-    headerPlate:SetVertexColor(0.80, 0.69, 0.48, 0.66)
-    headerPlate:SetPoint("CENTER", header, "CENTER", 0, 0)
-    local brandTitle = label(header, "WarScore", 33, GOLD, 0, -2, 350, 42)
-    brandTitle:SetShadowColor(0.42, 0.22, 0.03, 0.9)
+    -- Keep brand text dynamic. The background plate is supplied artwork.
+    local brandTitle = label(window, "WarScore", 33, GOLD, 0, -27, 360, 43)
+    brandTitle:SetShadowColor(0.34, 0.16, 0.03, 0.93)
     brandTitle:SetShadowOffset(1, -1)
-    accent(header, "LEFT", "LEFT", 24, 0, 90, 2, { 0.65, 0.43, 0.15 })
-    accent(header, "RIGHT", "RIGHT", -24, 0, 90, 2, { 0.65, 0.43, 0.15 })
-    accent(header, "BOTTOM", "BOTTOM", 0, 0, 700, 2, { 0.50, 0.32, 0.13 })
-    accent(header, "BOTTOM", "BOTTOM", 0, 1, 180, 1, GOLD)
-    accent(header, "TOP", "TOP", 0, 0, 320, 1, { 0.45, 0.31, 0.13 })
-    -- No decorative upper-left medallion: rejected by owner in iteration 25.
-    -- Preserve this clear header for the native close button and title.
 
-    local close = CreateFrame("Button", nil, window, "UIPanelCloseButton")
-    close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -12, -11)
+    -- Transparent hit target over the close X already baked into outerArt.
+    -- A native UIPanelCloseButton here would duplicate the X ornament.
+    local close = CreateFrame("Button", nil, window)
+    close:SetSize(43, 43)
+    close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -48, -28)
     close:SetScript("OnClick", function() window:Hide() end)
 
     -- The supplied graphic already paints both tab plates; only live text
     -- and hitboxes are needed. Their placement follows the asset's geometry.
     local general = CreateFrame("Button", nil, window)
-    general:SetSize(140, 32)
-    general:SetPoint("TOPLEFT", window, "TOPLEFT", 137, -66)
+    general:SetSize(150, 38)
+    general:SetPoint("TOPLEFT", window, "TOPLEFT", 188, -124)
     local generalText = label(general, "General", 16, GOLD, 0, -2, 135, 29)
     generalText:SetShadowColor(0.17, 0.08, 0.015, 0.94)
     generalText:SetShadowOffset(1, -1)
 
     local today = CreateFrame("Button", nil, window)
-    today:SetSize(140, 32)
-    today:SetPoint("TOPLEFT", window, "TOPLEFT", 295, -66)
+    today:SetSize(150, 38)
+    today:SetPoint("TOPLEFT", window, "TOPLEFT", 361, -124)
     local todayText = label(today, "Hoy", 15, CREAM, 0, -2, 135, 29)
     todayText:SetTextColor(0.72, 0.66, 0.55)
     today:SetScript("OnClick", function()
@@ -396,7 +365,7 @@ local function build()
     -- Reserve the settings position within the inner border; not functional.
     local settingsFrame = CreateFrame("Frame", nil, window, "BackdropTemplate")
     settingsFrame:SetSize(36, 36)
-    settingsFrame:SetPoint("TOPRIGHT", innerPanel, "TOPRIGHT", -12, -13)
+    settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -74, -117)
     settingsFrame:SetBackdrop({
         bgFile = "Interface\\Buttons\\WHITE8X8",
         edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
@@ -601,7 +570,7 @@ local function build()
     fields.bgRate, fields.duelRate, fields.favorite = unpack(secondRow)
 
     -- The reference's tall two-row composition needs additional height.
-    window:SetHeight(990)
+    window:SetHeight(1060)
     window:SetScript("OnShow", refresh)
 end
 
