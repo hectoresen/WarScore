@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "66"
+local UI_ITERATION = "67"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -319,8 +319,12 @@ local function build()
     -- Match the designer's authoritative 1199x1312 reference:
     -- child center anchored to parent center, 0.89 scale, top gap 101px.
     -- Keep the source art independent: the reference composite is NOT used.
+    -- Iteration 67: the owner exterior PNG includes a second ornamental
+    -- gold inner outline. The derived variant masks only that baked outline,
+    -- retaining the actual exterior steel perimeter, swords and close X.
+    -- The author's independent inner frame remains the sole inner border.
     local outerArt = window:CreateTexture(nil, "BACKGROUND", nil, -1)
-    outerArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\outer_frame_owner_v64")
+    outerArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\outer_frame_owner_v67_trimmed")
     outerArt:SetAllPoints(window)
     outerArt:SetAlpha(1)
 
@@ -450,12 +454,15 @@ local function build()
         rankArtwork:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
     end
 
+    -- All primary dynamic text follows the window's central X axis.
+    -- The plaque artwork is centered on that same axis, while its carved
+    -- heraldry intentionally extends left of its central inscription.
     -- Clean centered rank inscription: a small section name and an honest
     -- unavailable value, like the two-tier reference ribbon.
     -- Reserve a visible margin below the rank value and above the HK divider.
-    local rankCaption = label(rankPlate, "Rango PvP", 13, CREAM, 30, -3, 280, 15)
+    local rankCaption = label(rankPlate, "Rango PvP", 13, CREAM, 0, -3, 280, 15)
     rankCaption:SetTextColor(0.89, 0.70, 0.39)
-    fields.rank = label(rankPlate, "No disponible", 18, GOLD, 30, -19, 280, 20)
+    fields.rank = label(rankPlate, "No disponible", 18, GOLD, 0, -19, 280, 20)
     fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
     fields.rank:SetShadowOffset(1, -1)
     -- The supplied Horde plaque already has a lower gold rim and ruby:
