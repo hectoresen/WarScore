@@ -446,3 +446,13 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Clean CI package verified: 16 runtime entries, exact Lua and new TGA CRC match, no development files.
 - [ ] Owner checks `/ws version` 49 and screenshot of full-window backdrop for visible grain, non-flat grey tone, correct contrast and border containment.
 - [ ] Continue genuine reference fidelity, rank sculpting, Alliance/scale cases and automated Lua QA; banners remain frozen.
+
+## Iteration 49 owner screenshot → iteration 50 rank sculpture
+
+- [x] Owner screenshot of 49 shows warm grey textured shell heading toward mockup; lower stat icons and hierarchy retained. Not final sign-off.
+- [x] Iteration 50: restore visible sculpted ends of pre-existing rank ribbon art while reducing flat backing.
+- [x] Replace square-bordered rank crest with circular ornamental boss using existing transparent ring and guarded mask; keep faction truthful and rank unavailable.
+- [x] Keep banners frozen, rejected clip-art and orange slab absent, all 43px lower icons and data semantics unchanged.
+- [ ] Confirm CI refreshed runtime-only ZIP contains iteration 50 Lua; test archive integrity and source parity.
+- [ ] Owner tests `/reload`, `/ws version` = 50, `/ws` in Forever and returns screenshot. Evaluate rank silhouette, icon mask, crest integration and any Lua errors.
+- [ ] Continue visual matching in small iterations; alternate UI scales, Alliance, populated BG scenarios and automated Lua/client QA remain outstanding.
