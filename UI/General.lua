@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "82"
+local UI_ITERATION = "83"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -170,14 +170,14 @@ local function statBand(parent, y, definitions, secondary)
         -- v80: common 50x50 viewport for every owner icon in both card rows.
         -- v82: optical balancing in the two narrow lower-row cells only.
         -- Favorite-BG pennant and the entire upper row keep their approved size.
-        local iconSize = ownerBottomIcon and (i == 1 and 47.5 or (i == 2 and 45 or 50))
+        local iconSize = ownerBottomIcon and (i == 1 and 47.5 or (i == 2 and 44 or 50))
             or (ownerIcon and 50 or 43)
         icon:SetSize(iconSize, iconSize)
         -- v78: move only the crossed swords inward, clear of the left gold bevel.
         -- v81: use consistent inner clearance for the normalized lower art.
         -- Keep the owner-approved upper icon placement untouched.
         local iconInset = ownerTopIcon and (i == 1 and 24 or 10)
-            or (ownerBottomIcon and (i == 1 and 16 or (i == 2 and 15 or 18)) or 8)
+            or (ownerBottomIcon and (i == 1 and 16 or (i == 2 and 16 or 18)) or 8)
         icon:SetPoint("LEFT", segment, "LEFT", iconInset, ownerIcon and -7 or -1)
         icon:SetTexCoord(0, 1, 0, 1)
         -- Owner art has real alpha; avoid circular masking and opacity reduction.
@@ -200,7 +200,7 @@ local function statBand(parent, y, definitions, secondary)
         -- Ratios in the two narrow lower cells have their own fixed text area,
         -- offset right of the decorative icon; not anchored to the icon.
         local isRate = secondary and i <= 2
-        local valueX = isRate and 18 or 0
+        local valueX = isRate and 19 or 0
         local valueWidth = isRate and 105 or 145
         local value = label(segment, "—", definition.valueSize or (secondary and 29 or 35),
             secondary and GREEN or GOLD, valueX, -53, valueWidth, 45)

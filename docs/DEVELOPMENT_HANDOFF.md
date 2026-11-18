@@ -1010,3 +1010,11 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - Keep existing owner art PNG→TGA processing from v81 and 50×50 top-row icons. In secondary row set the actual texture viewport to 47.5×47.5 (BG), 45×45 (duels), and unchanged 50×50 (favorite). Retain existing insets and vertical positioning.
 - The percentage FontStrings for *only* the first two secondary cells now use independent static positioning x=+18 relative to their respective segment centers, width=105, fixed y=-53 and existing 29pt font. This keeps the value centered within an explicit region to the right of its icon and prevents overlap. BG favorite value remains exactly at its earlier anchor/size. Titles, cards, other stats and calculations unchanged.
 - Diagnostic version 82. **WoW QA NOT RUN:** after full ZIP installation, `/reload`, `/ws version`=82, `/ws`; inspect both '0%' values for correct spacing from icons and from gold column dividers, and assess relative icon weight. Send new screenshot for acceptance.
+
+
+## Iteration #82 screenshot → #83 fine alignment of lower win-rate metrics (2026-11-18)
+
+- Real WoW screenshot of v82 shows a significantly improved lower card; the owner requests only a tiny additional reduction of the duel-win-rate swords and review of icon/value alignment. Previous iteration proposal approved: 45→44 UI units for the swords (2.2% reduction, a minimal one-unit visible adjustment), 15→16 for its left inset, and both fixed win-rate percentage caption anchors x=18→19. Text width 105 and y=-53 preserved.
+- Keep WIN RATE BG flag icon 47.5×47.5 and its existing x=16, favorite BG pennant icon 50×50 and x=18, all original texture sources/TGAs, frame positions, row widths, border artwork and dynamic values unchanged. Upper stat row and entire upper screen untouched.
+- Diagnostic `UI_ITERATION = 83`. No new art conversion required. Package and validate standard `dist/WarScore.zip` via GitHub Actions.
+- **WoW CLIENT QA NOT RUN:** install new complete ZIP, `/reload`, `/ws version` (83), `/ws`. Screenshot to confirm even spacing between lower icons, percentages and ornamental dividers before accepting.
