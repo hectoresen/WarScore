@@ -924,3 +924,10 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - Keep `ratios_frame_owner_v70.tga` at 632×172, anchor y=-610. Move ratio headings to y=-660, reduce 20→18pt and box 29→22. Reduce ratio value 36→34pt (5.56% reduction), y=-682, box 37. Shift microcopy y=-718, reduce 12→11pt and box 18, preserving both live string contents.
 - All other UI, functionality, assets and secondary cards are unchanged. Version diagnostic = 72.
 - **IN-GAME QA NOT RUN:** freshly install `dist/WarScore.zip`, `/reload`, `/ws version` 72, `/ws`; verify headings no longer overlap top rail and descriptions remain above bottom rail. Await screenshot before declaring visual acceptance.
+
+
+## Iteration #72 owner screenshot approved → #73 section spacing refinement (2026-11-18)
+
+- Owner confirms v72 ratio font size and the full ornamental ratio frame look good. Requests slightly lower placement for the entire "MUERTES PvP SUFRIDAS" caption and value, so it is centered between the HK lower rail and the ratios upper rail; also move ratio block up very slightly (about 2–5%) to gain separation before the first secondary-card row.
+- Geometry-only v73: death caption y=-534→-544; death number y=-563→-573. Ratio frame y=-610→-600 and ALL its live text anchors +10 UI units (headings -660→-650, values -682→-672, descriptions -718→-708). Exactly preserve internal spacing, fonts and ratios frame 632×172, texture v70. Leave `sectionPlaque`, HK art, rank, cards, logic and all other UI unchanged.
+- Packaging expected through existing GitHub Actions to `dist/WarScore.zip`; `/ws version`=73. Real WoW client QA NOT RUN: check that deaths sit visually centered and ratio top rail does not crowd death numeral, while lower ratio rail has more clearance above first card row. Adjust only if fresh screenshot shows a regression.

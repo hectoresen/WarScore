@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "72"
+local UI_ITERATION = "73"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -494,10 +494,10 @@ local function build()
     -- Do not render the previously separate -514px divider over it.
 
     -- Iteration 29: deaths are a secondary lifetime counter, not another hero.
-    -- Keep them directly below HK while deliberately lowering visual weight.
+    -- Iteration 73: center this secondary KPI between the HK and ratio rails.
     sectionPlaque(window, -525, 500, 91, 0.48)
-    label(window, "MUERTES PvP SUFRIDAS", 17, { 0.85, 0.51, 0.46 }, 0, -534, 430, 27)
-    fields.deaths = label(window, "—", 39, RED, 0, -563, 390, 54)
+    label(window, "MUERTES PvP SUFRIDAS", 17, { 0.85, 0.51, 0.46 }, 0, -544, 430, 27)
+    fields.deaths = label(window, "—", 39, RED, 0, -573, 390, 54)
     fields.deaths:SetShadowColor(0.32, 0.05, 0.035, 0.64)
     fields.deaths:SetShadowOffset(1, -1)
 
@@ -510,21 +510,22 @@ local function build()
     -- Iteration 71: stretch only the transparent vertical field to contain
     -- the live captions above the lower sapphire rail; keep width unchanged.
     ratioOrnament:SetSize(632, 172)
-    ratioOrnament:SetPoint("TOP", window, "TOP", 0, -610)
+    ratioOrnament:SetPoint("TOP", window, "TOP", 0, -600)
 
     -- Iteration 72: compact the text stack inside the fixed owner frame.
-    -- Shift captions below its upper gold rail without moving the art.
-    label(window, "HK/D", 18, GOLD, -165, -660, 270, 22)
-    label(window, "KB/D", 18, GOLD, 165, -660, 270, 22)
-    fields.hkd = label(window, "—", 34, CREAM, -165, -682, 270, 37)
-    fields.kbd = label(window, "—", 34, CREAM, 165, -682, 270, 37)
+    -- Iteration 73: shift the entire ratio art + text block up 10 UI units.
+    -- Keep all relative positions and font sizes established by v72.
+    label(window, "HK/D", 18, GOLD, -165, -650, 270, 22)
+    label(window, "KB/D", 18, GOLD, 165, -650, 270, 22)
+    fields.hkd = label(window, "—", 34, CREAM, -165, -672, 270, 37)
+    fields.kbd = label(window, "—", 34, CREAM, 165, -672, 270, 37)
     fields.hkd:SetShadowColor(0.34, 0.19, 0.06, 0.72)
     fields.hkd:SetShadowOffset(1, -1)
     fields.kbd:SetShadowColor(0.34, 0.19, 0.06, 0.72)
     fields.kbd:SetShadowOffset(1, -1)
-    local hkDescription = label(window, "HK / muertes PvP sufridas", 11, CREAM, -165, -718, 300, 18)
+    local hkDescription = label(window, "HK / muertes PvP sufridas", 11, CREAM, -165, -708, 300, 18)
     hkDescription:SetTextColor(0.77, 0.69, 0.58)
-    local kbDescription = label(window, "Golpes de gracia / muertes PvP", 11, CREAM, 165, -718, 300, 18)
+    local kbDescription = label(window, "Golpes de gracia / muertes PvP", 11, CREAM, 165, -708, 300, 18)
     kbDescription:SetTextColor(0.77, 0.69, 0.58)
 
     -- Lower ratio rail and central sapphire are part of the new owner asset.
