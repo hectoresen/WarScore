@@ -204,3 +204,8 @@ APIs de solicitud de honor no disponibles
 - `GetInspectHonorData()` devuelve cuatro ceros en esta prueba y las APIs `NotifyInspect`/`RequestInspectHonorData` no están disponibles; no usarlo para honor de hoy/ayer hasta una futura validación específica.
 
 La etiqueta recomendada para UI es **Honor actual**, no «Honor total». La primera gráfica segura sería `Honor actual / máximo del nivel`, acompañada de `Nivel de honor`.
+
+
+## Decisión funcional de producto — v89 (2026-11-18)
+
+El propietario confirma que no se puede recuperar una fuente fiable de golpes de gracia **contra jugadores** en Forever; la tarjeta KB/D se retira de la vista General. En su lugar se muestra el total de **muertes PvP sufridas** desde `GetStatistic(1501)`, en rojo. La sección secundaria central pasa a **HONOR** y consulta `UnitHonor("player")` para mostrar el saldo actual gastable, `—` si la API no responde. Esta métrica **no** representa el honor total ganado a lo largo de la vida del personaje. HK/D se mantiene sin cambios. La retirada del indicador visual no implica eliminar evidencia histórica ni afirmar que los contadores generales de KB sean PvP.

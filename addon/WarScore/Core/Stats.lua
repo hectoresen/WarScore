@@ -57,6 +57,16 @@ function ns.Stats.ReadHistorical()
         if ok then hk = ns.Stats.Parse(lifetime) end
     end
 
+    -- Current spendable honor, not lifetime honor earned. Confirmed by
+    -- /wsdiag honor on Forever; nil when the API cannot be read safely.
+    local honor
+    if type(UnitHonor) == "function" then
+        local ok, current = pcall(UnitHonor, "player")
+        if ok and type(current) == "number" and current >= 0 then
+            honor = current
+        end
+    end
+
     local deaths = read(1501)
     local duelsWon = zeroIfNoActivity(read(319))
     local duelsLost = zeroIfNoActivity(read(320))
@@ -67,6 +77,7 @@ function ns.Stats.ReadHistorical()
 
     return {
         honorableKills = hk,
+        honorCurrent = honor,
         pvpDeaths = deaths,
         hkDeathRatio = ns.Stats.Ratio(hk, deaths),
         killingBlows = nil,
