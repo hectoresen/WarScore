@@ -605,3 +605,14 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Move General/Hoy hitboxes 5 units right and 22 units up, preserving click action and live texts.
 - [ ] Verify runtime ZIP v65 and Lua source CRC parity.
 - [ ] Owner test screenshot and tab interactions, check right metal rail and no new misalignment; no changes to background, stats, rank or lower icons.
+
+## Iteration 65 screenshot → iteration 66 owner-provided PvP rank banner
+
+- [x] Owner reports v65 structural frame/tab alignment is good; freeze its geometry for this iteration.
+- [x] Receive `placarangopvp.png`, 2048×682 RGBA Horde rank artwork, preserve its entire shield, laurels, gilded beveled plaque and ruby; trim only transparent margins.
+- [x] Convert user artwork to 1024×256 transparent TGA and commit as `Media/General/rank_pvp_horde_owner_v66.tga`.
+- [x] Replace old rank slab, inventory emblem and competing rim lines with one full ornamental texture. Preserve live title and unavailable/actual rank.
+- [x] Hide duplicated gold separator beneath Horde asset; keep old neutral graphic fallback for Alliance until the owner supplies an Alliance version.
+- [ ] Verify CI regenerated runtime ZIP includes v66 rank TGA, Lua source CRC and only referenced assets.
+- [ ] Owner screenshot QA in WoW Forever: plaque proportions, shield, ruby, laurel edges, text and available spacing against player level/HK title; no Lua errors.
+- [ ] Six lower stat icons, future Alliance art, multi-scale and data-filled battlefield cases remain unapproved.
