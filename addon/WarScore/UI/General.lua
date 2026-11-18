@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "85"
+local UI_ITERATION = "86"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -214,8 +214,21 @@ local function statBand(parent, y, definitions, secondary)
         value:SetShadowOffset(1, -1)
         values[i] = value
         if isFavorite then
-            local playedCaption = label(segment, "", 13, CREAM, valueX, -74, valueWidth, 20)
-            playedCaption:SetFont(ITALIC_TEXT_FONT or "Fonts\\FRIZQT__.TTF", 13, "OUTLINE")
+            -- v86: center under the favorite card heading (segment x=0),
+            -- independently from the name, which is shifted right of the pennant.
+            local playedCaption = label(segment, "", 13, CREAM, 0, -74, 190, 20)
+            -- The global ITALIC_TEXT_FONT was absent on the tested Forever
+            -- client. The native QuestFont object is the game's quest-text
+            -- italic candidate; use its actual font path, not a regular
+            -- FRIZQT fallback masquerading as italic.
+            local questFontPath
+            if QuestFont and type(QuestFont.GetFont) == "function" then
+                questFontPath = QuestFont:GetFont()
+            end
+            local italicPath = questFontPath or ITALIC_TEXT_FONT
+            if type(italicPath) == "string" and italicPath ~= "" then
+                playedCaption:SetFont(italicPath, 13, "OUTLINE")
+            end
             playedCaption:SetTextColor(0.84, 0.77, 0.64)
             playedCaption:SetShadowColor(0.20, 0.10, 0.03, 0.6)
             playedCaption:SetShadowOffset(1, -1)
