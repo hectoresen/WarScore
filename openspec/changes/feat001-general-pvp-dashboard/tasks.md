@@ -437,3 +437,12 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Clean CI build ZIP validated: 15 runtime Deflate files and `General.lua` CRC32 matches current repo.
 - [ ] Owner tests `/ws version` 48 in WoW Forever, checks metal highlights, centered rank text/crest and any Lua errors.
 - [ ] Banners remain frozen. Additional realistic artwork, long value, alternative-scale, Alliance and automated Lua QA remain outstanding.
+
+## Iteration 48 screenshot → iteration 49 textured background
+
+- [x] Owner observed the mockup uses dark warm-grey subtle material rather than plain black, and requested implementation; verified working GitHub repository write access.
+- [x] New original opaque 256×256 TGA with low-contrast aged-stone grain, warm grey-brown palette and soft vignette.
+- [x] Only the root shell background is switched to the TGA, preserving the border inset, frames, PvP data, rank, masks and frozen banner artwork.
+- [x] Clean CI package verified: 16 runtime entries, exact Lua and new TGA CRC match, no development files.
+- [ ] Owner checks `/ws version` 49 and screenshot of full-window backdrop for visible grain, non-flat grey tone, correct contrast and border containment.
+- [ ] Continue genuine reference fidelity, rank sculpting, Alliance/scale cases and automated Lua QA; banners remain frozen.
