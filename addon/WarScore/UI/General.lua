@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "89"
+local UI_ITERATION = "90"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -505,9 +505,12 @@ local function build()
     -- Iteration 73: shift the entire ratio art + text block up 10 UI units.
     -- Keep all relative positions and font sizes established by v72.
     label(window, "HK/D", 18, GOLD, -165, -650, 270, 22)
-    label(window, "MUERTES PvP SUFRIDAS", 16, RED, 165, -650, 290, 22)
+    -- v90: align right-column heading and counter to the actual right panel axis.
+    -- The previous +165 offset was visibly right of the ornamental cell center.
+    local rightMetricX = 150
+    label(window, "MUERTES PvP SUFRIDAS", 16, RED, rightMetricX, -650, 290, 22)
     fields.hkd = label(window, "—", 34, CREAM, -165, -672, 270, 37)
-    fields.deaths = label(window, "—", 34, RED, 165, -672, 270, 37)
+    fields.deaths = label(window, "—", 34, RED, rightMetricX, -672, 270, 37)
     fields.hkd:SetShadowColor(0.34, 0.19, 0.06, 0.72)
     fields.hkd:SetShadowOffset(1, -1)
     fields.deaths:SetShadowColor(0.32, 0.05, 0.035, 0.70)

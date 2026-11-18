@@ -1124,3 +1124,10 @@ This validates positive BG history and objective tracking. Compare the native st
 - Central HONOR label/value remain at the existing positions (-544/-573), now gold; same section background and 39pt value. Right-hand ratio cell becomes 16pt red `MUERTES PvP SUFRIDAS` and 34pt red counter at existing anchors (-650/-672). HK/D left and its formula unchanged. The KB/D descriptive subtitle is removed; the right-hand area has no redundant description.
 - All other cards, portraits, icons, dynamic statistics, stage geometry, font files, artwork, and packaging unchanged. Diagnostic version 89.
 - **CLIENT QA NOT RUN:** install new ZIP, `/reload`, `/ws version`=89, `/ws`. Confirm central HONOR shows the actual spendable value, right cell shows death count (e.g. 14), title does not overflow or collide with sapphire separator, and no duplicate deaths/KB/D appear.
+
+
+## Iteration #89 screenshot → #90 align right PvP death KPI (2026-11-18)
+
+- The owner tested v89 in the WoW client. The new center `HONOR 0` is rendered correctly and the right-hand `MUERTES PvP SUFRIDAS 14` text is functionally correct, but the latter pair looks shifted toward the right of its ornamental half-cell.
+- v90 is an intentionally isolated visual adjustment: title and red death counter now share `rightMetricX = +150` relative to the window center, replacing their previous independent +165 anchors (15 UI units left). Preserve the existing y anchors (-650 and -672), text sizes (16 and 34), colors, font, widths, actual death value, divider artwork and UI frame dimensions. Left HK/D remains at -165; all other UI parts and Stats.lua unchanged.
+- Diagnostic version = 90. **CLIENT QA NOT RUN:** install ZIP, `/reload`, `/ws version`=90 and `/ws`; inspect optical centering of both the red heading and value in the right half without touching the central sapphire divider or frame edge.
