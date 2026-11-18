@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "53"
+local UI_ITERATION = "54"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -310,9 +310,19 @@ local function build()
     -- art inset inside the native dialog border and retain legibility.
     local shellBackground = window:CreateTexture(nil, "BACKGROUND")
     shellBackground:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\panel_stone_dark")
-    shellBackground:SetVertexColor(1, 1, 1, 1)
+    -- Iteration 54: the untouched grey 49 texture reads flat compared to
+    -- the mockup. Return to a deep near-black leather base but preserve a
+    -- restrained trace of organic grain instead of pure featureless black.
+    shellBackground:SetVertexColor(0.61, 0.55, 0.49, 1)
     shellBackground:SetPoint("TOPLEFT", window, "TOPLEFT", 12, -12)
     shellBackground:SetPoint("BOTTOMRIGHT", window, "BOTTOMRIGHT", -12, 12)
+    -- A soft recessed center: uses the existing tested feathered art rather
+    -- than a visible hard-edged geometric overlay.
+    local centerPatina = window:CreateTexture(nil, "BORDER")
+    centerPatina:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\section_plaque")
+    centerPatina:SetSize(675, 545)
+    centerPatina:SetPoint("TOP", window, "TOP", 0, -325)
+    centerPatina:SetVertexColor(0.56, 0.42, 0.30, 0.13)
     window:Hide()
 
     -- WoW-native dialog chrome; this is the OUTERMOST visible perimeter.
@@ -384,8 +394,9 @@ local function build()
     tabRail:SetSize(296, 2)
     tabRail:SetPoint("TOPLEFT", window, "TOPLEFT", 38, -101)
 
-    -- Reserved settings affordance INSIDE the inner frame, upper-right.
-    -- Deliberately no configuration feature is exposed yet.
+    -- Iteration 54: obvious WoW-style cog rather than the unrelated Gizmo
+    -- inventory icon. Inner-frame upper-right, independent of window close.
+    -- Decorative only until settings actually exist.
     local settingsFrame = CreateFrame("Frame", nil, window, "BackdropTemplate")
     settingsFrame:SetSize(36, 36)
     settingsFrame:SetPoint("TOPRIGHT", innerPanel, "TOPRIGHT", -12, -13)
@@ -394,13 +405,14 @@ local function build()
         edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
         edgeSize = 12,
     })
-    settingsFrame:SetBackdropColor(0.055, 0.038, 0.023, 0.93)
-    settingsFrame:SetBackdropBorderColor(0.79, 0.56, 0.24, 0.9)
+    settingsFrame:SetBackdropColor(0.025, 0.018, 0.012, 0.98)
+    settingsFrame:SetBackdropBorderColor(0.70, 0.49, 0.21, 0.92)
+    -- Clearly identifiable mechanical cog cut from the client's icon art.
     local settingsIcon = settingsFrame:CreateTexture(nil, "ARTWORK")
-    settingsIcon:SetTexture("Interface\\Icons\\INV_Gizmo_02")
-    settingsIcon:SetSize(25, 25)
+    settingsIcon:SetTexture("Interface\\Icons\\INV_Misc_Gear_01")
+    settingsIcon:SetSize(27, 27)
     settingsIcon:SetPoint("CENTER", settingsFrame, "CENTER", 0, 0)
-    settingsIcon:SetVertexColor(0.98, 0.84, 0.57, 1)
+    settingsIcon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
     if type(settingsFrame.CreateMaskTexture) == "function"
         and type(settingsIcon.AddMaskTexture) == "function" then
         pcall(function()
@@ -499,7 +511,7 @@ local function build()
     -- asset can be authored and proven in the Forever client.
     local heraldry = CreateFrame("Frame", nil, rankPlate, "BackdropTemplate")
     heraldry:SetSize(51, 51)
-    heraldry:SetPoint("LEFT", rankPlate, "LEFT", 11, 1)
+    heraldry:SetPoint("LEFT", rankPlate, "LEFT", 47, 1)
     heraldry:SetBackdrop({
         bgFile = "Interface\\Buttons\\WHITE8X8",
         edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
@@ -518,9 +530,9 @@ local function build()
     -- Clean centered rank inscription: a small section name and an honest
     -- unavailable value, like the two-tier reference ribbon.
     -- Reserve a visible margin below the rank value and above the HK divider.
-    local rankCaption = label(rankPlate, "Rango PvP", 13, CREAM, 17, -3, 300, 15)
+    local rankCaption = label(rankPlate, "Rango PvP", 13, CREAM, 30, -3, 280, 15)
     rankCaption:SetTextColor(0.89, 0.70, 0.39)
-    fields.rank = label(rankPlate, "No disponible", 18, GOLD, 17, -19, 300, 20)
+    fields.rank = label(rankPlate, "No disponible", 18, GOLD, 30, -19, 280, 20)
     fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
     fields.rank:SetShadowOffset(1, -1)
     line(window, -341, 650)
