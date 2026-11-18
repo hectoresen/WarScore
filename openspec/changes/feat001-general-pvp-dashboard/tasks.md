@@ -549,3 +549,12 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Verify CI refreshed runtime ZIP version 59 against source CRC and exact runtime resource list.
 - [ ] Owner tests in Forever and returns screenshot: confirm black rectangle/outer alpha, portraits, tab/rail overlap, rank, bottom row margin and any Lua errors.
 - [ ] Outer asset transparency may still need direct inspection if black rectangle persists. Rank's heraldic treatment and six lower icons still need replacement/approval.
+
+## Iteration 59 in-client FAIL → iteration 60 confined background
+
+- [x] Screenshot confirms removal of root full-window backing reveals the world through several alpha holes in supplied inner/outer artwork.
+- [x] Reuse previously authored existing dark leather TGA only as a 744×875 **inset background** behind both painted frames, rather than restoring old full-window black block.
+- [x] Keep prior geometric layout/reflow and stats untouched while repairing the layering failure; bump diagnostic to version 60.
+- [ ] Verify GitHub CI package version 60, source CRC and referenced art.
+- [ ] Owner tests real client: no see-through holes inside frame, no full-size black rectangle outside it, centered portrait/stats and bottom card clearance, no Lua errors.
+- [ ] If still see-through, investigate alpha contours/need for an opaque backing supplied separately. Never mark unapproved rank plaque/lower glyphs complete.
