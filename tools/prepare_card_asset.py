@@ -26,3 +26,13 @@ with Image.open(src) as file:
     dst.parent.mkdir(parents=True, exist_ok=True)
     image.save(dst, format="TGA")
 print("Converted owner top stat frame:", dst, dst.stat().st_size, "bytes")
+
+# v75: lower card has unequal cell widths, preserved in its own owner texture.
+lower_src = root / "docs/assets/stat_band_bottom_owner_v75_source.png"
+lower_dst = root / "Media/General/stat_band_bottom_owner_v75.tga"
+with Image.open(lower_src) as file:
+    lower = file.convert("RGBA")
+    lower.load()  # Fail the packaging job on a damaged transport PNG.
+    lower = lower.resize((1024, 256), Image.Resampling.LANCZOS)
+    lower.save(lower_dst, format="TGA")
+print("Converted owner lower stat frame:", lower_dst, lower_dst.stat().st_size, "bytes")

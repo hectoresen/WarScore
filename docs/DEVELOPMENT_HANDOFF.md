@@ -940,3 +940,13 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - Transport source `docs/assets/stat_band_top_owner_v74_source.png`: a palette-reduced 512×128 PNG of the owner's artwork, with original transparent interior. CI crops only alpha padding and converts the asset to 1024×256 RGBA `Media/General/stat_band_top_owner_v74.tga`. Reduced source is provisional: original 2048×682 owner PNG is the reference for any required fidelity refinement.
 - No adjustments to upper sections, second card, KPI positions or stats calculations. Diagnostic version 74. GitHub Actions packages complete `WarScore/` ZIP into `dist/WarScore.zip`.
 - **WoW-client visual QA NOT RUN:** install fresh ZIP, `/reload`, `/ws version`=74, `/ws`. Inspect upper frame corners and lines for distortion/cropping, duplicate borders, separators intersecting text, contrast/alpha, and relative alignment with the unchanged second row. Request screenshot to refine as needed.
+
+
+## Iteration #74 owner screenshot approved → #75 bottom secondary card owner art (2026-11-18)
+
+- Owner screenshot confirms top card frame v74 visually accepted. Owner supplied `Marco dorado ornamental con tres secciones(1).png` RGBA 2048×682 for the SECOND (lower) card row ONLY: BG win rate, duel win rate and favorite battleground. This asset has asymmetrical full-height separators at original x≈519 and x≈946, giving more room to the favorite BG column.
+- v75 adds `stat_band_bottom_owner_v75.tga`, built in existing CI via `tools/prepare_card_asset.py` from a cropped owner-provided transparent indexed transport PNG at `docs/assets/stat_band_bottom_owner_v75_source.png` (512×128, visual source is the original owner 2048×682 PNG). Like the first card, uses the owner painting directly, not a generated facsimile.
+- Remove synthetic border and separator primitives for the secondary card; render only the new frame and existing dark backing. Preserve v74 top card owner's exact texture, dimensions and contents.
+- For the bottom row set relative column widths 171 / 153 / 380 (total 704 units) matching the asymmetrical painted separators rather than the old equal-third layout. Preserve all the original dynamic FontStrings, values, icons, statistics calculations and row anchor/size 704×112. The top row retains equal thirds.
+- Diagnostic iteration 75. Packaging workflow stages both owner-card TGAs and the full verified ZIP.
+- **WoW CLIENT QA NOT RUN:** install fresh `dist/WarScore.zip`, `/reload`, `/ws version`=75, `/ws`. Check lower artwork sharpness, both divider x-positions vs their text and icons, frame corner alignment with upper row and that favorite BG text has adequate space. Validate before further tweaks.

@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "74"
+local UI_ITERATION = "75"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -132,92 +132,25 @@ local function statBand(parent, y, definitions, secondary)
     band:SetSize(704, 112)
     band:SetPoint("TOP", parent, "TOP", 0, y)
     backdrop(band, 0.92)
-    if secondary then
-        band:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 18 })
-        band:SetBackdropBorderColor(secondary and 0.62 or 0.82,
-            secondary and 0.41 or 0.55, 0.20, 0.96)
-        -- Shared side rails strengthen the single-piece metallic frame.
-        for _, side in ipairs({ "LEFT", "RIGHT" }) do
-            local insetRule = band:CreateTexture(nil, "BORDER")
-            insetRule:SetTexture("Interface\\Buttons\\WHITE8X8")
-            insetRule:SetVertexColor(0.52, 0.32, 0.11, 0.86)
-            insetRule:SetSize(2, 76)
-            insetRule:SetPoint(side, band, side, side == "LEFT" and 7 or -7, 0)
-        end
-    
-        local function trim(point, inset, offset, height, color)
-            local rule = band:CreateTexture(nil, "BORDER")
-            rule:SetTexture("Interface\\Buttons\\WHITE8X8")
-            rule:SetVertexColor(unpack(color))
-            rule:SetHeight(height)
-            rule:SetPoint(point .. "LEFT", band, point .. "LEFT", inset, offset)
-            rule:SetPoint(point .. "RIGHT", band, point .. "RIGHT", -inset, offset)
-        end
-        -- Inset leather-like center and paired metallic rails share one band border.
-        local bandInset = band:CreateTexture(nil, "BACKGROUND")
-        bandInset:SetTexture("Interface\\Buttons\\WHITE8X8")
-        bandInset:SetVertexColor(0.025, 0.017, 0.012, secondary and 0.43 or 0.25)
-        bandInset:SetPoint("TOPLEFT", band, "TOPLEFT", 8, -8)
-        bandInset:SetPoint("BOTTOMRIGHT", band, "BOTTOMRIGHT", -8, 8)
-        trim("TOP", 9, -4, 2, { 0.88, 0.59, 0.20, secondary and 0.76 or 0.96 })
-        trim("TOP", 13, -8, 1, { 0.38, 0.22, 0.08, 0.73 })
-        trim("BOTTOM", 9, 4, 2, { 0.71, 0.43, 0.13, secondary and 0.70 or 0.92 })
-        trim("BOTTOM", 13, 8, 1, { 0.32, 0.20, 0.07, 0.73 })
-    
-        -- An inner top glint creates a more integrated full-width gold frame.
-        local glint = band:CreateTexture(nil, "BORDER")
-        glint:SetTexture("Interface\\Buttons\\WHITE8X8")
-        glint:SetVertexColor(0.93, 0.68, 0.28, secondary and 0.12 or 0.24)
-        glint:SetSize(600, 1)
-        glint:SetPoint("TOP", band, "TOP", 0, -12)
-    
-        -- Use one coherent corner treatment for each full-width bar, instead
-        -- of giving each of the three statistics a separate mini-card.
-        for _, side in ipairs({ "LEFT", "RIGHT" }) do
-            for _, vertical in ipairs({ "TOP", "BOTTOM" }) do
-                local corner = band:CreateTexture(nil, "OVERLAY")
-                corner:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\ornate_corner")
-                corner:SetSize(30, 30)
-                corner:SetPoint(vertical .. side, band, vertical .. side,
-                    side == "LEFT" and 3 or -3, vertical == "TOP" and -3 or 3)
-                corner:SetTexCoord(side == "LEFT" and 0 or 1,
-                    side == "LEFT" and 1 or 0,
-                    vertical == "TOP" and 0 or 1,
-                    vertical == "TOP" and 1 or 0)
-                corner:SetAlpha(0.87)
-            end
-        end
-    
-    else
-        -- v74: complete owner-provided frame for the TOP three-stat row.
-        -- Its gold border, corners and separators replace synthetic adornments.
-        local art = band:CreateTexture(nil, "BORDER")
-        art:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\stat_band_top_owner_v74")
-        art:SetSize(704, 112)
-        art:SetAllPoints(band)
-    end
+    -- Owner artwork supplies all metal rails, corners and vertical dividers.
+    -- v74 top frame remains unchanged; v75 applies only to lower card row.
+    local frameArt = band:CreateTexture(nil, "BORDER")
+    frameArt:SetTexture(secondary
+        and "Interface\\AddOns\\WarScore\\Media\\General\\stat_band_bottom_owner_v75"
+        or "Interface\\AddOns\\WarScore\\Media\\General\\stat_band_top_owner_v74")
+    frameArt:SetAllPoints(band)
 
     local values = {}
-    local segmentWidth = 704 / 3
+    -- The lower owner's frame has asymmetric dividers at ~24% and ~46%.
+    -- Allocate real column widths so labels and values belong to their cells.
+    local widths = secondary and { 171, 153, 380 } or { 704 / 3, 704 / 3, 704 / 3 }
+    local offset = 0
     for i, definition in ipairs(definitions) do
+        local segmentWidth = widths[i]
         local segment = CreateFrame("Frame", nil, band)
         segment:SetSize(segmentWidth, 108)
-        segment:SetPoint("TOPLEFT", band, "TOPLEFT", (i - 1) * segmentWidth, -2)
-        if secondary and i > 1 then
-            local dividerX = (i - 1) * segmentWidth
-            local divider = band:CreateTexture(nil, "BORDER")
-            divider:SetTexture("Interface\\Buttons\\WHITE8X8")
-            divider:SetVertexColor(0.81, 0.53, 0.18, secondary and 0.66 or 0.84)
-            divider:SetSize(2, 84)
-            divider:SetPoint("CENTER", band, "LEFT", dividerX, 0)
-            local bevel = band:CreateTexture(nil, "BORDER")
-            bevel:SetTexture("Interface\\Buttons\\WHITE8X8")
-            bevel:SetVertexColor(0.23, 0.13, 0.06, 0.95)
-            bevel:SetSize(1, 84)
-            bevel:SetPoint("CENTER", band, "LEFT", dividerX + 3, 0)
-            -- The vertical rules now terminate cleanly inside the outer
-            -- border; no disconnected studs or caps at either end.
-        end
+        segment:SetPoint("TOPLEFT", band, "TOPLEFT", offset, -2)
+        offset = offset + segmentWidth
 
         -- Decorative icon is never part of the text layout. Native WoW
         -- inventory glyphs still have baked square art; future asset task
