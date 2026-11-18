@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "90"
+local UI_ITERATION = "91"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -330,11 +330,20 @@ local function build()
     brandTitle:SetShadowColor(0.34, 0.16, 0.03, 0.93)
     brandTitle:SetShadowOffset(1, -1)
 
-    -- Transparent hit target over the close X already baked into outerArt.
-    -- A native UIPanelCloseButton here would duplicate the X ornament.
+    -- v91: actual owner-supplied close-button art replaces the baked X
+    -- visually, while retaining the same top-right activation location.
+    -- A matching dark underlay hides the original baked ornament so two X
+    -- shapes cannot bleed through the transparent corners.
     local close = CreateFrame("Button", nil, window)
-    close:SetSize(43, 43)
+    close:SetSize(50, 50)
     close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -48, -28)
+    local closeUnderlay = close:CreateTexture(nil, "BACKGROUND")
+    closeUnderlay:SetTexture("Interface\\Buttons\\WHITE8X8")
+    closeUnderlay:SetAllPoints(close)
+    closeUnderlay:SetVertexColor(0.05, 0.035, 0.027, 1)
+    local closeArt = close:CreateTexture(nil, "ARTWORK")
+    closeArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\close_button_owner_v91")
+    closeArt:SetAllPoints(close)
     close:SetScript("OnClick", function() window:Hide() end)
 
     -- The supplied graphic already paints both tab plates; only live text
