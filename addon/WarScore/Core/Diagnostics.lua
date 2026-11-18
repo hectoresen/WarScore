@@ -14,6 +14,8 @@ local function show(value)
     return tostring(value)
 end
 
+local honorRequestPending = false
+
 local function inspect(label, fn, ...)
     if type(fn) ~= "function" then
         output(label .. ": API no disponible")
@@ -139,8 +141,11 @@ end
 
 honorFrame:SetScript("OnEvent", function(_, event)
     if event == "INSPECT_HONOR_UPDATE" then
-        output("INSPECT_HONOR_UPDATE recibido")
-        inspect("GetInspectHonorData", GetInspectHonorData)
+        if honorRequestPending then
+            honorRequestPending = false
+            output("INSPECT_HONOR_UPDATE recibido para la solicitud de WarScore")
+            inspect("GetInspectHonorData", GetInspectHonorData)
+        end
     elseif event == "HONOR_XP_UPDATE" then
         output("HONOR_XP_UPDATE recibido")
         inspect("UnitHonor(player)", UnitHonor, "player")
@@ -220,8 +225,10 @@ SlashCmdList.WARSCOREDIAG = function(message)
     elseif mode == "honor" then
         printHonorData()
         if type(NotifyInspect) == "function" and type(RequestInspectHonorData) == "function" then
+            honorRequestPending = true
             local notifyOk, notifyError = pcall(NotifyInspect, "player")
             local requestOk, requestError = pcall(RequestInspectHonorData)
+            if not notifyOk or not requestOk then honorRequestPending = false end
             output("Solicitud de honor: NotifyInspect=" .. (notifyOk and "OK" or "ERROR " .. show(notifyError)) .. " | RequestInspectHonorData=" .. (requestOk and "OK" or "ERROR " .. show(requestError)))
             output("Si llega INSPECT_HONOR_UPDATE, se imprimiran los retornos actualizados")
         else
