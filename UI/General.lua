@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "81"
+local UI_ITERATION = "82"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -168,7 +168,10 @@ local function statBand(parent, y, definitions, secondary)
         -- A supported alpha mask removes the square inventory-tile corners
         -- without zoom-cropping blades and heraldry. Graceful client fallback.
         -- v80: common 50x50 viewport for every owner icon in both card rows.
-        local iconSize = ownerIcon and 50 or 43
+        -- v82: optical balancing in the two narrow lower-row cells only.
+        -- Favorite-BG pennant and the entire upper row keep their approved size.
+        local iconSize = ownerBottomIcon and (i == 1 and 47.5 or (i == 2 and 45 or 50))
+            or (ownerIcon and 50 or 43)
         icon:SetSize(iconSize, iconSize)
         -- v78: move only the crossed swords inward, clear of the left gold bevel.
         -- v81: use consistent inner clearance for the normalized lower art.
@@ -194,8 +197,13 @@ local function statBand(parent, y, definitions, secondary)
         local caption = label(segment, definition.title, secondary and 12 or 13,
             CREAM, 0, -12, 145, 38)
         caption:SetTextColor(0.94, 0.84, 0.65)
+        -- Ratios in the two narrow lower cells have their own fixed text area,
+        -- offset right of the decorative icon; not anchored to the icon.
+        local isRate = secondary and i <= 2
+        local valueX = isRate and 18 or 0
+        local valueWidth = isRate and 105 or 145
         local value = label(segment, "—", definition.valueSize or (secondary and 29 or 35),
-            secondary and GREEN or GOLD, 0, -53, 145, 45)
+            secondary and GREEN or GOLD, valueX, -53, valueWidth, 45)
         value:SetShadowColor(0.26, 0.14, 0.045, secondary and 0.45 or 0.72)
         value:SetShadowOffset(1, -1)
         values[i] = value
