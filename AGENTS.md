@@ -24,3 +24,11 @@ No CraftAtlas GitHub rulesets, CI validators, mandatory two-PR process, branch n
 ## Context handoff
 
 **Read `docs/DEVELOPMENT_HANDOFF.md` at the beginning of every resumed agent session.** It records the current commit, real-client QA, unresolved defects and the next exact test. Update it after every iteration and maintain honest OpenSpec task status.
+
+## Asset sourcing and owner approval (mandatory)
+
+- The owner supplies Warcraft-themed artwork when custom visuals are required. **Ask for the exact missing asset before creating, generating, painting, approximating, reconstructing or substituting visual artwork.** Do not invent decorative assets to fill a visual gap.
+- Existing owner-provided assets may be positioned, cropped, converted to a compatible WoW texture format, alpha-composited and scaled **without redrawing their artistic content**. Explain quality or fidelity limitations when converting.
+- Reuse an existing art texture for strictly corrective layout/compositing work when the requested visual treatment already exists (e.g. an interior leather backing). Do not describe this as creating new artwork.
+- When requesting a missing asset, name the piece, intended location, required transparency/format, approximate dimensions and whether it needs separable layers. Do not silently substitute native WoW item icons with unrelated artwork.
+- Keep art acceptance explicit: visually present in game != approved. Document each user screenshot result and keep rejected/provisional pieces open. Do not modify approved assets except for a specifically requested change.
