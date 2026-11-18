@@ -466,3 +466,15 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Verify CI runtime-only ZIP contains iteration 51 Lua and is structurally intact.
 - [ ] Owner tests iteration 51 in Forever: no right-side hatch, rank readably centered, crest and surrounding dividers aligned, no Lua errors; send screenshot.
 - [ ] Later: improve custom sculpted rank art if still visually too flat. Alliance, other scales, populated BG stats and deterministic Lua tests remain pending.
+
+## Iteration 51 screenshot and original reference → iteration 52
+
+- [x] Owner's reference mockup received and compared with real-client screenshots; reference data is fictional and must not be mirrored.
+- [x] Record **unapproved**: background material, all lower statistic icons, current rank artwork.
+- [x] Identify circular faction crest as visually wrong and persistent ribbon-right hatching despite earlier UV fix.
+- [x] Iteration 52 removes round crest and tightens rank ribbon UV crop, maintains real rank-unavailable state and all existing counters/row conventions.
+- [ ] Owner tests iteration 52 and confirms right-edge scratch gone, no awkward empty space without crest, no UI errors.
+- [ ] Create proper single-piece rank graphic with integrated heraldic shield (NO circular coin and NO orange rectangle).
+- [ ] Revisit backdrop using original reference: richer organic leathery/stone texture and proper depth; current backdrop not approved.
+- [ ] Replace/rework all six masked native item icon tiles with coherent WoW-quality transparent pictograms; no rejected iteration 44 clip-art.
+- [ ] Preserve frozen side banners until owner asks to unfreeze; game client/Alliance/alternate scaling QA still open.
