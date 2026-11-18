@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "65"
+local UI_ITERATION = "66"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -430,61 +430,25 @@ local function build()
     rankPlate:SetSize(452, 42)
     rankPlate:SetPoint("TOP", window, "TOP", 0, -341)
 
-    -- Iteration 52: screenshot reference comparison. The previous circular
-    -- faction badge looked like a stuck-on coin, not the reference's shield.
-    -- Do not substitute another fake emblem before a proper shield asset.
-    -- The old ribbon's right-hand strokes are baked into its art; a smaller
-    -- central crop avoids them while keeping the proven Warcraft palette.
-    local shadow = rankPlate:CreateTexture(nil, "BACKGROUND")
-    shadow:SetTexture("Interface\\Buttons\\WHITE8X8")
-    shadow:SetVertexColor(0.016, 0.011, 0.010, 0.90)
-    shadow:SetSize(418, 41)
-    shadow:SetPoint("CENTER", rankPlate, "CENTER", 0, -1)
-    local leather = rankPlate:CreateTexture(nil, "BACKGROUND")
-    leather:SetTexture("Interface\\Buttons\\WHITE8X8")
-    leather:SetVertexColor(0.10, 0.045, 0.026, 0.88)
-    leather:SetSize(408, 33)
-    leather:SetPoint("CENTER", rankPlate, "CENTER", 0, -1)
-    local ribbon = rankPlate:CreateTexture(nil, "BORDER")
-    ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
-    ribbon:SetTexCoord(0.18, 0.74, 0.16, 0.84)
-    ribbon:SetSize(422, 48)
-    ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
-    ribbon:SetAlpha(0.91)
-
-    -- A cohesive inset rim, not separate rectangular orange cap pieces.
-    local upperRim = rankPlate:CreateTexture(nil, "ARTWORK")
-    upperRim:SetTexture("Interface\\Buttons\\WHITE8X8")
-    upperRim:SetVertexColor(0.86, 0.58, 0.23, 0.63)
-    upperRim:SetSize(332, 1)
-    upperRim:SetPoint("TOP", rankPlate, "TOP", 0, -5)
-    local lowerRim = rankPlate:CreateTexture(nil, "ARTWORK")
-    lowerRim:SetTexture("Interface\\Buttons\\WHITE8X8")
-    lowerRim:SetVertexColor(0.48, 0.28, 0.13, 0.70)
-    lowerRim:SetSize(332, 1)
-    lowerRim:SetPoint("BOTTOM", rankPlate, "BOTTOM", 0, 5)
-
-    -- Raised faction heraldry occupies the left of the plaque, similar
-    -- to the mockup shield's footprint. Avoid the rejected circular coin.
-    -- Native Warcraft emblem is provisional until the full carved-shield
-    -- asset can be authored and proven in the Forever client.
-    local heraldry = CreateFrame("Frame", nil, rankPlate, "BackdropTemplate")
-    heraldry:SetSize(51, 51)
-    heraldry:SetPoint("LEFT", rankPlate, "LEFT", 47, 1)
-    heraldry:SetBackdrop({
-        bgFile = "Interface\\Buttons\\WHITE8X8",
-        edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-        edgeSize = 15,
-    })
-    heraldry:SetBackdropColor(0.11, 0.035, 0.025, 0.97)
-    heraldry:SetBackdropBorderColor(0.95, 0.68, 0.26, 1)
-    local heraldryIcon = heraldry:CreateTexture(nil, "ARTWORK")
-    heraldryIcon:SetTexture(UnitFactionGroup("player") == "Alliance"
-        and "Interface\\Icons\\INV_BannerPVP_02"
-        or "Interface\\Icons\\INV_BannerPVP_01")
-    heraldryIcon:SetSize(37, 37)
-    heraldryIcon:SetPoint("CENTER", heraldry, "CENTER", 0, 0)
-    heraldryIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+    -- Iteration 66: use the owner's actual Horde PvP-rank plaque.
+    -- The complete shield, red leather, gold bevel, laurels and center ruby
+    -- are baked into one alpha texture; never overlay the former square
+    -- inventory emblem, fake border, orange backing or stray gold lines.
+    -- The source PNG was cropped ONLY around transparent padding.
+    -- Alliance has no matching supplied plaque, so retain the established
+    -- neutral ribbon as fallback rather than displaying Horde heraldry.
+    local rankFaction = UnitFactionGroup("player")
+    local rankArtwork = rankPlate:CreateTexture(nil, "ARTWORK")
+    if rankFaction == "Horde" then
+        rankArtwork:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_pvp_horde_owner_v66")
+        rankArtwork:SetSize(452, 113)
+        rankArtwork:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
+    else
+        rankArtwork:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
+        rankArtwork:SetTexCoord(0.18, 0.74, 0.16, 0.84)
+        rankArtwork:SetSize(422, 48)
+        rankArtwork:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
+    end
 
     -- Clean centered rank inscription: a small section name and an honest
     -- unavailable value, like the two-tier reference ribbon.
@@ -494,8 +458,12 @@ local function build()
     fields.rank = label(rankPlate, "No disponible", 18, GOLD, 30, -19, 280, 20)
     fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
     fields.rank:SetShadowOffset(1, -1)
-    line(window, -391, 632)
-    ornamentDiamond(window, -389, 8)
+    -- The supplied Horde plaque already has a lower gold rim and ruby:
+    -- an extra full-width rule/diamond would cut through that artwork.
+    if rankFaction ~= "Horde" then
+        line(window, -391, 632)
+        ornamentDiamond(window, -389, 8)
+    end
     sectionPlaque(window, -405, 570, 110, 0.92)
 
     -- Iteration 21: strengthen the main lifetime-HK hero section without
