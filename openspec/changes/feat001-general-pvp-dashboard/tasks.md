@@ -576,3 +576,13 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] CI package v62 and runtime Lua CRC/source parity check.
 - [ ] Owner screenshots v62 in daylight to verify the side rail is filled without a black rectangle outside the exterior gilded trim.
 - [ ] If further precision is needed, **request owner-supplied exterior-aligned opaque background with transparent outside**, not further guessed artwork or masks. Pending rank banner and lower icons remain unapproved.
+
+## Iteration 62 screenshot and owner/designer layout → v63
+
+- [x] Owner supplies transparent 1199×1312 high-quality inner PNG with gold tabs and integrated Horde flags; inspect RGBA center transparency.
+- [x] Record authoritative design reference: outer 1199×1312 at (0,0), inner 1067×1167 at (66,101), ~0.89 uniform scale. **Do not use combined reference composite as runtime asset.**
+- [x] Import new inner frame to 512×1024 WoW TGA with transparency and switch Lua reference to `inner_frame_owner_v63`.
+- [x] Apply equivalent WoW geometry: outer window 870×1060, inner 774×943 at TOP y=-82 and centered. Narrow existing backing to 784px without any new art.
+- [ ] Verify ZIP contains v63 Lua and new frame asset, and no combined reference image; verify Lua source CRC parity.
+- [ ] Owner tests v63 in WoW Forever: tab positions, nested frame centering, no double trim, no black backing overflow, no clipping and no Lua errors.
+- [ ] Preserve all visual approval gaps: owner-provided leather background placement, rank plaque, six lower icons, Alliance treatment, alternate scales.
