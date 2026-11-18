@@ -805,3 +805,17 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - Settings gear stays top-right inside the nested frame (x=-77,y=-123); corrected to avoid touching right cloth. Tabs retain existing user-asset alignment. No changes to SavedVariables, calculations, real PvP data, available/nonavailable rank behavior or lower stat icon images.
 - **QA pending**: clean ZIP install, `/reload`, `/ws version`=59, `/ws`. Confirm black outer rectangle is gone, frame contours clean, portrait doesn't overlap tabs/name, rank and separators remain apart, two metric rows fit inside the lower border, gear doesn't collide with right flag, X stays clickable, no Lua errors.
 - The source frame assets remain experimental in layout. **Rank artwork and lower six icon images remain unapproved**.
+
+## Iteration #59 — owner screenshot FAIL: inner frame transparency (2026-11-18)
+
+- Real WoW Forever screenshot shows the frame background is severely broken: the desert world shows through broad irregular gaps between the painted upper rail, both banner sides and the dark center, plus bottom-side holes. This is a direct consequence of deleting the entire shell background rather than confining it behind the authored nested frame.
+- Successful parts to preserve: owner outer metal chrome, medallion, live tab text, attached banners, centered smaller portrait without tab occlusion, rank and historical statistics, 2x3 stat rows. HK 32, PvP deaths 10, HK/D 3.20 were displayed and must remain live.
+- Owner explicitly wants conservative repair and no invented replacement artwork; ask for separate assets only if truly needed.
+
+## Iteration #60 — restore only the interior material behind transparent holes (2026-11-18)
+
+- Code commit `ded5868182ee9467a576ae07d3d9ef0599260f06`, diagnostic `/ws version` = **60**.
+- Restore the existing tested `panel_dark_leather_v55.tga` as a *constrained* opaque backing, 744×875 at frame TOP y=-115, on BACKGROUND sublevel -7 **behind** the supplied 760×890 inner panel and the external metal frame. This should cover its transparent holes and ragged top/sides without recreating a giant 870×1060 external black rectangle.
+- Leave native dynamic stats, 2×3 cards, title/close handling, profile, settings, banners baked in the inner asset and current proportions unchanged. This iteration is a targeted alpha/compositing correction; both user-supplied frame assets are still used.
+- **Not yet in-client validated.** Owner to cleanly install refreshed `dist/WarScore.zip`, `/reload`, `/ws version`=60 and `/ws`. Specifically inspect desert visibility through the upper tab rail, banner gutters and center/bottom; verify outside the external frame is transparent, dark material stays inside trim, no new hard-edged black rectangles, and no Lua errors.
+- If gaps persist along the irregular silhouette, refine the existing alpha mask/backplate geometry or request specifically a dedicated *opaque interior material layer* from the owner rather than inventing incompatible decorative graphics. Rank plaque and lower 6 glyphs remain unapproved.
