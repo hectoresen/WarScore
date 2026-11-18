@@ -456,3 +456,13 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Confirm CI refreshed runtime-only ZIP contains iteration 50 Lua; test archive integrity and source parity.
 - [ ] Owner tests `/reload`, `/ws version` = 50, `/ws` in Forever and returns screenshot. Evaluate rank silhouette, icon mask, crest integration and any Lua errors.
 - [ ] Continue visual matching in small iterations; alternate UI scales, Alliance, populated BG scenarios and automated Lua/client QA remain outstanding.
+
+## Iteration 50 screenshot → iteration 51 rank artifact correction
+
+- [x] Owner screenshot: warm-grey textured shell, large lower icons, rank circular crest, main counters all render.
+- [x] Identify **visible hatch/striping at ribbon right end** from iteration 50's expanded UV range; owner has not accepted the rank plaque.
+- [x] Iteration 51: restore previously safe UV crop, refine restrained inside-material depth, enlarge/rebalance two-line rank inscription; preserve circular emblem.
+- [x] Keep faction banners frozen and lower six icons/stat bindings unchanged.
+- [ ] Verify CI runtime-only ZIP contains iteration 51 Lua and is structurally intact.
+- [ ] Owner tests iteration 51 in Forever: no right-side hatch, rank readably centered, crest and surrounding dividers aligned, no Lua errors; send screenshot.
+- [ ] Later: improve custom sculpted rank art if still visually too flat. Alliance, other scales, populated BG stats and deterministic Lua tests remain pending.
