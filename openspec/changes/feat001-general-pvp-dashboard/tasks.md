@@ -586,3 +586,14 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Verify ZIP contains v63 Lua and new frame asset, and no combined reference image; verify Lua source CRC parity.
 - [ ] Owner tests v63 in WoW Forever: tab positions, nested frame centering, no double trim, no black backing overflow, no clipping and no Lua errors.
 - [ ] Preserve all visual approval gaps: owner-provided leather background placement, rank plaque, six lower icons, Alliance treatment, alternate scales.
+
+## Iteration 63 screenshot fail → v64 source-asset recovery
+
+- [x] Inspect both newly uploaded original PNGs and confirm they match previous source PNGs by content hash and alpha dimensions.
+- [x] Reimport both exact owner-source PNGs into game-supported alpha TGA files instead of relying on earlier conversions/trim improvisations.
+- [x] Derive a background matte only from owner-provided leather and outer-frame geometry; apply alpha at the painted rail contour, eliminating the guessed opaque rectangular backing.
+- [x] Preserve the designer's 89%-scale centered nested-frame geometry, real stat bindings and tab/portrait/card positions.
+- [ ] Verify CI rebuilt runtime ZIP with all three v64 TGAs, source Lua version 64 / CRC parity, and no generated reference composite.
+- [ ] Owner screenshot in Forever: no external black box or world bleed, no unintended third ornamental border, no clipping, no errors.
+- [ ] If external baked gold border creates an extra contour, seek owner direction for masking the original (not inventing new art).
+- [ ] Rank plaque, bottom six icons, Alliance graphics and other UI scales remain unapproved.
