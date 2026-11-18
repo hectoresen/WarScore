@@ -708,3 +708,18 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - Narrows the existing ribbon's UV crop (0.18–0.74) to exclude the persistent right-side scratched region visible in the latest screenshot; retains warmer layered dark leather and quieter inset metal rim, centers rank text on full plaque. Retains 'No disponible' without inventing PvP rank.
 - No modifications to the frozen banners, native lower icons, background texture or data model. **Background, lower icons and PvP rank artwork remain provisional and not approved.**
 - **Owner QA pending:** install fresh CI-generated ZIP, run `/reload`, `/ws version` = 52, `/ws`; send screenshot, checking right-hand scratch removal, rank spacing, text and absence of Lua errors. Full shield/matching materials will be separate iterations. If this crop loses too much ornamentation, plan fresh authored rank asset rather than endlessly stretching the old one.
+
+## Iteration #52 — owner screenshot and new direction (2026-11-18)
+
+- Owner's in-client screenshot verifies the round faction boss is absent and the right-edge scratches are no longer present. However the PvP rank strip now reads as a plain orange-brown rectangle; **not visually accepted**.
+- Owner explicitly asks to remove BOTH side banners, restore the faction symbol on the rank ribbon as a left-hand overlapping piece (like the reference's heraldry), and reserve a WoW-style settings gear in the TOP-RIGHT CORNER INSIDE the inner panel, separate from the exterior close X. The gear is a visual placeholder only.
+- Background and lower-stat icons remain NOT approved, as already documented.
+
+## Iteration #53 — remove banners, place rank heraldry and settings placeholder (2026-11-18)
+
+- Code commit `77c3f3f9352e6b0cdf151c92da25680fca8ebb7c`; `/ws version` = **53**.
+- Stop rendering either faction banner in `UI/General.lua`; existing media is left in the source repo but omitted from runtime ZIP when unreferenced.
+- Place native faction banner emblem at left of PvP plaque inside an overlapping 51px gold-edged badge (NOT the rejected circular portrait ring). The item artwork and rectangular mount are **provisional** and deliberately do not claim to equal the integrated shield in the mockup; owner screenshot will decide whether to keep or replace.
+- Add a 36px WoW-style gold-edged settings frame 12px inset from the INNER frame's top-right corner with native `INV_Gizmo_02` gear asset and guarded circular cutout. Hover says 'Ajustes (próximamente)'; no settings functionality and no SavedVariables changes. This is not the top-right outer close control.
+- Keep all PvP counters, rank-unavailable state, current HK → deaths → ratios ordering, textured shell, panel borders, lower masked icons and gold/green empty values. No attempt to claim the backdrop, lower icons or rank art as approved.
+- **Owner QA required:** clean addon installation; `/reload`, `/ws version` = 53, `/ws`; verify no side banners, settings cog displays in INNER top-right and doesn't overlap tabs or X, rank emblem visually acceptable or not, no Lua errors. More substantive artwork/background work is still pending.
