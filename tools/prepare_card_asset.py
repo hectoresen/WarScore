@@ -8,7 +8,7 @@ from PIL import Image, ImageFile
 
 root = Path(__file__).resolve().parents[1]
 src = root / "docs/assets/stat_band_top_owner_v74_source.png"
-dst = root / "Media/General/stat_band_top_owner_v74.tga"
+dst = root / "addon/WarScore/Media/General/stat_band_top_owner_v74.tga"
 ImageFile.LOAD_TRUNCATED_IMAGES = True  # transport PNG is partially truncated; validate before release
 with Image.open(src) as file:
     image = file.convert("RGBA")
@@ -29,7 +29,7 @@ print("Converted owner top stat frame:", dst, dst.stat().st_size, "bytes")
 
 # v75: lower card has unequal cell widths, preserved in its own owner texture.
 lower_src = root / "docs/assets/stat_band_bottom_owner_v75_source.png"
-lower_dst = root / "Media/General/stat_band_bottom_owner_v75.tga"
+lower_dst = root / "addon/WarScore/Media/General/stat_band_bottom_owner_v75.tga"
 with Image.open(lower_src) as file:
     lower = file.convert("RGBA")
     lower.load()  # Fail the packaging job on a damaged transport PNG.

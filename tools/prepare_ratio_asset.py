@@ -8,7 +8,7 @@ from PIL import Image
 
 root = Path(__file__).resolve().parents[1]
 source = root / "docs/assets/ratios_frame_owner_v70_source.png"
-target = root / "Media/General/ratios_frame_owner_v70.tga"
+target = root / "addon/WarScore/Media/General/ratios_frame_owner_v70.tga"
 with Image.open(source) as img:
     art = img.convert("RGBA").resize((1024, 256), Image.Resampling.LANCZOS)
     art.save(target, format="TGA")

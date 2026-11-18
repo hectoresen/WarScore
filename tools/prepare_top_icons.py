@@ -14,7 +14,7 @@ sources = {
 }
 for name, source in sources.items():
     path = root / "docs" / "assets" / source
-    dest = root / "Media" / "General" / (name + ".tga")
+    dest = root / "addon" / "WarScore" / "Media" / "General" / (name + ".tga")
     with Image.open(path) as original:
         original.load()
         if original.size != (64, 64):

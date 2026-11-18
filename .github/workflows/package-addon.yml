@@ -3,11 +3,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'WarScore.toc'
-      - 'Core/**'
-      - 'UI/**'
-      - 'Media/**'
-      - 'tools/package_addon.py'
+      - 'addon/WarScore/**'
+      - 'tools/**'
       - '.github/workflows/package-addon.yml'
   workflow_dispatch:
 
@@ -56,7 +53,7 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add dist/WarScore.zip Media/General/ratios_frame_owner_v70.tga Media/General/stat_band_top_owner_v74.tga Media/General/stat_band_bottom_owner_v75.tga Media/General/icon_duels_owner_v77.tga Media/General/icon_bg_played_owner_v77.tga Media/General/icon_bg_wins_owner_v77.tga Media/General/icon_bg_rate_owner_v79.tga Media/General/icon_duel_rate_owner_v79.tga Media/General/icon_favorite_bg_owner_v79.tga
+          git add dist/WarScore.zip addon/WarScore/Media/General/ratios_frame_owner_v70.tga addon/WarScore/Media/General/stat_band_top_owner_v74.tga addon/WarScore/Media/General/stat_band_bottom_owner_v75.tga addon/WarScore/Media/General/icon_duels_owner_v77.tga addon/WarScore/Media/General/icon_bg_played_owner_v77.tga addon/WarScore/Media/General/icon_bg_wins_owner_v77.tga addon/WarScore/Media/General/icon_bg_rate_owner_v79.tga addon/WarScore/Media/General/icon_duel_rate_owner_v79.tga addon/WarScore/Media/General/icon_favorite_bg_owner_v79.tga
           if ! git diff --cached --quiet; then
             git commit -m "build: refresh verified WarScore ZIP [skip ci]"
             git push

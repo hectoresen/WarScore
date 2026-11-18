@@ -17,7 +17,7 @@ icons = {
 }
 for name, (filename, target_long_side) in icons.items():
     source = root / "docs" / "assets" / filename
-    dest = root / "Media" / "General" / (name + ".tga")
+    dest = root / "addon" / "WarScore" / "Media" / "General" / (name + ".tga")
     with Image.open(source) as png:
         png.load()
         if png.size != (64, 64):

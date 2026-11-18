@@ -9,9 +9,10 @@ from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
 import re
 
-ROOT = Path(__file__).resolve().parents[1]
+REPO = Path(__file__).resolve().parents[1]
+ROOT = REPO / "addon" / "WarScore"
 TOC = ROOT / "WarScore.toc"
-OUTPUT = ROOT / "dist" / "WarScore.zip"
+OUTPUT = REPO / "dist" / "WarScore.zip"
 PREFIX = "Interface/AddOns/WarScore/Media/"
 
 
@@ -39,7 +40,7 @@ def source_files():
 
 
 def main():
-    OUTPUT.parent.mkdir(exist_ok=True)
+    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     files = source_files()
     with ZipFile(OUTPUT, "w", ZIP_DEFLATED, compresslevel=9) as archive:
         for path in files:
@@ -48,7 +49,7 @@ def main():
         assert archive.testzip() is None, "Corrupted addon ZIP"
         assert all(name.startswith("WarScore/") for name in archive.namelist())
         assert not any("openspec" in name.lower() or name.startswith("WarScore/docs/") for name in archive.namelist())
-    print(f"Created {OUTPUT.relative_to(ROOT)} with {len(files)} files")
+    print(f"Created {OUTPUT.relative_to(REPO)} with {len(files)} files")
 
 
 if __name__ == "__main__":
