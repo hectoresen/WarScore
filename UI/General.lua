@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "55"
+local UI_ITERATION = "56"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -35,6 +35,23 @@ local function line(parent, y, width)
     texture:SetVertexColor(0.72, 0.48, 0.17, 0.85)
     texture:SetSize(width or 620, 2)
     texture:SetPoint("TOP", parent, "TOP", 0, y)
+end
+
+-- Iteration 56: original owner-provided Horde banner, with rod, cloth,
+-- emblem and torn edge baked into one transparent texture. No extra bar,
+-- emblem tile, rivets or hard rectangular backing over the artwork.
+-- The alternate faction deliberately shows none until matching artwork exists.
+local function suppliedFactionBanner(parent, side)
+    if UnitFactionGroup("player") ~= "Horde" then return end
+    local sign = side == "LEFT" and -1 or 1
+    local banner = CreateFrame("Frame", nil, parent)
+    banner:SetSize(144, 230)
+    banner:SetPoint("TOP", parent, "TOP", sign * 268, -121)
+    local art = banner:CreateTexture(nil, "ARTWORK")
+    art:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\banner_horde_supplied")
+    art:SetAllPoints(banner)
+    art:SetAlpha(0.98)
+    return banner
 end
 
 -- Native decorative accents: no additional assets or client-only APIs required.
@@ -415,8 +432,10 @@ local function build()
     settingsFrame:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
     fields = {}
-    -- Iteration 53: owner explicitly removed both side banners from the UI.
-    -- Keep their assets in the repo for now; they are no longer rendered.
+    -- Reintroduce the supplied authentic hanging cloth on both sides,
+    -- behind portrait/rank labels but inside the ornamental inner frame.
+    suppliedFactionBanner(window, "LEFT")
+    suppliedFactionBanner(window, "RIGHT")
     local portraitRing = CreateFrame("Frame", nil, window)
     portraitRing:SetSize(126, 126)
     portraitRing:SetPoint("TOP", window, "TOP", 0, -105)
