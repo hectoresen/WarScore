@@ -1027,3 +1027,12 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - Updated all four PNG→TGA preparation tools to write to `addon/WarScore/Media/General/`; updated `tools/package_addon.py` to read the new addon root; CI triggers and asset staging paths updated. The existing `dist/WarScore.zip` URL and single `WarScore/` top-level archive structure are maintained.
 - Refreshed README, new architecture/functional/installation/development docs and reconciled stale status claims in AGENTS, OpenSpec README, MVP context and GENERAL_VIEW. Do not use historical proposal descriptions as evidence that already-implemented UI is absent.
 - **Automated packaging succeeded. WoW client smoke test NOT RUN after relocation.** The user should install the new ZIP and check `/ws version`=83, `/ws`, `/wsdiag`, image paths and full layout. Preserve v83 screenshot as visual baseline. Do not start another UI change until explicitly requested.
+
+
+## Iteration #83 in-game BG validation → #84 favorite battleground name fit (2026-11-18)
+
+- Following the repository-layout migration, the owner successfully played one battleground and shared an actual screenshot: HK 92, PvP deaths 14, HK/D 6.57, BG played 1, BG wins 0, BG win rate 0%, favorite `Garganta Grito de Guerra`. This is useful first positive BG-counter evidence and confirms the relocated install runs visually; it does not validate all client APIs or universal BG behavior.
+- Observed defect: the third bottom card renders `Garganta Grito de Guerra...` clipped/ellipsized because its dynamic value FontString shares a 145-unit width with the narrow cells despite the favorite section spanning ~371 units.
+- v84 changes **only** the favorite BG value anchor to x=+22 and width 265, leaving y=-53, font size 17, height 45, original favorite string (name + newline + played count), blue pennant and card decoration untouched. The two percentage value areas and upper row keep v83 geometry; Lua calculations remain exactly the same.
+- No new asset, no API change, no gameplay reclassification. Version diagnostic = 84.
+- **Client QA NOT RUN:** install new `dist/WarScore.zip`, `/reload`, `/ws version`=84 and `/ws`. Verify that the full `Garganta Grito de Guerra` and played count appear inside the favorite cell without touching the pennant or the right gold border, with the title above them undisturbed.
