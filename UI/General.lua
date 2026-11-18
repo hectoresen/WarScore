@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "61"
+local UI_ITERATION = "62"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -305,15 +305,16 @@ local function build()
     -- Iteration 58: treat both owner assets as a single geometric hierarchy.
     -- The outer frame is the visible window perimeter and header, not a
     -- native tooltip/dialog frame stretched over another painting.
-    -- Iteration 61: the v60 backing only filled the central 744px,
-    -- leaving transparent gutters between the inner 760px painting and
-    -- the external metallic rails. Extend the EXISTING owner-tested dark
-    -- material to the inside edges of the OUTER frame, not the entire
-    -- 870px canvas. This is a geometry repair, not a new painted asset.
+    -- Iteration 62: daylight still showed through a narrow left gutter at
+    -- the external metal rail in the owner's v61 screenshot. Give the
+    -- existing dark leather backing 9px more coverage per side, confined
+    -- behind both supplied paintings. No new art or opaque full-frame layer.
+    -- Do not keep widening this beyond the metallic rails: request an
+    -- owner-supplied alpha-matched interior backing if leakage persists.
     window:Hide()
     local interiorBacking = window:CreateTexture(nil, "BACKGROUND", nil, -7)
     interiorBacking:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\panel_dark_leather_v55")
-    interiorBacking:SetSize(790, 930)
+    interiorBacking:SetSize(808, 930)
     interiorBacking:SetPoint("TOP", window, "TOP", 0, -97)
     interiorBacking:SetVertexColor(0.88, 0.82, 0.76, 1)
 
