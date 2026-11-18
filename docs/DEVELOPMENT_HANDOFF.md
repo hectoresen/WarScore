@@ -1018,3 +1018,12 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - Keep WIN RATE BG flag icon 47.5×47.5 and its existing x=16, favorite BG pennant icon 50×50 and x=18, all original texture sources/TGAs, frame positions, row widths, border artwork and dynamic values unchanged. Upper stat row and entire upper screen untouched.
 - Diagnostic `UI_ITERATION = 83`. No new art conversion required. Package and validate standard `dist/WarScore.zip` via GitHub Actions.
 - **WoW CLIENT QA NOT RUN:** install new complete ZIP, `/reload`, `/ws version` (83), `/ws`. Screenshot to confirm even spacing between lower icons, percentages and ornamental dividers before accepting.
+
+
+## Repository restructuring after UI v83 — CraftAtlas-style addon layout (2026-11-18)
+
+- The owner explicitly requested the repo layout of [hectoresen/CraftAtlas](https://github.com/hectoresen/CraftAtlas), in particular the installable `addon/<AddonName>/` source directory, plus refreshed README and functional/technical documentation. This is a **repo organization** change, not UI iteration 84.
+- Moved all 48 runtime files (manifest, Core, UI and Media) byte-for-byte from root into `addon/WarScore/`. Runtime TGA paths remain `Interface\\AddOns\\WarScore\\Media\\...` as before. The installed directory continues to be `Interface/AddOns/WarScore/`.
+- Updated all four PNG→TGA preparation tools to write to `addon/WarScore/Media/General/`; updated `tools/package_addon.py` to read the new addon root; CI triggers and asset staging paths updated. The existing `dist/WarScore.zip` URL and single `WarScore/` top-level archive structure are maintained.
+- Refreshed README, new architecture/functional/installation/development docs and reconciled stale status claims in AGENTS, OpenSpec README, MVP context and GENERAL_VIEW. Do not use historical proposal descriptions as evidence that already-implemented UI is absent.
+- **Automated packaging succeeded. WoW client smoke test NOT RUN after relocation.** The user should install the new ZIP and check `/ws version`=83, `/ws`, `/wsdiag`, image paths and full layout. Preserve v83 screenshot as visual baseline. Do not start another UI change until explicitly requested.

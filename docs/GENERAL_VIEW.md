@@ -1,10 +1,10 @@
 # WarScore — Vista General: contexto y propuestas de diseño
 
-> **ESTADO VISUAL: REFERENCIA OBJETIVO ELEGIDA, AÚN SIN APROBACIÓN PARA IMPLEMENTAR.** El usuario ha elegido el segundo boceto generado como referencia visual principal; debe reproducirse con la máxima fidelidad técnicamente posible. Las decisiones de producto siguen vigentes y no se autoriza modificar la UI hasta aprobación expresa.
+> **ESTADO VISUAL: VISTA GENERAL IMPLEMENTADA Y PROBADA VISUALMENTE HASTA UI v83 (2026-11-18).** El boceto objetivo sigue siendo una referencia de largo plazo, no un asset runtime. Las propuestas y jerarquías históricas de este documento se conservan como contexto; la implementación real y la evidencia se encuentran en `addon/WarScore/UI/General.lua` y `docs/DEVELOPMENT_HANDOFF.md`.
 >
 > Documento vivo para el agente de UI/UX. Leer junto a `docs/MVP_CONTEXT.md`. Actualizar este archivo cuando se confirme, descarte o cambie una métrica. **No implica que la API haya sido probada en el cliente.**
 >
-> Última actualización: 2026-11-16.
+> Última actualización del estado: 2026-11-18.
 
 ## Jerarquía visual acordada (obligatoria)
 

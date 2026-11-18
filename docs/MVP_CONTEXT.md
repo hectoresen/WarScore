@@ -2,7 +2,7 @@
 
 > **OBLIGATORIO PARA AGENTES:** leer este documento antes de proponer o implementar cambios. Es la fuente temporal de contexto y decisiones. Actualizarlo cuando se cierre una decisión o se descubra evidencia técnica. **Eliminarlo al completar el MVP**, trasladando antes a documentación estable solo lo que siga siendo útil.
 >
-> Estado: planificación / scaffold. Compatibilidad base documentada el 2026-11-16. No confundir una API documentada con una API probada en WoW Forever.
+> Estado: MVP en desarrollo y UI General implementada con pruebas visuales hasta v83 (2026-11-18). Compatibilidad base documentada el 2026-11-16. No confundir una API documentada con una API probada en WoW Forever.
 
 ## 1. Propósito y restricciones
 

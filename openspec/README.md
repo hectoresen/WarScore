@@ -13,7 +13,7 @@ Adapted from `hectoresen/CraftAtlas` **after inspecting** its `AGENTS.md`, `open
 The official OpenSpec CLI is optional until installed/configured locally; its generated commands depend on the installed profile. Do not claim a CLI command was run merely because these files exist. Example CLI sequence (after installing a supported Node version and `@fission-ai/openspec`): `openspec init`, `openspec list`, `openspec validate --all --strict --no-interactive` (confirm actual CLI help).
 
 ## First proposed change
-`feat001-general-pvp-dashboard`: draft proposal and acceptance criteria. **Not approved, not implemented.** Implementation may begin only after owner approval. In-game verification is a separate owner/tester step.
+`feat001-general-pvp-dashboard`: original proposal with implementation history. General is implemented, with in-client visual iteration through v83; task closure and complete API acceptance are separate. Check actual source and `docs/DEVELOPMENT_HANDOFF.md` before declaring acceptance.
 
 ## Sources of truth
 - Implemented behavior: code + README.
