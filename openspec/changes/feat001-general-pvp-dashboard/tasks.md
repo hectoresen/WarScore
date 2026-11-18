@@ -597,3 +597,11 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Owner screenshot in Forever: no external black box or world bleed, no unintended third ornamental border, no clipping, no errors.
 - [ ] If external baked gold border creates an extra contour, seek owner direction for masking the original (not inventing new art).
 - [ ] Rank plaque, bottom six icons, Alliance graphics and other UI scales remain unapproved.
+
+## Iteration 64 owner screenshot → iteration 65 optical alignment
+
+- [x] V64 screenshot: large compositing errors resolved, owner reports only minor double right rail and tab labels vertically low.
+- [x] Nudge inner owner painting 5 units right; keep size and original source file.
+- [x] Move General/Hoy hitboxes 5 units right and 22 units up, preserving click action and live texts.
+- [ ] Verify runtime ZIP v65 and Lua source CRC parity.
+- [ ] Owner test screenshot and tab interactions, check right metal rail and no new misalignment; no changes to background, stats, rank or lower icons.
