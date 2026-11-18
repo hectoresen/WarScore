@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "50"
+local UI_ITERATION = "51"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -516,33 +516,40 @@ local function build()
     rankPlate:SetSize(452, 42)
     rankPlate:SetPoint("TOP", window, "TOP", 0, -296)
 
-    -- Iteration 50: use the actual sculpted ends of the authored ribbon
-    -- instead of cropping it into a rectangular strip. The inset stays dark
-    -- and fully contained, with no isolated side flourishes or orange block.
+    -- Iteration 51: the extra outer ribbon UVs tested in 50 expose
+    -- a visibly striped right edge in Forever. Crop that artifact away.
+    -- Build material depth inside the existing plaque instead of adding
+    -- separate leaves, endcaps, or another orange rectangular asset.
+    local underlay = rankPlate:CreateTexture(nil, "BACKGROUND")
+    underlay:SetTexture("Interface\\Buttons\\WHITE8X8")
+    underlay:SetVertexColor(0.017, 0.013, 0.011, 0.88)
+    underlay:SetSize(402, 37)
+    underlay:SetPoint("CENTER", rankPlate, "CENTER", 0, -1)
     local backing = rankPlate:CreateTexture(nil, "BACKGROUND")
     backing:SetTexture("Interface\\Buttons\\WHITE8X8")
-    backing:SetVertexColor(0.045, 0.029, 0.024, 0.82)
-    backing:SetSize(350, 29)
-    backing:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
+    backing:SetVertexColor(0.075, 0.047, 0.029, 0.86)
+    backing:SetSize(388, 30)
+    backing:SetPoint("CENTER", rankPlate, "CENTER", 0, -1)
+
     local ribbon = rankPlate:CreateTexture(nil, "BORDER")
     ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
-    ribbon:SetTexCoord(0.035, 0.965, 0.08, 0.92)
-    ribbon:SetSize(448, 49)
+    ribbon:SetTexCoord(0.12, 0.88, 0.13, 0.87)
+    ribbon:SetSize(432, 48)
     ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
-    ribbon:SetAlpha(0.92)
+    ribbon:SetAlpha(0.94)
 
-    -- Fine inset metal lines are shorter than the shaped ends, so the edge
-    -- of the actual art (not a floating 1px stroke) defines the silhouette.
-    local topGlint = rankPlate:CreateTexture(nil, "ARTWORK")
-    topGlint:SetTexture("Interface\\Buttons\\WHITE8X8")
-    topGlint:SetVertexColor(0.79, 0.54, 0.26, 0.50)
-    topGlint:SetSize(290, 1)
-    topGlint:SetPoint("TOP", rankPlate, "TOP", 17, -6)
-    local bottomInset = rankPlate:CreateTexture(nil, "BORDER")
-    bottomInset:SetTexture("Interface\\Buttons\\WHITE8X8")
-    bottomInset:SetVertexColor(0.36, 0.24, 0.13, 0.60)
-    bottomInset:SetSize(290, 1)
-    bottomInset:SetPoint("BOTTOM", rankPlate, "BOTTOM", 17, 7)
+    -- A continuous inset bezel, behind the centered inscription.
+    -- All horizontal details finish beneath the original ribbon art.
+    local innerTop = rankPlate:CreateTexture(nil, "ARTWORK")
+    innerTop:SetTexture("Interface\\Buttons\\WHITE8X8")
+    innerTop:SetVertexColor(0.91, 0.64, 0.29, 0.60)
+    innerTop:SetSize(334, 1)
+    innerTop:SetPoint("TOP", rankPlate, "TOP", 13, -4)
+    local innerShade = rankPlate:CreateTexture(nil, "ARTWORK")
+    innerShade:SetTexture("Interface\\Buttons\\WHITE8X8")
+    innerShade:SetVertexColor(0.25, 0.17, 0.11, 0.78)
+    innerShade:SetSize(334, 2)
+    innerShade:SetPoint("BOTTOM", rankPlate, "BOTTOM", 13, 5)
 
     -- Integrate the faction crest as a round, overlapping metallic boss.
     -- This is faction decoration only, never an invented PvP rank insignia.
@@ -573,9 +580,9 @@ local function build()
     -- Clean centered rank inscription: a small section name and an honest
     -- unavailable value, like the two-tier reference ribbon.
     -- Reserve a visible margin below the rank value and above the HK divider.
-    local rankCaption = label(rankPlate, "Rango PvP", 12, CREAM, 0, -4, 320, 14)
+    local rankCaption = label(rankPlate, "Rango PvP", 13, CREAM, 12, -3, 320, 15)
     rankCaption:SetTextColor(0.89, 0.70, 0.39)
-    fields.rank = label(rankPlate, "No disponible", 17, GOLD, 0, -19, 320, 19)
+    fields.rank = label(rankPlate, "No disponible", 18, GOLD, 12, -19, 320, 20)
     fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
     fields.rank:SetShadowOffset(1, -1)
     line(window, -341, 650)
