@@ -102,6 +102,41 @@ local function printBattlefieldScore()
     output("No hay puntuacion de BG cargada; ejecutalo dentro de la BG o justo al terminar")
 end
 
+local function printCurrencies()
+    output("Monedas PvP del personaje")
+    local currencyAPI = C_CurrencyInfo
+    local sizeFn = currencyAPI and currencyAPI.GetCurrencyListSize
+    local infoFn = currencyAPI and currencyAPI.GetCurrencyListInfo
+    if type(sizeFn) ~= "function" or type(infoFn) ~= "function" then
+        output("C_CurrencyInfo.GetCurrencyListSize/GetCurrencyListInfo no disponibles")
+        return
+    end
+    local ok, count = pcall(sizeFn)
+    if not ok or type(count) ~= "number" then
+        output("No se pudo leer la lista de monedas: " .. show(count))
+        return
+    end
+    output("Entradas de monedas: " .. count)
+    local found = false
+    for index = 1, count do
+        local readOk, info = pcall(infoFn, index)
+        if readOk and type(info) == "table" then
+            local name = info.name or info.currencyName
+            local textName = name and string.lower(tostring(name)) or ""
+            if string.find(textName, "honor", 1, true)
+                or string.find(textName, "rango", 1, true)
+                or string.find(textName, "rank", 1, true) then
+                found = true
+                output(index .. ". " .. show(name)
+                    .. " | cantidad " .. show(info.quantity or info.count)
+                    .. " | max " .. show(info.maxQuantity)
+                    .. " | ID " .. show(info.currencyTypesID or info.currencyID))
+            end
+        end
+    end
+    if not found then output("No se encontro una moneda con nombre Honor/Rango") end
+end
+
 honorFrame:SetScript("OnEvent", function(_, event)
     if event == "INSPECT_HONOR_UPDATE" then
         output("INSPECT_HONOR_UPDATE recibido")
@@ -194,12 +229,14 @@ SlashCmdList.WARSCOREDIAG = function(message)
         end
     elseif mode == "battlefield" or mode == "bg" then
         printBattlefieldScore()
+    elseif mode == "currencies" or mode == "currency" then
+        printCurrencies()
     elseif mode == "daily" then
         output("Fecha cliente: " .. (type(date) == "function" and show(date("%Y-%m-%d %H:%M")) or "API no disponible"))
         inspect("GetPVPSessionStats", GetPVPSessionStats)
         inspect("GetPVPYesterdayStats", GetPVPYesterdayStats)
     else
         basics()
-        output("Opciones: /wsdiag honor | battlefield | list 21 | categories | detail | daily")
+        output("Opciones: /wsdiag honor | battlefield | currencies | list 21 | categories | detail | daily")
     end
 end
