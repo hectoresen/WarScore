@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "54"
+local UI_ITERATION = "55"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -309,20 +309,15 @@ local function build()
     -- soft vignette replace the previous flat almost-black slab. Keep the
     -- art inset inside the native dialog border and retain legibility.
     local shellBackground = window:CreateTexture(nil, "BACKGROUND")
-    shellBackground:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\panel_stone_dark")
+    shellBackground:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\panel_dark_leather_v55")
     -- Iteration 54: the untouched grey 49 texture reads flat compared to
     -- the mockup. Return to a deep near-black leather base but preserve a
     -- restrained trace of organic grain instead of pure featureless black.
-    shellBackground:SetVertexColor(0.61, 0.55, 0.49, 1)
+    shellBackground:SetVertexColor(1, 1, 1, 1)
     shellBackground:SetPoint("TOPLEFT", window, "TOPLEFT", 12, -12)
     shellBackground:SetPoint("BOTTOMRIGHT", window, "BOTTOMRIGHT", -12, 12)
-    -- A soft recessed center: uses the existing tested feathered art rather
-    -- than a visible hard-edged geometric overlay.
-    local centerPatina = window:CreateTexture(nil, "BORDER")
-    centerPatina:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\section_plaque")
-    centerPatina:SetSize(675, 545)
-    centerPatina:SetPoint("TOP", window, "TOP", 0, -325)
-    centerPatina:SetVertexColor(0.56, 0.42, 0.30, 0.13)
+    -- Authored opaque organic dark leather/stone texture includes its own
+    -- vignette and grain. No flat overlay obscuring the material.
     window:Hide()
 
     -- WoW-native dialog chrome; this is the OUTERMOST visible perimeter.
@@ -394,9 +389,9 @@ local function build()
     tabRail:SetSize(296, 2)
     tabRail:SetPoint("TOPLEFT", window, "TOPLEFT", 38, -101)
 
-    -- Iteration 54: obvious WoW-style cog rather than the unrelated Gizmo
-    -- inventory icon. Inner-frame upper-right, independent of window close.
-    -- Decorative only until settings actually exist.
+    -- Iteration 55: an original transparent metallic gear, not a WoW
+    -- inventory icon (the previous candidates depicted unrelated items).
+    -- Reserve the settings position within the inner border; not functional.
     local settingsFrame = CreateFrame("Frame", nil, window, "BackdropTemplate")
     settingsFrame:SetSize(36, 36)
     settingsFrame:SetPoint("TOPRIGHT", innerPanel, "TOPRIGHT", -12, -13)
@@ -405,23 +400,12 @@ local function build()
         edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
         edgeSize = 12,
     })
-    settingsFrame:SetBackdropColor(0.025, 0.018, 0.012, 0.98)
-    settingsFrame:SetBackdropBorderColor(0.70, 0.49, 0.21, 0.92)
-    -- Clearly identifiable mechanical cog cut from the client's icon art.
+    settingsFrame:SetBackdropColor(0.02, 0.013, 0.009, 0.97)
+    settingsFrame:SetBackdropBorderColor(0.71, 0.48, 0.18, 0.92)
     local settingsIcon = settingsFrame:CreateTexture(nil, "ARTWORK")
-    settingsIcon:SetTexture("Interface\\Icons\\INV_Misc_Gear_01")
-    settingsIcon:SetSize(27, 27)
+    settingsIcon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\settings_cog")
+    settingsIcon:SetSize(30, 30)
     settingsIcon:SetPoint("CENTER", settingsFrame, "CENTER", 0, 0)
-    settingsIcon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-    if type(settingsFrame.CreateMaskTexture) == "function"
-        and type(settingsIcon.AddMaskTexture) == "function" then
-        pcall(function()
-            local mask = settingsFrame:CreateMaskTexture(nil, "ARTWORK")
-            mask:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_mask")
-            mask:SetAllPoints(settingsIcon)
-            settingsIcon:AddMaskTexture(mask)
-        end)
-    end
     settingsFrame:EnableMouse(true)
     settingsFrame:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
