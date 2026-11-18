@@ -490,10 +490,8 @@ local function build()
     fields.hk:SetShadowColor(0.60, 0.30, 0.035, 0.9)
     fields.hk:SetShadowOffset(2, -2)
 
-    -- Iteration 28: show both lifetime counters first, then their derived ratios.
-    -- Keep this whole section inside the original space above the lower bands.
-    line(window, -514, 632)
-    ornamentDiamond(window, -512, 8)
+    -- The owner-supplied HK graphic already has a lower rule and a diamond.
+    -- Do not render the previously separate -514px divider over it.
 
     -- Iteration 29: deaths are a secondary lifetime counter, not another hero.
     -- Keep them directly below HK while deliberately lowering visual weight.
