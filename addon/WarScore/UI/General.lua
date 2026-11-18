@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "87"
+local UI_ITERATION = "88"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -524,7 +524,9 @@ local function build()
         { title = "BG GANADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_wins_owner_v77" },
     })
     fields.duels, fields.bgPlayed, fields.bgWon = unpack(firstRow)
-    local secondRow = statBand(window, -878, {
+    -- v88: lift the entire lower band 8 UI units to clear the parent bottom rim.
+    -- Keep the owner TGA, band dimensions and the text/icon local anchors intact.
+    local secondRow = statBand(window, -870, {
         { title = "WIN RATE BG", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_rate_owner_v79" },
         { title = "WIN RATE DUELOS", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duel_rate_owner_v79" },
         { title = "CAMPO DE BATALLA FAVORITO", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_favorite_bg_owner_v79", valueSize = 17 },
