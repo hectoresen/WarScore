@@ -916,3 +916,11 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - No new art was requested and no functionality changes are allowed. Preserve the 632 UI-unit width and the existing ratio texture `ratios_frame_owner_v70.tga`.
 - Geometry-only change: ratio ornament height 140→172, top anchor -615→-610 to gain room inside the two gold rails without moving secondary statistics bands; both ratio headings y -636→-644; value text y -668→-673 and size 39→36 with height 44; explanatory texts remain y=-711, font 12. UI diagnostic version = 71.
 - **Client QA NOT RUN:** install fresh full ZIP, `/reload`, `/ws version`=71, `/ws`. Check headings clear upper rail, values legible, descriptions entirely above lower rail, and bottom rail does not intersect the top border of first secondary stat band. No art regeneration necessary.
+
+
+## Iteration #71 owner feedback → #72 compact ratio typography (2026-11-18)
+
+- Owner says v71 is much better but ratio headings still cross the upper gold divider; requests ≥5% smaller ratio values and slightly smaller overall text contents. The existing owner art and geometry must not be changed.
+- Keep `ratios_frame_owner_v70.tga` at 632×172, anchor y=-610. Move ratio headings to y=-660, reduce 20→18pt and box 29→22. Reduce ratio value 36→34pt (5.56% reduction), y=-682, box 37. Shift microcopy y=-718, reduce 12→11pt and box 18, preserving both live string contents.
+- All other UI, functionality, assets and secondary cards are unchanged. Version diagnostic = 72.
+- **IN-GAME QA NOT RUN:** freshly install `dist/WarScore.zip`, `/reload`, `/ws version` 72, `/ws`; verify headings no longer overlap top rail and descriptions remain above bottom rail. Await screenshot before declaring visual acceptance.
