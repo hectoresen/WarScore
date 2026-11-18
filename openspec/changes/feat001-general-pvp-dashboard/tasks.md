@@ -517,3 +517,13 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Verify GitHub CI runtime-only ZIP includes new TGA and packaged `UI/General.lua` CRC agrees with source; test archive integrity.
 - [ ] Owner tests clean install, `/reload`, `/ws version` = 56 and screenshot; verify transparency, size, rod alignment, and no overlap/errors.
 - [ ] Background, lower iconography, premium rank shield/plaques remain unapproved; continue after owner screenshot.
+
+## Iteration 56 screenshot → iteration 57 owner integrated inner-frame
+
+- [x] Owner confirms supplied Horde banner art is good; issue: detached hanging rods versus ornamental top rail.
+- [x] Receive original full gold inner panel PNG with banners visually connected to upper edge and two blank projecting tabs.
+- [x] Import as transparent compatible TGA `inner_frame_owner_v57`, retain nested-window hierarchy and no second banner sprite.
+- [x] Remove duplicate inner tooltip border and decorative corner overlays; position live General/Hoy labels and hitboxes on supplied tabs.
+- [x] Keep settings cog, historical stats, ratios, icon fallback rules and available data unchanged.
+- [ ] CI verified ZIP contains integrated panel and UI 57; owner in-game QA of tabs/banners/frame seam, gear alignment and panel/card collisions.
+- [ ] Alternative Alliance art, background/card contrast, final rank ornament, and coherent lower-stat glyphs are still unapproved.
