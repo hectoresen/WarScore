@@ -14,7 +14,7 @@ sha = "99d6c2def129dea2daa47652c2168c271c7a59a7"
 url = "https://raw.githubusercontent.com/google/fonts/main/ofl/spectral/Spectral-Italic.ttf"
 
 def git_sha(data):
-    return hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\\0" + data).hexdigest()
+    return hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\0" + data).hexdigest()
 
 if dest.exists() and git_sha(dest.read_bytes()) == sha:
     print("Verified bundled italic font:", dest.stat().st_size, "bytes")
