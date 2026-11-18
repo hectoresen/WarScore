@@ -221,3 +221,8 @@ La fuente correcta para el saldo de Honor de Forever es la moneda `Puntos de hon
 ## Decisión funcional de producto — v89 (2026-11-18)
 
 El propietario confirma que no se puede recuperar una fuente fiable de golpes de gracia **contra jugadores** en Forever; la tarjeta KB/D se retira de la vista General. En su lugar se muestra el total de **muertes PvP sufridas** desde `GetStatistic(1501)`, en rojo. La sección secundaria central pasa a **HONOR** y debe consultar la moneda `1792` para mostrar el saldo actual gastable, `—` si la API no responde. Esta métrica **no** representa el honor total ganado a lo largo de la vida del personaje. HK/D se mantiene sin cambios. La retirada del indicador visual no implica eliminar evidencia histórica ni afirmar que los contadores generales de KB sean PvP.
+
+
+## Fuente de Honor vigente en General — v93 (2026-11-18)
+
+La implementación de General consulta **exclusivamente la moneda 1792**, identificada en `/wsdiag currencies` como `Puntos de honor`. La API `C_CurrencyInfo.GetCurrencyListInfo(index)` recibe **índice de lista**, no ID de moneda; localizar la fila mediante `GetCurrencyListSize()` y `info.currencyTypesID` o `info.currencyID` igual a `1792`. Lecturas observadas: cantidad 252, máximo 25000. Mostrar `252 / 25.000`, con `—` si falta la moneda o el máximo. Este saldo es gastable, no honor histórico. `UnitHonor()`, `UnitHonorMax()` y `GetInspectHonorData()` quedan explícitamente descartadas como fuentes del saldo principal.

@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "92"
+local UI_ITERATION = "93"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -234,6 +234,12 @@ local function formatNumber(value)
     if type(value) ~= "number" then return "—" end
     return tostring(math.floor(value))
 end
+local function formatHonorNumber(value)
+    if type(value) ~= "number" then return "—" end
+    local digits = tostring(math.floor(value))
+    return digits:reverse():gsub("(%d%d%d)", "%1."):reverse():gsub("^%.", "")
+end
+
 local function formatCountOrZero(value)
     -- UI presentation only: nil is still nil in the domain model.
     if type(value) ~= "number" then return "0" end
@@ -258,7 +264,12 @@ local function refresh()
         SetPortraitTexture(fields.portrait, "player")
     end
     fields.hk:SetText(formatNumber(data.honorableKills))
-    fields.honor:SetText(formatNumber(data.honorCurrent))
+    if type(data.honorCurrent) == "number" then
+        fields.honor:SetText(formatHonorNumber(data.honorCurrent)
+            .. " / " .. formatHonorNumber(data.honorMaximum))
+    else
+        fields.honor:SetText("—")
+    end
     fields.deaths:SetText(formatNumber(data.pvpDeaths))
     fields.hkd:SetText(formatRatio(data.hkDeathRatio))
     fields.rank:SetText("No disponible")
@@ -330,21 +341,11 @@ local function build()
     brandTitle:SetShadowColor(0.34, 0.16, 0.03, 0.93)
     brandTitle:SetShadowOffset(1, -1)
 
-    -- v92: retain the owner-supplied gold X but match the original
-    -- close control footprint, previously enlarged in v91.
-    -- A matching dark underlay hides the original baked ornament so two X
-    -- shapes cannot bleed through the transparent corners.
+    -- v93: restore the exact original v90 close button. Its X is already
+    -- painted into the exterior frame; do not overlay a second X.
     local close = CreateFrame("Button", nil, window)
-    -- v92: restore the exact 43x43 hitbox of the original baked close button.
     close:SetSize(43, 43)
     close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -48, -28)
-    local closeUnderlay = close:CreateTexture(nil, "BACKGROUND")
-    closeUnderlay:SetTexture("Interface\\Buttons\\WHITE8X8")
-    closeUnderlay:SetAllPoints(close)
-    closeUnderlay:SetVertexColor(0.05, 0.035, 0.027, 1)
-    local closeArt = close:CreateTexture(nil, "ARTWORK")
-    closeArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\close_button_owner_v91")
-    closeArt:SetAllPoints(close)
     close:SetScript("OnClick", function() window:Hide() end)
 
     -- The supplied graphic already paints both tab plates; only live text
@@ -367,12 +368,11 @@ local function build()
         end
     end)
 
-    -- Iteration 55: an original transparent metallic gear, not a WoW
-    -- inventory icon (the previous candidates depicted unrelated items).
-    -- Reserve the settings position within the inner border; not functional.
+    -- v93: use the existing original cog, but move its ONE frame under
+    -- the restored close X on the same vertical axis. No duplicated gear.
     local settingsFrame = CreateFrame("Frame", nil, window, "BackdropTemplate")
     settingsFrame:SetSize(36, 36)
-    settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -77, -123)
+    settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -51.5, -85)
     settingsFrame:SetBackdrop({
         bgFile = "Interface\\Buttons\\WHITE8X8",
         edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
@@ -496,7 +496,8 @@ local function build()
     -- Honor comes from UnitHonor("player") and is not historical earned honor.
     sectionPlaque(window, -525, 500, 91, 0.48)
     label(window, "HONOR", 17, GOLD, 0, -544, 430, 27)
-    fields.honor = label(window, "—", 39, GOLD, 0, -573, 390, 54)
+    -- v93: value now displays current balance / currency cap.
+    fields.honor = label(window, "—", 32, GOLD, 0, -573, 390, 54)
     fields.honor:SetShadowColor(0.32, 0.18, 0.04, 0.64)
     fields.honor:SetShadowOffset(1, -1)
 

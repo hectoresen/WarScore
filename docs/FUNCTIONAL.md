@@ -27,3 +27,8 @@ Las capturas de la v83 y anteriores confirman el trabajo visual, **no** constitu
 ## Cambio de distribución — UI v89 (2026-11-18)
 
 La sección central muestra **HONOR** (actual, no histórico, obtenido con `UnitHonor("player")`) en dorado; la columna derecha del marco de ratios, donde antes aparecía KB/D, muestra **MUERTES PvP SUFRIDAS** en rojo con el valor de `GetStatistic(1501)`. La fórmula HK/D se conserva y todas las demás tarjetas permanecen intactas. Validación visual en cliente pendiente.
+
+
+## Corrección del saldo de honor — UI v93 (2026-11-18)
+
+General muestra `HONOR` como `cantidad / máximo`, leyendo la moneda **1792** mediante la lista `C_CurrencyInfo.GetCurrencyListInfo(index)` y comprobación de ID. Ejemplo probado por diagnósticos: `252 / 25.000`. Ya no usa `UnitHonor`, porque devolvía 0 en el mismo personaje. Cuando no está disponible muestra `—`. Se conserva el carácter de saldo actual, no histórico. También se restaura el botón de cierre v90 y se recoloca el único engranaje justo debajo de la X.

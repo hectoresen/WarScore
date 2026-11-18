@@ -57,13 +57,29 @@ function ns.Stats.ReadHistorical()
         if ok then hk = ns.Stats.Parse(lifetime) end
     end
 
-    -- Current spendable honor, not lifetime honor earned. Confirmed by
-    -- /wsdiag honor on Forever; nil when the API cannot be read safely.
-    local honor
-    if type(UnitHonor) == "function" then
-        local ok, current = pcall(UnitHonor, "player")
-        if ok and type(current) == "number" and current >= 0 then
-            honor = current
+    -- Forever honor is currency 1792 (not the obsolete UnitHonor balance).
+    -- The currency list API accepts an INDEX; find the target by currency ID.
+    local honor, honorMax
+    local currencyAPI = C_CurrencyInfo
+    local sizeFn = currencyAPI and currencyAPI.GetCurrencyListSize
+    local infoFn = currencyAPI and currencyAPI.GetCurrencyListInfo
+    if type(sizeFn) == "function" and type(infoFn) == "function" then
+        local ok, count = pcall(sizeFn)
+        if ok and type(count) == "number" and count >= 0 then
+            for index = 1, math.min(math.floor(count), 1000) do
+                local readOk, info = pcall(infoFn, index)
+                if readOk and type(info) == "table"
+                    and (tonumber(info.currencyTypesID) == 1792
+                        or tonumber(info.currencyID) == 1792) then
+                    local amount = tonumber(info.quantity or info.count)
+                    local maximum = tonumber(info.maxQuantity)
+                    if amount and amount >= 0 then
+                        honor = amount
+                        if maximum and maximum > 0 then honorMax = maximum end
+                    end
+                    break
+                end
+            end
         end
     end
 
@@ -78,6 +94,7 @@ function ns.Stats.ReadHistorical()
     return {
         honorableKills = hk,
         honorCurrent = honor,
+        honorMaximum = honorMax,
         pvpDeaths = deaths,
         hkDeathRatio = ns.Stats.Ratio(hk, deaths),
         killingBlows = nil,
