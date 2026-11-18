@@ -5,6 +5,9 @@ end
 
 local honorFrame = CreateFrame("Frame")
 honorFrame:RegisterEvent("INSPECT_HONOR_UPDATE")
+honorFrame:RegisterEvent("HONOR_XP_UPDATE")
+honorFrame:RegisterEvent("UPDATE_BATTLEFIELD_SCORE")
+honorFrame:RegisterEvent("PVP_MATCH_COMPLETE")
 
 local function show(value)
     if value == nil then return "nil" end
@@ -60,10 +63,56 @@ local function printHonorData()
     inspect("GetInspectHonorData", GetInspectHonorData)
 end
 
+local function printBattlefieldScore()
+    output("Puntuacion de BG actual/final")
+    local guid = type(UnitGUID) == "function" and UnitGUID("player") or nil
+    if C_PvP and type(C_PvP.GetScoreInfoByPlayerGuid) == "function" and guid then
+        local ok, info = pcall(C_PvP.GetScoreInfoByPlayerGuid, guid)
+        if ok and type(info) == "table" then
+            output("C_PvP.GetScoreInfoByPlayerGuid: " .. show(info.name)
+                .. " | KB " .. show(info.killingBlows)
+                .. " | HK " .. show(info.honorableKills)
+                .. " | muertes " .. show(info.deaths)
+                .. " | honor BG " .. show(info.honorGained))
+            output("Danio " .. show(info.damageDone) .. " | sanacion " .. show(info.healingDone)
+                .. " | rating " .. show(info.ratingChange))
+            return
+        end
+        output("C_PvP.GetScoreInfoByPlayerGuid: sin datos" .. (not ok and (" | ERROR " .. show(info)) or ""))
+    else
+        output("C_PvP.GetScoreInfoByPlayerGuid: API no disponible")
+    end
+
+    if type(GetNumBattlefieldScores) == "function" and type(GetBattlefieldScore) == "function" then
+        local ok, count = pcall(GetNumBattlefieldScores)
+        if ok and type(count) == "number" then
+            output("Scores legacy: " .. count)
+            for i = 1, count do
+                local readOk, name, kb, hk, deaths, honor = pcall(GetBattlefieldScore, i)
+                if readOk and name == UnitName("player") then
+                    output("GetBattlefieldScore(player): KB " .. show(kb)
+                        .. " | HK " .. show(hk)
+                        .. " | muertes " .. show(deaths)
+                        .. " | honor BG " .. show(honor))
+                    return
+                end
+            end
+        end
+    end
+    output("No hay puntuacion de BG cargada; ejecutalo dentro de la BG o justo al terminar")
+end
+
 honorFrame:SetScript("OnEvent", function(_, event)
     if event == "INSPECT_HONOR_UPDATE" then
         output("INSPECT_HONOR_UPDATE recibido")
         inspect("GetInspectHonorData", GetInspectHonorData)
+    elseif event == "HONOR_XP_UPDATE" then
+        output("HONOR_XP_UPDATE recibido")
+        inspect("UnitHonor(player)", UnitHonor, "player")
+        inspect("UnitHonorMax(player)", UnitHonorMax, "player")
+    elseif event == "UPDATE_BATTLEFIELD_SCORE" or event == "PVP_MATCH_COMPLETE" then
+        output(event .. " recibido")
+        printBattlefieldScore()
     end
 end)
 
@@ -143,12 +192,14 @@ SlashCmdList.WARSCOREDIAG = function(message)
         else
             output("APIs de solicitud de honor no disponibles")
         end
+    elseif mode == "battlefield" or mode == "bg" then
+        printBattlefieldScore()
     elseif mode == "daily" then
         output("Fecha cliente: " .. (type(date) == "function" and show(date("%Y-%m-%d %H:%M")) or "API no disponible"))
         inspect("GetPVPSessionStats", GetPVPSessionStats)
         inspect("GetPVPYesterdayStats", GetPVPYesterdayStats)
     else
         basics()
-        output("Opciones: /wsdiag honor | list 21 | categories | detail | daily")
+        output("Opciones: /wsdiag honor | battlefield | list 21 | categories | detail | daily")
     end
 end

@@ -139,7 +139,7 @@ Forever devolvió 26 categorías. Las relevantes son:
 
 ## 9. Backlog de investigación
 
-1. Añadir `/wsdiag battlefield` para probar `GetBattlefieldScore()` durante una BG.
+1. Probar `/wsdiag battlefield` durante y justo después de una BG; el diagnóstico intenta `C_PvP.GetScoreInfoByPlayerGuid()` y deja `GetBattlefieldScore()` como fallback.
 2. Probar `GetPVPThisWeekStats()` y `GetPVPLastWeekStats()` desde el addon.
 3. Investigar `GetInspectArenaData()` y APIs de arenas en Forever.
 4. Comprobar si existe un evento permitido para contar kills PvP de mundo.
