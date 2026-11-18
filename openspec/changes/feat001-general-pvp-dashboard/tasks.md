@@ -638,6 +638,14 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Rerun category 153 to capture BG played, wins and objective counters.
 - [ ] Compare category 137 killing blows against native panel; `1491` remains `--` despite positive BG HK.
 
+## Correction — killing-blow semantics — 2026-11-18
+
+- [x] Enumerate all 26 statistic categories returned by Forever.
+- [x] Confirm category `137` (Golpes de gracia) has parent `128` (Víctimas), not PvP category `21`.
+- [x] Reject `1487/1488/1491` as confirmed enemy-faction PvP killing-blow counters.
+- [ ] Test `GetBattlefieldScore()` during/after a BG for per-match player killing blows.
+- [ ] Investigate whether any future-safe event or API can track world PvP player killing blows.
+
 ## API audit follow-up — first positive BG counters — 2026-11-18
 
 - [x] Confirm `839=1` total BG and `52=1` Warsong match.

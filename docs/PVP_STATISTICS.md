@@ -25,11 +25,11 @@
 | Duelos perdidos | `320` | -- (panel 0) | Contrastado sin duelos | Complementaria |
 | BG jugados | `839` | -- | Identificado; personaje nunca jugó BG | General |
 | BG ganados | `840` | -- | Identificado; personaje nunca jugó BG | Complementaria |
-| Golpes de gracia totales | `1487` | 1021 | **Probado y etiquetado por el cliente en categoría 137** | Candidato para KB/D; validar contra panel nativo |
-| Golpes de gracia mundo | `1488` | 828 | **Probado y etiquetado por el cliente** | Desglose |
-| Continente con más golpes de gracia | `1489` | 458 (Kalimdor) | **Probado** | Desglose geográfico |
-| Golpes de gracia BG | `1491` | -- | Identificado | Pendiente de una BG |
-| BG con más golpes de gracia | `1716` | -- | Identificado | Pendiente de una BG |
+| Golpes de gracia generales | `1487` | 1021 | **Probado; categoría 137 cuelga de Víctimas** | No usar como KB PvP |
+| Golpes de gracia del mundo | `1488` | 828 | **Probado; semántica PvP no demostrada** | No usar como KB PvP |
+| Continente con más golpes de gracia | `1489` | 458 (Kalimdor) | **Probado; categoría general** | No usar como desglose PvP |
+| Golpes de gracia BG | `1491` | -- | Identificado; categoría general | No usar como KB PvP |
+| BG con más golpes de gracia | `1716` | -- | Identificado; categoría general | No usar como desglose PvP |
 | Muertes propias totales | `60` | 38 | Probado | **No** usar como muertes PvP |
 | Víctimas totales | `1197` | 3936 | Probado | **No** usar como KB PvP |
 | Víctimas con experiencia u honor | `1198` | 3687 | Probado | **No** usar como KB PvP |
@@ -51,7 +51,7 @@ IDs enumerados mediante `/wsdiag list 153`, `136` y `137`. Todos devuelven `--` 
 - **Porcentaje victorias BG** = `BG ganados / BG jugados * 100`, global o por BG, únicamente con ambos valores numéricos y denominador positivo.
 - **Porcentaje duelos ganados** = `ganados / (ganados + perdidos) * 100`, si hay duelos y ambos contadores son fiables.
 - **Denominador cero o datos desconocidos:** mostrar estado neutro `—`, nunca infinito.
-- **KB/D:** la categoría 137 del propio cliente etiqueta `1487` como «Golpes de gracia» y ofrece el desglose mundial `1488`; queda pendiente una comparación con el panel nativo tras actividad nueva antes de incorporarlo a la UI.
+- **KB/D PvP:** no hay un contador histórico confirmado para golpes de gracia contra jugadores de la facción rival. `1487/1488/1491` pertenecen a categoría 137, cuyo padre es `Víctimas` (128), y sus magnitudes no son coherentes con HK; no usarlos para KB/D.
 - **Normalización de `--`:** el panel nativo muestra 0 duelos ganados/perdidos para el personaje sin duelos, aunque la API devuelve `--`. Normalizar a cero **solo por contador y caso contrastado**, no universalmente.
 
 ## Vista Hoy
@@ -110,13 +110,13 @@ GetPVPYesterdayStats: 0 | 0 | nil | nil
 - Battlegrounds: 19 contadores para partidas/victorias globales, partidas/victorias por BG y objetivos de Alterac, Warsong, Arathi e Islas Lanza Negra; todos `--` por ausencia de historial BG.
 - Duelos: `319` ganados y `320` perdidos; ambos `--`, contrastados como `0/0` en la UI nativa.
 
-La categoría 137 del propio cliente resuelve la semántica básica de `1487`/`1488` como golpes de gracia. Antes de habilitar KB/D en producción, comparar con el panel nativo después de nueva actividad PvP.
+La categoría 137 solo confirma que son estadísticas generales llamadas «Golpes de gracia»; no confirma que sean golpes de gracia contra jugadores. La jerarquía observada (`137` bajo `128 Víctimas`) y la discrepancia con HK impiden usarlas como KB PvP.
 
 ### Posibles gráficos futuros
 
 - HK/KB de mundo frente a battlegrounds.
 - Continente dominante de HK y golpes de gracia.
-- KB/D junto a HK/D, tras la comparación nativa.
+- KB/D junto a HK/D, solo si se obtiene una fuente específica de golpes contra jugadores enemigos.
 - Victorias/partidas y porcentaje por battleground.
 - Objetivos capturados, defendidos y devueltos por BG.
 - Actividad de sesión y día anterior.
@@ -146,7 +146,7 @@ Estos tres contadores pertenecen a categorías generales y no deben presentarse 
 
 ### Inconsistencia pendiente
 
-La categoría 137 continúa devolviendo `1487=1021`, `1488=828` y `1491=--`, a pesar de que ya existen `58` HK de battleground. Esto puede significar que el contador de KB de BG no se actualiza igual, que el personaje no registró golpes de gracia en esas partidas o que existe una diferencia de actualización/semántica. KB/D sigue sin activarse hasta comparar el panel nativo.
+La categoría 137 continúa devolviendo `1487=1021`, `1488=828` y `1491=--`, a pesar de que ya existen `58` HK de battleground. Al estar bajo `Víctimas`, estos contadores deben tratarse como generales y no como golpes de gracia PvP.
 
 ## Evidencia nueva — primera partida BG registrada (2026-11-18)
 
@@ -162,7 +162,7 @@ Tras completar una partida, la categoría 153 devolvió:
 
 Esto confirma que el addon puede detectar historial positivo de partidas y objetivos de Warsong. La combinación `1 partida / -- victorias` probablemente representa una derrota o una victoria aún no registrada, pero debe compararse con el panel nativo antes de normalizar `--` a cero. No generalizar la conversión de `840` o `105` sin esa comparación.
 
-La categoría 137 continúa sin cambios (`1487=1021`, `1488=828`, `1491=--`), por lo que una partida BG con HK y una bandera capturada no ha producido un valor de KB BG observable.
+La categoría 137 continúa sin cambios (`1487=1021`, `1488=828`, `1491=--`); una partida BG con HK y una bandera capturada no permite interpretar esos contadores como KB PvP.
 
 ## Evidencia nueva — actividad PvP de sesión tras BG (2026-11-18)
 

@@ -24,8 +24,8 @@ Diseñar un bloque secundario **por debajo** de los cinco indicadores principale
 
 | Métrica | Estado para diseño | Nota técnica |
 | --- | --- | --- |
-| Golpes de gracia históricos (KB) | **Confirmada por categoría 137; pendiente de comparación nativa adicional** | ID `1487`, con desglose mundial `1488`, continente dominante `1489` y desglose BG `1491`. |
-| Porcentaje de golpes de gracia | Derivada, condicionada | `KB / muertes PvP`; preparar visualmente, pero no activar hasta completar comparación nativa. |
+| Golpes de gracia históricos (KB) | **No confirmada como métrica PvP** | `1487/1488/1491` están en categoría 137 bajo `Víctimas`; sus valores no son utilizables como golpes contra la facción rival. |
+| Porcentaje de golpes de gracia | **No disponible** | No calcular `KB/D` hasta encontrar un contador específico de golpes contra jugadores enemigos. |
 | Rango PvP (histórico / máximo por definir) | **No disponible en el personaje probado** | `GetPVPLifetimeStats()` devuelve segundo retorno `0`; `UnitPVPRank` y `GetPVPRankProgress` no existen en Forever. Mantener estado honesto. |
 | **Duelos totales ganados** | **Prioridad en el nuevo bloque inferior; pendiente de ID Lua y prueba** | Confirmar ID, acceso y lectura histórica en Forever. |
 | **Duelos perdidos** | **Añadida al diseño, pendiente de ID Lua** | Misma validación que duelos ganados. |
