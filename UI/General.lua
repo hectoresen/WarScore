@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "49"
+local UI_ITERATION = "50"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -516,49 +516,59 @@ local function build()
     rankPlate:SetSize(452, 42)
     rankPlate:SetPoint("TOP", window, "TOP", 0, -296)
 
-    -- Iteration 46: a restrained, contained ribbon. No bright orange slab
-    -- and no isolated 2px vertical strokes at either end of the plaque.
+    -- Iteration 50: use the actual sculpted ends of the authored ribbon
+    -- instead of cropping it into a rectangular strip. The inset stays dark
+    -- and fully contained, with no isolated side flourishes or orange block.
     local backing = rankPlate:CreateTexture(nil, "BACKGROUND")
     backing:SetTexture("Interface\\Buttons\\WHITE8X8")
-    backing:SetVertexColor(0.052, 0.029, 0.019, 0.90)
-    backing:SetSize(404, 32)
+    backing:SetVertexColor(0.045, 0.029, 0.024, 0.82)
+    backing:SetSize(350, 29)
     backing:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
     local ribbon = rankPlate:CreateTexture(nil, "BORDER")
     ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
-    ribbon:SetTexCoord(0.12, 0.88, 0.13, 0.87)
-    ribbon:SetSize(432, 44)
+    ribbon:SetTexCoord(0.035, 0.965, 0.08, 0.92)
+    ribbon:SetSize(448, 49)
     ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
     ribbon:SetAlpha(0.92)
-    -- Continuous metallic highlight and shadow within the ribbon.
-    -- Avoid isolated line ends, square orange tiles and side laurels.
+
+    -- Fine inset metal lines are shorter than the shaped ends, so the edge
+    -- of the actual art (not a floating 1px stroke) defines the silhouette.
     local topGlint = rankPlate:CreateTexture(nil, "ARTWORK")
     topGlint:SetTexture("Interface\\Buttons\\WHITE8X8")
-    topGlint:SetVertexColor(0.83, 0.57, 0.23, 0.78)
-    topGlint:SetSize(362, 1)
-    topGlint:SetPoint("TOP", rankPlate, "TOP", 0, -4)
+    topGlint:SetVertexColor(0.79, 0.54, 0.26, 0.50)
+    topGlint:SetSize(290, 1)
+    topGlint:SetPoint("TOP", rankPlate, "TOP", 17, -6)
     local bottomInset = rankPlate:CreateTexture(nil, "BORDER")
     bottomInset:SetTexture("Interface\\Buttons\\WHITE8X8")
-    bottomInset:SetVertexColor(0.50, 0.29, 0.10, 0.72)
-    bottomInset:SetSize(362, 1)
-    bottomInset:SetPoint("BOTTOM", rankPlate, "BOTTOM", 0, 5)
+    bottomInset:SetVertexColor(0.36, 0.24, 0.13, 0.60)
+    bottomInset:SetSize(290, 1)
+    bottomInset:SetPoint("BOTTOM", rankPlate, "BOTTOM", 17, 7)
 
-    -- Keep the ribbon art continuous: no disconnected gold strokes at its ends.
-    -- The two-line caption and real faction crest remain above the artwork.
-
-    -- The faction crest identifies the character but never claims a rank.
-    local crestHolder = CreateFrame("Frame", nil, rankPlate, "BackdropTemplate")
-    crestHolder:SetSize(39, 39)
-    crestHolder:SetPoint("LEFT", rankPlate, "LEFT", 14, 0)
-    backdrop(crestHolder, 1)
-    crestHolder:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 12 })
-    crestHolder:SetBackdropBorderColor(0.78, 0.51, 0.19, 0.85)
+    -- Integrate the faction crest as a round, overlapping metallic boss.
+    -- This is faction decoration only, never an invented PvP rank insignia.
+    local crestHolder = CreateFrame("Frame", nil, rankPlate)
+    crestHolder:SetSize(48, 48)
+    crestHolder:SetPoint("LEFT", rankPlate, "LEFT", 16, 0)
+    local boss = crestHolder:CreateTexture(nil, "BORDER")
+    boss:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring_transparent")
+    boss:SetSize(58, 58)
+    boss:SetPoint("CENTER", crestHolder, "CENTER", 0, 0)
     local crest = crestHolder:CreateTexture(nil, "ARTWORK")
     local rankFaction = UnitFactionGroup("player")
     crest:SetTexture(rankFaction == "Alliance"
         and "Interface\\Icons\\INV_BannerPVP_02"
         or "Interface\\Icons\\INV_BannerPVP_01")
-    crest:SetSize(29, 29)
+    crest:SetSize(34, 34)
     crest:SetPoint("CENTER", crestHolder, "CENTER", 0, 0)
+    if type(crestHolder.CreateMaskTexture) == "function"
+        and type(crest.AddMaskTexture) == "function" then
+        pcall(function()
+            local mask = crestHolder:CreateMaskTexture(nil, "ARTWORK")
+            mask:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_mask")
+            mask:SetAllPoints(crest)
+            crest:AddMaskTexture(mask)
+        end)
+    end
 
     -- Clean centered rank inscription: a small section name and an honest
     -- unavailable value, like the two-tier reference ribbon.
