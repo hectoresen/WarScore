@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "67"
+local UI_ITERATION = "68"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -432,7 +432,7 @@ local function build()
     -- and faction crest. A faction badge never indicates verified PvP rank.
     local rankPlate = CreateFrame("Frame", nil, window)
     rankPlate:SetSize(452, 42)
-    rankPlate:SetPoint("TOP", window, "TOP", 0, -341)
+    rankPlate:SetPoint("TOP", window, "TOP", 0, -347)
 
     -- Iteration 66: use the owner's actual Horde PvP-rank plaque.
     -- The complete shield, red leather, gold bevel, laurels and center ruby
@@ -471,31 +471,25 @@ local function build()
         line(window, -391, 632)
         ornamentDiamond(window, -389, 8)
     end
-    sectionPlaque(window, -405, 570, 110, 0.92)
 
-    -- Iteration 21: strengthen the main lifetime-HK hero section without
-    -- introducing fake values or baking the changing number into artwork.
-    local hkTitle = label(window, "MUERTES CON HONOR", 24, GOLD, 0, -406, 460, 35)
+    -- Iteration 68: the owner's transparent HK asset supplies both laurels,
+    -- upper/lower gold rails and diamonds. No more separate HK laurels, 
+    -- line, diamond or flat material panel behind it.
+    local hkOrnament = window:CreateTexture(nil, "ARTWORK")
+    hkOrnament:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\hk_frame_owner_v68")
+    hkOrnament:SetSize(600, 119)
+    hkOrnament:SetPoint("TOP", window, "TOP", 0, -407)
+
+    -- Same horizontal X=0 as portrait, name, level and PvP rank.
+    -- Move the rank down 6 units to give level/class a little more breathing room.
+    local hkTitle = label(window, "MUERTES CON HONOR", 23, GOLD, 0, -425, 460, 32)
     hkTitle:SetShadowColor(0.22, 0.10, 0.02, 0.9)
     hkTitle:SetShadowOffset(1, -1)
 
-    fields.hk = label(window, "—", 64, GOLD, 0, -437, 500, 70)
+    fields.hk = label(window, "—", 61, GOLD, 0, -452, 500, 67)
     fields.hk:SetShadowColor(0.60, 0.30, 0.035, 0.9)
     fields.hk:SetShadowOffset(2, -2)
 
-    -- Iteration 23: original transparent TGA laurel artwork, one mirrored copy
-    -- per side. Keeps dynamic HK FontString unobstructed.
-    for _, side in ipairs({ -1, 1 }) do
-        local laurel = window:CreateTexture(nil, "ARTWORK")
-        laurel:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\hk_laurel")
-        -- Lift and slightly compact the wreaths so they frame HK, not the ratio divider.
-        laurel:SetSize(96, 96)
-        laurel:SetPoint("TOP", window, "TOP", side * 175, -419)
-        if side == 1 then
-            laurel:SetTexCoord(1, 0, 0, 1)
-        end
-        laurel:SetAlpha(0.94)
-    end
     -- Iteration 28: show both lifetime counters first, then their derived ratios.
     -- Keep this whole section inside the original space above the lower bands.
     line(window, -514, 632)
