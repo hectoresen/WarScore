@@ -568,3 +568,11 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Owner QA v61 in bright zone: no transparent gutters and no new black exterior rectangle, both owner frames clean, tabs and bottom cards legible, no Lua errors.
 - [ ] If the flat rectangular backing still causes leakage or protrusion, explicitly request a separately supplied opaque alpha-masked interior backing. No further fabricated decoration.
 - [ ] Rank/plaque and lower six icons remain unapproved, plus Alliance and alternative display-scale QA.
+
+## Iteration 61 screenshot → iteration 62 side-rail compositing
+
+- [x] Screenshot confirms v61 dark interior is substantially repaired but left exterior rail still has a narrow transparency gutter.
+- [x] Adjust existing leather backing to 808×930 (+9px per side), preserving the supplied frame art, stat bindings, layout, and owner no-invented-assets rule.
+- [ ] CI package v62 and runtime Lua CRC/source parity check.
+- [ ] Owner screenshots v62 in daylight to verify the side rail is filled without a black rectangle outside the exterior gilded trim.
+- [ ] If further precision is needed, **request owner-supplied exterior-aligned opaque background with transparent outside**, not further guessed artwork or masks. Pending rank banner and lower icons remain unapproved.
