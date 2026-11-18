@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "70"
+local UI_ITERATION = "71"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -507,13 +507,15 @@ local function build()
     -- Replaces the upper/lower rules and the vertical separator.
     local ratioOrnament = window:CreateTexture(nil, "BORDER")
     ratioOrnament:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\ratios_frame_owner_v70")
-    ratioOrnament:SetSize(632, 140)
-    ratioOrnament:SetPoint("TOP", window, "TOP", 0, -615)
+    -- Iteration 71: stretch only the transparent vertical field to contain
+    -- the live captions above the lower sapphire rail; keep width unchanged.
+    ratioOrnament:SetSize(632, 172)
+    ratioOrnament:SetPoint("TOP", window, "TOP", 0, -610)
 
-    label(window, "HK/D", 20, GOLD, -165, -636, 270, 29)
-    label(window, "KB/D", 20, GOLD, 165, -636, 270, 29)
-    fields.hkd = label(window, "—", 39, CREAM, -165, -668, 270, 48)
-    fields.kbd = label(window, "—", 39, CREAM, 165, -668, 270, 48)
+    label(window, "HK/D", 20, GOLD, -165, -644, 270, 29)
+    label(window, "KB/D", 20, GOLD, 165, -644, 270, 29)
+    fields.hkd = label(window, "—", 36, CREAM, -165, -673, 270, 44)
+    fields.kbd = label(window, "—", 36, CREAM, 165, -673, 270, 44)
     fields.hkd:SetShadowColor(0.34, 0.19, 0.06, 0.72)
     fields.hkd:SetShadowOffset(1, -1)
     fields.kbd:SetShadowColor(0.34, 0.19, 0.06, 0.72)

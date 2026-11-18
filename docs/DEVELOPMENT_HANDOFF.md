@@ -908,3 +908,11 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - The owner-supplied original 2048×682 RGBA image was recovered. A higher-resolution 1024×256 transparent indexed transfer was prepared from this original, without changing the artwork, and CI now generates `ratios_frame_owner_v70.tga`. This may not fully eliminate thin-line artifacts; only client QA can establish success.
 - UI iteration bumped to 70 and asset path switched; identical artwork geometry and all text/statistic layouts preserved. v69 artwork left in repository for history.
 - **Client QA NOT RUN:** download `dist/WarScore.zip`, `/reload`, `/ws version`=70 and screenshot. Inspect the LOWER gold rule left/right of sapphire for any speckling or transparency holes. If still noisy, use an unquantized full RGBA source as the next step.
+
+
+## Iteration #70 screenshot → #71 ratio text containment (2026-11-18)
+
+- The owner confirms the improved v70 ornamental gold rails render satisfactorily, but the two bottom explanatory microcopy strings fall across/outside the lower rail, while ratio headings visually touch the upper rail.
+- No new art was requested and no functionality changes are allowed. Preserve the 632 UI-unit width and the existing ratio texture `ratios_frame_owner_v70.tga`.
+- Geometry-only change: ratio ornament height 140→172, top anchor -615→-610 to gain room inside the two gold rails without moving secondary statistics bands; both ratio headings y -636→-644; value text y -668→-673 and size 39→36 with height 44; explanatory texts remain y=-711, font 12. UI diagnostic version = 71.
+- **Client QA NOT RUN:** install fresh full ZIP, `/reload`, `/ws version`=71, `/ws`. Check headings clear upper rail, values legible, descriptions entirely above lower rail, and bottom rail does not intersect the top border of first secondary stat band. No art regeneration necessary.
