@@ -28,6 +28,7 @@ jobs:
           python3 -m pip install --quiet Pillow
           python3 tools/prepare_ratio_asset.py
           python3 tools/prepare_card_asset.py  # inspect transport image before release
+          python3 tools/prepare_top_icons.py
           python3 tools/package_addon.py
           unzip -t dist/WarScore.zip
           python3 - <<'PY'
@@ -54,7 +55,7 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add dist/WarScore.zip Media/General/ratios_frame_owner_v70.tga Media/General/stat_band_top_owner_v74.tga Media/General/stat_band_bottom_owner_v75.tga
+          git add dist/WarScore.zip Media/General/ratios_frame_owner_v70.tga Media/General/stat_band_top_owner_v74.tga Media/General/stat_band_bottom_owner_v75.tga Media/General/icon_duels_owner_v77.tga Media/General/icon_bg_played_owner_v77.tga Media/General/icon_bg_wins_owner_v77.tga
           if ! git diff --cached --quiet; then
             git commit -m "build: refresh verified WarScore ZIP [skip ci]"
             git push

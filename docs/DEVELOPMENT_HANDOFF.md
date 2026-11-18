@@ -959,3 +959,12 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - Upper row remains three equal columns, now each `688/3`. Lower row maintains asymmetrical proportions `171:153:380`, scaled proportionally to 688 UI units. Existing text strings, labels/font sizes, icon sizes, frames, bindings, statistics, all previously approved upper sections, and both original TGA files unchanged.
 - Diagnostic version 76; full package created via GitHub Actions.
 - **WoW CLIENT QA NOT RUN:** install fresh `dist/WarScore.zip`, `/reload`, `/ws version`=76, `/ws`; screenshot the left/right gutters, inspect both frames for parent rail overlap and watch for caption encroachment on inner separator lines. Await owner screenshot for acceptance.
+
+
+## Iteration #76 screenshot accepted → #77 owner icon trio for top stats (2026-11-18)
+
+- Owner explicitly confirms the v76 horizontal frame inset is now correct and supplies three original transparent RGBA illustrations (1254×1254): gold-hilt crossed silver swords for `DUELOS GANADOS`, crossed Horde flags for `CAMPOS DE BATALLA JUGADOS`, and golden trophy for `BG GANADOS`.
+- Replace ONLY the icons on the upper three-column card using `ownerIcon` texture paths. Keep live captions, numeric counters, the v74/v75 band art, band width 688, column geometry, lower-card icons and all upper UI unchanged.
+- Owner icons are placed 50×50, left inset 10, vertically 8 UI units below centre; transparency at full alpha; do not apply native inventory icon circular portrait mask (the supplied images are already transparent). Existing secondary row uses its old icon sizes/masks.
+- The upload transport in this environment is a transparent 64×64 indexed PNG for each icon (cropped only to artwork, centered, scaled/quantized); `tools/prepare_top_icons.py` converts these to WoW-compatible 128×128 RGBA TGA. The original 1254×1254 user art is the source of truth for any later high-fidelity update; transport compression may lose fine detailing.
+- Diagnostic version = 77; CI packages and verifies the full `WarScore/` ZIP. **WoW client QA NOT RUN**: install the new ZIP, `/reload`, `/ws version` 77, `/ws`, and screenshot to review icon scale, transparency, label collision and balance. Only iterate on upper icon treatment unless separately requested.

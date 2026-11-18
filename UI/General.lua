@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "76"
+local UI_ITERATION = "77"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -160,15 +160,17 @@ local function statBand(parent, y, definitions, secondary)
         -- inventory glyphs still have baked square art; future asset task
         -- replaces these with transparent cutouts, not destructive cropping.
         local icon = segment:CreateTexture(nil, "ARTWORK")
-        icon:SetTexture(definition.icon)
+        local ownerTopIcon = not secondary and definition.ownerIcon
+        icon:SetTexture(ownerTopIcon or definition.icon)
         -- Preserve the native WoW illustration instead of rejected clip art.
         -- A supported alpha mask removes the square inventory-tile corners
         -- without zoom-cropping blades and heraldry. Graceful client fallback.
-        icon:SetSize(43, 43)
-        icon:SetPoint("LEFT", segment, "LEFT", 8, -1)
+        icon:SetSize(ownerTopIcon and 50 or 43, ownerTopIcon and 50 or 43)
+        icon:SetPoint("LEFT", segment, "LEFT", ownerTopIcon and 10 or 8, ownerTopIcon and -8 or -1)
         icon:SetTexCoord(0, 1, 0, 1)
-        icon:SetAlpha(secondary and 0.78 or 0.91)
-        if type(segment.CreateMaskTexture) == "function"
+        -- Owner art has real alpha; avoid circular masking and opacity reduction.
+        icon:SetAlpha(ownerTopIcon and 1 or (secondary and 0.78 or 0.91))
+        if not ownerTopIcon and type(segment.CreateMaskTexture) == "function"
             and type(icon.AddMaskTexture) == "function" then
             pcall(function()
                 local mask = segment:CreateMaskTexture(nil, "ARTWORK")
@@ -478,9 +480,9 @@ local function build()
     -- Lower ratio rail and central sapphire are part of the new owner asset.
 
     local firstRow = statBand(window, -758, {
-        { title = "DUELOS GANADOS", color = GOLD, icon = "Interface\\Icons\\Ability_DualWield" },
-        { title = "CAMPOS DE BATALLA JUGADOS", color = GOLD, icon = "Interface\\Icons\\INV_BannerPVP_02" },
-        { title = "BG GANADOS", color = GOLD, icon = "Interface\\Icons\\Achievement_BG_WinWSG" },
+        { title = "DUELOS GANADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duels_owner_v77" },
+        { title = "CAMPOS DE BATALLA JUGADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_played_owner_v77" },
+        { title = "BG GANADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_wins_owner_v77" },
     })
     fields.duels, fields.bgPlayed, fields.bgWon = unpack(firstRow)
     local secondRow = statBand(window, -878, {
