@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "62"
+local UI_ITERATION = "63"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -305,16 +305,15 @@ local function build()
     -- Iteration 58: treat both owner assets as a single geometric hierarchy.
     -- The outer frame is the visible window perimeter and header, not a
     -- native tooltip/dialog frame stretched over another painting.
-    -- Iteration 62: daylight still showed through a narrow left gutter at
-    -- the external metal rail in the owner's v61 screenshot. Give the
-    -- existing dark leather backing 9px more coverage per side, confined
-    -- behind both supplied paintings. No new art or opaque full-frame layer.
-    -- Do not keep widening this beyond the metallic rails: request an
-    -- owner-supplied alpha-matched interior backing if leakage persists.
+    -- Iteration 63: use the owner's measured 1199x1312 composition:
+    -- inner frame x=66, y=101, width=1067, height=1167 (approximately
+    -- 89% of the outer frame), projected into WoW frame coordinates.
+    -- The old leather remains only as a background behind the transparent
+    -- central recess. No generated composition image is used as an asset.
     window:Hide()
     local interiorBacking = window:CreateTexture(nil, "BACKGROUND", nil, -7)
     interiorBacking:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\panel_dark_leather_v55")
-    interiorBacking:SetSize(808, 930)
+    interiorBacking:SetSize(784, 930)
     interiorBacking:SetPoint("TOP", window, "TOP", 0, -97)
     interiorBacking:SetVertexColor(0.88, 0.82, 0.76, 1)
 
@@ -322,9 +321,9 @@ local function build()
     -- Position it under the exterior frame, leaving a real inset on all
     -- sides; do not add old corner textures or duplicated border files.
     local innerArt = window:CreateTexture(nil, "BACKGROUND")
-    innerArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\inner_frame_owner_v57")
-    innerArt:SetSize(760, 890)
-    innerArt:SetPoint("TOP", window, "TOP", 0, -110)
+    innerArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\inner_frame_owner_v63")
+    innerArt:SetSize(774, 943)
+    innerArt:SetPoint("TOP", window, "TOP", 0, -82)
     innerArt:SetAlpha(1)
 
     -- Exterior art has a pre-painted close X, swords medallion and header.
