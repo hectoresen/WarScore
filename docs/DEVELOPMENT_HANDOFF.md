@@ -680,3 +680,17 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - No new icon artwork, no orange rank panel, no disconnected leaves; no changes to banners (still **frozen**), lower 43px icons, HK/death/ratio calculations, placeholder values, storage or outer/inner frame.
 - **QA NOT RUN in Forever**. Owner should install fresh `dist/WarScore.zip` only after CI refresh is confirmed, run `/reload`, `/ws version` (50), `/ws`, send screenshot. Check ribbon ends are elegant (not cropped sharply), crest circular/correct faction/no square artifacts, title and unavailable value clear, no overlap with HK divider, no Lua errors.
 - If fully revealed ribbon ends or circular boss appear worse than 49, adjust/revert only this rank treatment. Final approval, Alliance, alternate scales and populated BG data still pending. Banners stay frozen.
+
+## Iteration #50 — owner screenshot review (2026-11-18)
+
+- Real Forever screenshot confirms textured warm-grey panel, stat hierarchy, 43px lower icons, gold/green zero conventions and clean circular rank crest. Historical counters visible: HK 32, PvP deaths 9, HK/D 3.56.
+- **FAIL rank art:** the UVs newly exposed in iteration 50 render obvious parallel gold scratch-like lines at the right ribbon end. Plaque still reads flat rather than sculpted. Neither the end treatment nor rank as a whole is approved. Banners remain frozen.
+
+## Iteration #51 — remove right-ribbon hatch and improve rank text (2026-11-18)
+
+- Code commit `0192472be154772cb72ebae43efc9aaaf73d79af` updates `UI/General.lua`; `/ws version` = **51**.
+- Return rank ribbon to previously tested safe texture UV crop (0.12–0.88 / 0.13–0.87) so the visible right-edge scratch artifact introduced by iteration 50 should disappear. Keep circular crest treatment established in 50.
+- Slightly taller rendered ribbon (48px), layered dark underlay/leather backing, restrained continuous interior upper glint and lower shadow. Rank labels enlarge to 13/18px and shift 12px right for optical balance with the left circular emblem.
+- No new artwork or rank invention. Band icons, borders, textured background, actual statistics, data placeholders and both **frozen** faction banners remain untouched.
+- **Owner QA pending**: replace addon folder with the freshly rebuilt ZIP; `/reload`, `/ws version` should return 51, `/ws`; send screenshot evaluating whether the striped right-end artifact is gone, rank text legible and crest properly aligned. Check for Lua errors/overlaps.
+- The shape still relies on the inherited authored ribbon asset; a true high-fidelity sculpted rank asset remains a later optional milestone and requires real screenshot signoff. Do not claim full visual acceptance.
