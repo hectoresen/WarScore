@@ -1098,3 +1098,11 @@ This validates positive BG history and objective tracking. Compare the native st
 - Root cause 2: v85 positioned name and subtitle at x=+22. V86 keeps the green BG name x=+22, width=265, and places **only** its played-count FontString at segment center x=0, width=190, y=-74 to share the title's vertical axis. The 13pt size, text, color, singular/plural, and panel art stay unchanged.
 - No changes to stats readings, ratios, other cards or assets. Diagnostic version 86.
 - **GAME QA NOT RUN:** install ZIP, `/reload`, `/ws version`=86, `/ws`. Inspect center alignment with favorite title and verify whether native QuestFont actually renders italic. If not, a confirmed italic TTF asset/license or designer-approved non-italic fallback is necessary; do not falsely mark typographic requirement complete.
+
+
+## Iteration #86 screenshot accepted for alignment → #87 genuine italic font (2026-11-18)
+
+- Owner confirms v86 favorite play-count alignment is now correct, but text remains upright. Owner approves v87 dedicated exclusively to actual italic typography. No additional visual layout changes.
+- v87 replaces the unreliable `QuestFont` / `ITALIC_TEXT_FONT` logic with a real `Spectral-Italic.ttf` (Google Fonts Spectral project, SIL Open Font License 1.1). Only the 13pt `x veces jugado` FontString uses `Interface\\AddOns\\WarScore\\Media\\Fonts\\Spectral-Italic.ttf`. All x/y positions, labels, other font faces, portrait, frame art, assets, statistics and ratios remain unchanged.
+- Font source: `google/fonts/ofl/spectral/Spectral-Italic.ttf`, pinned Git blob SHA `99d6c2def129dea2daa47652c2168c271c7a59a7`; `tools/prepare_italic_font.py` verifies SHA, downloads only when not already present. `Media/Fonts/OFL.txt` is included in distributed ZIP for license compliance. `tools/package_addon.py` resolves runtime TTF paths as well as TGAs; GitHub Actions verifies and commits the TTF alongside the installable ZIP.
+- Diagnostic = v87. **IN-GAME QA NOT RUN:** install fresh `dist/WarScore.zip`, `/reload`, `/ws version` 87, `/ws`; verify true slanted italic letters, subtitle horizontally centered under the section title and no clipping, and confirm the font loads without LUA errors.

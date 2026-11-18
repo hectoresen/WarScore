@@ -23,3 +23,8 @@ python3 tools/package_addon.py
 Los generadores leen `docs/assets/` y escriben TGA bajo `addon/WarScore/Media/General/`. El empaquetador incluye solo TOC, Lua y TGA **referenciadas**. GitHub Actions conserva el ZIP verificado en `dist/`.
 
 No se importan las reglas de ramas, PR, licenciamiento ni publicación de releases de CraftAtlas sin una decisión específica.
+
+
+## Fuente cursiva integrada (v87)
+
+La línea «x veces jugado» usa `addon/WarScore/Media/Fonts/Spectral-Italic.ttf` (Google Fonts; SIL OFL 1.1; licencia en `Media/Fonts/OFL.txt`). `python3 tools/prepare_italic_font.py` comprueba la huella Git del archivo y solo lo obtiene del repositorio fuente público si falta. El ZIP contiene la fuente real. No depende de que el cliente WoW incluya cursiva por defecto.
