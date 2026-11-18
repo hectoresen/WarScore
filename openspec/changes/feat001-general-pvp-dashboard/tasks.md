@@ -538,3 +538,14 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Verify CI clean ZIP contains exact new outer asset and v58 General.lua with matching source CRC.
 - [ ] Owner tests v58 in Forever: exterior/inner centering, sufficient bottom clearance, no mismatched rails, General/Hoy tab labels, clickable X and no Lua errors.
 - [ ] Pending: approval of lower metric glyphs, sculpted rank artwork, Alliance treatment, multiple scales and high-number/long-label cases.
+
+## Iteration 58 screenshot → iteration 59 structural cleanup
+
+- [x] Owner screenshot identifies residual black outer rectangle, portrait/tab overlap, border clashes and cramped cards. This is not completed visual acceptance.
+- [x] Remove old full-frame opaque leather layer so alpha outside combined author-supplied frames is unobstructed.
+- [x] Reduce portrait to 106px ring/90px face and lower it under tab rail; adjust live name, level and PvP rank.
+- [x] Reposition HK, deaths, ratios and two lower stat rows within nested frame; shorten separator rails and preserve gold/green missing-value conventions.
+- [x] Keep settings gear clear of upper-right faction banner, retain painted tab positions, dynamic title and close hitbox.
+- [ ] Verify CI refreshed runtime ZIP version 59 against source CRC and exact runtime resource list.
+- [ ] Owner tests in Forever and returns screenshot: confirm black rectangle/outer alpha, portraits, tab/rail overlap, rank, bottom row margin and any Lua errors.
+- [ ] Outer asset transparency may still need direct inspection if black rectangle persists. Rank's heraldic treatment and six lower icons still need replacement/approval.
