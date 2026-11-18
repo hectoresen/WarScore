@@ -616,3 +616,12 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Verify CI regenerated runtime ZIP includes v66 rank TGA, Lua source CRC and only referenced assets.
 - [ ] Owner screenshot QA in WoW Forever: plaque proportions, shield, ruby, laurel edges, text and available spacing against player level/HK title; no Lua errors.
 - [ ] Six lower stat icons, future Alliance art, multi-scale and data-filled battlefield cases remain unapproved.
+
+## Iteration 66 screenshot → 67 central-axis and baked duplicate trim
+
+- [x] Find rank caption/value x=+30 versus live name/level/HK x=0; align dynamic rank copy on the same x=0 axis.
+- [x] Inspect actual exterior owner art: the second gold inner outline is baked into outer PNG, not another Lua-native border.
+- [x] Produce original-art-derived alpha-masked exterior TGA without gold duplicate; preserve author original and replace only displayed exterior texture.
+- [ ] Confirm CI refreshed runtime package with v67 Lua and `outer_frame_owner_v67_trimmed.tga` and matching CRC.
+- [ ] Owner real-client screenshot QA: single clean left frame, no clipped outer steel/right/bottom corner, centered rank text, no errors.
+- [ ] Six lower icons, PvP plaque final visual approval, Alliance visual treatment and multiple scales remain open.
