@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "51"
+local UI_ITERATION = "52"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -516,73 +516,46 @@ local function build()
     rankPlate:SetSize(452, 42)
     rankPlate:SetPoint("TOP", window, "TOP", 0, -296)
 
-    -- Iteration 51: the extra outer ribbon UVs tested in 50 expose
-    -- a visibly striped right edge in Forever. Crop that artifact away.
-    -- Build material depth inside the existing plaque instead of adding
-    -- separate leaves, endcaps, or another orange rectangular asset.
-    local underlay = rankPlate:CreateTexture(nil, "BACKGROUND")
-    underlay:SetTexture("Interface\\Buttons\\WHITE8X8")
-    underlay:SetVertexColor(0.017, 0.013, 0.011, 0.88)
-    underlay:SetSize(402, 37)
-    underlay:SetPoint("CENTER", rankPlate, "CENTER", 0, -1)
-    local backing = rankPlate:CreateTexture(nil, "BACKGROUND")
-    backing:SetTexture("Interface\\Buttons\\WHITE8X8")
-    backing:SetVertexColor(0.075, 0.047, 0.029, 0.86)
-    backing:SetSize(388, 30)
-    backing:SetPoint("CENTER", rankPlate, "CENTER", 0, -1)
-
+    -- Iteration 52: screenshot reference comparison. The previous circular
+    -- faction badge looked like a stuck-on coin, not the reference's shield.
+    -- Do not substitute another fake emblem before a proper shield asset.
+    -- The old ribbon's right-hand strokes are baked into its art; a smaller
+    -- central crop avoids them while keeping the proven Warcraft palette.
+    local shadow = rankPlate:CreateTexture(nil, "BACKGROUND")
+    shadow:SetTexture("Interface\\Buttons\\WHITE8X8")
+    shadow:SetVertexColor(0.016, 0.011, 0.010, 0.90)
+    shadow:SetSize(418, 41)
+    shadow:SetPoint("CENTER", rankPlate, "CENTER", 0, -1)
+    local leather = rankPlate:CreateTexture(nil, "BACKGROUND")
+    leather:SetTexture("Interface\\Buttons\\WHITE8X8")
+    leather:SetVertexColor(0.10, 0.045, 0.026, 0.88)
+    leather:SetSize(408, 33)
+    leather:SetPoint("CENTER", rankPlate, "CENTER", 0, -1)
     local ribbon = rankPlate:CreateTexture(nil, "BORDER")
     ribbon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
-    ribbon:SetTexCoord(0.12, 0.88, 0.13, 0.87)
-    ribbon:SetSize(432, 48)
+    ribbon:SetTexCoord(0.18, 0.74, 0.16, 0.84)
+    ribbon:SetSize(422, 48)
     ribbon:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
-    ribbon:SetAlpha(0.94)
+    ribbon:SetAlpha(0.91)
 
-    -- A continuous inset bezel, behind the centered inscription.
-    -- All horizontal details finish beneath the original ribbon art.
-    local innerTop = rankPlate:CreateTexture(nil, "ARTWORK")
-    innerTop:SetTexture("Interface\\Buttons\\WHITE8X8")
-    innerTop:SetVertexColor(0.91, 0.64, 0.29, 0.60)
-    innerTop:SetSize(334, 1)
-    innerTop:SetPoint("TOP", rankPlate, "TOP", 13, -4)
-    local innerShade = rankPlate:CreateTexture(nil, "ARTWORK")
-    innerShade:SetTexture("Interface\\Buttons\\WHITE8X8")
-    innerShade:SetVertexColor(0.25, 0.17, 0.11, 0.78)
-    innerShade:SetSize(334, 2)
-    innerShade:SetPoint("BOTTOM", rankPlate, "BOTTOM", 13, 5)
-
-    -- Integrate the faction crest as a round, overlapping metallic boss.
-    -- This is faction decoration only, never an invented PvP rank insignia.
-    local crestHolder = CreateFrame("Frame", nil, rankPlate)
-    crestHolder:SetSize(48, 48)
-    crestHolder:SetPoint("LEFT", rankPlate, "LEFT", 16, 0)
-    local boss = crestHolder:CreateTexture(nil, "BORDER")
-    boss:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring_transparent")
-    boss:SetSize(58, 58)
-    boss:SetPoint("CENTER", crestHolder, "CENTER", 0, 0)
-    local crest = crestHolder:CreateTexture(nil, "ARTWORK")
-    local rankFaction = UnitFactionGroup("player")
-    crest:SetTexture(rankFaction == "Alliance"
-        and "Interface\\Icons\\INV_BannerPVP_02"
-        or "Interface\\Icons\\INV_BannerPVP_01")
-    crest:SetSize(34, 34)
-    crest:SetPoint("CENTER", crestHolder, "CENTER", 0, 0)
-    if type(crestHolder.CreateMaskTexture) == "function"
-        and type(crest.AddMaskTexture) == "function" then
-        pcall(function()
-            local mask = crestHolder:CreateMaskTexture(nil, "ARTWORK")
-            mask:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_mask")
-            mask:SetAllPoints(crest)
-            crest:AddMaskTexture(mask)
-        end)
-    end
+    -- A cohesive inset rim, not separate rectangular orange cap pieces.
+    local upperRim = rankPlate:CreateTexture(nil, "ARTWORK")
+    upperRim:SetTexture("Interface\\Buttons\\WHITE8X8")
+    upperRim:SetVertexColor(0.86, 0.58, 0.23, 0.63)
+    upperRim:SetSize(332, 1)
+    upperRim:SetPoint("TOP", rankPlate, "TOP", 0, -5)
+    local lowerRim = rankPlate:CreateTexture(nil, "ARTWORK")
+    lowerRim:SetTexture("Interface\\Buttons\\WHITE8X8")
+    lowerRim:SetVertexColor(0.48, 0.28, 0.13, 0.70)
+    lowerRim:SetSize(332, 1)
+    lowerRim:SetPoint("BOTTOM", rankPlate, "BOTTOM", 0, 5)
 
     -- Clean centered rank inscription: a small section name and an honest
     -- unavailable value, like the two-tier reference ribbon.
     -- Reserve a visible margin below the rank value and above the HK divider.
-    local rankCaption = label(rankPlate, "Rango PvP", 13, CREAM, 12, -3, 320, 15)
+    local rankCaption = label(rankPlate, "Rango PvP", 13, CREAM, 0, -3, 320, 15)
     rankCaption:SetTextColor(0.89, 0.70, 0.39)
-    fields.rank = label(rankPlate, "No disponible", 18, GOLD, 12, -19, 320, 20)
+    fields.rank = label(rankPlate, "No disponible", 18, GOLD, 0, -19, 320, 20)
     fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
     fields.rank:SetShadowOffset(1, -1)
     line(window, -341, 650)
