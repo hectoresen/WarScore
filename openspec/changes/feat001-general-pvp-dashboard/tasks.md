@@ -625,3 +625,13 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Confirm CI refreshed runtime package with v67 Lua and `outer_frame_owner_v67_trimmed.tga` and matching CRC.
 - [ ] Owner real-client screenshot QA: single clean left frame, no clipped outer steel/right/bottom corner, centered rank text, no errors.
 - [ ] Six lower icons, PvP plaque final visual approval, Alliance visual treatment and multiple scales remain open.
+
+## Owner v67 screenshot and supplied HK artwork → v68
+
+- [x] Receive author's ornate HK PNG with **integrated gold top/bottom rules, two laurels and central diamonds**; inspect alpha bounds and remove only surrounding transparent margin.
+- [x] Convert to 1024×256 alpha TGA for client compatibility and commit as `Media/General/hk_frame_owner_v68.tga`; preserve author source and do not fabricate decorations.
+- [x] Replace independent HK laurels, section backdrop and lower rule/diamond with the owner's ornamental frame and dynamic title/count, centered at window x=0.
+- [x] Move PvP rank panel down 6px for requested margin below level/class without moving name/portrait or changing live data.
+- [ ] Verify regenerated runtime ZIP contains the HK frame TGA and source-identical `UI/General.lua` version 68.
+- [ ] Owner screenshot: no collision rank ruby vs HK upper line, HK title and value properly framed, lower rail clear of PvP deaths, no Lua errors.
+- [ ] Lower six icons, alternate factions and resolution/scales remain unapproved.
