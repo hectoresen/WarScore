@@ -27,7 +27,7 @@ jobs:
           set -euo pipefail
           python3 -m pip install --quiet Pillow
           python3 tools/prepare_ratio_asset.py
-          python3 tools/prepare_card_asset.py
+          python3 tools/prepare_card_asset.py  # inspect transport image before release
           python3 tools/package_addon.py
           unzip -t dist/WarScore.zip
           python3 - <<'PY'
