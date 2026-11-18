@@ -28,12 +28,12 @@ def source_files():
         content = (ROOT / script).read_text(encoding="utf-8")
         # Lua literals write paths with doubled backslashes.
         normalized = content.replace("\\\\", "/")
-        for name in re.findall(r"Interface/AddOns/WarScore/Media/([A-Za-z0-9_/-]+)", normalized):
+        for name in re.findall(r"Interface/AddOns/WarScore/Media/(?!Fonts/)([A-Za-z0-9_/-]+)", normalized):
             media.add(Path("Media") / (name + ".tga"))
     # Custom italic TTF is a runtime resource too, not just source artwork.
     for script in scripts:
         content = (ROOT / script).read_text(encoding="utf-8").replace("\\\\", "/")
-        for font in re.findall(r"Interface/AddOns/WarScore/Media/Fonts/([A-Za-z0-9_-]+\\.ttf)", content):
+        for font in re.findall(r"Interface/AddOns/WarScore/Media/Fonts/([A-Za-z0-9_-]+[.]ttf)", content):
             media.add(Path("Media/Fonts") / font)
             media.add(Path("Media/Fonts/OFL.txt"))
     files.extend(sorted(media))
