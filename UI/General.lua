@@ -363,7 +363,7 @@ local function build()
     -- Reserve the settings position within the inner border; not functional.
     local settingsFrame = CreateFrame("Frame", nil, window, "BackdropTemplate")
     settingsFrame:SetSize(36, 36)
-    settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -77, -163)
+    settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -77, -123)
     settingsFrame:SetBackdrop({
         bgFile = "Interface\\Buttons\\WHITE8X8",
         edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
@@ -386,10 +386,10 @@ local function build()
     fields = {}
     -- Both banners are baked into innerArt; no separate banner sprites.
     local portraitRing = CreateFrame("Frame", nil, window)
-    portraitRing:SetSize(112, 112)
+    portraitRing:SetSize(106, 106)
     portraitRing:SetPoint("TOP", window, "TOP", 0, -168)
     local portrait = portraitRing:CreateTexture(nil, "ARTWORK")
-    portrait:SetSize(96, 96)
+    portrait:SetSize(90, 90)
     portrait:SetPoint("CENTER")
     fields.portrait = portrait
     -- Prefer a real alpha mask: it removes the square portrait corners without
@@ -401,7 +401,7 @@ local function build()
         local ok = pcall(function()
             local mask = portraitRing:CreateMaskTexture(nil, "ARTWORK")
             mask:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_mask")
-            mask:SetSize(96, 96)
+            mask:SetSize(90, 90)
             mask:SetPoint("CENTER", portrait, "CENTER", 0, 0)
             portrait:AddMaskTexture(mask)
         end)
@@ -413,7 +413,7 @@ local function build()
     else
         ring:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring")
     end
-    ring:SetSize(112, 112)
+    ring:SetSize(106, 106)
     ring:SetPoint("CENTER", portraitRing, "CENTER", 0, 0)
     fields.name = label(window, "—", 23, CREAM, 0, -279, 360, 32)
     fields.level = label(window, "—", 15, CREAM, 0, -310, 360, 24)
