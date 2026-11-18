@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "52"
+local UI_ITERATION = "53"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -475,9 +475,43 @@ local function build()
     tabRail:SetSize(296, 2)
     tabRail:SetPoint("TOPLEFT", window, "TOPLEFT", 38, -101)
 
+    -- Reserved settings affordance INSIDE the inner frame, upper-right.
+    -- Deliberately no configuration feature is exposed yet.
+    local settingsFrame = CreateFrame("Frame", nil, window, "BackdropTemplate")
+    settingsFrame:SetSize(36, 36)
+    settingsFrame:SetPoint("TOPRIGHT", innerPanel, "TOPRIGHT", -12, -13)
+    settingsFrame:SetBackdrop({
+        bgFile = "Interface\\Buttons\\WHITE8X8",
+        edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+        edgeSize = 12,
+    })
+    settingsFrame:SetBackdropColor(0.055, 0.038, 0.023, 0.93)
+    settingsFrame:SetBackdropBorderColor(0.79, 0.56, 0.24, 0.9)
+    local settingsIcon = settingsFrame:CreateTexture(nil, "ARTWORK")
+    settingsIcon:SetTexture("Interface\\Icons\\INV_Gizmo_02")
+    settingsIcon:SetSize(25, 25)
+    settingsIcon:SetPoint("CENTER", settingsFrame, "CENTER", 0, 0)
+    settingsIcon:SetVertexColor(0.98, 0.84, 0.57, 1)
+    if type(settingsFrame.CreateMaskTexture) == "function"
+        and type(settingsIcon.AddMaskTexture) == "function" then
+        pcall(function()
+            local mask = settingsFrame:CreateMaskTexture(nil, "ARTWORK")
+            mask:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_mask")
+            mask:SetAllPoints(settingsIcon)
+            settingsIcon:AddMaskTexture(mask)
+        end)
+    end
+    settingsFrame:EnableMouse(true)
+    settingsFrame:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText("Ajustes (próximamente)", 1, 0.82, 0.40)
+        GameTooltip:Show()
+    end)
+    settingsFrame:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
     fields = {}
-    ornament(window, "LEFT")
-    ornament(window, "RIGHT")
+    -- Iteration 53: owner explicitly removed both side banners from the UI.
+    -- Keep their assets in the repo for now; they are no longer rendered.
     local portraitRing = CreateFrame("Frame", nil, window)
     portraitRing:SetSize(126, 126)
     portraitRing:SetPoint("TOP", window, "TOP", 0, -105)
@@ -550,12 +584,34 @@ local function build()
     lowerRim:SetSize(332, 1)
     lowerRim:SetPoint("BOTTOM", rankPlate, "BOTTOM", 0, 5)
 
+    -- Raised faction heraldry occupies the left of the plaque, similar
+    -- to the mockup shield's footprint. Avoid the rejected circular coin.
+    -- Native Warcraft emblem is provisional until the full carved-shield
+    -- asset can be authored and proven in the Forever client.
+    local heraldry = CreateFrame("Frame", nil, rankPlate, "BackdropTemplate")
+    heraldry:SetSize(51, 51)
+    heraldry:SetPoint("LEFT", rankPlate, "LEFT", 11, 1)
+    heraldry:SetBackdrop({
+        bgFile = "Interface\\Buttons\\WHITE8X8",
+        edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+        edgeSize = 15,
+    })
+    heraldry:SetBackdropColor(0.11, 0.035, 0.025, 0.97)
+    heraldry:SetBackdropBorderColor(0.95, 0.68, 0.26, 1)
+    local heraldryIcon = heraldry:CreateTexture(nil, "ARTWORK")
+    heraldryIcon:SetTexture(UnitFactionGroup("player") == "Alliance"
+        and "Interface\\Icons\\INV_BannerPVP_02"
+        or "Interface\\Icons\\INV_BannerPVP_01")
+    heraldryIcon:SetSize(37, 37)
+    heraldryIcon:SetPoint("CENTER", heraldry, "CENTER", 0, 0)
+    heraldryIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+
     -- Clean centered rank inscription: a small section name and an honest
     -- unavailable value, like the two-tier reference ribbon.
     -- Reserve a visible margin below the rank value and above the HK divider.
-    local rankCaption = label(rankPlate, "Rango PvP", 13, CREAM, 0, -3, 320, 15)
+    local rankCaption = label(rankPlate, "Rango PvP", 13, CREAM, 17, -3, 300, 15)
     rankCaption:SetTextColor(0.89, 0.70, 0.39)
-    fields.rank = label(rankPlate, "No disponible", 18, GOLD, 0, -19, 320, 20)
+    fields.rank = label(rankPlate, "No disponible", 18, GOLD, 17, -19, 300, 20)
     fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
     fields.rank:SetShadowOffset(1, -1)
     line(window, -341, 650)
