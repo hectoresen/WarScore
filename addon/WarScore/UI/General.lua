@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "91"
+local UI_ITERATION = "92"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -330,12 +330,13 @@ local function build()
     brandTitle:SetShadowColor(0.34, 0.16, 0.03, 0.93)
     brandTitle:SetShadowOffset(1, -1)
 
-    -- v91: actual owner-supplied close-button art replaces the baked X
-    -- visually, while retaining the same top-right activation location.
+    -- v92: retain the owner-supplied gold X but match the original
+    -- close control footprint, previously enlarged in v91.
     -- A matching dark underlay hides the original baked ornament so two X
     -- shapes cannot bleed through the transparent corners.
     local close = CreateFrame("Button", nil, window)
-    close:SetSize(50, 50)
+    -- v92: restore the exact 43x43 hitbox of the original baked close button.
+    close:SetSize(43, 43)
     close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -48, -28)
     local closeUnderlay = close:CreateTexture(nil, "BACKGROUND")
     closeUnderlay:SetTexture("Interface\\Buttons\\WHITE8X8")
