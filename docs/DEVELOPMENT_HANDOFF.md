@@ -789,3 +789,19 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - Removed old hand-built exterior native border, header plaque and extra accents that would compete with the supplied painting. Uses the decorative outer art for crossed swords and X, retains live WarScore title and a transparent clickable close button positioned on that X. Moves General/Hoy labels and hitboxes to the raised tabs, and puts settings gear near the upper-right inner rail (above the right banner).
 - No modifications to PvP data, KB/D placeholders, rank text, no-data conventions, lower card icons, or historical stats. Those lower icons and the rank's illustration are still **not approved**. The new art has Horde banners baked into the supplied inner frame; Alliance needs a future matching treatment.
 - **Static assembly preview inspected**, not in-game acceptance. Fresh ZIP must be checked for outer asset, inner art, source parity, correct game-compatible dimensions; user to test `/reload`, `/ws version` = 58 and `/ws`, then screenshot and inspect frame alignment, bottom card clearance, tab centers, native X click hitbox and settings gear position. Do not mark full design accepted without in-client screenshot.
+
+## Iteration #58 — owner screenshot review (2026-11-18)
+
+- Owner screenshot shows both authored frames in client, the painted crossed-swords medallion, both Horde flags and tabs. However a broad dark/black external backing still makes the shell look like a separate rectangle; inner/exterior rails compete near the top/bottom.
+- Portrait physically overlaps the tab rail and the inactive Hoy tab; main rank/name are crowded. Lower bars need bottom clearance checked against inner border. The UI is **not approved as aligned**.
+- Owner requested a coordinated layout cleanup of the residual black shell, panel fit, portrait, tabs, rank, settings placement and lower cards, preserving all real statistics and unfinished lower icon art.
+
+## Iteration #59 — clean up shell and content vertical spacing (2026-11-18)
+
+- Source commits `2ff2ac197eb18fc7093f2c8f3b9e7268f0639db6` and `86056357baf62a378709d8852f74497bc9b4b028`; `/ws version` = **59**.
+- Removed redundant full-window `shellBackground` leather texture. Outer + inner owner-painted frame art remain, so alpha outside their silhouettes should now show the game world. If the screenshot still reveals black outside the art, inspect the **alpha of the outer TGA itself**, not just the Lua layers.
+- Portrait frame from 126→106px, face 108→90px, moved from y=-105 to -168 to avoid collision with the tab plates. Live player name/level and rank were repositioned to y=-279/-310/-341 respectively.
+- Lifetime HK/deaths/ratios, fine separators, laurel ornaments and lower cards moved downward to keep a coherent layout under the portrait/rank. First row from y=-727→-758; second from -846→-878, leaving ~10px before the inner art's bottom at -1000. Separator widths reduced 650→632px where updated.
+- Settings gear stays top-right inside the nested frame (x=-77,y=-123); corrected to avoid touching right cloth. Tabs retain existing user-asset alignment. No changes to SavedVariables, calculations, real PvP data, available/nonavailable rank behavior or lower stat icon images.
+- **QA pending**: clean ZIP install, `/reload`, `/ws version`=59, `/ws`. Confirm black outer rectangle is gone, frame contours clean, portrait doesn't overlap tabs/name, rank and separators remain apart, two metric rows fit inside the lower border, gear doesn't collide with right flag, X stays clickable, no Lua errors.
+- The source frame assets remain experimental in layout. **Rank artwork and lower six icon images remain unapproved**.
