@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "60"
+local UI_ITERATION = "61"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -305,15 +305,16 @@ local function build()
     -- Iteration 58: treat both owner assets as a single geometric hierarchy.
     -- The outer frame is the visible window perimeter and header, not a
     -- native tooltip/dialog frame stretched over another painting.
-    -- Iteration 60: the owner screenshot exposed transparent holes between
-    -- both painted frames when iteration 59 removed ALL backing. Restore the
-    -- established dark material ONLY inside the inner ornamental boundary,
-    -- never across the full window/outside the outer silhouette.
+    -- Iteration 61: the v60 backing only filled the central 744px,
+    -- leaving transparent gutters between the inner 760px painting and
+    -- the external metallic rails. Extend the EXISTING owner-tested dark
+    -- material to the inside edges of the OUTER frame, not the entire
+    -- 870px canvas. This is a geometry repair, not a new painted asset.
     window:Hide()
     local interiorBacking = window:CreateTexture(nil, "BACKGROUND", nil, -7)
     interiorBacking:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\panel_dark_leather_v55")
-    interiorBacking:SetSize(744, 875)
-    interiorBacking:SetPoint("TOP", window, "TOP", 0, -115)
+    interiorBacking:SetSize(790, 930)
+    interiorBacking:SetPoint("TOP", window, "TOP", 0, -97)
     interiorBacking:SetVertexColor(0.88, 0.82, 0.76, 1)
 
     -- The supplied inner gold frame has its own cloth, tabs and material.
