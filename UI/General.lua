@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "58"
+local UI_ITERATION = "59"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -305,10 +305,8 @@ local function build()
     -- Iteration 58: treat both owner assets as a single geometric hierarchy.
     -- The outer frame is the visible window perimeter and header, not a
     -- native tooltip/dialog frame stretched over another painting.
-    local shellBackground = window:CreateTexture(nil, "BACKGROUND")
-    shellBackground:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\panel_dark_leather_v55")
-    shellBackground:SetAllPoints(window)
-    shellBackground:SetVertexColor(0.84, 0.79, 0.71, 1)
+    -- Iteration 59: remove the duplicate opaque rectangle beneath
+    -- the two owner-supplied frame textures. Transparent exterior stays clear.
     window:Hide()
 
     -- The supplied inner gold frame has its own cloth, tabs and material.
@@ -365,7 +363,7 @@ local function build()
     -- Reserve the settings position within the inner border; not functional.
     local settingsFrame = CreateFrame("Frame", nil, window, "BackdropTemplate")
     settingsFrame:SetSize(36, 36)
-    settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -74, -117)
+    settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -77, -163)
     settingsFrame:SetBackdrop({
         bgFile = "Interface\\Buttons\\WHITE8X8",
         edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
@@ -388,10 +386,10 @@ local function build()
     fields = {}
     -- Both banners are baked into innerArt; no separate banner sprites.
     local portraitRing = CreateFrame("Frame", nil, window)
-    portraitRing:SetSize(126, 126)
-    portraitRing:SetPoint("TOP", window, "TOP", 0, -105)
+    portraitRing:SetSize(112, 112)
+    portraitRing:SetPoint("TOP", window, "TOP", 0, -168)
     local portrait = portraitRing:CreateTexture(nil, "ARTWORK")
-    portrait:SetSize(108, 108)
+    portrait:SetSize(96, 96)
     portrait:SetPoint("CENTER")
     fields.portrait = portrait
     -- Prefer a real alpha mask: it removes the square portrait corners without
@@ -403,7 +401,7 @@ local function build()
         local ok = pcall(function()
             local mask = portraitRing:CreateMaskTexture(nil, "ARTWORK")
             mask:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_mask")
-            mask:SetSize(108, 108)
+            mask:SetSize(96, 96)
             mask:SetPoint("CENTER", portrait, "CENTER", 0, 0)
             portrait:AddMaskTexture(mask)
         end)
@@ -415,15 +413,15 @@ local function build()
     else
         ring:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring")
     end
-    ring:SetSize(126, 126)
+    ring:SetSize(112, 112)
     ring:SetPoint("CENTER", portraitRing, "CENTER", 0, 0)
-    fields.name = label(window, "—", 24, CREAM, 0, -233, 360, 34)
-    fields.level = label(window, "—", 15, CREAM, 0, -269, 360, 25)
+    fields.name = label(window, "—", 23, CREAM, 0, -279, 360, 32)
+    fields.level = label(window, "—", 15, CREAM, 0, -310, 360, 24)
     -- Iteration 27: authored metallic ribbon artwork, with independent text
     -- and faction crest. A faction badge never indicates verified PvP rank.
     local rankPlate = CreateFrame("Frame", nil, window)
     rankPlate:SetSize(452, 42)
-    rankPlate:SetPoint("TOP", window, "TOP", 0, -296)
+    rankPlate:SetPoint("TOP", window, "TOP", 0, -341)
 
     -- Iteration 52: screenshot reference comparison. The previous circular
     -- faction badge looked like a stuck-on coin, not the reference's shield.
@@ -489,17 +487,17 @@ local function build()
     fields.rank = label(rankPlate, "No disponible", 18, GOLD, 30, -19, 280, 20)
     fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
     fields.rank:SetShadowOffset(1, -1)
-    line(window, -341, 650)
-    ornamentDiamond(window, -339, 8)
-    sectionPlaque(window, -353, 570, 116, 0.92)
+    line(window, -391, 632)
+    ornamentDiamond(window, -389, 8)
+    sectionPlaque(window, -405, 570, 110, 0.92)
 
     -- Iteration 21: strengthen the main lifetime-HK hero section without
     -- introducing fake values or baking the changing number into artwork.
-    local hkTitle = label(window, "MUERTES CON HONOR", 24, GOLD, 0, -355, 460, 35)
+    local hkTitle = label(window, "MUERTES CON HONOR", 24, GOLD, 0, -406, 460, 35)
     hkTitle:SetShadowColor(0.22, 0.10, 0.02, 0.9)
     hkTitle:SetShadowOffset(1, -1)
 
-    fields.hk = label(window, "—", 64, GOLD, 0, -388, 500, 78)
+    fields.hk = label(window, "—", 64, GOLD, 0, -437, 500, 70)
     fields.hk:SetShadowColor(0.60, 0.30, 0.035, 0.9)
     fields.hk:SetShadowOffset(2, -2)
 
@@ -510,7 +508,7 @@ local function build()
         laurel:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\hk_laurel")
         -- Lift and slightly compact the wreaths so they frame HK, not the ratio divider.
         laurel:SetSize(96, 96)
-        laurel:SetPoint("TOP", window, "TOP", side * 183, -371)
+        laurel:SetPoint("TOP", window, "TOP", side * 175, -419)
         if side == 1 then
             laurel:SetTexCoord(1, 0, 0, 1)
         end
@@ -518,51 +516,51 @@ local function build()
     end
     -- Iteration 28: show both lifetime counters first, then their derived ratios.
     -- Keep this whole section inside the original space above the lower bands.
-    line(window, -477, 650)
-    ornamentDiamond(window, -475, 8)
+    line(window, -514, 632)
+    ornamentDiamond(window, -512, 8)
 
     -- Iteration 29: deaths are a secondary lifetime counter, not another hero.
     -- Keep them directly below HK while deliberately lowering visual weight.
-    sectionPlaque(window, -490, 500, 91, 0.48)
-    label(window, "MUERTES PvP SUFRIDAS", 17, { 0.85, 0.51, 0.46 }, 0, -497, 430, 27)
-    fields.deaths = label(window, "—", 39, RED, 0, -525, 390, 54)
+    sectionPlaque(window, -525, 500, 91, 0.48)
+    label(window, "MUERTES PvP SUFRIDAS", 17, { 0.85, 0.51, 0.46 }, 0, -534, 430, 27)
+    fields.deaths = label(window, "—", 39, RED, 0, -563, 390, 54)
     fields.deaths:SetShadowColor(0.32, 0.05, 0.035, 0.64)
     fields.deaths:SetShadowOffset(1, -1)
 
     -- No floating side strokes: the soft plaque and red number carry this KPI.
 
-    line(window, -590, 650)
-    ornamentDiamond(window, -588, 8)
+    line(window, -624, 632)
+    ornamentDiamond(window, -622, 8)
 
     local centerDivider = window:CreateTexture(nil, "BORDER")
     centerDivider:SetTexture("Interface\\Buttons\\WHITE8X8")
     centerDivider:SetVertexColor(0.6, 0.39, 0.14, 0.8)
     centerDivider:SetSize(2, 93)
-    centerDivider:SetPoint("TOP", window, "TOP", 0, -603)
+    centerDivider:SetPoint("TOP", window, "TOP", 0, -636)
 
-    label(window, "HK/D", 20, GOLD, -165, -601, 270, 29)
-    label(window, "KB/D", 20, GOLD, 165, -601, 270, 29)
-    fields.hkd = label(window, "—", 39, CREAM, -165, -632, 270, 50)
-    fields.kbd = label(window, "—", 39, CREAM, 165, -632, 270, 50)
+    label(window, "HK/D", 20, GOLD, -165, -636, 270, 29)
+    label(window, "KB/D", 20, GOLD, 165, -636, 270, 29)
+    fields.hkd = label(window, "—", 39, CREAM, -165, -668, 270, 48)
+    fields.kbd = label(window, "—", 39, CREAM, 165, -668, 270, 48)
     fields.hkd:SetShadowColor(0.34, 0.19, 0.06, 0.72)
     fields.hkd:SetShadowOffset(1, -1)
     fields.kbd:SetShadowColor(0.34, 0.19, 0.06, 0.72)
     fields.kbd:SetShadowOffset(1, -1)
-    local hkDescription = label(window, "HK / muertes PvP sufridas", 12, CREAM, -165, -680, 300, 24)
+    local hkDescription = label(window, "HK / muertes PvP sufridas", 12, CREAM, -165, -711, 300, 23)
     hkDescription:SetTextColor(0.77, 0.69, 0.58)
-    local kbDescription = label(window, "Golpes de gracia / muertes PvP", 12, CREAM, 165, -680, 300, 24)
+    local kbDescription = label(window, "Golpes de gracia / muertes PvP", 12, CREAM, 165, -711, 300, 23)
     kbDescription:SetTextColor(0.77, 0.69, 0.58)
 
-    line(window, -714, 650)
-    ornamentDiamond(window, -712, 8)
+    line(window, -749, 632)
+    ornamentDiamond(window, -747, 8)
 
-    local firstRow = statBand(window, -727, {
+    local firstRow = statBand(window, -758, {
         { title = "DUELOS GANADOS", color = GOLD, icon = "Interface\\Icons\\Ability_DualWield" },
         { title = "CAMPOS DE BATALLA JUGADOS", color = GOLD, icon = "Interface\\Icons\\INV_BannerPVP_02" },
         { title = "BG GANADOS", color = GOLD, icon = "Interface\\Icons\\Achievement_BG_WinWSG" },
     })
     fields.duels, fields.bgPlayed, fields.bgWon = unpack(firstRow)
-    local secondRow = statBand(window, -846, {
+    local secondRow = statBand(window, -878, {
         { title = "WIN RATE BG", color = GREEN, icon = "Interface\\Icons\\INV_BannerPVP_01" },
         { title = "WIN RATE DUELOS", color = GREEN, icon = "Interface\\Icons\\Ability_DualWield" },
         { title = "CAMPO DE BATALLA FAVORITO", color = GREEN, icon = "Interface\\Icons\\INV_BannerPVP_02", valueSize = 17 },
