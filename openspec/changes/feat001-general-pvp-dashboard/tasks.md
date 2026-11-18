@@ -488,3 +488,13 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Add native gear graphic and 'Ajustes (próximamente)' tooltip within inner frame; no settings implementation.
 - [ ] Validate packaging/CRC and owner real-client screenshot: gear asset exists and positioned correctly, native emblem doesn't look like sticker, no errors.
 - [ ] Unapproved: rich backdrop reference matching, coherent lower icon set, polished integrated shield/rank strip. Do not claim otherwise.
+
+## Iteration 53 screenshot → iteration 54 depth / settings icon / rank spacing
+
+- [x] Owner screenshot: banners absent, settings positioned correctly but wrong visual glyph, Horda badge too far left, background too grey/flat.
+- [x] Deliberate background change: warm near-black tint of grain asset and subtle feathered central patina for recessed material depth.
+- [x] Replace non-cog Gizmo icon with `INV_Misc_Gear_01` candidate, preserve settings placeholder/inner-frame location.
+- [x] Move raised faction badge 36px right within ribbon and rebalance title and dynamic value.
+- [ ] Real-client screenshot verification of cog asset (may not exist), dark material depth, rank alignment and no lua errors.
+- [ ] Still NOT approved: background final reference fidelity, lower six icons, premium rank graphic/shield. Do not mistake this iteration for finished artwork.
+- [ ] Independent Lua tests, non-empty BG data, Alliance and alternate scale QA.
