@@ -478,3 +478,13 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Revisit backdrop using original reference: richer organic leathery/stone texture and proper depth; current backdrop not approved.
 - [ ] Replace/rework all six masked native item icon tiles with coherent WoW-quality transparent pictograms; no rejected iteration 44 clip-art.
 - [ ] Preserve frozen side banners until owner asks to unfreeze; game client/Alliance/alternate scaling QA still open.
+
+## Iteration 52 screenshot → iteration 53 banners/settings/rank emblem
+
+- [x] Owner screenshot: remove both large faction banners; round emblem is gone but the rank remains visually too rectangular.
+- [x] Owner requests rank faction emblem as a left-side overlapping ornament; add WoW-style settings gear inside INNER frame upper-right, visual only (no feature).
+- [x] Remove left/right banner creation from General UI; keep original files in source for possible later reuse.
+- [x] Add overlapping gold-trim faction emblem to rank without fake PvP rank data; no circular boss.
+- [x] Add native gear graphic and 'Ajustes (próximamente)' tooltip within inner frame; no settings implementation.
+- [ ] Validate packaging/CRC and owner real-client screenshot: gear asset exists and positioned correctly, native emblem doesn't look like sticker, no errors.
+- [ ] Unapproved: rich backdrop reference matching, coherent lower icon set, polished integrated shield/rank strip. Do not claim otherwise.
