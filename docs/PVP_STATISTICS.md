@@ -181,3 +181,26 @@ GetStatistic(1501): 14 | false | 1501 | nil
 - Las HK de ayer siguen en `0`.
 - Las muertes PvP específicas `1501` ahora son `14`.
 - `1487` continúa en `1021`; no cambia con esta evidencia y KB/D sigue pendiente.
+
+## Evidencia nueva — honor actual expuesto por Forever (2026-11-18)
+
+La prueba ejecutada con `/wsdiag honor` devolvió:
+
+```text
+UnitHonor(player): 0 | nil | nil | nil
+UnitHonorMax(player): 5500 | nil | nil | nil
+UnitHonorLevel(player): 1 | nil | nil | nil
+GetInspectHonorData: 0 | 0 | 0 | 0
+APIs de solicitud de honor no disponibles
+```
+
+### Conclusión
+
+- `UnitHonor("player")` funciona en Forever y devuelve el **honor actual acumulado/gastable**: `0` en el personaje probado.
+- `UnitHonorMax("player")` funciona y devuelve el máximo del rango/nivel actual: `5500`.
+- `UnitHonorLevel("player")` funciona y devuelve el nivel de honor: `1`.
+- Puede calcularse progreso de honor como `UnitHonor / UnitHonorMax`, siempre que el máximo sea positivo.
+- No es un total histórico de honor ganado: el honor actual puede gastarse y volver a cero.
+- `GetInspectHonorData()` devuelve cuatro ceros en esta prueba y las APIs `NotifyInspect`/`RequestInspectHonorData` no están disponibles; no usarlo para honor de hoy/ayer hasta una futura validación específica.
+
+La etiqueta recomendada para UI es **Honor actual**, no «Honor total». La primera gráfica segura sería `Honor actual / máximo del nivel`, acompañada de `Nivel de honor`.

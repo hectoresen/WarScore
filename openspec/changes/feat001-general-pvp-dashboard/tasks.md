@@ -645,6 +645,14 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Record `840`, `105` and `586` as `--` pending native-panel interpretation.
 - [ ] Compare BG result, wins and returned flags with the native statistics pane before normalizing unknown values.
 
+## Honor API validation — 2026-11-18
+
+- [x] Confirm `UnitHonor("player")` works in Forever: current honor `0`.
+- [x] Confirm `UnitHonorMax("player")` works: current maximum `5500`.
+- [x] Confirm `UnitHonorLevel("player")` works: level `1`.
+- [x] Record that this is current spendable honor, not lifetime honor earned.
+- [ ] Validate daily honor through a client-supported inspection/update API if it becomes available.
+
 - [x] Find rank caption/value x=+30 versus live name/level/HK x=0; align dynamic rank copy on the same x=0 axis.
 - [x] Inspect actual exterior owner art: the second gold inner outline is baked into outer PNG, not another Lua-native border.
 - [x] Produce original-art-derived alpha-masked exterior TGA without gold duplicate; preserve author original and replace only displayed exterior texture.

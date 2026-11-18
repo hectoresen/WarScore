@@ -899,6 +899,12 @@ Observed category data:
 
 Next evidence required: complete one BG and one duel if possible, rerun categories 136/137/153/154, and compare killing-blow values with the native statistics panel before enabling KB/D. Keep rank unavailable: `UnitPVPRank` and `GetPVPRankProgress` are nil in Forever, while lifetime rank returns `0` for the tested character.
 
+Honor API validation:
+
+- `/wsdiag honor` returned `UnitHonor(player)=0`, `UnitHonorMax(player)=5500`, `UnitHonorLevel(player)=1`.
+- `GetInspectHonorData` returned `0 | 0 | 0 | 0`; `NotifyInspect` and `RequestInspectHonorData` are unavailable in this client.
+- Honor current is therefore available for a progress graphic, but it must not be described as lifetime total honor. Honor today/yesterday remains unvalidated.
+
 ## API audit follow-up — first battleground activity (2026-11-18)
 
 The owner produced the first positive battleground evidence:
