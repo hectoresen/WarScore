@@ -4,16 +4,18 @@ Source is the transparent, size-reduced PNG from the owner artwork.
 Crop only transparent bottom/edge padding; preserve the existing gold art.
 """
 from pathlib import Path
-from PIL import Image
+from PIL import Image, ImageFile
 
 root = Path(__file__).resolve().parents[1]
 src = root / "docs/assets/stat_band_top_owner_v74_source.png"
 dst = root / "Media/General/stat_band_top_owner_v74.tga"
+ImageFile.LOAD_TRUNCATED_IMAGES = True  # transport PNG is partially truncated; validate before release
 with Image.open(src) as file:
     image = file.convert("RGBA")
     # Tiny transparent source padding would otherwise leave the bottom
     # gold rail suspended above the bottom of the 112-unit stat band.
     alpha = image.getchannel("A")
+    print("SOURCE alpha bbox:", alpha.getbbox(), "opaque px:", sum(1 for v in alpha.getdata() if v > 80))
     bounds = alpha.point(lambda value: 255 if value >= 8 else 0).getbbox()
     if bounds is None:
         raise ValueError("Owner card art is fully transparent")
