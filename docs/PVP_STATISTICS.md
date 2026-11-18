@@ -79,3 +79,8 @@ IDs enumerados mediante `/wsdiag list 153`, `136` y `137`. Todos devuelven `--` 
 ## Alcance aprobado de General — ampliación (2026-11-17)
 
 Además de las métricas previamente aprobadas, **solo** incorporar: (1) BG ganados ID 840, (2) win rate BG = 840/839×100, (3) win rate duelos = 319/(319+320)×100, (4) BG favorito por máximo de partidas entre IDs 53/55/52/64179, y (5) partidas jugadas del BG favorito. Todos en bloque inferior secundario; no alterar composición principal ni tratar esta decisión como aprobación de nueva maqueta. Sin partidas/duelos, ratios y favorito no disponibles (`—`). Empates en máximo: no desempatar arbitrariamente. El resto de métricas se reservan para futuras pestañas. Fuente de verdad visual: `docs/GENERAL_VIEW.md`.
+
+
+## Nueva evidencia de cliente — 2026-11-18 (v84)
+
+Tras jugar una BG (perdida), se ha observado en la ventana General: HK históricas 92, muertes PvP 14, HK/D 6,57, BG jugados 1, BG ganados 0, favorito Garganta Grito de Guerra. El diagnóstico posterior devuelve `GetPVPLifetimeStats() = 92, 0`, `GetPVPSessionStats() = 60, 0`, `GetPVPYesterdayStats() = 0, 0`, `GetStatistic(319) = "--"`, `GetStatistic(1487) = 1021`, y `GetStatistic(1501) = 14`. Esto confirma las lecturas observadas de HK y muertes actuales, pero **no** demuestra que HK de sesión equivalga a HK del día natural ni que 1487 sea exclusivo de PvP. La partida perdida aporta un primer caso positivo para BG jugados, aunque otros IDs, victorias y distintos BG siguen requiriendo contraste.

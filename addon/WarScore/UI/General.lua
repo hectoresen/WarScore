@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "84"
+local UI_ITERATION = "85"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -205,11 +205,22 @@ local function statBand(parent, y, definitions, secondary)
         local isFavorite = secondary and i == 3
         local valueX = isRate and 19 or (isFavorite and 22 or 0)
         local valueWidth = isRate and 105 or (isFavorite and 265 or 145)
+        -- v85: separate the favorite's name from the played-count caption.
+        -- The latter uses the client's built-in italic face when available.
         local value = label(segment, "—", definition.valueSize or (secondary and 29 or 35),
-            secondary and GREEN or GOLD, valueX, -53, valueWidth, 45)
+            secondary and GREEN or GOLD, valueX, isFavorite and -49 or -53,
+            valueWidth, isFavorite and 28 or 45)
         value:SetShadowColor(0.26, 0.14, 0.045, secondary and 0.45 or 0.72)
         value:SetShadowOffset(1, -1)
         values[i] = value
+        if isFavorite then
+            local playedCaption = label(segment, "", 13, CREAM, valueX, -74, valueWidth, 20)
+            playedCaption:SetFont(ITALIC_TEXT_FONT or "Fonts\\FRIZQT__.TTF", 13, "OUTLINE")
+            playedCaption:SetTextColor(0.84, 0.77, 0.64)
+            playedCaption:SetShadowColor(0.20, 0.10, 0.03, 0.6)
+            playedCaption:SetShadowOffset(1, -1)
+            values.favoritePlayed = playedCaption
+        end
     end
     return values
 end
@@ -253,9 +264,12 @@ local function refresh()
     fields.duelRate:SetText(formatPercent(data.duelWinRate))
     local favorite = data.favoriteBattleground
     if favorite and data.favoriteBattlegroundPlayed then
-        fields.favorite:SetText(favorite .. "\n" .. formatNumber(data.favoriteBattlegroundPlayed) .. " veces jugado")
+        fields.favorite:SetText(favorite)
+        local count = data.favoriteBattlegroundPlayed
+        fields.favoritePlayed:SetText(formatNumber(count) .. (count == 1 and " vez jugado" or " veces jugado"))
     else
         fields.favorite:SetText("—")
+        fields.favoritePlayed:SetText("")
     end
 end
 
@@ -511,6 +525,7 @@ local function build()
         { title = "CAMPO DE BATALLA FAVORITO", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_favorite_bg_owner_v79", valueSize = 17 },
     }, true)
     fields.bgRate, fields.duelRate, fields.favorite = unpack(secondRow)
+    fields.favoritePlayed = secondRow.favoritePlayed
 
     -- The reference's tall two-row composition needs additional height.
     window:SetHeight(1060)
