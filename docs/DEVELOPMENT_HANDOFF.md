@@ -740,3 +740,17 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - Moves the 51px faction mount 36px to the right, overlapping the plaque more centrally; slightly shifts dynamic rank text right for spacing. Not a final heraldic shield.
 - Banners stay removed and do not enter packaged runtime; bottom native icons remain provisional, all PvP stats and color/missing-data semantics unchanged.
 - **Owner QA required:** clean ZIP, `/reload`, `/ws version` = 54, `/ws`; check cog texture is a recognizable gear and not green/missing, dark background retains subtle detail, rank emblem/text spacing works, and no Lua errors. If native Gear icon is unavailable or visually poor, replace it with a proven client texture or purpose-built original cog asset. No in-client acceptance yet.
+
+## Iteration #54 — owner screenshot (2026-11-18)
+
+- The owner screenshot verifies the 54 color correction makes the shell almost black. Overall color/depth remains provisional, with the central area reading quite uniform. Lower cards still have stronger contrast than the interior.
+- **FAIL settings:** WoW native `INV_Misc_Gear_01` resolves to a miscellaneous object (looks like a grey coil), not a legible settings gear. Do not keep guessing inventory assets.
+- The faction emblem stays on the rank plaque after moving it inward. Rank's overall finish and six lower card icons are still **not accepted**; no data-model problems shown.
+
+## Iteration #55 — original material textures and legible cog (2026-11-18)
+
+- Asset commit `38d364d79e6408e94812c89131e15f727e4bf7e0`: new **original** transparent 128×128 TGA `Media/General/settings_cog.tga`, designed as a 10-tooth metallic gold/bronze gear with circular center cutout; new original opaque 512×512 TGA `Media/General/panel_dark_leather_v55.tga`, dark warm near-black organic leather/stone finish with multiscale mottling, fine grain, slight fibers and edge falloff.
+- UI commit `e2594a5b4875ebd5ac258d7d022a0af09f2254ef` updates `UI/General.lua` to **55**. Loads both original assets rather than the misleading inventory icon or previous grey shell. Removes extra center-patina layer so the textured material is not visually flattened by a redundant overlay.
+- Settings remains 36px in the upper-right INSIDE the inner frame, uses a 30px new cog, tooltip 'Ajustes (próximamente)', no functional settings. No new APIs required for cog alpha texture.
+- No changes to PvP statistics, rank data, faction emblem placement, approved HK → deaths → ratio ordering, lower-band counts/color conventions. Banners remain removed.
+- **Owner QA pending:** clean ZIP install; `/reload`, `/ws version` = 55, `/ws`; inspect whether cog now clearly reads as toothed wheel, whether new dark material is organic and legible rather than dirty or tiled, and report texture failures/Lua errors. Neither background nor rank/iconography is accepted merely by implementation.
