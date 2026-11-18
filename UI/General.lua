@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "48"
+local UI_ITERATION = "49"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -396,9 +396,12 @@ local function build()
     -- Iteration 43: one dark panel INSIDE an actual native WoW dialog border.
     -- The frame bounds, not a slightly oversized black rectangle, define
     -- the visible window. The old central overlay created a hard-edged box.
+    -- Original opaque warm-grey/aged-stone texture: low contrast grain and
+    -- soft vignette replace the previous flat almost-black slab. Keep the
+    -- art inset inside the native dialog border and retain legibility.
     local shellBackground = window:CreateTexture(nil, "BACKGROUND")
-    shellBackground:SetTexture("Interface\\Buttons\\WHITE8X8")
-    shellBackground:SetVertexColor(0.034, 0.023, 0.019, 1)
+    shellBackground:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\panel_stone_dark")
+    shellBackground:SetVertexColor(1, 1, 1, 1)
     shellBackground:SetPoint("TOPLEFT", window, "TOPLEFT", 12, -12)
     shellBackground:SetPoint("BOTTOMRIGHT", window, "BOTTOMRIGHT", -12, 12)
     window:Hide()
