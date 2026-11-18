@@ -507,3 +507,13 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] CI package includes both new media assets and source Lua 55; integrity and source parity checks.
 - [ ] Owner verifies in Forever cog legibility, warm dark backdrop depth, contrast of text/card bands, no artifacts, no Lua errors.
 - [ ] Future: polished PvP shield/plaque, six high-quality lower symbols, exact reference-material fidelity, other UI scales and Alliance scenarios. None considered complete.
+
+## Iteration 55 screenshot follow-up → iteration 56 owner-provided faction asset
+
+- [x] Receive original Horde hanging-banner transparent PNG (1024×1536) and inspect dimensions/alpha.
+- [x] Convert to compatible 256×512 32-bit uncompressed transparent TGA; preserve artwork rather than drawing surrogate placeholders.
+- [x] Commit asset to `Media/General/banner_horde_supplied.tga` and render symmetrically on each side in `UI/General.lua`, replacing previously removed banner functionality; no Alliance reuse.
+- [x] Bump UI diagnostic to 56; keep metrics, rank, settings placeholder, lower card icons and background untouched.
+- [ ] Verify GitHub CI runtime-only ZIP includes new TGA and packaged `UI/General.lua` CRC agrees with source; test archive integrity.
+- [ ] Owner tests clean install, `/reload`, `/ws version` = 56 and screenshot; verify transparency, size, rod alignment, and no overlap/errors.
+- [ ] Background, lower iconography, premium rank shield/plaques remain unapproved; continue after owner screenshot.
