@@ -950,3 +950,12 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - For the bottom row set relative column widths 171 / 153 / 380 (total 704 units) matching the asymmetrical painted separators rather than the old equal-third layout. Preserve all the original dynamic FontStrings, values, icons, statistics calculations and row anchor/size 704×112. The top row retains equal thirds.
 - Diagnostic iteration 75. Packaging workflow stages both owner-card TGAs and the full verified ZIP.
 - **WoW CLIENT QA NOT RUN:** install fresh `dist/WarScore.zip`, `/reload`, `/ws version`=75, `/ws`. Check lower artwork sharpness, both divider x-positions vs their text and icons, frame corner alignment with upper row and that favorite BG text has adequate space. Validate before further tweaks.
+
+
+## Iteration #75 owner screenshot → #76 lower card horizontal inset (2026-11-18)
+
+- The owner reports both bottom cards protrude over the LEFT inner gold rail of the parent panel, despite v75 frame artwork and data alignment being otherwise accepted. Scope is ONLY horizontal fit of both lower rows.
+- Reduce shared `statBand` width 704→688 UI units (8 units of clearance per side), still centered at x=0, same y positions and 112 height. The existing owner PNG-derived TGA artworks are scaled by `SetAllPoints(band)`, so the illustrations shrink with the frame and stay centered.
+- Upper row remains three equal columns, now each `688/3`. Lower row maintains asymmetrical proportions `171:153:380`, scaled proportionally to 688 UI units. Existing text strings, labels/font sizes, icon sizes, frames, bindings, statistics, all previously approved upper sections, and both original TGA files unchanged.
+- Diagnostic version 76; full package created via GitHub Actions.
+- **WoW CLIENT QA NOT RUN:** install fresh `dist/WarScore.zip`, `/reload`, `/ws version`=76, `/ws`; screenshot the left/right gutters, inspect both frames for parent rail overlap and watch for caption encroachment on inner separator lines. Await owner screenshot for acceptance.

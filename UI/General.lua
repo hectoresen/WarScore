@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "75"
+local UI_ITERATION = "76"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -129,7 +129,9 @@ end
 -- All ornament layers use native textures confirmed by earlier client screenshots.
 local function statBand(parent, y, definitions, secondary)
     local band = CreateFrame("Frame", nil, parent, "BackdropTemplate")
-    band:SetSize(704, 112)
+    -- v76: inset both owner-painted rows 8 units per side to clear parent rail.
+    local bandWidth = 688
+    band:SetSize(bandWidth, 112)
     band:SetPoint("TOP", parent, "TOP", 0, y)
     backdrop(band, 0.92)
     -- Owner artwork supplies all metal rails, corners and vertical dividers.
@@ -143,7 +145,9 @@ local function statBand(parent, y, definitions, secondary)
     local values = {}
     -- The lower owner's frame has asymmetric dividers at ~24% and ~46%.
     -- Allocate real column widths so labels and values belong to their cells.
-    local widths = secondary and { 171, 153, 380 } or { 704 / 3, 704 / 3, 704 / 3 }
+    local widths = secondary
+        and { bandWidth * 171 / 704, bandWidth * 153 / 704, bandWidth * 380 / 704 }
+        or { bandWidth / 3, bandWidth / 3, bandWidth / 3 }
     local offset = 0
     for i, definition in ipairs(definitions) do
         local segmentWidth = widths[i]
