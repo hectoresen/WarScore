@@ -694,3 +694,17 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - No new artwork or rank invention. Band icons, borders, textured background, actual statistics, data placeholders and both **frozen** faction banners remain untouched.
 - **Owner QA pending**: replace addon folder with the freshly rebuilt ZIP; `/reload`, `/ws version` should return 51, `/ws`; send screenshot evaluating whether the striped right-end artifact is gone, rank text legible and crest properly aligned. Check for Lua errors/overlaps.
 - The shape still relies on the inherited authored ribbon asset; a true high-fidelity sculpted rank asset remains a later optional milestone and requires real screenshot signoff. Do not claim full visual acceptance.
+
+## Iteration #51 — owner screenshot and explicit reference review (2026-11-18)
+
+- Owner screenshot of 51 still shows **parallel scratches / hatching on the right edge of the PvP rank ribbon**; prior UV adjustment did not fix the issue. Its round faction badge looks unnatural, stuck to the plaque, and does not resemble the integrated heraldic shield in the owner's original mockup.
+- User explicitly confirmed **background and all six lower statistic icons are NOT approved**. The dark textured shell still differs significantly from the richer dark leather/stone mockup, while lower icons remain circularly masked inventory assets rather than polished illustrated icons.
+- Original reference image was supplied directly: top crossed-weapons header medallion, strong native WoW metallic nested border, richly textured dark interior, curved rank ribbon with heraldic shield incorporated at left and laurel end treatment, and coherent high-quality bottom icons. **Reference contains fictional example data**; never substitute its rank, class or counters into live data. Maintain current user-approved HK → PvP deaths → ratios order, which differs from mockup.
+
+## Iteration #52 — rank badge removal and cropped art (2026-11-18)
+
+- Code commit `ec1b50c0d6187694ff0db4cbd9f68ccff7e49be6`; `/ws version` = **52**.
+- Removes the rejected circular faction badge entirely instead of replacing it with another superficial clip-art emblem. Future milestone requires an actual shaped, integrated Warcraft-style shield, **not** the round ring and square inventory icon.
+- Narrows the existing ribbon's UV crop (0.18–0.74) to exclude the persistent right-side scratched region visible in the latest screenshot; retains warmer layered dark leather and quieter inset metal rim, centers rank text on full plaque. Retains 'No disponible' without inventing PvP rank.
+- No modifications to the frozen banners, native lower icons, background texture or data model. **Background, lower icons and PvP rank artwork remain provisional and not approved.**
+- **Owner QA pending:** install fresh CI-generated ZIP, run `/reload`, `/ws version` = 52, `/ws`; send screenshot, checking right-hand scratch removal, rank spacing, text and absence of Lua errors. Full shield/matching materials will be separate iterations. If this crop loses too much ornamentation, plan fresh authored rank asset rather than endlessly stretching the old one.
