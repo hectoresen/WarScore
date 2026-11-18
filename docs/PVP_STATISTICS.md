@@ -205,7 +205,19 @@ APIs de solicitud de honor no disponibles
 
 La etiqueta recomendada para UI es **Honor actual**, no «Honor total». La primera gráfica segura sería `Honor actual / máximo del nivel`, acompañada de `Nivel de honor`.
 
+## Evidencia nueva — moneda de Honor de Forever (2026-11-18)
+
+El usuario ejecutó `/wsdiag currencies` en WoW Forever 1.60.1 y obtuvo:
+
+```text
+WarScore Monedas PvP del personaje
+WarScore Entradas de monedas: 2
+WarScore 2. Puntos de honor | cantidad 252 | max 25000 | ID 1792
+```
+
+La fuente correcta para el saldo de Honor de Forever es la moneda `Puntos de honor`, ID `1792`, leída mediante `C_CurrencyInfo.GetCurrencyListInfo()`. `UnitHonor("player")` devolvía `0` en el mismo personaje y no debe utilizarse para representar el saldo mostrado en la UI. El rango PvP y los Rank Points siguen pendientes de localizar; `UnitHonorLevel("player")` no se interpreta como rango PvP.
+
 
 ## Decisión funcional de producto — v89 (2026-11-18)
 
-El propietario confirma que no se puede recuperar una fuente fiable de golpes de gracia **contra jugadores** en Forever; la tarjeta KB/D se retira de la vista General. En su lugar se muestra el total de **muertes PvP sufridas** desde `GetStatistic(1501)`, en rojo. La sección secundaria central pasa a **HONOR** y consulta `UnitHonor("player")` para mostrar el saldo actual gastable, `—` si la API no responde. Esta métrica **no** representa el honor total ganado a lo largo de la vida del personaje. HK/D se mantiene sin cambios. La retirada del indicador visual no implica eliminar evidencia histórica ni afirmar que los contadores generales de KB sean PvP.
+El propietario confirma que no se puede recuperar una fuente fiable de golpes de gracia **contra jugadores** en Forever; la tarjeta KB/D se retira de la vista General. En su lugar se muestra el total de **muertes PvP sufridas** desde `GetStatistic(1501)`, en rojo. La sección secundaria central pasa a **HONOR** y debe consultar la moneda `1792` para mostrar el saldo actual gastable, `—` si la API no responde. Esta métrica **no** representa el honor total ganado a lo largo de la vida del personaje. HK/D se mantiene sin cambios. La retirada del indicador visual no implica eliminar evidencia histórica ni afirmar que los contadores generales de KB sean PvP.

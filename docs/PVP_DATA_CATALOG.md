@@ -36,7 +36,7 @@ La vista General representa el historial PvP acumulado del personaje activo. No 
 | HK en mundo | `381` | **Confirmado** | Desglose |
 | HK en BG | `382` | **Confirmado** | Desglose |
 | Continente dominante de HK | `1458` | **Confirmado** | Desglose |
-| Honor actual | `UnitHonor("player")` | **Confirmado** | Etiquetar como honor actual |
+| Honor actual | `C_CurrencyInfo.GetCurrencyListInfo()` → ID `1792` | **Confirmado** | Prueba: `252 / 25.000`; no usar `UnitHonor()` |
 | Máximo de honor actual | `UnitHonorMax("player")` | **Confirmado** | Barra actual/máximo |
 | Nivel de honor | `UnitHonorLevel("player")` | **Confirmado** | Etiqueta secundaria |
 
@@ -45,7 +45,7 @@ La vista General representa el historial PvP acumulado del personaje activo. No 
 - KB PvP histórico contra jugadores enemigos: no hay contador confirmado.
 - `1487`, `1488`, `1491`: golpes de gracia generales bajo `137 Víctimas`; no usarlos como KB PvP.
 - KB/D y rango PvP actual/progreso: no disponibles en el cliente probado.
-- Honor histórico total ganado: `UnitHonor` es saldo actual gastable.
+- Honor histórico total ganado: no identificado; la fuente confirmada es el saldo de moneda `1792`.
 - HK/DK de sesión o ayer: pertenecen a otras vistas.
 
 ## 2. Posible ventana «Hoy»
@@ -58,7 +58,7 @@ La vista General representa el historial PvP acumulado del personaje activo. No 
 | DK de sesión | segundo retorno | **Confirmado con límites** |
 | Muertes PvP de sesión | Sin API confirmada | **No disponible** |
 | KB PvP de sesión | Sin API confirmada | **No disponible** |
-| Honor actual | `UnitHonor()` | **Confirmado**, no es honor ganado hoy |
+| Honor actual | Moneda ID `1792` mediante `C_CurrencyInfo.GetCurrencyListInfo()` | **Confirmado**, prueba `252/25.000` |
 | Honor ganado hoy | `GetInspectHonorData()` | **No validado** |
 
 Opciones honestas: llamar temporalmente a la vista «Sesión» o construir «Hoy» mediante snapshots locales y marcarla parcial desde la primera observación.
@@ -140,11 +140,12 @@ Forever devolvió 26 categorías. Las relevantes son:
 ## 9. Backlog de investigación
 
 1. Probar `/wsdiag battlefield` durante y justo después de una BG; el diagnóstico intenta `C_PvP.GetScoreInfoByPlayerGuid()` y deja `GetBattlefieldScore()` como fallback.
-2. Probar `GetPVPThisWeekStats()` y `GetPVPLastWeekStats()` desde el addon.
-3. Investigar `GetInspectArenaData()` y APIs de arenas en Forever.
-4. Comprobar si existe un evento permitido para contar kills PvP de mundo.
-5. Validar cambio de fecha para HK/DK de ayer.
-6. Contrastar `--` y cero en victorias, duelos y objetivos con la UI nativa.
+2. Integrar la moneda de Honor `1792` en la UI y mostrar el máximo `25.000` cuando esté disponible.
+3. Identificar la fuente de Rank Points/rango PvP; mantener «No disponible» hasta validarla.
+4. Probar `GetPVPThisWeekStats()` y `GetPVPLastWeekStats()` desde el addon.
+5. Investigar `GetInspectArenaData()` y APIs de arenas en Forever.
+6. Validar cambio de fecha para HK/DK de ayer.
+7. Contrastar `--` y cero en victorias, duelos y objetivos con la UI nativa.
 
 ## Fuente técnica
 

@@ -5,9 +5,6 @@ end
 
 local honorFrame = CreateFrame("Frame")
 honorFrame:RegisterEvent("INSPECT_HONOR_UPDATE")
-honorFrame:RegisterEvent("HONOR_XP_UPDATE")
-honorFrame:RegisterEvent("UPDATE_BATTLEFIELD_SCORE")
-honorFrame:RegisterEvent("PVP_MATCH_COMPLETE")
 
 local function show(value)
     if value == nil then return "nil" end
@@ -146,13 +143,6 @@ honorFrame:SetScript("OnEvent", function(_, event)
             output("INSPECT_HONOR_UPDATE recibido para la solicitud de WarScore")
             inspect("GetInspectHonorData", GetInspectHonorData)
         end
-    elseif event == "HONOR_XP_UPDATE" then
-        output("HONOR_XP_UPDATE recibido")
-        inspect("UnitHonor(player)", UnitHonor, "player")
-        inspect("UnitHonorMax(player)", UnitHonorMax, "player")
-    elseif event == "UPDATE_BATTLEFIELD_SCORE" or event == "PVP_MATCH_COMPLETE" then
-        output(event .. " recibido")
-        printBattlefieldScore()
     end
 end)
 
