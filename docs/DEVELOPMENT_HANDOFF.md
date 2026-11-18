@@ -968,3 +968,11 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - Owner icons are placed 50×50, left inset 10, vertically 8 UI units below centre; transparency at full alpha; do not apply native inventory icon circular portrait mask (the supplied images are already transparent). Existing secondary row uses its old icon sizes/masks.
 - The upload transport in this environment is a transparent 64×64 indexed PNG for each icon (cropped only to artwork, centered, scaled/quantized); `tools/prepare_top_icons.py` converts these to WoW-compatible 128×128 RGBA TGA. The original 1254×1254 user art is the source of truth for any later high-fidelity update; transport compression may lose fine detailing.
 - Diagnostic version = 77; CI packages and verifies the full `WarScore/` ZIP. **WoW client QA NOT RUN**: install the new ZIP, `/reload`, `/ws version` 77, `/ws`, and screenshot to review icon scale, transparency, label collision and balance. Only iterate on upper icon treatment unless separately requested.
+
+
+## Iteration #77 screenshot → #78 upper duels icon clearance (2026-11-18)
+
+- Real WoW Forever screenshot of v77 confirms all three owner icons render; crossed swords for Duelos Ganados appear too close to the left-hand gold bevel, while BG Played flags and BG Wins trophy are acceptable.
+- Geometry-only correction: for top-row owner icon i=1 increase left inset 10→24 UI units (+14) while leaving it 50×50, original y=-8, full alpha. Other top-row owner icons stay x=10; second-row native icons stay x=8 with their existing masks.
+- Preserve both stat-card owner artwork and dimensions, typography, counters, data binding, and every other previously accepted UI element. Bump diagnostic to 78.
+- **CLIENT QA NOT RUN:** install the new complete ZIP, `/reload`, `/ws version`=78, `/ws`; confirm that crossed swords have breathing space without colliding with the title/counter; inspect that flags/trophy remain unchanged.

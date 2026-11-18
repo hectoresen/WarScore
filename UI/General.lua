@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "77"
+local UI_ITERATION = "78"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -166,7 +166,9 @@ local function statBand(parent, y, definitions, secondary)
         -- A supported alpha mask removes the square inventory-tile corners
         -- without zoom-cropping blades and heraldry. Graceful client fallback.
         icon:SetSize(ownerTopIcon and 50 or 43, ownerTopIcon and 50 or 43)
-        icon:SetPoint("LEFT", segment, "LEFT", ownerTopIcon and 10 or 8, ownerTopIcon and -8 or -1)
+        -- v78: move only the crossed swords inward, clear of the left gold bevel.
+        local iconInset = ownerTopIcon and (i == 1 and 24 or 10) or 8
+        icon:SetPoint("LEFT", segment, "LEFT", iconInset, ownerTopIcon and -8 or -1)
         icon:SetTexCoord(0, 1, 0, 1)
         -- Owner art has real alpha; avoid circular masking and opacity reduction.
         icon:SetAlpha(ownerTopIcon and 1 or (secondary and 0.78 or 0.91))
