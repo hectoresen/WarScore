@@ -889,3 +889,13 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - UI commits `67d1581b4869f6130c75d07f0c141bbe2f9e4a43` and `ef6a2171cb795c90c1094efe5413f2bfef489926` implement **`/ws version` = 68**: center a 600×119 ornate asset at y=-407, draw live `MUERTES CON HONOR` (23pt y=-425) and live HK count (61pt y=-452) on top, remove the prior `hk_laurel` textures, separate HK plaque backing and extra divider/diamond at y=-514/-512. Preserve the external independent section dividers elsewhere.
 - The rank plaque is lowered from y=-341 to **-347** for 6px extra breathing room below `Nivel 30 · Sacerdote`; portrait/name/level and all historical PvP calculations unchanged. Rank label/value remain x=0, as do HK title/number. The Horde rank image still renders its own ruby and gilded edge.
 - **Real-client QA NOT RUN**: install fresh `dist/WarScore.zip`, `/reload`, `/ws version` should report 68, `/ws`; screenshot to verify gold top line doesn't cross the PvP-rank ruby, owner HK laurel proportions, caption/number centered in empty field, lower rail doesn't clash with PvP deaths label, no cropping or Lua errors. Fine-tune only UI geometry if needed. No changes to unapproved six lower statistic icons or unsupported Alliance custom art.
+
+
+## Iteration #68 client screenshot → #69 ornamental ratio dividers (2026-11-18)
+
+- The owner supplied the original ornamental ratio divider PNG and a separate overall target mockup (reference only, never runtime art).
+- The new ornamental gold horizontal rails, blue diamond intersections, and central gold post replace the legacy individual lines, diamonds and center divider around HK/D and KB/D. Preserve the live labels, ratios, microcopy and untouched other UI.
+- Art source: `docs/assets/ratios_frame_owner_v69_source.png` (512×128 indexed, transparent, reduced for transport from the 2048×682 owner PNG). CI converts it to `Media/General/ratios_frame_owner_v69.tga` 1024×256 using Pillow. Full-resolution owner PNG remains the quality reference; potential palette reduction requires client QA.
+- UI v69 renders the TGA at 632×140, top y=-615 and removes the old rules at y=-624/-749 and center post. No other layout/data modifications.
+- GitHub packaging workflow now generates the TGA before packaging, and commits both TGA and verified installable `dist/WarScore.zip`. The archive must contain only `WarScore/` runtime files.
+- **Client QA NOT RUN:** install latest ZIP, `/reload`, `/ws version`=69, `/ws`. Screenshot the ratio module and check rail alignment, diamond color, post overlap, text clearance and lower band spacing. Do not mark accepted until owner screenshot.

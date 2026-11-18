@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "68"
+local UI_ITERATION = "69"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -503,14 +503,12 @@ local function build()
 
     -- No floating side strokes: the soft plaque and red number carry this KPI.
 
-    line(window, -624, 632)
-    ornamentDiamond(window, -622, 8)
-
-    local centerDivider = window:CreateTexture(nil, "BORDER")
-    centerDivider:SetTexture("Interface\\Buttons\\WHITE8X8")
-    centerDivider:SetVertexColor(0.6, 0.39, 0.14, 0.8)
-    centerDivider:SetSize(2, 93)
-    centerDivider:SetPoint("TOP", window, "TOP", 0, -636)
+    -- Iteration 69: owner-provided complete ornamental frame for the ratios.
+    -- Replaces the upper/lower rules and the vertical separator.
+    local ratioOrnament = window:CreateTexture(nil, "BORDER")
+    ratioOrnament:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\ratios_frame_owner_v69")
+    ratioOrnament:SetSize(632, 140)
+    ratioOrnament:SetPoint("TOP", window, "TOP", 0, -615)
 
     label(window, "HK/D", 20, GOLD, -165, -636, 270, 29)
     label(window, "KB/D", 20, GOLD, 165, -636, 270, 29)
@@ -525,8 +523,7 @@ local function build()
     local kbDescription = label(window, "Golpes de gracia / muertes PvP", 12, CREAM, 165, -711, 300, 23)
     kbDescription:SetTextColor(0.77, 0.69, 0.58)
 
-    line(window, -749, 632)
-    ornamentDiamond(window, -747, 8)
+    -- Lower ratio rail and central sapphire are part of the new owner asset.
 
     local firstRow = statBand(window, -758, {
         { title = "DUELOS GANADOS", color = GOLD, icon = "Interface\\Icons\\Ability_DualWield" },
