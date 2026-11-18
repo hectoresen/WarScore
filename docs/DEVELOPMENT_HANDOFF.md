@@ -666,3 +666,17 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - UI commit `540708fd04174046d73bc1cea957dc175bd7a2cf` changes `UI/General.lua` to version **49**, replacing only the prior `WHITE8X8` flat near-black shellBackground with the new original TGA at full tint, still inset 12px within the native WoW border. This leaves the dual frame, core UI and dimensions intact; all banners, stats, rank ribbon, icons, nil-display formatting and SavedVariables are unchanged.
 - CI-created `dist/WarScore.zip` (build commit `611c70a95be1b74f19b035fcc5ed770b7c3a702c`), blob `6e51c786a18d5af7c2c749f4ffe70e9a13cbcec0`, 171,054 bytes. Independent ZIP central-directory validation confirms **16 Deflate runtime entries**, current `General.lua` CRC32 `8aaf67ed` matches its packaged copy and the new TGA CRC32 `c0dd2dec` matches its packaged copy. No docs/OpenSpec/tools in package. This fixes the earlier incorrect assistant statement about unavailable GitHub rights.
 - **Owner QA pending:** completely replace installed WarScore folder, `/reload`, check `/ws version` = 49, open `/ws`. Compare texture to mockup: warm grey, subtle grain and no visible repeating/stretch pixels, no hard rectangular overlay, text still legible, borders still define outer extent. Screenshots can reveal if texture is too dark/too bright/too uniform at game resolution. Do not claim in-client acceptance before screenshot.
+
+## Iteration #49 — owner screenshot review (2026-11-18)
+
+- Owner supplied the in-game screenshot after iteration 49 and regards the warm grey textured background as a better direction. General composition and larger lower icons remain stable; this is **not** full visual acceptance.
+- PvP rank plaque remains visually flat and far from the reference; no banner approval. Priority next: rank sculpture. Retain 43px masked native lower icons and gold/green missing-value rules.
+
+## Iteration #50 — sculpted rank silhouette and integrated faction boss (2026-11-18)
+
+- Code commit `6d165e724bf664648a35f294d41edb00a0e1f93b` updates `UI/General.lua`; `/ws version` reports **50**.
+- PvP rank uses more of the existing authored `rank_ribbon.tga` (texture coordinate range 0.035–0.965 instead of 0.12–0.88), increases visible sculpted ribbon ends and reduces flat rectangular backing. Restrained inset metal lines are shortened and contained.
+- Replaces the crest's square tooltip border with the existing transparent gilded portrait ring, places the faction icon in a round boss overlapping the ribbon and applies the already used guarded circular mask with safe fallback.
+- No new icon artwork, no orange rank panel, no disconnected leaves; no changes to banners (still **frozen**), lower 43px icons, HK/death/ratio calculations, placeholder values, storage or outer/inner frame.
+- **QA NOT RUN in Forever**. Owner should install fresh `dist/WarScore.zip` only after CI refresh is confirmed, run `/reload`, `/ws version` (50), `/ws`, send screenshot. Check ribbon ends are elegant (not cropped sharply), crest circular/correct faction/no square artifacts, title and unavailable value clear, no overlap with HK divider, no Lua errors.
+- If fully revealed ribbon ends or circular boss appear worse than 49, adjust/revert only this rank treatment. Final approval, Alliance, alternate scales and populated BG data still pending. Banners stay frozen.
