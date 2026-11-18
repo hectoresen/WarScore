@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "69"
+local UI_ITERATION = "70"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -503,10 +503,10 @@ local function build()
 
     -- No floating side strokes: the soft plaque and red number carry this KPI.
 
-    -- Iteration 69: owner-provided complete ornamental frame for the ratios.
+    -- Iteration 70: owner-provided complete ornamental frame, improved source resolution for the ratios.
     -- Replaces the upper/lower rules and the vertical separator.
     local ratioOrnament = window:CreateTexture(nil, "BORDER")
-    ratioOrnament:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\ratios_frame_owner_v69")
+    ratioOrnament:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\ratios_frame_owner_v70")
     ratioOrnament:SetSize(632, 140)
     ratioOrnament:SetPoint("TOP", window, "TOP", 0, -615)
 

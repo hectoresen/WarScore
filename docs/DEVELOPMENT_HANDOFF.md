@@ -899,3 +899,12 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - UI v69 renders the TGA at 632×140, top y=-615 and removes the old rules at y=-624/-749 and center post. No other layout/data modifications.
 - GitHub packaging workflow now generates the TGA before packaging, and commits both TGA and verified installable `dist/WarScore.zip`. The archive must contain only `WarScore/` runtime files.
 - **Client QA NOT RUN:** install latest ZIP, `/reload`, `/ws version`=69, `/ws`. Screenshot the ratio module and check rail alignment, diamond color, post overlap, text clearance and lower band spacing. Do not mark accepted until owner screenshot.
+
+
+## Iteration #69 owner screenshot → #70 ratio ornament texture repair (2026-11-18)
+
+- Real-client screenshot confirms v69 ratio ornament positioning, spacing, center post and text are visually correct, but the owner reports severe broken/noisy lower gold rail.
+- Root cause hypothesis: v69 source was reduced to a very low-resolution indexed 512×128 transfer with aggressive palette quantization and then expanded to 1024×256 TGA, exposing jagged partial alpha in thin strokes.
+- The owner-supplied original 2048×682 RGBA image was recovered. A higher-resolution 1024×256 transparent indexed transfer was prepared from this original, without changing the artwork, and CI now generates `ratios_frame_owner_v70.tga`. This may not fully eliminate thin-line artifacts; only client QA can establish success.
+- UI iteration bumped to 70 and asset path switched; identical artwork geometry and all text/statistic layouts preserved. v69 artwork left in repository for history.
+- **Client QA NOT RUN:** download `dist/WarScore.zip`, `/reload`, `/ws version`=70 and screenshot. Inspect the LOWER gold rule left/right of sapphire for any speckling or transparency holes. If still noisy, use an unquantized full RGBA source as the next step.
