@@ -558,3 +558,13 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [ ] Verify GitHub CI package version 60, source CRC and referenced art.
 - [ ] Owner tests real client: no see-through holes inside frame, no full-size black rectangle outside it, centered portrait/stats and bottom card clearance, no Lua errors.
 - [ ] If still see-through, investigate alpha contours/need for an opaque backing supplied separately. Never mark unapproved rank plaque/lower glyphs complete.
+
+## Iteration 60 screenshot → iteration 61 background gutters and asset governance
+
+- [x] Owner screenshot: central interior covered, but bright world visible in side gutters between outer and inner frames, and upper tab transition.
+- [x] Adjust existing dark leather backing from 744×875 y=-115 to 790×930 y=-97, behind supplied paintings, without modifying any owner art or game statistics.
+- [x] Document root AGENTS.md rule: request missing artistic assets from owner, never invent/generate visual stand-ins; conversion/positioning of provided assets is allowed.
+- [ ] Confirm CI regenerated runtime-only ZIP contains v61 General.lua with matching source CRC.
+- [ ] Owner QA v61 in bright zone: no transparent gutters and no new black exterior rectangle, both owner frames clean, tabs and bottom cards legible, no Lua errors.
+- [ ] If the flat rectangular backing still causes leakage or protrusion, explicitly request a separately supplied opaque alpha-masked interior backing. No further fabricated decoration.
+- [ ] Rank/plaque and lower six icons remain unapproved, plus Alliance and alternative display-scale QA.
