@@ -527,3 +527,14 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 - [x] Keep settings cog, historical stats, ratios, icon fallback rules and available data unchanged.
 - [ ] CI verified ZIP contains integrated panel and UI 57; owner in-game QA of tabs/banners/frame seam, gear alignment and panel/card collisions.
 - [ ] Alternative Alliance art, background/card contrast, final rank ornament, and coherent lower-stat glyphs are still unapproved.
+
+## Iteration 57 owner screenshot → iteration 58 supplied outer frame
+
+- [x] Owner provided matching exterior frame asset with crossed-swords medallion, header and close glyph.
+- [x] Convert new exterior art to WoW-compatible transparent 512×1024 TGA, cropping redundant internal border to avoid double-framing the existing inner asset.
+- [x] Use 870×1060 outer window, center 760×890 inner art and align tabs in the exposed space below the outer header.
+- [x] Replace native dialog border/header/close skin with supplied outer art; preserve dynamic WarScore title and clickable transparent X hitbox.
+- [x] Reposition settings gear inside inner frame top right without duplicating Horde banner decorations.
+- [ ] Verify CI clean ZIP contains exact new outer asset and v58 General.lua with matching source CRC.
+- [ ] Owner tests v58 in Forever: exterior/inner centering, sufficient bottom clearance, no mismatched rails, General/Hoy tab labels, clickable X and no Lua errors.
+- [ ] Pending: approval of lower metric glyphs, sculpted rank artwork, Alliance treatment, multiple scales and high-number/long-label cases.
