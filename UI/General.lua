@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "56"
+local UI_ITERATION = "57"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -35,23 +35,6 @@ local function line(parent, y, width)
     texture:SetVertexColor(0.72, 0.48, 0.17, 0.85)
     texture:SetSize(width or 620, 2)
     texture:SetPoint("TOP", parent, "TOP", 0, y)
-end
-
--- Iteration 56: original owner-provided Horde banner, with rod, cloth,
--- emblem and torn edge baked into one transparent texture. No extra bar,
--- emblem tile, rivets or hard rectangular backing over the artwork.
--- The alternate faction deliberately shows none until matching artwork exists.
-local function suppliedFactionBanner(parent, side)
-    if UnitFactionGroup("player") ~= "Horde" then return end
-    local sign = side == "LEFT" and -1 or 1
-    local banner = CreateFrame("Frame", nil, parent)
-    banner:SetSize(144, 230)
-    banner:SetPoint("TOP", parent, "TOP", sign * 268, -121)
-    local art = banner:CreateTexture(nil, "ARTWORK")
-    art:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\banner_horde_supplied")
-    art:SetAllPoints(banner)
-    art:SetAlpha(0.98)
-    return banner
 end
 
 -- Native decorative accents: no additional assets or client-only APIs required.
@@ -345,21 +328,22 @@ local function build()
     border:SetBackdropBorderColor(0.91, 0.80, 0.63, 1)
     border:EnableMouse(false)
 
-    -- Separate INSIDE frame embracing navigation and metrics, like the
-    -- reference spellbook/panel composition. Keep it under all widgets.
-    local innerPanel = CreateFrame("Frame", nil, window, "BackdropTemplate")
-    innerPanel:SetPoint("TOPLEFT", window, "TOPLEFT", 22, -60)
-    innerPanel:SetPoint("BOTTOMRIGHT", window, "BOTTOMRIGHT", -22, 17)
-    innerPanel:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 14 })
-    innerPanel:SetBackdropBorderColor(0.62, 0.45, 0.24, 0.80)
-    innerPanel:EnableMouse(false)
+    -- Iteration 57: owner-supplied complete inner-frame painting contains
+    -- both faction banners anchored to its upper ornamental rail, and two
+    -- blank tabs that project above the rail. Do NOT draw a second frame or
+    -- independent hanging banners on top of it.
+    local innerArt = window:CreateTexture(nil, "BACKGROUND")
+    innerArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\inner_frame_owner_v57")
+    innerArt:SetSize(710, 920)
+    innerArt:SetPoint("TOP", window, "TOP", 0, -59)
+    innerArt:SetAlpha(1)
 
-    -- No parallel square rails competing with the native exterior border
-    -- and the separate framed inner content area.
-    cornerAccent(window, "LEFT", "TOP")
-    cornerAccent(window, "RIGHT", "TOP")
-    cornerAccent(window, "LEFT", "BOTTOM")
-    cornerAccent(window, "RIGHT", "BOTTOM")
+    -- Invisible positioning frame for the future settings feature. Its border
+    -- is already present in the integrated painting.
+    local innerPanel = CreateFrame("Frame", nil, window)
+    innerPanel:SetPoint("TOPLEFT", window, "TOPLEFT", 22, -109)
+    innerPanel:SetPoint("BOTTOMRIGHT", window, "BOTTOMRIGHT", -22, 22)
+    innerPanel:EnableMouse(false)
 
     local header = CreateFrame("Frame", nil, window, "BackdropTemplate")
     header:SetPoint("TOPLEFT", window, "TOPLEFT", 10, -10)
@@ -387,24 +371,25 @@ local function build()
     close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -12, -11)
     close:SetScript("OnClick", function() window:Hide() end)
 
+    -- The supplied graphic already paints both tab plates; only live text
+    -- and hitboxes are needed. Their placement follows the asset's geometry.
     local general = CreateFrame("Button", nil, window)
     general:SetSize(140, 32)
-    general:SetPoint("TOPLEFT", window, "TOPLEFT", 38, -67)
-    skinTab(general, "General", true)
-    -- Selected tab has no click handler; its active style does not depend on a disabled state.
+    general:SetPoint("TOPLEFT", window, "TOPLEFT", 137, -66)
+    local generalText = label(general, "General", 16, GOLD, 0, -2, 135, 29)
+    generalText:SetShadowColor(0.17, 0.08, 0.015, 0.94)
+    generalText:SetShadowOffset(1, -1)
+
     local today = CreateFrame("Button", nil, window)
     today:SetSize(140, 32)
-    today:SetPoint("LEFT", general, "RIGHT", 7, 0)
-    skinTab(today, "Hoy", false)
+    today:SetPoint("TOPLEFT", window, "TOPLEFT", 295, -66)
+    local todayText = label(today, "Hoy", 15, CREAM, 0, -2, 135, 29)
+    todayText:SetTextColor(0.72, 0.66, 0.55)
     today:SetScript("OnClick", function()
-        if DEFAULT_CHAT_FRAME then DEFAULT_CHAT_FRAME:AddMessage("|cffffc34dWarScore:|r La pestaña Hoy estará disponible en una próxima versión.") end
+        if DEFAULT_CHAT_FRAME then
+            DEFAULT_CHAT_FRAME:AddMessage("|cffffc34dWarScore:|r La pestaña Hoy estará disponible en una próxima versión.")
+        end
     end)
-    -- Shared metallic tab rail ties both tabs to the same navigation area.
-    local tabRail = window:CreateTexture(nil, "BORDER")
-    tabRail:SetTexture("Interface\\Buttons\\WHITE8X8")
-    tabRail:SetVertexColor(0.66, 0.43, 0.16, 0.86)
-    tabRail:SetSize(296, 2)
-    tabRail:SetPoint("TOPLEFT", window, "TOPLEFT", 38, -101)
 
     -- Iteration 55: an original transparent metallic gear, not a WoW
     -- inventory icon (the previous candidates depicted unrelated items).
@@ -432,10 +417,7 @@ local function build()
     settingsFrame:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
     fields = {}
-    -- Reintroduce the supplied authentic hanging cloth on both sides,
-    -- behind portrait/rank labels but inside the ornamental inner frame.
-    suppliedFactionBanner(window, "LEFT")
-    suppliedFactionBanner(window, "RIGHT")
+    -- Both banners are baked into innerArt; no separate banner sprites.
     local portraitRing = CreateFrame("Frame", nil, window)
     portraitRing:SetSize(126, 126)
     portraitRing:SetPoint("TOP", window, "TOP", 0, -105)
