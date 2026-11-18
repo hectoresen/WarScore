@@ -33,7 +33,7 @@ dist/WarScore.zip        # Artefacto instalable
 
 ## Documentación
 
-- [Funcionalidad](docs/FUNCTIONAL.md) y [contrato PvP](docs/PVP_STATISTICS.md)
+- [Funcionalidad](docs/FUNCTIONAL.md), [catálogo de datos y vistas PvP](docs/PVP_DATA_CATALOG.md) y [contrato PvP](docs/PVP_STATISTICS.md)
 - [Arquitectura](docs/ARCHITECTURE.md), [desarrollo](docs/DEVELOPMENT.md) e [instalación](docs/INSTALLATION.md)
 - [Vista General](docs/GENERAL_VIEW.md) y [especificación visual](docs/GENERAL_VISUAL_SPEC.md)
 - [Handoff e iteraciones](docs/DEVELOPMENT_HANDOFF.md), [flujo OpenSpec](openspec/README.md)
