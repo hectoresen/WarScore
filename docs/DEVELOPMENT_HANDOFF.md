@@ -985,3 +985,12 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - Only secondary row gets the three new texture paths (via `definition.ownerIcon`). Remove the native icon mask for owner icons, render at alpha 1. Lower row sizes 46×46 for first two and 52×52 for favorite BG; x-insets 13/11/16 respectively; y offset -7. Top owner swords retain their v78 x-inset 24.
 - Transport PNGs: `docs/assets/icon_bg_rate_owner_v79_source.png`, `icon_duel_rate_owner_v79_source.png`, `icon_favorite_bg_owner_v79_source.png`, compact palette-reduced 64×64 transparent images from the owner's originals. Convert via `tools/prepare_bottom_icons.py` to 128×128 RGBA TGA in `Media/General` before verified ZIP packaging. Source artwork is provisional for fidelity; original uploads are the high-quality master.
 - Version diagnostic = 79. **WoW CLIENT QA NOT RUN:** install full ZIP, `/reload`, `/ws version` 79, `/ws`; verify all three icons are correct, not obscured by dividers and do not overlap the titles or rate values, then refine using the owner's screenshot.
+
+
+## Iteration #79 screenshot → #80 lower card icon scale harmonization (2026-11-18)
+
+- User's WoW screenshot of v79 confirms bottom-row owner assets load correctly, but their visual prominence differs: win-rate duels swords appear too large; win-rate BG crossed white flags and favorite battleground blue pennant appear too small. User approved the proposed modest 50×50 shared viewport and inset correction as the next test.
+- v80: set `iconSize = ownerIcon and 50 or 43`, giving ALL owner icons the same 50×50 texture viewport, with old native fallback still 43×43. Top row already used 50×50 and retains its approved placement.
+- Secondary-row icon left inset becomes 13 / 13 / 18 (previously 13 / 11 / 16), retaining y=-7 and full alpha; no circular masking. This changes only the size/position of the three lower icons. Existing text, values, frames, assets, and calculations unchanged.
+- Important QA note: equal texture viewport size does not guarantee equal visible artwork scale if source alpha padding differs. If perceptual disparity persists, normalize alpha bounding boxes in the asset-conversion script rather than randomly changing individual sizes.
+- Diagnostic version 80. **IN-GAME QA PENDING:** install verified ZIP, `/reload`, `/ws version` 80, `/ws`; inspect comparative visual weight and clearance from both gold dividers.
