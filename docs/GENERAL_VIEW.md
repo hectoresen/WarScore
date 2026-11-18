@@ -24,9 +24,9 @@ Diseñar un bloque secundario **por debajo** de los cinco indicadores principale
 
 | Métrica | Estado para diseño | Nota técnica |
 | --- | --- | --- |
-| Golpes de gracia históricos (KB) | Candidata documentada, condicionada | Estadística ID `1487` (*Total Killing Blows*). Hay que confirmar que representa exclusivamente golpes finales PvP; no asumirlo. |
-| Porcentaje de golpes de gracia | Derivada, condicionada | `KB PvP / HK × 100`; solo si KB corresponde realmente a PvP. |
-| Rango PvP (histórico / máximo por definir) | **Posición visual por decidir: quizá entre datos principales**; API pendiente de prueba | Investigar `GetPVPLifetimeStats()`, confirmar significado y disponibilidad real en Forever. No moverlo aún al bloque principal sin aprobar la nueva jerarquía. |
+| Golpes de gracia históricos (KB) | **Confirmada por categoría 137; pendiente de comparación nativa adicional** | ID `1487`, con desglose mundial `1488`, continente dominante `1489` y desglose BG `1491`. |
+| Porcentaje de golpes de gracia | Derivada, condicionada | `KB / muertes PvP`; preparar visualmente, pero no activar hasta completar comparación nativa. |
+| Rango PvP (histórico / máximo por definir) | **No disponible en el personaje probado** | `GetPVPLifetimeStats()` devuelve segundo retorno `0`; `UnitPVPRank` y `GetPVPRankProgress` no existen en Forever. Mantener estado honesto. |
 | **Duelos totales ganados** | **Prioridad en el nuevo bloque inferior; pendiente de ID Lua y prueba** | Confirmar ID, acceso y lectura histórica en Forever. |
 | **Duelos perdidos** | **Añadida al diseño, pendiente de ID Lua** | Misma validación que duelos ganados. |
 | **Porcentaje de duelos ganados** | **Derivada, condicionada** | `ganados / (ganados + perdidos) × 100`; no mostrar si falta alguno de los contadores. |

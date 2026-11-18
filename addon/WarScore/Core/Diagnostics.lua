@@ -3,6 +3,9 @@ local function output(message)
     DEFAULT_CHAT_FRAME:AddMessage("|cffd8b365WarScore|r " .. tostring(message))
 end
 
+local honorFrame = CreateFrame("Frame")
+honorFrame:RegisterEvent("INSPECT_HONOR_UPDATE")
+
 local function show(value)
     if value == nil then return "nil" end
     return tostring(value)
@@ -29,6 +32,11 @@ local function basics()
     inspect("GetPVPLifetimeStats", GetPVPLifetimeStats)
     inspect("GetPVPSessionStats", GetPVPSessionStats)
     inspect("GetPVPYesterdayStats", GetPVPYesterdayStats)
+    output("Honor (APIs directas)")
+    inspect("UnitHonor(player)", UnitHonor, "player")
+    inspect("UnitHonorMax(player)", UnitHonorMax, "player")
+    inspect("UnitHonorLevel(player)", UnitHonorLevel, "player")
+    inspect("GetInspectHonorData", GetInspectHonorData)
     for _, id in ipairs({ 319, 1487, 1501 }) do
         inspect("GetStatistic(" .. id .. ")", GetStatistic, id)
     end
@@ -43,6 +51,21 @@ local function details()
     inspect("GetStatisticsCategoryList", GetStatisticsCategoryList)
     inspect("GetCategoryList", GetCategoryList)
 end
+
+local function printHonorData()
+    output("Honor (APIs directas)")
+    inspect("UnitHonor(player)", UnitHonor, "player")
+    inspect("UnitHonorMax(player)", UnitHonorMax, "player")
+    inspect("UnitHonorLevel(player)", UnitHonorLevel, "player")
+    inspect("GetInspectHonorData", GetInspectHonorData)
+end
+
+honorFrame:SetScript("OnEvent", function(_, event)
+    if event == "INSPECT_HONOR_UPDATE" then
+        output("INSPECT_HONOR_UPDATE recibido")
+        inspect("GetInspectHonorData", GetInspectHonorData)
+    end
+end)
 
 
 local function categories()
@@ -110,12 +133,22 @@ SlashCmdList.WARSCOREDIAG = function(message)
         categories()
     elseif mode == "detail" then
         details()
+    elseif mode == "honor" then
+        printHonorData()
+        if type(NotifyInspect) == "function" and type(RequestInspectHonorData) == "function" then
+            local notifyOk, notifyError = pcall(NotifyInspect, "player")
+            local requestOk, requestError = pcall(RequestInspectHonorData)
+            output("Solicitud de honor: NotifyInspect=" .. (notifyOk and "OK" or "ERROR " .. show(notifyError)) .. " | RequestInspectHonorData=" .. (requestOk and "OK" or "ERROR " .. show(requestError)))
+            output("Si llega INSPECT_HONOR_UPDATE, se imprimiran los retornos actualizados")
+        else
+            output("APIs de solicitud de honor no disponibles")
+        end
     elseif mode == "daily" then
         output("Fecha cliente: " .. (type(date) == "function" and show(date("%Y-%m-%d %H:%M")) or "API no disponible"))
         inspect("GetPVPSessionStats", GetPVPSessionStats)
         inspect("GetPVPYesterdayStats", GetPVPYesterdayStats)
     else
         basics()
-        output("Opciones: /wsdiag list 21 | categories | detail | daily")
+        output("Opciones: /wsdiag honor | list 21 | categories | detail | daily")
     end
 end

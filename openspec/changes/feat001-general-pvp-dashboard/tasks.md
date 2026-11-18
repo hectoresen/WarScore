@@ -619,6 +619,32 @@ Owner supplied an actual WoW Forever screenshot of the first /ws implementation 
 
 ## Iteration 66 screenshot → 67 central-axis and baked duplicate trim
 
+## API audit evidence — 2026-11-18
+
+- [x] Run `/wsdiag` in WoW Forever 1.60.1 and capture lifetime, session and yesterday PvP returns.
+- [x] Enumerate categories 21, 136, 137, 153 and 154 with real-client output.
+- [x] Confirm HK world/continent, killing blows world/continent, battleground objective counters and duel counters.
+- [x] Record that `UnitPVPRank` and `GetPVPRankProgress` are unavailable in Forever; lifetime rank return is `0` for the tested character.
+- [ ] Compare killing-blow values against the native panel after fresh PvP activity before enabling KB/D.
+- [ ] Complete one BG and one duel, if possible, and rerun categories 136/137/153/154 with positive values.
+- [ ] Decide which new metrics belong in General versus a future detail/graphs view; no UI implementation follows from this evidence alone.
+
+## API audit follow-up — first battleground activity — 2026-11-18
+
+- [x] Confirm positive HK values after battleground activity.
+- [x] Confirm world/BG arithmetic: `34 + 58 = 92` total HK.
+- [x] Confirm dominant battleground statistic: Warsong Gulch, `58` HK.
+- [x] Record general kill/death counters separately from PvP-specific counters.
+- [ ] Rerun category 153 to capture BG played, wins and objective counters.
+- [ ] Compare category 137 killing blows against native panel; `1491` remains `--` despite positive BG HK.
+
+## API audit follow-up — first positive BG counters — 2026-11-18
+
+- [x] Confirm `839=1` total BG and `52=1` Warsong match.
+- [x] Confirm `395=1` Warsong flag captured.
+- [x] Record `840`, `105` and `586` as `--` pending native-panel interpretation.
+- [ ] Compare BG result, wins and returned flags with the native statistics pane before normalizing unknown values.
+
 - [x] Find rank caption/value x=+30 versus live name/level/HK x=0; align dynamic rank copy on the same x=0 axis.
 - [x] Inspect actual exterior owner art: the second gold inner outline is baked into outer PNG, not another Lua-native border.
 - [x] Produce original-art-derived alpha-masked exterior TGA without gold duplicate; preserve author original and replace only displayed exterior texture.

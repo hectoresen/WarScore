@@ -7,9 +7,9 @@
 ## Fuente y acceso
 
 - `GetStatistic(id)` devuelve en su primer resultado un **texto**, no necesariamente un número; puede ser `"--"`. Normalizar antes de operar y no asumir que `"--"` siempre significa cero.
-- `GetPVPLifetimeStats()`: primer resultado = HK históricas; en la prueba devuelve `32`. Segundo resultado `0`: significado de rango aún por confirmar.
-- `GetPVPSessionStats()`: primer resultado documentado como HK de «hoy»; prueba puntual `0`. Falta verificar persistencia entre logins y cambio de día.
-- `GetPVPYesterdayStats()`: primer resultado `6` en prueba puntual.
+- `GetPVPLifetimeStats()`: primer resultado = HK históricas; el segundo retorno devuelve `0` (`RankNone`) en el personaje probado. `UnitPVPRank()` y `GetPVPRankProgress()` no existen en Forever.
+- `GetPVPSessionStats()`: devuelve HK y DK de la sesión; prueba actual `2 | 0`. No llamarlo «Hoy» hasta validar relog y cambio de fecha.
+- `GetPVPYesterdayStats()`: devuelve HK y DK del día anterior; prueba actual `0 | 0`.
 - Todas las estadísticas históricas de la vista General deben proceder de API nativa, no de acumulaciones desde la instalación del addon.
 
 ## Contrato de métricas
@@ -25,9 +25,11 @@
 | Duelos perdidos | `320` | -- (panel 0) | Contrastado sin duelos | Complementaria |
 | BG jugados | `839` | -- | Identificado; personaje nunca jugó BG | General |
 | BG ganados | `840` | -- | Identificado; personaje nunca jugó BG | Complementaria |
-| Golpes de gracia totales | `1487` | 882 | Probado, semántica PvP **no resuelta** | No calcular KB/D |
-| Golpes de gracia mundo | `1488` | 702 | Probado, semántica pendiente | No calcular KB/D |
-| Golpes de gracia BG | `1491` | -- | Identificado | Pendiente |
+| Golpes de gracia totales | `1487` | 1021 | **Probado y etiquetado por el cliente en categoría 137** | Candidato para KB/D; validar contra panel nativo |
+| Golpes de gracia mundo | `1488` | 828 | **Probado y etiquetado por el cliente** | Desglose |
+| Continente con más golpes de gracia | `1489` | 458 (Kalimdor) | **Probado** | Desglose geográfico |
+| Golpes de gracia BG | `1491` | -- | Identificado | Pendiente de una BG |
+| BG con más golpes de gracia | `1716` | -- | Identificado | Pendiente de una BG |
 | Muertes propias totales | `60` | 38 | Probado | **No** usar como muertes PvP |
 | Víctimas totales | `1197` | 3936 | Probado | **No** usar como KB PvP |
 | Víctimas con experiencia u honor | `1198` | 3687 | Probado | **No** usar como KB PvP |
@@ -49,7 +51,7 @@ IDs enumerados mediante `/wsdiag list 153`, `136` y `137`. Todos devuelven `--` 
 - **Porcentaje victorias BG** = `BG ganados / BG jugados * 100`, global o por BG, únicamente con ambos valores numéricos y denominador positivo.
 - **Porcentaje duelos ganados** = `ganados / (ganados + perdidos) * 100`, si hay duelos y ambos contadores son fiables.
 - **Denominador cero o datos desconocidos:** mostrar estado neutro `—`, nunca infinito.
-- **KB/D:** bloqueado hasta aclarar por qué `1487=882` mientras HK=32; no atribuir automáticamente los 882 a golpes finales contra jugadores.
+- **KB/D:** la categoría 137 del propio cliente etiqueta `1487` como «Golpes de gracia» y ofrece el desglose mundial `1488`; queda pendiente una comparación con el panel nativo tras actividad nueva antes de incorporarlo a la UI.
 - **Normalización de `--`:** el panel nativo muestra 0 duelos ganados/perdidos para el personaje sin duelos, aunque la API devuelve `--`. Normalizar a cero **solo por contador y caso contrastado**, no universalmente.
 
 ## Vista Hoy
@@ -80,7 +82,102 @@ IDs enumerados mediante `/wsdiag list 153`, `136` y `137`. Todos devuelven `--` 
 
 Además de las métricas previamente aprobadas, **solo** incorporar: (1) BG ganados ID 840, (2) win rate BG = 840/839×100, (3) win rate duelos = 319/(319+320)×100, (4) BG favorito por máximo de partidas entre IDs 53/55/52/64179, y (5) partidas jugadas del BG favorito. Todos en bloque inferior secundario; no alterar composición principal ni tratar esta decisión como aprobación de nueva maqueta. Sin partidas/duelos, ratios y favorito no disponibles (`—`). Empates en máximo: no desempatar arbitrariamente. El resto de métricas se reservan para futuras pestañas. Fuente de verdad visual: `docs/GENERAL_VIEW.md`.
 
-
 ## Nueva evidencia de cliente — 2026-11-18 (v84)
 
 Tras jugar una BG (perdida), se ha observado en la ventana General: HK históricas 92, muertes PvP 14, HK/D 6,57, BG jugados 1, BG ganados 0, favorito Garganta Grito de Guerra. El diagnóstico posterior devuelve `GetPVPLifetimeStats() = 92, 0`, `GetPVPSessionStats() = 60, 0`, `GetPVPYesterdayStats() = 0, 0`, `GetStatistic(319) = "--"`, `GetStatistic(1487) = 1021`, y `GetStatistic(1501) = 14`. Esto confirma las lecturas observadas de HK y muertes actuales, pero **no** demuestra que HK de sesión equivalga a HK del día natural ni que 1487 sea exclusivo de PvP. La partida perdida aporta un primer caso positivo para BG jugados, aunque otros IDs, victorias y distintos BG siguen requiriendo contraste.
+## Evidencia nueva — auditoría de categorías PvP en Forever (2026-11-18)
+
+El usuario ejecutó `/wsdiag` y las categorías 21, 136, 137, 153 y 154 en WoW Forever 1.60.1. Esta sección conserva los resultados observados y sirve como inventario para futuras gráficas; no implica que todas las métricas deban entrar en la vista General actual.
+
+### Retornos PvP directos
+
+```text
+GetPVPLifetimeStats: 34 | 0 | nil | nil
+GetPVPSessionStats: 2 | 0 | nil | nil
+GetPVPYesterdayStats: 0 | 0 | nil | nil
+```
+
+- HK históricas: `34`.
+- Segundo retorno de lifetime: `0`, compatible con `RankNone` para este personaje; `UnitPVPRank` y `GetPVPRankProgress` son nil.
+- Sesión actual: `2` HK y `0` DK.
+- Ayer: `0` HK y `0` DK.
+
+### Categorías observadas
+
+- PvP general: `1501=10` muertes por otros jugadores; `318=10` muertes por la facción contraria.
+- HK: `588=34` total; `381=34` mundo; `1458=27 (Kalimdor)` continente dominante.
+- Golpes de gracia: `1487=1021` total; `1488=828` mundo; `1489=458 (Kalimdor)` continente dominante.
+- Battlegrounds: 19 contadores para partidas/victorias globales, partidas/victorias por BG y objetivos de Alterac, Warsong, Arathi e Islas Lanza Negra; todos `--` por ausencia de historial BG.
+- Duelos: `319` ganados y `320` perdidos; ambos `--`, contrastados como `0/0` en la UI nativa.
+
+La categoría 137 del propio cliente resuelve la semántica básica de `1487`/`1488` como golpes de gracia. Antes de habilitar KB/D en producción, comparar con el panel nativo después de nueva actividad PvP.
+
+### Posibles gráficos futuros
+
+- HK/KB de mundo frente a battlegrounds.
+- Continente dominante de HK y golpes de gracia.
+- KB/D junto a HK/D, tras la comparación nativa.
+- Victorias/partidas y porcentaje por battleground.
+- Objetivos capturados, defendidos y devueltos por BG.
+- Actividad de sesión y día anterior.
+- Evolución local diaria/semanal mediante SavedVariables, si se aprueba ese alcance.
+
+## Evidencia nueva — primera actividad BG observada (2026-11-18)
+
+Tras actividad real en battleground, el usuario volvió a ejecutar las categorías 128, 122, 136 y 137.
+
+### Resultado confirmado
+
+- Muertes con honor totales `588`: **92**.
+- HK en mundo `381`: **34**.
+- HK en battlegrounds `382`: **58**.
+- BG con más HK `1719`: **58 en Garganta Grito de Guerra**.
+- HK por BG: Warsong `1115=58`; Alterac `1113=--`; Arathi `1114=--`; Islas Lanza Negra `64180=--`.
+
+La suma `34 HK mundo + 58 HK BG = 92 HK totales` es coherente y confirma que el desglose mundo/BG funciona en Forever. También queda validado que `1719` puede alimentar un indicador de battleground dominante.
+
+### Estadísticas generales adicionales
+
+- `1197` Muertes realizadas: **4517**.
+- `1198` Muertes que otorgaron experiencia u honor: **4174**.
+- `60` Muertes propias: **46**.
+
+Estos tres contadores pertenecen a categorías generales y no deben presentarse automáticamente como KB PvP, HK ni muertes PvP. Las muertes propias `60` tampoco sustituyen a `1501`, que sigue siendo el contador específico de muertes causadas por otros jugadores.
+
+### Inconsistencia pendiente
+
+La categoría 137 continúa devolviendo `1487=1021`, `1488=828` y `1491=--`, a pesar de que ya existen `58` HK de battleground. Esto puede significar que el contador de KB de BG no se actualiza igual, que el personaje no registró golpes de gracia en esas partidas o que existe una diferencia de actualización/semántica. KB/D sigue sin activarse hasta comparar el panel nativo.
+
+## Evidencia nueva — primera partida BG registrada (2026-11-18)
+
+Tras completar una partida, la categoría 153 devolvió:
+
+- `839` BG jugados: **1**.
+- `52` partidas de Garganta Grito de Guerra: **1**.
+- `395` banderas capturadas en Garganta Grito de Guerra: **1**.
+- `840` BG ganados: `--`.
+- `105` victorias en Garganta Grito de Guerra: `--`.
+- `586` banderas devueltas: `--`.
+- El resto de BG y objetivos: `--`.
+
+Esto confirma que el addon puede detectar historial positivo de partidas y objetivos de Warsong. La combinación `1 partida / -- victorias` probablemente representa una derrota o una victoria aún no registrada, pero debe compararse con el panel nativo antes de normalizar `--` a cero. No generalizar la conversión de `840` o `105` sin esa comparación.
+
+La categoría 137 continúa sin cambios (`1487=1021`, `1488=828`, `1491=--`), por lo que una partida BG con HK y una bandera capturada no ha producido un valor de KB BG observable.
+
+## Evidencia nueva — actividad PvP de sesión tras BG (2026-11-18)
+
+Nueva salida de `/wsdiag`:
+
+```text
+GetPVPLifetimeStats: 92 | 0 | nil | nil
+GetPVPSessionStats: 60 | 0 | nil | nil
+GetPVPYesterdayStats: 0 | 0 | nil | nil
+GetStatistic(1487): 1021 | false | 1487 | nil
+GetStatistic(1501): 14 | false | 1501 | nil
+```
+
+- Las HK históricas `92` coinciden con la suma documentada de mundo `34` + BG `58`.
+- Las HK de sesión subieron de `2` a `60` durante la misma sesión, confirmando que `GetPVPSessionStats()` representa actividad de sesión y no debe etiquetarse como «Hoy» sin validar el reinicio diario.
+- Las HK de ayer siguen en `0`.
+- Las muertes PvP específicas `1501` ahora son `14`.
+- `1487` continúa en `1021`; no cambia con esta evidencia y KB/D sigue pendiente.

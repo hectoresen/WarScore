@@ -883,6 +883,45 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 
 ## Iteration #67 screenshot approved direction → #68 owner HK ornament (2026-11-18)
 
+## API audit evidence — expanded PvP statistics (2026-11-18)
+
+The owner ran `/wsdiag` and PvP statistic categories in WoW Forever 1.60.1. This is data evidence only; no UI or `Core/Stats.lua` implementation changed.
+
+Observed direct returns: `GetPVPLifetimeStats: 34 | 0`, `GetPVPSessionStats: 2 | 0`, `GetPVPYesterdayStats: 0 | 0`.
+
+Observed category data:
+
+- PvP general: deaths by players `1501=10`; opposing-faction deaths `318=10`.
+- Honorable kills: total `588=34`; world `381=34`; dominant continent `1458=27 (Kalimdor)`.
+- Killing blows: total `1487=1021`; world `1488=828`; dominant continent `1489=458 (Kalimdor)`.
+- Battleground category exposes 19 counters for global/per-BG played and wins plus objectives; all are `--` for this character.
+- Duel category exposes wins `319` and losses `320`; both are `--`, with native UI comparison confirming `0/0`.
+
+Next evidence required: complete one BG and one duel if possible, rerun categories 136/137/153/154, and compare killing-blow values with the native statistics panel before enabling KB/D. Keep rank unavailable: `UnitPVPRank` and `GetPVPRankProgress` are nil in Forever, while lifetime rank returns `0` for the tested character.
+
+## API audit follow-up — first battleground activity (2026-11-18)
+
+The owner produced the first positive battleground evidence:
+
+- Total HK `588=92`.
+- World HK `381=34`.
+- Battleground HK `382=58`.
+- Dominant battleground `1719=58 (Warsong Gulch)`.
+- Warsong HK `1115=58`; other per-BG HK counters remain `--`.
+- General counters: kills `1197=4517`, kills granting experience/honor `1198=4174`, own deaths `60=46`.
+
+The arithmetic `34 world HK + 58 BG HK = 92 total HK` validates the world/BG split. Killing-blow values remain `1487=1021`, `1488=828`, `1491=--` despite the BG HK activity, so KB/D remains pending native-panel comparison and further BG evidence. The 1197/1198/60 counters are not to be treated as PvP-specific metrics.
+
+Follow-up after one completed BG:
+
+- `839` BG played = `1`.
+- `52` Warsong matches = `1`.
+- `395` Warsong flags captured = `1`.
+- `840` BG wins, `105` Warsong wins and `586` flags returned remain `--`.
+- Category 137 remains `1487=1021`, `1488=828`, `1491=--`.
+
+This validates positive BG history and objective tracking. Compare the native statistics pane before treating `--` as zero for wins or returned flags; do not infer the match result from the API alone.
+
 - Owner's v67 real-client screenshot received with positive feedback (**"Perfecto! Muchísimo mejor"**). The accepted direction retains the new Horde PvP rank plaque, centered text, author-supplied nested frames, background, tabs and settings cog. Existing historical stats live data remained HK=34, deaths=10, HK/D=3.40 in screenshot.
 - Owner provided **`Marco ornamental dorado con laureles(1).png`** (1448×1086 RGBA). The actual artwork occupies roughly alpha x=87..1358, y=364..699, with a top/bottom gilded rail, central diamond details and left/right laurels; the central field is transparent. Use it **instead of the previous separate two laurels and the lower HK divider**. Do not invent artwork.
 - Artwork commit `d2c2b7052ee7a48ac6817e5adba5612edef79305`: the owner's PNG is cropped only to the artwork's transparent bounds (72,350,1372,706), resized to WoW-friendly 1024×256 and exported as `Media/General/hk_frame_owner_v68.tga` with alpha. Converted asset retains both laurels and the upper/lower rails. The original high-res PNG remains the quality reference.
