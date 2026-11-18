@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "64"
+local UI_ITERATION = "65"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -324,10 +324,13 @@ local function build()
     outerArt:SetAllPoints(window)
     outerArt:SetAlpha(1)
 
+    -- Iteration 65: owner screenshot showed the inner painting optically
+    -- 5 UI units left of the exterior contour. Shift the painting and its
+    -- tab hitboxes together; preserve all artwork, dimensions and backing.
     local innerArt = window:CreateTexture(nil, "BORDER")
     innerArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\inner_frame_owner_v64")
     innerArt:SetSize(774, 943)
-    innerArt:SetPoint("TOP", window, "TOP", 0, -82)
+    innerArt:SetPoint("TOP", window, "TOP", 5, -82)
     innerArt:SetAlpha(1)
 
     -- Keep brand text dynamic. The background plate is supplied artwork.
@@ -346,14 +349,14 @@ local function build()
     -- and hitboxes are needed. Their placement follows the asset's geometry.
     local general = CreateFrame("Button", nil, window)
     general:SetSize(150, 38)
-    general:SetPoint("TOPLEFT", window, "TOPLEFT", 188, -124)
+    general:SetPoint("TOPLEFT", window, "TOPLEFT", 193, -102)
     local generalText = label(general, "General", 16, GOLD, 0, -2, 135, 29)
     generalText:SetShadowColor(0.17, 0.08, 0.015, 0.94)
     generalText:SetShadowOffset(1, -1)
 
     local today = CreateFrame("Button", nil, window)
     today:SetSize(150, 38)
-    today:SetPoint("TOPLEFT", window, "TOPLEFT", 361, -124)
+    today:SetPoint("TOPLEFT", window, "TOPLEFT", 366, -102)
     local todayText = label(today, "Hoy", 15, CREAM, 0, -2, 135, 29)
     todayText:SetTextColor(0.72, 0.66, 0.55)
     today:SetScript("OnClick", function()
