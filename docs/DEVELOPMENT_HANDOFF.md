@@ -725,3 +725,18 @@ This is a phased visual redesign. **Iteration 43 tackles structural outer/inner 
 - **Owner QA required:** clean addon installation; `/reload`, `/ws version` = 53, `/ws`; verify no side banners, settings cog displays in INNER top-right and doesn't overlap tabs or X, rank emblem visually acceptable or not, no Lua errors. More substantive artwork/background work is still pending.
 
 - Packaging cleanup commit `c040b4cc18d452efbb9c76f9c3f25acbbd2f2052` deletes the now-unused banner renderer and texture references from `UI/General.lua`; the banner source artwork remains in Git for history but should no longer be included by `tools/package_addon.py` in the final runtime ZIP. CI packaging/parity should be checked after this commit.
+
+## Iteration #53 — owner screenshot review (2026-11-18)
+
+- Owner screenshot confirms the two large faction banners are gone, exposing more space. The 53 rank emblem is present but placed too far left on the ribbon; user requests shifting it rightward. Visual mount remains provisional.
+- Settings button is correctly placed near upper-right of INNER frame but native `INV_Gizmo_02` visually does **not** resemble a gear. Reject this glyph; the location remains intended, gear design not accepted.
+- User explicitly reports unchanged background and weak depth compared with mockup. Prefers the previous near-black backdrop / lower-card black material if it improves contrast. Current grey shell and iconography remain NOT accepted. Do not claim final fidelity.
+
+## Iteration #54 — darker recessed shell, genuine gear glyph and heraldry inset (2026-11-18)
+
+- UI commit `4ec052185a17020ea348d252b3fcf1b900d4e6bc`; `/ws version` = **54**.
+- Darkens the previously too-grey `panel_stone_dark` texture with warm brown-black vertex tint (0.61, 0.55, 0.49), preserving its organic grain. Adds a low-alpha feathered brown patina layer behind the central statistics using pre-existing `section_plaque`. This is a deliberate material/background change, not just documentation.
+- Swaps the unsuitable settings icon to the native `Interface\\Icons\\INV_Misc_Gear_01` mechanical cog candidate and tightens its UI treatment; still in upper-right INSIDE inner frame, no settings feature implemented. Client test must confirm that this particular icon exists in WoW Forever.
+- Moves the 51px faction mount 36px to the right, overlapping the plaque more centrally; slightly shifts dynamic rank text right for spacing. Not a final heraldic shield.
+- Banners stay removed and do not enter packaged runtime; bottom native icons remain provisional, all PvP stats and color/missing-data semantics unchanged.
+- **Owner QA required:** clean ZIP, `/reload`, `/ws version` = 54, `/ws`; check cog texture is a recognizable gear and not green/missing, dark background retains subtle detail, rank emblem/text spacing works, and no Lua errors. If native Gear icon is unavailable or visually poor, replace it with a proven client texture or purpose-built original cog asset. No in-client acceptance yet.
