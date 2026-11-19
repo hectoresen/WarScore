@@ -1369,3 +1369,13 @@ This validates positive BG history and objective tracking. Compare the native st
 - **No changes** to the gold owner triptych at 560.4525×61.75/top=-443.625, rank name/PR bindings, player plaque, HK, ratio, lower cards, tabs, panel backdrop or banner art.
 - CI workflow now stages the three new TGA outputs before committing `dist/WarScore.zip`. CI must validate ZIP contents and `/ws version=115`, with no documentation or tools in the clean installable archive.
 - **Pending in-game QA**: verify the line-and-title artwork centers above the left/right plates, the advancement motif sits between the rank panel and HK divider without overlap, original ranks and points remain readable, no stretched/broken alpha and no Lua errors. Fine-tune only these three new elements from the owner's screenshot.
+
+
+## Iteration #115 screenshot → #116: correct invisible rank ornaments without touching approved rank triptych (2026-11-19)
+
+- The owner's real v115 screenshot shows none of the three added original ornamental PNGs (current title, next title, advance-chevron divider). Original TGA files are actually present in the GitHub addon media tree and have valid BGRA pixels with nonzero/opaque alpha; this rules out missing, fully transparent source art. **The precise WoW rendering cause is not independently confirmed**.
+- v116 addresses draw/layer visibility by rendering each ornament in its own `CreateFrame("Frame", nil, window)`, frame level `window:GetFrameLevel()+8`, texture on `"OVERLAY"`, explicitly visible with white vertex color and alpha 1. Ornament frame mouse interaction is disabled. Texture paths are static Lua string literals so the existing clean ZIP packager includes their TGAs.
+- Current/next `Actual` and `Siguiente` labels: x=±203.49, top=-400, display 175×32. Bottom ornamental chevron: x=0, top=-498, display 560.4525×30. They are **decorative only**, preserving the live dynamic rank captions and current/threshold PR text exactly.
+- The owner-approved rank module, its TGA, width 560.4525, height 61.75, top -443.625, the dynamic rank names, PR text, header and all other modules remain unchanged. Graphical progress fill remains hidden.
+- GitHub Actions ZIP validation now also checks all three expected TGAs exist inside `dist/WarScore.zip`, have their exact power-of-two dimensions and contain visible alpha pixels. `/ws version` increments **115→116**.
+- The next in-game screenshot must confirm that the three ornaments appear, are positioned above/below the rank boxes, do not overlap the HK rail or portrait plaque, and that no UI modules moved. If still absent, use in-game texture-loading inspection before further cosmetic adjustments.
