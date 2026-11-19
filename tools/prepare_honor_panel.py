@@ -11,7 +11,7 @@ source = repo / "docs/assets/honor_panel_owner_v98_source.png"
 dest = repo / "addon/WarScore/Media/General/honor_panel_owner_v98.tga"
 with Image.open(source) as original:
     original.load()
-    if original.size != (320, 80):
+    if original.size != (256, 64):
         raise ValueError(f"Unexpected honor source size {original.size}")
     art = original.convert("RGBA")
     if not art.getchannel("A").getbbox():
