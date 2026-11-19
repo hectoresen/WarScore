@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "111"
+local UI_ITERATION = "112"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -537,10 +537,11 @@ local function build()
     -- Centers follow the actual outer-section centers of the owner
     -- artwork after scaling, not the former independent plate offsets.
     -- Narrow text bounds stop long names at the red divider gems.
-    -- v111: move live captions into the resized panel's actual centers.
-    -- Keep font sizes legible while reducing text bounds with the artwork.
-    fields.rankFrom = label(window, "—", 13, CREAM, -246.05, -463, 125.4, 25)
-    fields.rankTo = label(window, "—", 13, CREAM, 246.05, -463, 125.4, 25)
+    -- v112: optical recentering of the live captions within the existing
+    -- left/right gold chambers. Both labels move 8.05 units inward; the
+    -- approved frame and points counter remain exactly where they were.
+    fields.rankFrom = label(window, "—", 13, CREAM, -238, -463, 125.4, 25)
+    fields.rankTo = label(window, "—", 13, CREAM, 238, -463, 125.4, 25)
     fields.rankPoints = label(window, "—", 14, CREAM, 0, -464.125, 285, 23)
     fields.rankPoints:SetShadowColor(0.02, 0.01, 0.01, 1)
     fields.rankPoints:SetShadowOffset(1, -1)
