@@ -1268,3 +1268,5 @@ This validates positive BG history and objective tracking. Compare the native st
 - Lower rows: use **exactly the same shared band width 688** and height 100, centered x=+3 for both, preserving intentionally different per-cell divider widths. Move upper from -775→-767 and lower -890→-878, producing consistent gaps and added clearance above the parent's lower border. Preserve all icon/text data and all outer artwork.
 - Raise ratio art and its descriptions 7 units to preserve breathing room above top row, without altering the HK title or portrait.
 - UI version 104. Client visual QA pending: assess frame fidelity and side labels, confirm raw PR centered, and inspect equal row widths and bottom inset. Keep Honor removed until a future specified iteration.
+
+- Final v104 rendering correction before distribution: the original asset's alpha-visible aspect is ~5.61:1, so its in-game view is 365×65 (not horizontally stretched to 365×48). The rank frame uses BORDER instead of OVERLAY layer, allowing the authentic 0–100% dynamic ARTWORK fill to remain visible above its dark interior; content stays inset inside golden edges and data text remains above both.

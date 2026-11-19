@@ -525,10 +525,11 @@ local function build()
     -- v102: three independent author-painted elements.
     -- The central gold ornament encloses ONLY the progress meter.
     -- Two separate, unflattened hexagonal plates carry rank titles.
-    local rankBarFrame = window:CreateTexture(nil, "OVERLAY")
+    -- Put the opaque ornament behind the dynamic progress fill.
+    local rankBarFrame = window:CreateTexture(nil, "BORDER")
     rankBarFrame:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_bar_frame_owner_v104")
-    rankBarFrame:SetSize(365, 48)
-    rankBarFrame:SetPoint("TOP", window, "TOP", 0, -451)
+    rankBarFrame:SetSize(365, 65)
+    rankBarFrame:SetPoint("TOP", window, "TOP", 0, -441)
 
     fields.rankFill = window:CreateTexture(nil, "ARTWORK")
     fields.rankFill:SetSize(326, 19)
