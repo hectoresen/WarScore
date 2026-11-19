@@ -1,0 +1,203 @@
+{
+  "asset": "WarScore PvP rank progress fill",
+  "source": "barra_dorada_brillante_con_textura_metálica.png",
+  "coordinate_system": "top-left, pixels",
+  "size": {
+    "width": 900,
+    "height": 50
+  },
+  "steps": 5,
+  "total_files": 21,
+  "usage": "Overlay above empty rank bar track. All PNGs use same dimensions; switch files by clamped/rounded percent, or use one full texture with cropping for continuous progress.",
+  "files": [
+    {
+      "percent": 0,
+      "file": "WarScore_RankFill_000.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 0
+    },
+    {
+      "percent": 5,
+      "file": "WarScore_RankFill_005.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 45
+    },
+    {
+      "percent": 10,
+      "file": "WarScore_RankFill_010.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 90
+    },
+    {
+      "percent": 15,
+      "file": "WarScore_RankFill_015.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 135
+    },
+    {
+      "percent": 20,
+      "file": "WarScore_RankFill_020.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 180
+    },
+    {
+      "percent": 25,
+      "file": "WarScore_RankFill_025.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 225
+    },
+    {
+      "percent": 30,
+      "file": "WarScore_RankFill_030.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 270
+    },
+    {
+      "percent": 35,
+      "file": "WarScore_RankFill_035.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 315
+    },
+    {
+      "percent": 40,
+      "file": "WarScore_RankFill_040.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 360
+    },
+    {
+      "percent": 45,
+      "file": "WarScore_RankFill_045.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 405
+    },
+    {
+      "percent": 50,
+      "file": "WarScore_RankFill_050.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 450
+    },
+    {
+      "percent": 55,
+      "file": "WarScore_RankFill_055.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 495
+    },
+    {
+      "percent": 60,
+      "file": "WarScore_RankFill_060.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 540
+    },
+    {
+      "percent": 65,
+      "file": "WarScore_RankFill_065.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 585
+    },
+    {
+      "percent": 70,
+      "file": "WarScore_RankFill_070.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 630
+    },
+    {
+      "percent": 75,
+      "file": "WarScore_RankFill_075.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 675
+    },
+    {
+      "percent": 80,
+      "file": "WarScore_RankFill_080.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 720
+    },
+    {
+      "percent": 85,
+      "file": "WarScore_RankFill_085.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 765
+    },
+    {
+      "percent": 90,
+      "file": "WarScore_RankFill_090.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 810
+    },
+    {
+      "percent": 95,
+      "file": "WarScore_RankFill_095.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 855
+    },
+    {
+      "percent": 100,
+      "file": "WarScore_RankFill_100.png",
+      "dimensions": {
+        "width": 900,
+        "height": 50
+      },
+      "filled_width_px": 900
+    }
+  ]
+}
