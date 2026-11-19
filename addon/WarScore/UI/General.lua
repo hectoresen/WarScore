@@ -4,7 +4,7 @@ ns.UI = ns.UI or {}
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
 local showGeneralView, showSettingsView
-local UI_ITERATION = "124"
+local UI_ITERATION = "125"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -813,9 +813,15 @@ local function build()
     end)
     UIDropDownMenu_SetSelectedValue(styleDropdown, "classic-forever")
     UIDropDownMenu_SetText(styleDropdown, "Classic Forever")
-    -- Disable the whole native dropdown: this is a visible future setting,
-    -- not an interactive or misleading menu in v124.
-    UIDropDownMenu_Disable(styleDropdown)
+    -- v125: WoW Forever does not expose UIDropDownMenu_Disable.
+    -- Disable the actual native arrow button, which is always present on
+    -- UIDropDownMenuTemplate (also verified by the in-game error report).
+    -- Keep the selected style visible but prevent opening/changing it.
+    if styleDropdown.Button then
+        styleDropdown.Button:Disable()
+        styleDropdown.Button:SetAlpha(0.45)
+    end
+    styleDropdown:EnableMouse(false)
     local styleHint = label(styleRow, text("settings_style_unavailable"), 12, CREAM, 0, -91, 370, 20)
     styleHint:SetTextColor(0.58, 0.53, 0.47)
 
