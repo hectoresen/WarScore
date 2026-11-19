@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "107"
+local UI_ITERATION = "108"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -525,44 +525,25 @@ local function build()
         ornamentDiamond(window, -389, 8)
     end
 
-    -- v102: three independent author-painted elements.
-    -- The central gold ornament encloses ONLY the progress meter.
-    -- Two separate, unflattened hexagonal plates carry rank titles.
-    -- Put the opaque ornament behind the dynamic progress fill.
-    local rankBarFrame = window:CreateTexture(nil, "BORDER")
-    rankBarFrame:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_bar_frame_owner_v104")
-    -- v107: retain the approved gold surround and its precise center.
-    -- Preserve overall bar width and center (the image is not replaced).
-    rankBarFrame:SetSize(365, 38)
-    rankBarFrame:SetPoint("TOP", window, "TOP", 0, -455)
+    -- v108: single owner-provided three-section frame.  The existing 21
+    -- authored 5%-step rank textures remain dynamic, and are restricted to
+    -- the central compartment, never the two rank labels.
+    -- Source frame proportions and genuine metal/gems are preserved.
+    local rankPanel = window:CreateTexture(nil, "BORDER")
+    rankPanel:SetTexture("Interface\\\\AddOns\\\\WarScore\\\\Media\\\\General\\\\rank_panel_owner_v108")
+    rankPanel:SetSize(730, 69)
+    rankPanel:SetPoint("TOP", window, "TOP", 0, -440)
 
     fields.rankFill = window:CreateTexture(nil, "ARTWORK")
-    -- v107: 5% fill source contains a full-height circular cap. Align its
-    -- vertical center to the gold frame interior; no fabricated artwork.
-    fields.rankFill:SetSize(326, 32)
-    fields.rankFill:SetPoint("TOP", window, "TOP", 0, -458)
+    fields.rankFill:SetSize(362, 32)
+    fields.rankFill:SetPoint("TOP", window, "TOP", 0, -459)
     fields.rankFill:Hide()
 
-    -- Title plates come from the original 'rank bars' folder; preserve
-    -- their aspect ratios inside equally sized, independent viewports.
-    local rankNamePlate = "Interface\\AddOns\\WarScore\\Media\\General\\rank_name_plate_owner_v102"
-    local leftPlate = window:CreateTexture(nil, "BORDER")
-    leftPlate:SetTexture(rankNamePlate)
-    leftPlate:SetSize(169, 103)
-    -- v107: the left banner visually crowds this plate; add optical clearance
-    -- without changing the shared owner texture or the right-hand plate.
-    leftPlate:SetPoint("TOP", window, "TOP", -255, -423)
-    local rightPlate = window:CreateTexture(nil, "BORDER")
-    rightPlate:SetTexture(rankNamePlate)
-    rightPlate:SetSize(169, 103)
-    rightPlate:SetPoint("TOP", window, "TOP", 265, -423)
-
-    fields.rankFrom = label(window, "—", 13, CREAM, -255, -462, 143, 26)
-    fields.rankTo = label(window, "—", 13, CREAM, 265, -462, 143, 26)
-    -- The raw points sit at the center of the actual bar interior,
-    -- not at the center of the entire rank/plate composition.
+    -- Three independent live captions, positioned against the authored
+    -- centerlines of the two outer compartments and the central meter.
+    fields.rankFrom = label(window, "—", 13, CREAM, -281, -461, 155, 26)
+    fields.rankTo = label(window, "—", 13, CREAM, 281, -461, 155, 26)
     fields.rankPoints = label(window, "—", 14, CREAM, 0, -463, 300, 23)
-    -- No separate percent copy: user prefers only dynamic raw PR inside frame.
     fields.rankPoints:SetShadowColor(0.02, 0.01, 0.01, 1)
     fields.rankPoints:SetShadowOffset(1, -1)
 
