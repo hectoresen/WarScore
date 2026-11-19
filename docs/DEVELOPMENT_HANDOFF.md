@@ -1519,3 +1519,11 @@ This validates positive BG history and objective tracking. Compare the native st
 - Owner requests only a small spacing change to the gold gear below the top-right close X: move it slightly downward to avoid crowding the X and about 0.5% of the main 800-unit window width to the left.
 - In `addon/WarScore/UI/General.lua`, modify only `settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -58.5, -77)` to **(-62.5, -83)**: left 4 and down 6 UI units. Preserve gear size 38×38, its user-provided texture, hover and click behavior, original close X, all other anchors, the minimap button and all approved General/Settings/stats modules.
 - `UI_ITERATION` increments to **130**. CI checks exact anchor and clean installable `dist/WarScore.zip`. In-game screenshot QA pending.
+
+
+## Iteration #130 → #131: rename placeholder Today tab to Statistics (2026-11-19)
+
+- Change only localized text on the existing inactive second General-view tab: `Hoy` → `Estadísticas` (ES), `Today` → `Statistics` (EN).
+- Update its native hover tooltip to `Estadísticas (próximamente)` / `Statistics (Coming soon)`, and the message on clicking the placeholder to refer to Statistics. Existing localization keys `tab_today`, `today_coming_soon`, `today_message` stay unchanged internally to avoid functional changes. The tab remains non-navigable until the future Statistics view is implemented.
+- No coordinate, font, art, frame, PvP stats, rank, Honor, Settings, minimap or SavedVariables modifications. Preserve v130 and all previously approved functionality.
+- `UI_ITERATION` increments 130→131; CI asserts Spanish/English tab, hover tooltip, message and clean installable ZIP. In-game visual QA pending.
