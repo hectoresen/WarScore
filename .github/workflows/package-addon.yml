@@ -19,49 +19,10 @@ jobs:
         with:
           persist-credentials: true
       - name: Build standard ZIP and verify contents
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
           set -euo pipefail
-          exec > >(tee /tmp/war_score_v108_build.log) 2>&1
-          trap 'status=$?; if [ "$status" -ne 0 ]; then cp /tmp/war_score_v108_build.log docs/V108_BUILD_DIAGNOSTIC.txt; git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"; git add docs/V108_BUILD_DIAGNOSTIC.txt; git commit -m "ci: record v108 packaging failure [skip ci]"; git push || true; fi' EXIT
           python3 -m pip install --quiet Pillow
-          # One-time transport for the owner PNG already uploaded as a GitHub blob.
-          # After the successful build it is committed into docs/assets, making
-          # all future builds fully reproducible without this API fallback.
-          if [ ! -f docs/assets/rank_panel_owner_v108_source.png ]; then
-            python3 - <<'PY'
-          import base64, json, os, urllib.request
-          from pathlib import Path
-          sha = "dc9eba84206b47c27bf8a3807ca284201ce182e9"
-          url = f"https://api.github.com/repos/hectoresen/WarScore/git/blobs/{sha}"
-          req = urllib.request.Request(url, headers={
-              "Authorization": f"Bearer {os.environ['GITHUB_TOKEN']}",
-              "Accept": "application/vnd.github+json",
-          })
-          with urllib.request.urlopen(req) as response:
-              result = json.load(response)
-          encoded = "".join(result["content"].split())
-          marker = "xP8wVmR9xUYA8HSO"
-          offset = encoded.find(marker)
-          assert offset > 3000, "Unable to locate known owner PNG segment"
-          segment = Path("tools/rank_panel_v108_repair_segment.b64").read_text().strip()
-          assert len(segment) == 1000
-          restored = encoded[:3000] + segment + encoded[offset:] + "=="
-          assert len(restored) == 7932, f"Incorrect owner image length {len(restored)}; raw={len(encoded)}; offset={offset}; tail={encoded[-40:]}"
-          payload = base64.b64decode(restored, validate=True)
-          import hashlib
-          prefix = b"blob " + str(len(payload)).encode() + b"\0"
-          assert hashlib.sha1(prefix + payload).hexdigest() == "422a0bb5e270c127bfb9437a046901a6517f0620"
-          path = Path("docs/assets/rank_panel_owner_v108_source.png")
-          path.write_bytes(payload)
-          from PIL import Image
-          with Image.open(path) as im:
-              im.load()
-              assert im.size == (1024, 128)
-          PY
-          fi
           python3 tools/prepare_ratio_asset.py
           python3 tools/prepare_card_asset.py  # inspect transport image before release
           python3 tools/prepare_top_icons.py
