@@ -1395,3 +1395,12 @@ This validates positive BG history and objective tracking. Compare the native st
 - Align the standalone original owner PNG titles against the **actual left/right gold compartment centerlines**, not the inner live-caption offsets. Set `rank_label_current_owner_v115` x **-203.49 → -220** and `rank_label_next_owner_v115` x **+203.49 → +220**. Both stay at y=-432, size 175×32, with unchanged texture, alpha and raised frame level, ensuring equal vertical alignment and consistent clearance to the gold frame.
 - No modifications to the gold rank panel (560.4525×61.75), title strings inside it, PR, lower arrow, HK, PvP stats, header, banners or other UI. Only two X offsets and the diagnostic `UI_ITERATION 117→118` change.
 - GitHub Actions must produce and validate a new clean installable `dist/WarScore.zip`; in-game screenshot QA is still required.
+
+
+## Iteration #118 screenshot → #119: single shared axis for side ornaments and live rank labels (2026-11-19)
+
+- The owner's v118 in-game screenshot shows the `Actual`/`Siguiente` ornaments and the dynamic text `Sin rango`/`Explorador` still slightly misaligned relative to their respective rank boxes. Review of the existing authored one-piece frame shows side compartments centered symmetrically approximately ±213 UI units from the main frame's center; the old live captions were at ±203.49 while the ornamental headings were at ±220.
+- `addon/WarScore/UI/General.lua` v119 now defines a **single `local sideRankCenter = 213`** and uses -sideRankCenter/+sideRankCenter for both the live labels (`rankFrom`, `rankTo`) and the ornament frames (`rank_label_current_owner_v115`, `rank_label_next_owner_v115`). This corrects horizontal misalignment at the source and makes later edits consistent.
+- Retain existing vertical placement: rank names top=-463 and title ornaments top=-432, both aligned across sides. Retain the exact 175×32 and 107.217×25 sizes and typefaces. Titles are still immediately above their chambers, not inside the PR counter.
+- **Do not touch** the unified owner rank panel dimensions/position, red-gem separators, center numeric PR, advance-chevron below, portrait, HK, bottom stats, header, banner art, or underlying PvP API/storage. All existing original assets are preserved; progress fill remains disabled.
+- `/ws version` increments to 119 and GitHub Actions produces a clean installable `dist/WarScore.zip`. In-game visual QA pending to validate optical centering.
