@@ -559,7 +559,7 @@ local function build()
         ornamentFrame:EnableMouse(false)
 
         local ornament = ornamentFrame:CreateTexture(nil, "OVERLAY")
-        ornament:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\" .. textureName)
+        ornament:SetTexture(textureName)
         ornament:SetAllPoints(ornamentFrame)
         ornament:SetVertexColor(1, 1, 1, 1)
         ornament:SetAlpha(1)
@@ -569,11 +569,11 @@ local function build()
     end
 
     -- Two title lines sit above the corresponding side chambers.
-    addRankOrnament("rank_label_current_owner_v115", -203.49, -400, 175, 32)
-    addRankOrnament("rank_label_next_owner_v115", 203.49, -400, 175, 32)
+    addRankOrnament("Interface\\\\AddOns\\\\WarScore\\\\Media\\\\General\\\\rank_label_current_owner_v115", -203.49, -400, 175, 32)
+    addRankOrnament("Interface\\\\AddOns\\\\WarScore\\\\Media\\\\General\\\\rank_label_next_owner_v115", 203.49, -400, 175, 32)
 
     -- The advance chevron is purely decorative: PR remains only numeric.
-    addRankOrnament("rank_divider_advance_owner_v115", 0, -498, 560.4525, 30)
+    addRankOrnament("Interface\\\\AddOns\\\\WarScore\\\\Media\\\\General\\\\rank_divider_advance_owner_v115", 0, -498, 560.4525, 30)
 
     -- Iteration 68: the owner's transparent HK asset supplies both laurels,
     -- upper/lower gold rails and diamonds. No more separate HK laurels, 
