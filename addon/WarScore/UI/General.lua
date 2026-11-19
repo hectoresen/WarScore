@@ -4,7 +4,7 @@ ns.UI = ns.UI or {}
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
 local showGeneralView, showSettingsView
-local UI_ITERATION = "122"
+local UI_ITERATION = "123"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -697,6 +697,7 @@ local function build()
     local sharedRegions = {
         [interiorBacking] = true,
         [outerArt] = true,
+        [innerArt] = true, -- v123: exactly the same approved General inner frame in BOTH views
         [brandTitle] = true,
     }
     local sharedChildren = {
@@ -719,24 +720,27 @@ local function build()
         end
     end
 
-    -- The supplied second inner frame uses the same authored canvas as
-    -- inner_frame_owner_v64, with empty tabs for live localized captions.
+    -- v123: reuse the EXACT General innerArt already rendered by window.
+    -- No second frame texture, no duplicate border, no alternate canvas.
+    -- The underlying innerArt stays visible across both views at 774x985,
+    -- TOP x=5/y=-82, and keeps its original baked General/Hoy tab plates.
+    -- Only the tab captions and the content group change visibility.
     local settingsPage = CreateFrame("Frame", nil, window)
     settingsPage:SetAllPoints(window)
     settingsPage:SetFrameLevel(window:GetFrameLevel() + 2)
-    local settingsArtwork = settingsPage:CreateTexture(nil, "ARTWORK")
-    settingsArtwork:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\settings_inner_frame_owner_v122")
-    settingsArtwork:SetSize(774, 985)
-    settingsArtwork:SetPoint("TOP", settingsPage, "TOP", 5, -82)
 
-    local settingsTitle = label(settingsPage, text("tab_settings"), 16, GOLD, -160, -104, 160, 29)
+    -- Mirror the ORIGINAL General and Hoy tab button geometry exactly.
+    local settingsTab = CreateFrame("Frame", nil, settingsPage)
+    settingsTab:SetSize(150, 38)
+    settingsTab:SetPoint("TOPLEFT", settingsPage, "TOPLEFT", 193, -102)
+    local settingsTitle = label(settingsTab, text("tab_settings"), 16, GOLD, 0, -2, 135, 29)
     settingsTitle:SetShadowColor(0.17, 0.08, 0.015, 0.94)
     settingsTitle:SetShadowOffset(1, -1)
 
     local returnTab = CreateFrame("Button", nil, settingsPage)
-    returnTab:SetSize(160, 38)
-    returnTab:SetPoint("TOP", settingsPage, "TOP", 30, -102)
-    local returnTitle = label(returnTab, text("tab_back"), 15, CREAM, 0, -2, 150, 29)
+    returnTab:SetSize(150, 38)
+    returnTab:SetPoint("TOPLEFT", settingsPage, "TOPLEFT", 366, -102)
+    local returnTitle = label(returnTab, text("tab_back"), 15, CREAM, -5, -2, 135, 29)
     returnTitle:SetTextColor(0.72, 0.66, 0.55)
     returnTab:SetScript("OnEnter", function()
         returnTitle:SetTextColor(1, 0.86, 0.52)
