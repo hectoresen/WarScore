@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "115"
+local UI_ITERATION = "116"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -546,26 +546,34 @@ local function build()
     fields.rankPoints:SetShadowColor(0.02, 0.01, 0.01, 1)
     fields.rankPoints:SetShadowOffset(1, -1)
 
-    -- v115: the original gold triptych and all three dynamic captions above
-    -- are unchanged. Each additional owner-authored PNG is independent.
-    -- Their ornaments have transparent padding on a power-of-two TGA canvas.
-    -- Put the two titles above their corresponding pointed rank chambers.
-    local rankCurrentOrnament = window:CreateTexture(nil, "ARTWORK")
-    rankCurrentOrnament:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_label_current_owner_v115")
-    rankCurrentOrnament:SetSize(155, 28)
-    rankCurrentOrnament:SetPoint("TOP", window, "TOP", -203.49, -404)
+    -- v116: the three owner-supplied ornaments were absent in the owner's
+    -- actual v115 screenshot despite valid TGA resources in the ZIP.
+    -- Render each as its own raised child frame, above the window's inner
+    -- artwork and sibling frames. This avoids dependence on parent texture
+    -- draw-layer ordering. The v114-approved triptych is untouched.
+    local function addRankOrnament(textureName, x, top, width, height)
+        local ornamentFrame = CreateFrame("Frame", nil, window)
+        ornamentFrame:SetSize(width, height)
+        ornamentFrame:SetPoint("TOP", window, "TOP", x, top)
+        ornamentFrame:SetFrameLevel(window:GetFrameLevel() + 8)
+        ornamentFrame:EnableMouse(false)
 
-    local rankNextOrnament = window:CreateTexture(nil, "ARTWORK")
-    rankNextOrnament:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_label_next_owner_v115")
-    rankNextOrnament:SetSize(155, 28)
-    rankNextOrnament:SetPoint("TOP", window, "TOP", 203.49, -404)
+        local ornament = ornamentFrame:CreateTexture(nil, "OVERLAY")
+        ornament:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\" .. textureName)
+        ornament:SetAllPoints(ornamentFrame)
+        ornament:SetVertexColor(1, 1, 1, 1)
+        ornament:SetAlpha(1)
+        ornament:Show()
+        ornamentFrame:Show()
+        return ornamentFrame
+    end
 
-    -- Decorative-only advance motif immediately below the points panel.
-    -- It is not a data-driven fill, and does not change the existing PR value.
-    local rankAdvanceOrnament = window:CreateTexture(nil, "ARTWORK")
-    rankAdvanceOrnament:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_divider_advance_owner_v115")
-    rankAdvanceOrnament:SetSize(560.4525, 25)
-    rankAdvanceOrnament:SetPoint("TOP", window, "TOP", 0, -500)
+    -- Two title lines sit above the corresponding side chambers.
+    addRankOrnament("rank_label_current_owner_v115", -203.49, -400, 175, 32)
+    addRankOrnament("rank_label_next_owner_v115", 203.49, -400, 175, 32)
+
+    -- The advance chevron is purely decorative: PR remains only numeric.
+    addRankOrnament("rank_divider_advance_owner_v115", 0, -498, 560.4525, 30)
 
     -- Iteration 68: the owner's transparent HK asset supplies both laurels,
     -- upper/lower gold rails and diamonds. No more separate HK laurels, 
