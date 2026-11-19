@@ -169,8 +169,9 @@ local function printRankData()
         local ok, info = pcall(C_MajorFactions.GetMajorFactionProgressionInfo, 2800)
         if ok then
             printFields("C_MajorFactions 2800", info, {
-                "renownLevel", "renownReputationEarned", "renownReputationRequired",
-                "isLocked", "hasMaximumRenown", "factionID"
+                "renownLevel", "renownReputationEarned", "renownLevelThreshold",
+                "previousWeekProgressiveMaxLevel", "currentWeekProgressiveMaxLevel",
+                "maxLevel", "weekNumber"
             })
         else
             output("C_MajorFactions 2800: ERROR " .. show(info))
@@ -190,6 +191,12 @@ local function printRankData()
     else
         output("C_Reputation.GetFactionDataByID: API no disponible")
     end
+    if C_MajorFactions then
+        inspect("C_MajorFactions.GetCurrentRenownLevel(2800)", C_MajorFactions.GetCurrentRenownLevel, 2800)
+        inspect("C_MajorFactions.GetMajorFactionRenownInfo(2800)", C_MajorFactions.GetMajorFactionRenownInfo, 2800)
+        inspect("C_MajorFactions.GetMajorFactionData(2800)", C_MajorFactions.GetMajorFactionData, 2800)
+        inspect("C_MajorFactions.HasMaximumRenown(2800)", C_MajorFactions.HasMaximumRenown, 2800)
+    end
     if C_CurrencyInfo and type(C_CurrencyInfo.GetCurrencyInfo) == "function" then
         for _, id in ipairs({ 3468, 3473 }) do
             local ok, info = pcall(C_CurrencyInfo.GetCurrencyInfo, id)
@@ -203,6 +210,15 @@ local function printRankData()
         end
     else
         output("C_CurrencyInfo.GetCurrencyInfo: API no disponible")
+    end
+    local faction = type(UnitFactionGroup) == "function" and UnitFactionGroup("player") or nil
+    local factionIndex = faction == "Horde" and 0 or (faction == "Alliance" and 1 or nil)
+    if factionIndex then
+        output("Nombres de rango cargados para " .. faction .. " (índice " .. factionIndex .. ")")
+        for rank = 0, 14 do
+            local key = "PVP_RANK_" .. rank .. "_" .. factionIndex
+            if _G[key] then output(key .. " = " .. show(_G[key])) end
+        end
     end
     output("Si Rank Points no aparece aqui, ejecuta tambien /wsdiag currencies")
 end
