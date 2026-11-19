@@ -57,3 +57,17 @@ with Image.open(plate_file) as original:
     canvas.paste(plate, ((256 - plate.width)//2, (128 - plate.height)//2))
     canvas.save(out / "rank_name_plate_owner_v102.tga", format="TGA")
 print("Prepared separate owner PvP rank nameplates")
+
+# v108: convert the exact owner-provided single-piece three-compartment
+# panel. CI initially materializes this authored transport source from the
+# uploaded Git blob; subsequently both original transport and TGA are stored.
+panel_source = root / "docs/assets/rank_panel_owner_v108_source.png"
+with Image.open(panel_source) as original:
+    original.load()
+    if original.size != (1024, 128):
+        raise ValueError(f"Unexpected v108 panel source dimensions: {original.size}")
+    panel = original.convert("RGBA")
+    if not panel.getchannel("A").getbbox():
+        raise ValueError("Owner v108 panel has no visible pixels")
+    panel.save(out / "rank_panel_owner_v108.tga", format="TGA")
+print("Prepared original single-piece v108 rank panel")
