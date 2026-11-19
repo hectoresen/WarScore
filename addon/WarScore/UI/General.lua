@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "97"
+local UI_ITERATION = "98"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -363,6 +363,13 @@ local function build()
     -- v96: center the copy optically within the painted inactive tab.
     local todayText = label(today, "Hoy", 15, CREAM, -5, -2, 135, 29)
     todayText:SetTextColor(0.72, 0.66, 0.55)
+    -- v98: mirror the native-style settings hover tooltip.
+    today:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText("Hoy (Próximamente)", 1, 0.82, 0.40)
+        GameTooltip:Show()
+    end)
+    today:SetScript("OnLeave", function() GameTooltip:Hide() end)
     today:SetScript("OnClick", function()
         if DEFAULT_CHAT_FRAME then
             DEFAULT_CHAT_FRAME:AddMessage("|cffffc34dWarScore:|r La pestaña Hoy estará disponible en una próxima versión.")
@@ -489,12 +496,14 @@ local function build()
     -- The owner-supplied HK graphic already has a lower rule and a diamond.
     -- Do not render the previously separate -514px divider over it.
 
-    -- v89: the central historical death metric moves to the right-hand
-    -- ratio slot; this secondary hero now shows current spendable honor.
-    -- Honor comes from UnitHonor("player") and is not historical earned honor.
-    sectionPlaque(window, -525, 500, 91, 0.48)
+    -- v98: replace the old flat honor plaque with the owner's complete
+    -- ornamental panel (a single TGA with its own decorative framing).
+    -- The HONOR heading and currency balance remain dynamic FontStrings.
+    local honorArt = window:CreateTexture(nil, "BORDER")
+    honorArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\honor_panel_owner_v98")
+    honorArt:SetSize(640, 134)
+    honorArt:SetPoint("TOP", window, "TOP", 0, -520)
     label(window, "HONOR", 17, GOLD, 0, -544, 430, 27)
-    -- v93: value now displays current balance / currency cap.
     fields.honor = label(window, "—", 32, GOLD, 0, -573, 390, 54)
     fields.honor:SetShadowColor(0.32, 0.18, 0.04, 0.64)
     fields.honor:SetShadowOffset(1, -1)

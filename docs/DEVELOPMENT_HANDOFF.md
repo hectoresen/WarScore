@@ -1193,3 +1193,12 @@ This validates positive BG history and objective tracking. Compare the native st
 - Owner visually inspected v96 and asks for another tiny optical correction of the gear: approximately 1 mm to the left and 2 down. This translates to a conservative 1 UI unit left and 2 UI units down for an in-game follow-up, with no other changes.
 - v97 adjusts only the same settings-gear TOPRIGHT anchor from (-57.5,-75) to **(-58.5,-77)**. Keep the owner's 38×38 gold gear art, its tooltip, the original baked close X and click target, General/Hoy tabs, and all stats unchanged.
 - Diagnostic UI iteration = 97. **Client QA pending**: install version-pinned ZIP, run `/reload`, `/ws version` (97), `/ws`, verify centered alignment under the X without touching the tab/inner border.
+
+
+## Iteration #97 accepted → #98 Hoy hover and Honor asset (2026-11-19)
+
+- Owner confirms v97 gear and close alignment satisfactory and requests the usual installable addon iteration, **not a mockup**. Two changes only.
+- Add `Hoy` hover tooltip using the same `GameTooltip:SetOwner(self, "ANCHOR_RIGHT")`, gold text and `OnLeave` dismissal as the current Ajustes tooltip. Exact wording: `Hoy (Próximamente)`. Existing inactive tab click/message remains unchanged.
+- Integrate the user's supplied transparent crimson-and-gold **Honor frame with raised central plaque** in the central Honor area: `honor_panel_owner_v98.tga`, displayed 640×134 at center TOP -520. Remove the former plain `sectionPlaque` behind Honor to avoid duplicated ornaments. Keep HONOR heading dynamic at y=-544 and currency value at y=-573 with unchanged font size/color, retaining live currency ID 1792 `cantidad / máximo` formatting and the left/right ratio statistics below.
+- The source is derived exclusively from the user's `Marco de honor dorado con panel carmesí(1).png`, transparent central panel crop (approximately original x=55..1990, y=134..537), resized and losslessly stored as a palette PNG transport under `docs/assets/honor_panel_owner_v98_source.png`. The reproducible converter `tools/prepare_honor_panel.py` creates the 1024×256 alpha TGA for the installable addon; CI commits it and the verified `dist/WarScore.zip`.
+- Diagnostic version 98. **In-game QA pending**: verify tooltip appears on hover only, that Honor panel fits between 92 HK and ratio rails without overlapping either, HONOR and value stay centered, and the rest of the layout/X/gear remain unchanged. No new mockup is a substitute for this game test.
