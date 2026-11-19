@@ -50,7 +50,7 @@ jobs:
           assert len(restored) == 7932, f"Incorrect owner image length {len(restored)}"
           payload = base64.b64decode(restored, validate=True)
           import hashlib
-          prefix = b"blob " + str(len(payload)).encode() + b"\\0"
+          prefix = b"blob " + str(len(payload)).encode() + b"\0"
           assert hashlib.sha1(prefix + payload).hexdigest() == "422a0bb5e270c127bfb9437a046901a6517f0620"
           path = Path("docs/assets/rank_panel_owner_v108_source.png")
           path.write_bytes(payload)
