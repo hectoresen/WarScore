@@ -83,6 +83,25 @@ function ns.Stats.ReadHistorical()
         end
     end
 
+    -- Forever PvP ranks are Major Faction 2800, not legacy UnitPVPRank.
+    -- The renown level is the current rank; the earned value is progress
+    -- toward its renownLevelThreshold. A zero level is an unranked character.
+    local rankLevel, rankPoints, rankThreshold, rankMaxLevel
+    local majorAPI = C_MajorFactions
+    if majorAPI and type(majorAPI.GetMajorFactionProgressionInfo) == "function" then
+        local ok, info = pcall(majorAPI.GetMajorFactionProgressionInfo, 2800)
+        if ok and type(info) == "table" then
+            local level = tonumber(info.renownLevel)
+            local earned = tonumber(info.renownReputationEarned)
+            local threshold = tonumber(info.renownLevelThreshold)
+            local maximum = tonumber(info.maxLevel)
+            if level and level >= 0 then rankLevel = math.floor(level) end
+            if earned and earned >= 0 then rankPoints = earned end
+            if threshold and threshold > 0 then rankThreshold = threshold end
+            if maximum and maximum > 0 then rankMaxLevel = math.floor(maximum) end
+        end
+    end
+
     local deaths = read(1501)
     local duelsWon = zeroIfNoActivity(read(319))
     local duelsLost = zeroIfNoActivity(read(320))
@@ -99,7 +118,10 @@ function ns.Stats.ReadHistorical()
         hkDeathRatio = ns.Stats.Ratio(hk, deaths),
         killingBlows = nil,
         kbDeathRatio = nil, -- 1487 is not validated as PvP-only
-        pvpRank = nil, -- rank source not yet validated
+        pvpRank = rankLevel,
+        pvpRankPoints = rankPoints,
+        pvpRankThreshold = rankThreshold,
+        pvpRankMaxLevel = rankMaxLevel,
         duelsWon = duelsWon,
         duelsLost = duelsLost,
         duelWinRate = ns.Stats.Percent(duelsWon, duelsWon + duelsLost),

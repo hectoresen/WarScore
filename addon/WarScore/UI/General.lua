@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "99"
+local UI_ITERATION = "100"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -255,6 +255,25 @@ local function formatPercent(value)
     return string.format("%.1f%%", value):gsub("%.", ",")
 end
 
+
+-- Forever PvP-rank indices start with PVP_RANK_5_<faction> at renown 1.
+-- A renown level of zero has no rank, even if some Rank Points are earned.
+local function rankName(level, faction)
+    if type(level) ~= "number" or level < 0 then return "—" end
+    if level == 0 then return "Sin rango" end
+    local factionIndex = faction == "Horde" and 0 or (faction == "Alliance" and 1 or nil)
+    if not factionIndex then return "Rango " .. tostring(level) end
+    local key = "PVP_RANK_" .. tostring(level + 4) .. "_" .. tostring(factionIndex)
+    local value = _G[key]
+    return type(value) == "string" and value ~= "" and value or ("Rango " .. tostring(level))
+end
+
+local function roundedRankStep(points, maximum)
+    if type(points) ~= "number" or type(maximum) ~= "number" or maximum <= 0 then return nil end
+    local percent = math.max(0, math.min(100, points / maximum * 100))
+    return math.floor(percent / 5 + 0.5) * 5, percent
+end
+
 local function refresh()
     if not window or not window:IsShown() then return end
     local data = ns.Stats.ReadHistorical()
@@ -272,7 +291,37 @@ local function refresh()
     end
     fields.deaths:SetText(formatNumber(data.pvpDeaths))
     fields.hkd:SetText(formatRatio(data.hkDeathRatio))
-    fields.rank:SetText("No disponible")
+    local level = data.pvpRank
+    local faction = type(UnitFactionGroup) == "function" and UnitFactionGroup("player") or nil
+    if type(level) == "number" then
+        fields.rank:SetText(rankName(level, faction))
+        fields.rankFrom:SetText(rankName(level, faction))
+        local atMax = type(data.pvpRankMaxLevel) == "number" and level >= data.pvpRankMaxLevel
+        fields.rankTo:SetText(atMax and "Máximo" or rankName(level + 1, faction))
+        local points, threshold = data.pvpRankPoints, data.pvpRankThreshold
+        if type(points) == "number" then
+            fields.rankPoints:SetText(formatHonorNumber(points) .. " / " .. formatHonorNumber(threshold) .. " PR")
+        else
+            fields.rankPoints:SetText("—")
+        end
+        local step, percent = roundedRankStep(points, threshold)
+        if atMax then step, percent = 100, 100 end
+        if step then
+            fields.rankFill:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_fill_" .. string.format("%03d", step))
+            fields.rankFill:Show()
+            fields.rankPercent:SetText(string.format("%.0f%%", percent))
+        else
+            fields.rankFill:Hide()
+            fields.rankPercent:SetText("—")
+        end
+    else
+        fields.rank:SetText("No disponible")
+        fields.rankFrom:SetText("—")
+        fields.rankTo:SetText("—")
+        fields.rankPoints:SetText("—")
+        fields.rankPercent:SetText("—")
+        fields.rankFill:Hide()
+    end
     fields.duels:SetText(formatCountOrZero(data.duelsWon))
     fields.bgPlayed:SetText(formatCountOrZero(data.battlegroundsPlayed))
     fields.bgWon:SetText(formatCountOrZero(data.battlegroundsWon))
@@ -291,7 +340,7 @@ end
 
 local function build()
     window = CreateFrame("Frame", "WarScoreGeneralFrame", UIParent, "BackdropTemplate")
-    window:SetSize(870, 1060)
+    window:SetSize(870, 1145)
     window:SetScale(0.86)
     window:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
     window:SetFrameStrata("DIALOG")
@@ -475,21 +524,58 @@ local function build()
         ornamentDiamond(window, -389, 8)
     end
 
+    -- v100: user-authored progress fills (0..100 in 5% steps) and
+    -- matching gold plaques, centered below the existing PvP-rank shield.
+    -- Labels stay dynamic, sourced from Major Faction 2800.
+    fields.rankPoints = label(window, "—", 13, CREAM, 0, -427, 260, 19)
+    local rankTrack = window:CreateTexture(nil, "BORDER")
+    rankTrack:SetTexture("Interface\\Buttons\\WHITE8X8")
+    rankTrack:SetVertexColor(0.105, 0.067, 0.031, 0.96)
+    rankTrack:SetSize(330, 22)
+    rankTrack:SetPoint("TOP", window, "TOP", 0, -451)
+    -- A single fill texture is swapped between 21 author-supplied PNGs.
+    fields.rankFill = window:CreateTexture(nil, "ARTWORK")
+    fields.rankFill:SetSize(330, 22)
+    fields.rankFill:SetPoint("TOP", window, "TOP", 0, -451)
+    fields.rankFill:Hide()
+    local borderTop = window:CreateTexture(nil, "OVERLAY")
+    borderTop:SetTexture("Interface\\Buttons\\WHITE8X8")
+    borderTop:SetVertexColor(0.82, 0.55, 0.14, 0.95)
+    borderTop:SetSize(332, 1)
+    borderTop:SetPoint("TOP", window, "TOP", 0, -451)
+    local borderBottom = window:CreateTexture(nil, "OVERLAY")
+    borderBottom:SetTexture("Interface\\Buttons\\WHITE8X8")
+    borderBottom:SetVertexColor(0.82, 0.55, 0.14, 0.95)
+    borderBottom:SetSize(332, 1)
+    borderBottom:SetPoint("TOP", window, "TOP", 0, -473)
+    local rankPlateTexture = "Interface\\AddOns\\WarScore\\Media\\General\\rank_name_plate_owner_v100"
+    local fromPlate = window:CreateTexture(nil, "BORDER")
+    fromPlate:SetTexture(rankPlateTexture)
+    fromPlate:SetSize(139, 40)
+    fromPlate:SetPoint("TOP", window, "TOP", -255, -445)
+    local toPlate = window:CreateTexture(nil, "BORDER")
+    toPlate:SetTexture(rankPlateTexture)
+    toPlate:SetSize(139, 40)
+    toPlate:SetPoint("TOP", window, "TOP", 255, -445)
+    fields.rankFrom = label(window, "—", 12, CREAM, -255, -452, 119, 25)
+    fields.rankTo = label(window, "—", 12, CREAM, 255, -452, 119, 25)
+    fields.rankPercent = label(window, "—", 13, GOLD, 0, -475, 100, 17)
+
     -- Iteration 68: the owner's transparent HK asset supplies both laurels,
     -- upper/lower gold rails and diamonds. No more separate HK laurels, 
     -- line, diamond or flat material panel behind it.
     local hkOrnament = window:CreateTexture(nil, "ARTWORK")
     hkOrnament:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\hk_frame_owner_v68")
     hkOrnament:SetSize(600, 119)
-    hkOrnament:SetPoint("TOP", window, "TOP", 0, -407)
+    hkOrnament:SetPoint("TOP", window, "TOP", 0, -492)
 
     -- Same horizontal X=0 as portrait, name, level and PvP rank.
     -- Move the rank down 6 units to give level/class a little more breathing room.
-    local hkTitle = label(window, "MUERTES CON HONOR", 23, GOLD, 0, -425, 460, 32)
+    local hkTitle = label(window, "MUERTES CON HONOR", 23, GOLD, 0, -510, 460, 32)
     hkTitle:SetShadowColor(0.22, 0.10, 0.02, 0.9)
     hkTitle:SetShadowOffset(1, -1)
 
-    fields.hk = label(window, "—", 61, GOLD, 0, -452, 500, 67)
+    fields.hk = label(window, "—", 61, GOLD, 0, -537, 500, 67)
     fields.hk:SetShadowColor(0.60, 0.30, 0.035, 0.9)
     fields.hk:SetShadowOffset(2, -2)
 
@@ -502,10 +588,10 @@ local function build()
     local honorArt = window:CreateTexture(nil, "BORDER")
     honorArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\honor_panel_owner_v98")
     honorArt:SetSize(640, 134)
-    honorArt:SetPoint("TOP", window, "TOP", 0, -520)
+    honorArt:SetPoint("TOP", window, "TOP", 0, -605)
     -- v99: center the dynamic heading vertically inside the raised plaque.
-    label(window, "HONOR", 17, GOLD, 0, -534, 430, 27)
-    fields.honor = label(window, "—", 32, GOLD, 0, -573, 390, 54)
+    label(window, "HONOR", 17, GOLD, 0, -619, 430, 27)
+    fields.honor = label(window, "—", 32, GOLD, 0, -658, 390, 54)
     fields.honor:SetShadowColor(0.32, 0.18, 0.04, 0.64)
     fields.honor:SetShadowOffset(1, -1)
 
@@ -518,30 +604,30 @@ local function build()
     -- Iteration 71: stretch only the transparent vertical field to contain
     -- the live captions above the lower sapphire rail; keep width unchanged.
     ratioOrnament:SetSize(632, 172)
-    ratioOrnament:SetPoint("TOP", window, "TOP", 0, -600)
+    ratioOrnament:SetPoint("TOP", window, "TOP", 0, -685)
 
     -- Iteration 72: compact the text stack inside the fixed owner frame.
     -- Iteration 73: shift the entire ratio art + text block up 10 UI units.
     -- Keep all relative positions and font sizes established by v72.
-    label(window, "HK/D", 18, GOLD, -165, -650, 270, 22)
+    label(window, "HK/D", 18, GOLD, -165, -735, 270, 22)
     -- v90: align right-column heading and counter to the actual right panel axis.
     -- The previous +165 offset was visibly right of the ornamental cell center.
     local rightMetricX = 150
-    label(window, "MUERTES PvP SUFRIDAS", 16, RED, rightMetricX, -650, 290, 22)
-    fields.hkd = label(window, "—", 34, CREAM, -165, -672, 270, 37)
-    fields.deaths = label(window, "—", 34, RED, rightMetricX, -672, 270, 37)
+    label(window, "MUERTES PvP SUFRIDAS", 16, RED, rightMetricX, -735, 290, 22)
+    fields.hkd = label(window, "—", 34, CREAM, -165, -757, 270, 37)
+    fields.deaths = label(window, "—", 34, RED, rightMetricX, -757, 270, 37)
     fields.hkd:SetShadowColor(0.34, 0.19, 0.06, 0.72)
     fields.hkd:SetShadowOffset(1, -1)
     fields.deaths:SetShadowColor(0.32, 0.05, 0.035, 0.70)
     fields.deaths:SetShadowOffset(1, -1)
-    local hkDescription = label(window, "HK / muertes PvP sufridas", 11, CREAM, -165, -708, 300, 18)
+    local hkDescription = label(window, "HK / muertes PvP sufridas", 11, CREAM, -165, -793, 300, 18)
     hkDescription:SetTextColor(0.77, 0.69, 0.58)
     -- Deliberately no descriptive copy under the raw PvP death counter;
     -- the raw count's title already states the metric unambiguously.
 
     -- Lower ratio rail and central sapphire are part of the new owner asset.
 
-    local firstRow = statBand(window, -758, {
+    local firstRow = statBand(window, -843, {
         { title = "DUELOS GANADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duels_owner_v77" },
         { title = "CAMPOS DE BATALLA JUGADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_played_owner_v77" },
         { title = "BG GANADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_wins_owner_v77" },
@@ -549,7 +635,7 @@ local function build()
     fields.duels, fields.bgPlayed, fields.bgWon = unpack(firstRow)
     -- v88: lift the entire lower band 8 UI units to clear the parent bottom rim.
     -- Keep the owner TGA, band dimensions and the text/icon local anchors intact.
-    local secondRow = statBand(window, -870, {
+    local secondRow = statBand(window, -955, {
         { title = "WIN RATE BG", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_rate_owner_v79" },
         { title = "WIN RATE DUELOS", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duel_rate_owner_v79" },
         { title = "CAMPO DE BATALLA FAVORITO", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_favorite_bg_owner_v79", valueSize = 17 },
@@ -558,7 +644,7 @@ local function build()
     fields.favoritePlayed = secondRow.favoritePlayed
 
     -- The reference's tall two-row composition needs additional height.
-    window:SetHeight(1060)
+    window:SetHeight(1145)
     window:SetScript("OnShow", refresh)
 end
 
