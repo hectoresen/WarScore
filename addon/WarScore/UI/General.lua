@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "103"
+local UI_ITERATION = "104"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -132,8 +132,9 @@ local function statBand(parent, y, definitions, secondary)
     -- v76: inset both owner-painted rows 8 units per side to clear parent rail.
     local bandWidth = 688
     -- v102: slightly shorter frame viewport while keeping captions fixed.
-    band:SetSize(bandWidth, 104)
-    band:SetPoint("TOP", parent, "TOP", 0, y)
+    band:SetSize(bandWidth, 100)
+    -- Shared exact horizontal center for both stat cards.
+    band:SetPoint("TOP", parent, "TOP", 3, y)
     backdrop(band, 0.92)
     -- Owner artwork supplies all metal rails, corners and vertical dividers.
     -- v74 top frame remains unchanged; v75 applies only to lower card row.
@@ -153,7 +154,7 @@ local function statBand(parent, y, definitions, secondary)
     for i, definition in ipairs(definitions) do
         local segmentWidth = widths[i]
         local segment = CreateFrame("Frame", nil, band)
-        segment:SetSize(segmentWidth, 100)
+        segment:SetSize(segmentWidth, 96)
         segment:SetPoint("TOPLEFT", band, "TOPLEFT", offset, -2)
         offset = offset + segmentWidth
 
@@ -306,17 +307,17 @@ local function refresh()
         if step then
             fields.rankFill:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_fill_" .. string.format("%03d", step))
             fields.rankFill:Show()
-            fields.rankPercent:SetText(string.format("%.0f%%", percent))
+            -- Percentage intentionally omitted from the interface (v104).
         else
             fields.rankFill:Hide()
-            fields.rankPercent:SetText("—")
+            -- When data is unavailable, only the numeric PR label uses a dash.
         end
     else
         fields.rank:SetText("No disponible")
         fields.rankFrom:SetText("—")
         fields.rankTo:SetText("—")
         fields.rankPoints:SetText("—")
-        fields.rankPercent:SetText("—")
+        -- No percentage caption on the rank meter.
         fields.rankFill:Hide()
     end
     fields.duels:SetText(formatCountOrZero(data.duelsWon))
@@ -525,7 +526,7 @@ local function build()
     -- The central gold ornament encloses ONLY the progress meter.
     -- Two separate, unflattened hexagonal plates carry rank titles.
     local rankBarFrame = window:CreateTexture(nil, "OVERLAY")
-    rankBarFrame:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_bar_frame_owner_v101")
+    rankBarFrame:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_bar_frame_owner_v104")
     rankBarFrame:SetSize(365, 48)
     rankBarFrame:SetPoint("TOP", window, "TOP", 0, -451)
 
@@ -539,19 +540,19 @@ local function build()
     local rankNamePlate = "Interface\\AddOns\\WarScore\\Media\\General\\rank_name_plate_owner_v102"
     local leftPlate = window:CreateTexture(nil, "BORDER")
     leftPlate:SetTexture(rankNamePlate)
-    leftPlate:SetSize(185, 115)
-    leftPlate:SetPoint("TOP", window, "TOP", -267, -417)
+    leftPlate:SetSize(178, 108)
+    leftPlate:SetPoint("TOP", window, "TOP", -269, -421)
     local rightPlate = window:CreateTexture(nil, "BORDER")
     rightPlate:SetTexture(rankNamePlate)
-    rightPlate:SetSize(185, 115)
-    rightPlate:SetPoint("TOP", window, "TOP", 267, -417)
+    rightPlate:SetSize(178, 108)
+    rightPlate:SetPoint("TOP", window, "TOP", 269, -421)
 
-    fields.rankFrom = label(window, "—", 13, CREAM, -267, -462, 156, 26)
-    fields.rankTo = label(window, "—", 13, CREAM, 267, -462, 156, 26)
+    fields.rankFrom = label(window, "—", 13, CREAM, -269, -462, 148, 26)
+    fields.rankTo = label(window, "—", 13, CREAM, 269, -462, 148, 26)
     -- The raw points sit at the center of the actual bar interior,
     -- not at the center of the entire rank/plate composition.
     fields.rankPoints = label(window, "—", 14, CREAM, 0, -463, 300, 23)
-    fields.rankPercent = label(window, "—", 12, GOLD, 0, -499, 100, 16)
+    -- No separate percent copy: user prefers only dynamic raw PR inside frame.
     fields.rankPoints:SetShadowColor(0.02, 0.01, 0.01, 1)
     fields.rankPoints:SetShadowOffset(1, -1)
 
@@ -589,30 +590,30 @@ local function build()
     -- Iteration 71: stretch only the transparent vertical field to contain
     -- the live captions above the lower sapphire rail; keep width unchanged.
     ratioOrnament:SetSize(632, 172)
-    ratioOrnament:SetPoint("TOP", window, "TOP", 0, -640)
+    ratioOrnament:SetPoint("TOP", window, "TOP", 0, -633)
 
     -- Iteration 72: compact the text stack inside the fixed owner frame.
     -- Iteration 73: shift the entire ratio art + text block up 10 UI units.
     -- Keep all relative positions and font sizes established by v72.
-    label(window, "HK/D", 18, GOLD, -165, -690, 270, 22)
+    label(window, "HK/D", 18, GOLD, -165, -683, 270, 22)
     -- v90: align right-column heading and counter to the actual right panel axis.
     -- The previous +165 offset was visibly right of the ornamental cell center.
     local rightMetricX = 150
-    label(window, "MUERTES PvP SUFRIDAS", 16, RED, rightMetricX, -690, 290, 22)
-    fields.hkd = label(window, "—", 34, CREAM, -165, -712, 270, 37)
-    fields.deaths = label(window, "—", 34, RED, rightMetricX, -712, 270, 37)
+    label(window, "MUERTES PvP SUFRIDAS", 16, RED, rightMetricX, -683, 290, 22)
+    fields.hkd = label(window, "—", 34, CREAM, -165, -705, 270, 37)
+    fields.deaths = label(window, "—", 34, RED, rightMetricX, -705, 270, 37)
     fields.hkd:SetShadowColor(0.34, 0.19, 0.06, 0.72)
     fields.hkd:SetShadowOffset(1, -1)
     fields.deaths:SetShadowColor(0.32, 0.05, 0.035, 0.70)
     fields.deaths:SetShadowOffset(1, -1)
-    local hkDescription = label(window, "HK / muertes PvP sufridas", 11, CREAM, -165, -748, 300, 18)
+    local hkDescription = label(window, "HK / muertes PvP sufridas", 11, CREAM, -165, -741, 300, 18)
     hkDescription:SetTextColor(0.77, 0.69, 0.58)
     -- Deliberately no descriptive copy under the raw PvP death counter;
     -- the raw count's title already states the metric unambiguously.
 
     -- Lower ratio rail and central sapphire are part of the new owner asset.
 
-    local firstRow = statBand(window, -775, {
+    local firstRow = statBand(window, -767, {
         { title = "DUELOS GANADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duels_owner_v77" },
         { title = "CAMPOS DE BATALLA JUGADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_played_owner_v77" },
         { title = "BG GANADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_wins_owner_v77" },
@@ -620,7 +621,7 @@ local function build()
     fields.duels, fields.bgPlayed, fields.bgWon = unpack(firstRow)
     -- v88: lift the entire lower band 8 UI units to clear the parent bottom rim.
     -- Keep the owner TGA, band dimensions and the text/icon local anchors intact.
-    local secondRow = statBand(window, -890, {
+    local secondRow = statBand(window, -878, {
         { title = "WIN RATE BG", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_rate_owner_v79" },
         { title = "WIN RATE DUELOS", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duel_rate_owner_v79" },
         { title = "CAMPO DE BATALLA FAVORITO", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_favorite_bg_owner_v79", valueSize = 17 },

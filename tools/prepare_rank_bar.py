@@ -27,16 +27,16 @@ for percent in range(0, 101, 5):
 # The owner provided a separate high-resolution PNG in this iteration.
 # The transport copy is cropped from its real alpha bounds, 512x64
 # and preserves original appearance without rebuilding the border in Lua.
-frame_source = root / "docs/assets/rank_bar_frame_owner_v101_source.png"
+frame_source = root / "docs/assets/rank_bar_frame_owner_v104_source.png"
 with Image.open(frame_source) as original:
     original.load()
-    if original.size != (512, 64):
+    if original.size != (384, 72):
         raise ValueError(f"Unexpected rank frame dimensions: {original.size}")
     frame = original.convert("RGBA")
     if not frame.getchannel("A").getbbox():
         raise ValueError("Rank bar frame has no visible pixels")
     frame.resize((1024, 128), Image.Resampling.LANCZOS).save(
-        out / "rank_bar_frame_owner_v101.tga", format="TGA"
+        out / "rank_bar_frame_owner_v104.tga", format="TGA"
     )
 print("Prepared 21 rank-fill steps and full v101 rank-bar frame")
 
