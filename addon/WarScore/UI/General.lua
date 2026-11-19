@@ -290,6 +290,7 @@ local function refresh()
     fields.rankCaption:SetText(text("rank_caption"))
     fields.honorHeading:SetText(text("honor_title"))
     fields.hkCaption:SetText(text("honorable_kills"))
+    fields.pvpDeathsCaption:SetText(text("pvp_deaths"))
     fields.hkDescription:SetText(text("hk_death_ratio_description"))
     for i, key in ipairs(fields.statCaptionKeys) do fields.statCaptions[i]:SetText(text(key)) end
     for i, key in ipairs(fields.statCaptionKeysSecondary) do fields.statCaptionsSecondary[i]:SetText(text(key)) end
@@ -640,7 +641,7 @@ local function build()
     -- v90: align right-column heading and counter to the actual right panel axis.
     -- The previous +165 offset was visibly right of the ornamental cell center.
     local rightMetricX = 150
-    label(window, text("pvp_deaths"), 16, RED, rightMetricX, -683, 290, 22)
+    local pvpDeathsCaption = label(window, text("pvp_deaths"), 16, RED, rightMetricX, -683, 290, 22)
     fields.hkd = label(window, "—", 34, CREAM, -165, -705, 270, 37)
     fields.deaths = label(window, "—", 34, RED, rightMetricX, -705, 270, 37)
     fields.hkd:SetShadowColor(0.34, 0.19, 0.06, 0.72)
@@ -672,6 +673,7 @@ local function build()
     fields.rankCaption = rankCaption
     fields.honorHeading = honorHeading
     fields.hkCaption = hkCaption
+    fields.pvpDeathsCaption = pvpDeathsCaption
     fields.hkDescription = hkDescription
     fields.generalText = generalText
     fields.todayText = todayText
