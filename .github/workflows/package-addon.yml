@@ -1,5 +1,5 @@
 name: Package clean WarScore addon
-# v127: native Blizzard gold minimap ring around the owner's smaller shield.
+# v128: slightly larger owner shield in the approved native minimap gold ring.
 on:
   push:
     branches: [main]
@@ -91,7 +91,7 @@ jobs:
               # shipping or drawing the mismatched Settings replacement image.
               assert "WarScore/Media/General/inner_frame_owner_v64.tga" in names
               assert "WarScore/Media/General/settings_inner_frame_owner_v122.tga" not in names
-              assert archive_version.group(1) == "127", "Expected v127 in the clean ZIP"
+              assert archive_version.group(1) == "128", "Expected v128 in the clean ZIP"
               assert '[innerArt] = true' in runtime_ui
               assert 'settings_inner_frame_owner_v122' not in runtime_ui
               assert 'settingsTab:SetPoint("TOPLEFT", settingsPage, "TOPLEFT", 193, -102)' in runtime_ui
@@ -131,9 +131,10 @@ jobs:
               assert 'minimap_toggle = "Abrir/Cerrar WarScore"' in loc
               assert 'minimap_toggle = "Open/Close WarScore"' in loc
               assert 'MiniMap-TrackingBorder' in minimap_ui
-              assert 'icon:SetSize(20, 20)' in minimap_ui
+              assert 'icon:SetSize(23, 23)' in minimap_ui
+              assert 'icon:SetPoint("TOPLEFT", minimapButton, "TOPLEFT", 5.5, -4.5)' in minimap_ui
               assert 'border:SetSize(54, 54)' in minimap_ui
-              print("Verified WarScore v127 native Classic minimap ring, original shield and interactions")
+              print("Verified WarScore v128 enlarged shield, unchanged native minimap ring and interactions")
               print("Verified owner-provided v120 Honor/HK frame in ZIP")
               print("Verified all three visible v115 ornaments inside installable ZIP")
               print("Verified embedded WarScore UI version:", archive_version.group(1))
