@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "117"
+local UI_ITERATION = "118"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -568,10 +568,13 @@ local function build()
         return ornamentFrame
     end
 
-    -- v117: bring both owner title ornaments close to their respective
-    -- side chambers while keeping their original x coordinates and scale.
-    addRankOrnament("Interface\\AddOns\\WarScore\\Media\\General\\rank_label_current_owner_v115", -203.49, -432, 175, 32)
-    addRankOrnament("Interface\\AddOns\\WarScore\\Media\\General\\rank_label_next_owner_v115", 203.49, -432, 175, 32)
+    -- v118: align the visual centers of Actual and Siguiente with the
+    -- true centerlines of their respective gold rank chambers. The source
+    -- PNGs have symmetrical alpha padding; position their frames 220 units
+    -- from the window center, not at the live rank-text offsets.
+    -- Both titles share the same top coordinate and 175x32 display size.
+    addRankOrnament("Interface\\AddOns\\WarScore\\Media\\General\\rank_label_current_owner_v115", -220, -432, 175, 32)
+    addRankOrnament("Interface\\AddOns\\WarScore\\Media\\General\\rank_label_next_owner_v115", 220, -432, 175, 32)
 
     -- v117: lift the decorative divider 10 units closer to the PR chamber.
     -- It remains ornamental; PR remains numeric and the fill remains hidden.
