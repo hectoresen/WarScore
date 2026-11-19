@@ -1324,3 +1324,12 @@ This validates positive BG history and objective tracking. Compare the native st
 - Per explicit owner instruction, temporarily **remove the rendered 5%-step progress fill**; the center compartment displays only the live real `points / threshold PR` text. Remove runtime creation/use of `fields.rankFill` to prevent an accidental fill rendering. Preserve all original 21 0–100% texture assets, percentage calculation helper and real PvP-rank data acquisition for future iterations.
 - All three gold boxes, red divider gems, rank-name localization, character/rank plaque, HK, deaths, ratios and lower stats cards are unchanged. UI diagnostic `/ws version` increments **109→110**.
 - CI package must contain updated `UI/General.lua` reporting v110; installable `dist/WarScore.zip` must be verified. In-game screenshot QA pending for balanced left/right margin, aligned live captions and empty dark center compartment.
+
+
+## Iteration #110 screenshot → #111: 95% PvP rank triptych and true horizontal centering (2026-11-19)
+
+- The owner's real v110 screenshot confirms all three rank/points compartments and labels render correctly and the graphical progress fill is absent. The owner requests only a **5% reduction of the entire three-compartment asset** and accurate horizontal centering.
+- Keep the same original `rank_panel_owner_v108` texture; change displayed frame **690×65 → 655.5×61.75** (95% in each dimension), x **+8→0** relative to the window center. Shift top **-442→-443.625** so its vertical center remains unchanged.
+- Reposition live labels to the scaled, truly symmetric compartment centers: current rank x **-246.05**, next rank x **+246.05**, and current/threshold PR x **0**. Names use width 125.4 and top -463; points width 285 and top -464.125. Font sizes unchanged to preserve text legibility.
+- Progress fill remains entirely absent. No change to the real rank API, value formatting, 21 preserved source fill textures, other metrics, banners, cards, or overall window layout.
+- `/ws version` now **111**. CI rebuilds the clean installable `dist/WarScore.zip`. The resized result still requires real WoW screenshot QA from the owner.
