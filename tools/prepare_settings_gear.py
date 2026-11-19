@@ -1,6 +1,6 @@
 """Convert the supplied golden settings gear into a WoW-ready RGBA TGA.
 
-The PNG is an 80x80 alpha-preserving, palette-optimized transport copy,
+The PNG is an 48x48 alpha-preserving, palette-optimized transport copy,
 cropped from the owner's 1262x1246 image. Keep the file under docs/assets/
 so the full-quality original can be substituted in a future design iteration.
 """
@@ -12,7 +12,7 @@ source = root / "docs/assets/settings_gear_owner_v94_source.png"
 destination = root / "addon/WarScore/Media/General/settings_gear_owner_v94.tga"
 with Image.open(source) as src:
     src.load()
-    if src.size != (80, 80):
+    if src.size != (48, 48):
         raise ValueError(f"Unexpected settings gear source dimensions: {src.size}")
     image = src.convert("RGBA")
     if not image.getchannel("A").getbbox():

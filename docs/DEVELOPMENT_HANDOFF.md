@@ -1164,3 +1164,10 @@ This validates positive BG history and objective tracking. Compare the native st
 - v94 removes the old cog's BackdropTemplate, separate WoW border and legacy `settings_cog` texture, replacing all with a **single 38×38 owner-provided framed gear texture** `settings_gear_owner_v94.tga`. Anchor TOPRIGHT x=-50.5, y=-78: vertically 7 units below the original close X (top -28, height 43, ends -71); both horizontal centers share x=-69.5 from the window right. Tooltip and nonfunctional placeholder stay unchanged.
 - Source `docs/assets/settings_gear_owner_v94_source.png` is an 80×80 transparent palette-optimized transfer copy of the user's 1262×1246 PNG, with alpha-space cropped to the full ornament. `tools/prepare_settings_gear.py` converts it into an RGBA 128×128 TGA under `addon/WarScore/Media/General/`. The CI generates the asset and commits the distributable with `dist/WarScore.zip`, checking embedded UI version 94. The original higher-resolution upload remains the master for future upgrades.
 - No changes to honor logic, other statistics, X artwork, UI panels, textures, or font styling. **Client visual QA PENDING**: download the commit-pinned ZIP, `/reload`, `/ws version` 94, `/ws`; verify gold gear appears centered below X, only one gear exists, no extra border, and no visual clash with upper-right corner of the inner frame.
+
+
+### v94 CI transport image correction
+
+- The initial v94 source PNG blob was corrupt in GitHub despite working on the local machine; CI correctly rejected its broken image stream and **no v94 ZIP was released**.
+- Replaced source with a CRC-valid 48×48 transparent palette-optimized copy of the original owner art (Git blob SHA `00cde674f21aa97a60b7e02d6cdbe62243ed8a89`, validated against local bytes). The final game TGA is still 128×128 with full alpha. This smaller transfer size is suitable for the 38×38 UI draw area.
+- Re-run CI packaging and confirm source read, TGA, and embedded `UI_ITERATION = 94` before distributing.
