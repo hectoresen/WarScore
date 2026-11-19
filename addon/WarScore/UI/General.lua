@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "109"
+local UI_ITERATION = "110"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -305,23 +305,14 @@ local function refresh()
         else
             fields.rankPoints:SetText("—")
         end
-        local step, percent = roundedRankStep(points, threshold)
-        if atMax then step, percent = 100, 100 end
-        if step then
-            fields.rankFill:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_fill_" .. string.format("%03d", step))
-            fields.rankFill:Show()
-            -- Percentage intentionally omitted from the interface (v104).
-        else
-            fields.rankFill:Hide()
-            -- When data is unavailable, only the numeric PR label uses a dash.
-        end
+        -- v110: progress artwork temporarily disabled at the owner's request.
+        -- Keep raw Rank Points and the max-rank label; do not fabricate a bar.
     else
         fields.rank:SetText("No disponible")
         fields.rankFrom:SetText("—")
         fields.rankTo:SetText("—")
         fields.rankPoints:SetText("—")
-        -- No percentage caption on the rank meter.
-        fields.rankFill:Hide()
+        -- No percentage caption or graphical progress fill on the rank meter.
     end
     fields.duels:SetText(formatCountOrZero(data.duelsWon))
     fields.bgPlayed:SetText(formatCountOrZero(data.battlegroundsPlayed))
@@ -534,24 +525,22 @@ local function build()
     -- v109: inset the entire owner frame so neither end compartment
     -- reaches the inner window rails. Keep the source aspect ratio intact.
     rankPanel:SetSize(690, 65)
-    rankPanel:SetPoint("TOP", window, "TOP", 0, -442)
+    -- v110: move the unified authored frame and all three live labels right
+    -- together by 8 UI units, balancing clearance at the inner-frame rails.
+    rankPanel:SetPoint("TOP", window, "TOP", 8, -442)
 
-    fields.rankFill = window:CreateTexture(nil, "ARTWORK")
-    -- v109: the source has a full-height round gold starting cap and
-    -- transparent remainder. Fit its viewport strictly within the dark
-    -- central aperture, clearing upper/lower gold rails and red gems.
-    fields.rankFill:SetSize(310, 24)
-    fields.rankFill:SetPoint("TOP", window, "TOP", 0, -462)
-    fields.rankFill:Hide()
+    -- v110: no progress-fill texture. The unified frame's dark central
+    -- compartment is left empty except for the live Rank Points value.
+    -- Original 0–100% fill assets remain in the repository for future use.
 
     -- Three independent live captions, positioned against the authored
     -- centerlines of the two outer compartments and the central meter.
     -- Centers follow the actual outer-section centers of the owner
     -- artwork after scaling, not the former independent plate offsets.
     -- Narrow text bounds stop long names at the red divider gems.
-    fields.rankFrom = label(window, "—", 13, CREAM, -259, -462, 132, 26)
-    fields.rankTo = label(window, "—", 13, CREAM, 259, -462, 132, 26)
-    fields.rankPoints = label(window, "—", 14, CREAM, 0, -463, 300, 23)
+    fields.rankFrom = label(window, "—", 13, CREAM, -251, -462, 132, 26)
+    fields.rankTo = label(window, "—", 13, CREAM, 267, -462, 132, 26)
+    fields.rankPoints = label(window, "—", 14, CREAM, 8, -463, 300, 23)
     fields.rankPoints:SetShadowColor(0.02, 0.01, 0.01, 1)
     fields.rankPoints:SetShadowOffset(1, -1)
 
