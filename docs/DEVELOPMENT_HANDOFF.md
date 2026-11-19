@@ -1497,3 +1497,11 @@ This validates positive BG history and objective tracking. Compare the native st
 - The click/drag/tooltip logic, minimap angular position and saved `WarScoreDB.settings.minimapAngle`, localization and lazy main-window toggle are unchanged. The General, Honor, PvP rank and Settings UI stay protected.
 - `/ws version` updates to **127**. GitHub Actions validates the built-in border texture reference and icon size in the clean installable `dist/WarScore.zip`. The built-in ring is referenced by a Blizzard path and **must not** appear as a bundled custom TGA.
 - **Native client QA pending:** check that the gold circle is concentric with the shield and matches other minimap addon buttons, shield remains legible, dragging and one-click open/close still work, and position survives `/reload`. If ring placement is off, only tune the icon/border local anchors.
+
+
+## Iteration #127 screenshot → #128: enlarge only the minimap shield (2026-11-19)
+
+- User's in-game v127 screenshot approves the native circular gold tracking border and requests a slightly larger red crossed-swords shield within it.
+- Only `addon/WarScore/UI/Minimap.lua` icon geometry changes: shield artwork **20×20 → 23×23** (+15%), its local TOPLEFT **(7,-6) → (5.5,-4.5)** to retain the original visual center. The Blizzard `MiniMap-TrackingBorder` remains 54×54 with identical anchor, and native clickable button remains 31×31.
+- No changes to the original uploaded shield TGA, draggable angle math, `WarScoreDB.settings.minimapAngle`, tooltip, click toggle, UI layouts, translations or PvP data. Diagnostic `UI_ITERATION` increments **127→128**.
+- CI verifies unchanged Blizzard border reference, 23-pixel shield geometry, correct center offset and clean `dist/WarScore.zip`. In-client visual QA remains pending.
