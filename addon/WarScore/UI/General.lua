@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "112"
+local UI_ITERATION = "113"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -522,10 +522,9 @@ local function build()
     -- Source frame proportions and genuine metal/gems are preserved.
     local rankPanel = window:CreateTexture(nil, "BORDER")
     rankPanel:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_panel_owner_v108")
-    -- v111: reduce the whole three-compartment owner asset by ~5%, keeping
-    -- its original proportions, and center it on the window's X=0 axis.
-    -- Keep its vertical center at the same position as v110.
-    rankPanel:SetSize(655.5, 61.75)
+    -- v113: narrow the three-compartment owner frame by 10% only.
+    -- Preserve its height and centered horizontal position as requested.
+    rankPanel:SetSize(589.95, 61.75)
     rankPanel:SetPoint("TOP", window, "TOP", 0, -443.625)
 
     -- v110: no progress-fill texture. The unified frame's dark central
@@ -537,12 +536,11 @@ local function build()
     -- Centers follow the actual outer-section centers of the owner
     -- artwork after scaling, not the former independent plate offsets.
     -- Narrow text bounds stop long names at the red divider gems.
-    -- v112: optical recentering of the live captions within the existing
-    -- left/right gold chambers. Both labels move 8.05 units inward; the
-    -- approved frame and points counter remain exactly where they were.
-    fields.rankFrom = label(window, "—", 13, CREAM, -238, -463, 125.4, 25)
-    fields.rankTo = label(window, "—", 13, CREAM, 238, -463, 125.4, 25)
-    fields.rankPoints = label(window, "—", 14, CREAM, 0, -464.125, 285, 23)
+    -- v113: scale the two optically centered caption offsets and their text
+    -- bounds in proportion to the new narrower asset; PR remains centered.
+    fields.rankFrom = label(window, "—", 13, CREAM, -214.2, -463, 112.86, 25)
+    fields.rankTo = label(window, "—", 13, CREAM, 214.2, -463, 112.86, 25)
+    fields.rankPoints = label(window, "—", 14, CREAM, 0, -464.125, 256.5, 23)
     fields.rankPoints:SetShadowColor(0.02, 0.01, 0.01, 1)
     fields.rankPoints:SetShadowOffset(1, -1)
 
