@@ -1,18 +1,20 @@
 # WarScore — Vista General: contexto y propuestas de diseño
 
-> **ESTADO VISUAL: VISTA GENERAL IMPLEMENTADA Y PROBADA VISUALMENTE HASTA UI v83 (2026-11-18).** El boceto objetivo sigue siendo una referencia de largo plazo, no un asset runtime. Las propuestas y jerarquías históricas de este documento se conservan como contexto; la implementación real y la evidencia se encuentran en `addon/WarScore/UI/General.lua` y `docs/DEVELOPMENT_HANDOFF.md`.
+> **ESTADO VISUAL: VISTA GENERAL IMPLEMENTADA Y AVANZADA HASTA UI v121 (2026-11-19).** El boceto objetivo sigue siendo una referencia de largo plazo, no un asset runtime. Las propuestas y jerarquías históricas de este documento se conservan como contexto; la implementación real y la evidencia se encuentran en `addon/WarScore/UI/General.lua`, `docs/PVP_DATA_CATALOG.md` y `docs/DEVELOPMENT_HANDOFF.md`.
 >
 > Documento vivo para el agente de UI/UX. Leer junto a `docs/MVP_CONTEXT.md`. Actualizar este archivo cuando se confirme, descarte o cambie una métrica. **No implica que la API haya sido probada en el cliente.**
 >
-> Última actualización del estado: 2026-11-18.
+> Última actualización del estado: 2026-11-19.
+
+> **Estado técnico actual:** Honor actual (`1792`), rango PvP y Rank Points (`C_MajorFactions` `2800`) ya están integrados en General. Para la disponibilidad real de cada dato prevalece `docs/PVP_DATA_CATALOG.md`.
 
 ## Jerarquía visual acordada (obligatoria)
 
 1. **Retrato real del personaje activo**, centrado arriba, recortado circularmente; no avatar genérico, ni imagen cuadrada o lateral. La API candidata es `SetPortraitTexture`; verificar el soporte de máscara circular de Forever.
 2. **Muertes con honor históricas (HK)**, la cifra más grande y protagonista.
 3. **HK/D**, segundo dato más visible: HK históricas / muertes PvP sufridas históricas.
-4. **KB/D**, más pequeño y justo debajo del HK/D: golpes de gracia PvP históricos / muertes PvP sufridas históricas.
-5. **Muertes PvP sufridas históricas**, en la zona inferior del bloque principal.
+4. **Muertes PvP sufridas históricas**, en rojo y junto al bloque de ratios. KB/D no se muestra porque no existe una fuente confirmada de golpes de gracia contra jugadores enemigos.
+5. **Estadísticas secundarias**, con menor jerarquía visual y sin sustituir los datos históricos principales.
 
 Toda la vista General agrega PvP de cualquier modalidad; **sin filtros de mundo abierto/campos de batalla**. Las estadísticas principales deben cubrir el historial del personaje desde su creación, independientemente de cuándo se instaló WarScore.
 
@@ -26,19 +28,19 @@ Diseñar un bloque secundario **por debajo** de los cinco indicadores principale
 | --- | --- | --- |
 | Golpes de gracia históricos (KB) | **No confirmada como métrica PvP** | `1487/1488/1491` están en categoría 137 bajo `Víctimas`; sus valores no son utilizables como golpes contra la facción rival. |
 | Porcentaje de golpes de gracia | **No disponible** | No calcular `KB/D` hasta encontrar un contador específico de golpes contra jugadores enemigos. |
-| Rango PvP (histórico / máximo por definir) | **No disponible en el personaje probado** | `GetPVPLifetimeStats()` devuelve segundo retorno `0`; `UnitPVPRank` y `GetPVPRankProgress` no existen en Forever. Mantener estado honesto. |
-| **Duelos totales ganados** | **Prioridad en el nuevo bloque inferior; pendiente de ID Lua y prueba** | Confirmar ID, acceso y lectura histórica en Forever. |
-| **Duelos perdidos** | **Añadida al diseño, pendiente de ID Lua** | Misma validación que duelos ganados. |
+| Rango PvP / Rank Points | **Implementado; fuente confirmada en Forever** | `C_MajorFactions.GetMajorFactionProgressionInfo(2800)` aporta nivel y progreso; la barra gráfica permanece desactivada. |
+| **Duelos totales ganados** | **Implementado; valor positivo pendiente** | ID `319` identificado; devuelve `--` en el personaje probado y `0` en la UI nativa sin duelos. |
+| **Duelos perdidos** | **Implementado; valor positivo pendiente** | ID `320`; necesita un caso real para validar lectura positiva. |
 | **Porcentaje de duelos ganados** | **Derivada, condicionada** | `ganados / (ganados + perdidos) × 100`; no mostrar si falta alguno de los contadores. |
-| **Campos de batalla totales jugados** | **Prioridad en el nuevo bloque inferior; pendiente de ID Lua y prueba** | Se solicitan **partidas disputadas**, no solamente victorias; confirmar contador histórico accesible en Forever. |
-| Victorias en campos de batalla | Candidata, pendiente de ID | No separar modalidades en el bloque principal. |
-| Porcentaje de victorias en campos de batalla | Candidata, condicionada | Solo si existe también un denominador histórico fiable. |
+| **Campos de batalla totales jugados** | **Implementado; probado con valor positivo** | ID `839`; primera BG observada con valor `1`. |
+| Victorias en campos de batalla | **Implementado; valor positivo pendiente** | ID `840`; la primera BG probada fue perdida y devolvió `--`. |
+| Porcentaje de victorias en campos de batalla | **Implementado; condicionado** | Solo es evidencia fiable tras validar una victoria positiva. |
 
 **Actualización de diseño (2026-11-16):** en la siguiente preview, añadir una zona inferior diferenciada con **duelos totales ganados** y **campos de batalla totales jugados**, con números legibles pero secundarios. Las restantes métricas candidatas de esta tabla no se incorporan automáticamente al boceto.
 
 **Propuesta anterior sobre duelos, aún por revisar:** agrupar victorias y derrotas en una misma tarjeta o subapartado «Duelos», con el porcentaje de victorias si es calculable. La nueva prioridad explícita son los **duelos ganados**; no incorporar automáticamente derrotas ni porcentajes.
 
-**Rango PvP:** el segundo boceto de referencia lo muestra debajo del retrato y antes de HK, como placa/ribbon ornamental. Es la **ubicación objetivo de la preview**, sujeta a la disponibilidad y semántica real del dato en Forever.
+**Rango PvP:** el segundo boceto de referencia lo muestra debajo del retrato y antes de HK, como placa/ribbon ornamental. Esa composición ya está implementada; el nivel y Rank Points proceden de la major faction `2800`.
 
 ## Semáforo de evidencia
 
@@ -73,7 +75,7 @@ Las siguientes son **ideas para explorar**, no decisiones de diseño cerradas ni
   - KB/D: «Golpes de gracia / Muertes PvP sufridas».
 - **Muertes PvP sufridas:** parte inferior del bloque principal; cifra secundaria, posiblemente en rojo apagado.
 - **Bloque de estadísticas complementarias:** añadir debajo del bloque principal dos indicadores visuales: **duelos totales ganados** y **campos de batalla totales jugados**, sin cambiar lo que ya figura por encima. Mantenerlo subordinado, con separadores ornamentales discretos. Disponibilidad histórica pendiente de verificación.
-- **Rango PvP:** en la referencia visual elegida aparece como placa bajo el nombre/nivel/clase y antes de HK. Mantener esa composición en la preview; significado histórico y viabilidad aún pendientes.
+- **Rango PvP:** la placa bajo el nombre/nivel/clase y antes de HK ya está implementada con datos de `2800`; queda pendiente validar niveles superiores y la progresión visual con valores positivos.
 - **Datos de muestra:** pueden ser ficticios **solo en bocetos**, siempre identificados como tales.
 
 **Pendiente de revisar conjuntamente:** grado de ornamentación, textura y marco, proporciones y tamaño del retrato, separación entre métricas, colocación final de los microcopies y tratamiento visual del bloque inferior. No considerar aprobada ninguna de estas elecciones hasta confirmación explícita.
@@ -125,8 +127,8 @@ Fuentes: https://wowlua.dev/api/global/GetPVPSessionStats ; https://warcraft.wik
 
 Wowhead confirma que la pestaña de estadísticas **nativa de WoW Forever 1.60.1** incluye *Duels won*, *Duels lost*, *Battlegrounds played*, *Battlegrounds won*, *Total Killing Blows*, *World Killing Blows*, *Battleground Killing Blows*, *Total Honorable Kills* y *Total deaths from other players*. Esto eleva la certeza de **existencia del contador**, pero **no** valida aún su lectura desde Lua ni su historial completo anterior al lanzamiento de las estadísticas.
 
-- **Duelos ganados:** ID candidato `319` publicado para Forever; probar `GetStatistic(319)`.
-- **Duelos perdidos / BG jugados / BG ganados:** contadores nativos confirmados; IDs y lectura Lua pendientes.
+- **Duelos ganados/perdidos:** IDs `319`/`320` identificados y conectados; falta probar valores positivos tras jugar duelos.
+- **BG jugados/ganados:** IDs `839`/`840` conectados; `839` ya tiene valor positivo probado y `840` necesita una victoria real para validar su lectura.
 - **Golpes de gracia PvP:** la categoría nativa desglosa mundo/BG y total; confirmar semántica del ID `1487` antes de calcular KB/D.
 - **Diseño:** mantener el pie de la referencia con duelos ganados y BG jugados; no añadir automáticamente las otras métricas.
 

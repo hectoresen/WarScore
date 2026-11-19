@@ -1,6 +1,6 @@
 # WarScore — live development handoff
 
-**Last updated:** 2026-11-17 (iteration 14 client QA pending).
+**Last updated:** 2026-11-19 (UI iteration 121; API validation review pending client evidence).
 
 ## Read in this order
 1. `AGENTS.md`, `openspec/README.md` — lightweight SDD and approval boundaries.
@@ -13,8 +13,8 @@
 Iterate in the **same current development line (`main`)**. Assistant commits one small focused change, owner downloads `https://github.com/hectoresen/WarScore/archive/refs/heads/main.zip`, replaces addon and tests `/ws` inside WoW Forever, shares screenshot or error; assistant documents outcome and next step here and in OpenSpec tasks. **Never declare client QA passed without owner's real evidence.** Another agent can resume by reading this file and current GitHub code, not by relying on chat history.
 
 ## Current implementation
-- `Core/Stats.lua`: reads lifetime HK 588, PvP deaths 1501, duels 319/320, BG played/won 839/840, favorite BG among 53/55/52/64179, HK/D and win rates. KB/D and rank unavailable intentionally.
-- `UI/General.lua`: `/ws` or `/warscore` opens movable native UI with character portrait/identity, primary stats, two rows of cards and nonfunctional Hoy button. **This is a rough prototype, NOT the approved ornamental design.**
+- `Core/Stats.lua`: reads lifetime HK 588, PvP deaths 1501, Honor currency 1792, PvP rank/Rank Points from major faction 2800, duels 319/320, BG played/won 839/840, favorite BG among 53/55/52/64179, HK/D and win rates. KB/D remains intentionally unavailable.
+- `UI/General.lua`: `/ws` or `/warscore` opens the current movable ornamental UI (iteration 121) with character identity, rank/Rank Points, Honor/HK panel, ratios and two rows of cards. The Hoy and settings controls remain nonfunctional placeholders.
 - `Core/Diagnostics.lua`: existing `/wsdiag` diagnostics; preserve.
 - No original expanded mockup PNG committed; `docs/assets/general-layout-guide.svg` is **only** a vector measurement guide. Source screenshot exists in earlier chat; obtain/upload original PNG for proper comparison.
 - No automated Lua tests or CLI OpenSpec validation executed so far. OpenSpec structure was authored manually.
@@ -25,6 +25,7 @@ Iterate in the **same current development line (`main`)**. Assistant commits one
 - Added compatible `WarScoreDB.settings.language` persistence and temporary `/ws lang`, `/ws lang es` and `/ws lang en` commands.
 - General-view copies now refresh when the language changes; no settings UI control was added.
 - Implementation is pushed in commit `d6883cc` on `main`.
+- The follow-up caption refresh is pushed in commit `3a4066a`; current branch is clean and synchronized with `origin/main`.
 - Static validation passed with `git diff --check`; client QA is still pending because the addon must be tested inside WoW.
 - Static checks and hardcoded visible-copy scan were run; in-client English/Spanish QA is **PENDING**.
 

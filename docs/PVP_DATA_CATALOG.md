@@ -2,7 +2,7 @@
 
 > Catálogo funcional y técnico de los datos que WarScore puede mostrar, de los que se han comprobado en WoW Forever y de los que quedan como investigación futura.
 >
-> Cliente de referencia: WoW Forever 1.60.1 / Interface 16001. Última auditoría real: 2026-11-18.
+> Cliente de referencia: WoW Forever 1.60.1 / Interface 16001. Última auditoría real: 2026-11-18. Estado del addon revisado contra `main` en `UI_ITERATION 121` (2026-11-19).
 
 ## Cómo leer este documento
 
@@ -26,26 +26,29 @@ La vista General representa el historial PvP acumulado del personaje activo. No 
 | Muertes PvP sufridas | `1501` | **Confirmado** | Principal/secundaria |
 | Muertes por facción contraria | `318` | **Confirmado** | Desglose |
 | HK/D | `588 / 1501` | **Confirmado** | Ratio; `—` sin denominador |
-| Duelos ganados | `319` | **Confirmado con límites** | Secundaria |
-| Duelos perdidos | `320` | **Confirmado con límites** | Secundaria |
-| Duelos jugados | `319 + 320` | **Derivable con límites** | Ambos contadores fiables |
+| Duelos ganados | `319` | **Identificado; valor positivo pendiente** | Secundaria; `--` en la prueba y `0` en la UI nativa sin duelos |
+| Duelos perdidos | `320` | **Identificado; valor positivo pendiente** | Complementaria; mismo límite que `319` |
+| Duelos jugados | `319 + 320` | **Derivable cuando ambos sean numéricos** | No hay caso positivo probado |
 | BG jugados | `839` | **Confirmado** | Secundaria |
-| BG ganados | `840` | **Confirmado con límites** | Contrastar `--`/cero |
-| Win rate BG | `840 / 839` | **Condicionada** | Partidas fiables |
+| BG ganados | `840` | **Identificado; valor positivo pendiente** | La primera BG probada fue perdida; la API devolvió `--` |
+| Win rate BG | `840 / 839` | **Condicionada; pendiente de victoria positiva** | No mostrar como evidencia de victoria hasta validar `840` |
 | BG favorito por partidas | `53`, `55`, `52`, `64179` | **Confirmado con límites** | Empates explícitos |
 | HK en mundo | `381` | **Confirmado** | Desglose |
 | HK en BG | `382` | **Confirmado** | Desglose |
 | Continente dominante de HK | `1458` | **Confirmado** | Desglose |
 | Honor actual | `C_CurrencyInfo.GetCurrencyListInfo()` → ID `1792` | **Confirmado** | Prueba: `252 / 25.000`; no usar `UnitHonor()` |
-| Máximo de honor actual | `UnitHonorMax("player")` | **Confirmado** | Barra actual/máximo |
-| Nivel de honor | `UnitHonorLevel("player")` | **Confirmado** | Etiqueta secundaria |
+| Máximo de honor actual | Campo `maxQuantity` de moneda `1792` | **Confirmado** | Fuente usada por el addon para actual/máximo |
+| Nivel de honor | `UnitHonorLevel("player")` | **Probado, no usado como rango PvP** | No se muestra en General |
+| Rango PvP actual | `C_MajorFactions.GetMajorFactionProgressionInfo(2800).renownLevel` | **Implementado; probado en cliente** | Nivel 0 = Sin rango; API legacy no disponible |
+| Rank Points actuales | `renownReputationEarned / renownLevelThreshold` de major faction `2800` | **Implementado; campos observados** | Se muestran como progreso numérico; barra gráfica desactivada |
 
 ### Excluidos de General
 
 - KB PvP histórico contra jugadores enemigos: no hay contador confirmado.
 - `1487`, `1488`, `1491`: golpes de gracia generales bajo `137 Víctimas`; no usarlos como KB PvP.
-- KB/D histórico sigue sin estar disponible; rango PvP y Rank Points ya tienen fuente confirmada en la major faction `2800`, aunque falta integrar la lectura en la UI.
-- Honor histórico total ganado: no identificado; la fuente confirmada es el saldo de moneda `1792`.
+- KB/D histórico sigue sin estar disponible; no usar `1487/1488/1491` como golpes contra jugadores.
+- Honor histórico total ganado: no identificado; la fuente confirmada es el saldo actual gastable de moneda `1792`.
+- `UnitHonorLevel()` y `GetInspectHonorData()` no son fuentes del saldo de Honor ni del rango PvP mostrado.
 - HK/DK de sesión o ayer: pertenecen a otras vistas.
 
 ## 2. Posible ventana «Hoy»
@@ -93,10 +96,10 @@ Gráficos posibles: partidas/victorias por BG, win rate, HK por BG, BG dominante
 
 | Métrica | Fuente | Estado |
 | --- | --- | --- |
-| Duelos ganados | `319` | **Confirmado con límites** |
-| Duelos perdidos | `320` | **Confirmado con límites** |
-| Duelos jugados | `319 + 320` | **Derivable** |
-| Win rate | `319 / (319 + 320)` | **Condicionada** |
+| Duelos ganados | `319` | **Identificado; prueba positiva pendiente** |
+| Duelos perdidos | `320` | **Identificado; prueba positiva pendiente** |
+| Duelos jugados | `319 + 320` | **Derivable si ambos contadores son numéricos** |
+| Win rate | `319 / (319 + 320)` | **Pendiente de caso positivo** |
 
 En el personaje probado `319/320` devuelve `--`, pero la UI nativa muestra `0/0`. No generalizar sin más casos.
 
@@ -140,26 +143,27 @@ Forever devolvió 26 categorías. Las relevantes son:
 ## 9. Backlog de investigación
 
 1. Probar `/wsdiag battlefield` durante y justo después de una BG; el diagnóstico intenta `C_PvP.GetScoreInfoByPlayerGuid()` y deja `GetBattlefieldScore()` como fallback.
-2. Integrar la moneda de Honor `1792` en la UI y mostrar el máximo `25.000` cuando esté disponible.
-3. Integrar en la UI la major faction `2800`: `renownLevel`, `renownReputationEarned` y `renownLevelThreshold`; mantener «No disponible» solo si la API no responde.
+2. Obtener una victoria de BG y validar `840`, win rate, objetivos y valor positivo por BG.
+3. Obtener un duelo ganado y otro perdido para validar `319`, `320` y el win rate.
 4. Probar `GetPVPThisWeekStats()` y `GetPVPLastWeekStats()` desde el addon.
-5. Investigar `GetInspectArenaData()` y APIs de arenas en Forever.
-6. Validar cambio de fecha para HK/DK de ayer.
+5. Investigar `GetInspectArenaData()` y APIs de arenas en Forever: 2v2, 3v3, 5v5, rated BG, rating, victorias y derrotas.
+6. Validar cambio de fecha para HK/DK de ayer con un caso positivo.
 7. Contrastar `--` y cero en victorias, duelos y objetivos con la UI nativa.
+8. Determinar si existe una fuente histórica de KB contra jugadores enemigos; no usar `1487/1488/1491` mientras no haya prueba.
 
 ## Fuente técnica
 
 La evidencia literal y las decisiones de normalización permanecen en [PVP_STATISTICS.md](PVP_STATISTICS.md). Este catálogo organiza el producto por vistas; no sustituye las pruebas del cliente.
 
 
-## Rank progress in General (v100)
+## Rank progress in General (v100) — histórico superado por v121
 
 The General screen now reads major faction ID **2800** through `C_MajorFactions.GetMajorFactionProgressionInfo`. Ranks (renownLevel), Rank Points toward next level (renownReputationEarned), and threshold (renownLevelThreshold) are displayed only when the API provides them. Fill textures are the 21 supplied 5%-step PNG files (rounded to nearest step); raw points and percentage are not rounded to these steps. For missing threshold the UI renders `—`, not 0%. Rank names use `PVP_RANK_<level+4>_<faction>` from the loaded WoW localization, with unranked level 0 called `Sin rango`. Client visual acceptance pending.
 
 
-## v101 provisional design decision
+## v101 provisional design decision — histórico superado por v120/v121
 
-Honor currency 1792 remains collected in `Core/Stats.lua`, but its standalone visual card has been **removed temporarily from General** at the owner's request; final Honor placement/design remains open. The complete framed rank-progress asset replaces the two detached visual plates. Rank Points and threshold are displayed within the central framed progress meter, retaining the verified Major Faction 2800 API.
+En v101 la tarjeta de Honor se retiró temporalmente; esa decisión quedó superada por el panel ornamental de Honor/HK de v120-v121. Actualmente General muestra la moneda `1792` y mantiene el rango/Rank Points de la major faction `2800`; la barra gráfica de progreso continúa desactivada por decisión del propietario.
 
 
 ## Propuesta futura — pestaña «Estadísticas» → «Mundo abierto» (2026-11-19)

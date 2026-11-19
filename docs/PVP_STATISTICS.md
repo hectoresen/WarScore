@@ -4,6 +4,8 @@
 >
 > **Evidencia:** «probado» = llamada ejecutada dentro del cliente; «contrastado» = valor comparado con la pestaña nativa del juego; «identificado» = ID enumerado por el cliente pero aún sin valor positivo probado. No confundir estos niveles.
 
+> **Estado de implementación actual (main, UI 121):** General ya lee Honor actual desde la moneda `1792` y rango/Rank Points desde `C_MajorFactions.GetMajorFactionProgressionInfo(2800)`. Las pendientes de este documento se refieren a pruebas de semántica y valores positivos, no a integrar esas dos fuentes.
+
 ## Fuente y acceso
 
 - `GetStatistic(id)` devuelve en su primer resultado un **texto**, no necesariamente un número; puede ser `"--"`. Normalizar antes de operar y no asumir que `"--"` siempre significa cero.
@@ -66,9 +68,9 @@ IDs enumerados mediante `/wsdiag list 153`, `136` y `137`. Todos devuelven `--` 
 
 - `Core/Diagnostics.lua` implementa `/wsdiag`, `/wsdiag detail`, `/wsdiag categories`, `/wsdiag list <categoría>` y `/wsdiag daily`.
 - Categorías relevantes: `21` PvP, `136` HK, `137` KB, `153` BG, `154` PvP mundo (duelos), `128` víctimas, `122` muertes.
-- Validar valores tras el primer duelo/BG cuando sea posible, sin bloquear MVP.
+- Validar una victoria de BG y un duelo ganado/perdido cuando sea posible; la primera BG ya validó partidas jugadas, pero no victorias.
 - Verificar si `1487` incluye PvE, representa otro periodo o hay una discrepancia en el servidor; comparar con el panel nativo.
-- Verificar el rango PvP y comportamiento diario entre sesiones y cambio de fecha.
+- Verificar niveles superiores del rango PvP y el comportamiento diario entre sesiones y cambio de fecha; la lectura base de rango/Rank Points ya está integrada.
 - Verificar semántica histórica anterior a la activación de estadísticas del servidor.
 
 ## Restricciones de implementación
@@ -215,15 +217,15 @@ WarScore Entradas de monedas: 2
 WarScore 2. Puntos de honor | cantidad 252 | max 25000 | ID 1792
 ```
 
-La fuente correcta para el saldo de Honor de Forever es la moneda `Puntos de honor`, ID `1792`, leída mediante `C_CurrencyInfo.GetCurrencyListInfo()`. `UnitHonor("player")` devolvía `0` en el mismo personaje y no debe utilizarse para representar el saldo mostrado en la UI. El rango PvP y los Rank Points siguen pendientes de localizar; `UnitHonorLevel("player")` no se interpreta como rango PvP.
+La fuente correcta para el saldo de Honor de Forever es la moneda `Puntos de honor`, ID `1792`, leída mediante `C_CurrencyInfo.GetCurrencyListInfo()`. `UnitHonor("player")` devolvía `0` en el mismo personaje y no debe utilizarse para representar el saldo mostrado en la UI. `UnitHonorLevel("player")` no se interpreta como rango PvP.
 
-## Plan de comprobación — rango PvP y Rank Points
+## Plan de comprobación histórico — rango PvP y Rank Points
 
 `/wsdiag rank` prueba `GetPVPLifetimeStats()`, las funciones clásicas de rango (`UnitPVPRank`, `GetPVPRankInfo`, `GetPVPRankProgress`) y candidatos de `C_PvP`. Debe compararse con `/wsdiag currencies` para detectar una posible moneda llamada Rank Points. `UnitHonorLevel("player")` se conserva como dato separado y no se interpreta como rango PvP.
 
-Nueva pista pendiente de validación en cliente: el código de interfaz de Forever puede modelar el rango como la major faction `2800` (PvP Rank Points), con progreso consultable mediante `C_MajorFactions.GetMajorFactionProgressionInfo(2800)`. El diagnóstico también prueba `C_Reputation.GetFactionDataByID(2800)` y las monedas relacionadas `3468`/`3473`; esta pista no se considera confirmada hasta obtener una salida real del personaje.
+La pista del código de interfaz de Forever modela el rango como la major faction `2800` (PvP Rank Points), con progreso consultable mediante `C_MajorFactions.GetMajorFactionProgressionInfo(2800)`. El diagnóstico también prueba `C_Reputation.GetFactionDataByID(2800)` y las monedas relacionadas `3468`/`3473`.
 
-Primera salida real de `/wsdiag rank`: `renownLevel=0`, `renownReputationEarned=25`; `C_CurrencyInfo(3468)` aparece como «Puntos de rango» con cantidad `0`, y `C_CurrencyInfo(3473)` como «Renombre - Rango de JcJ» con cantidad `0` y máximo `7`. El código de la pestaña PvP de Forever confirma que `renownLevel` es el rango y que `renownReputationEarned` es el valor de Rank Points mostrado en la interfaz; `renownLevelThreshold` es el objetivo del siguiente rango. El nivel `0` se presenta como sin rango; el rango 1 empieza en el título `PVP_RANK_5_<facción>` (Explorador/Scout en Horda). `PVP_RANK_0_<facción>` pertenece al enum legacy y no debe usarse como rango 1.
+Primera salida real de `/wsdiag rank`: `renownLevel=0`, `renownReputationEarned=25`; `C_CurrencyInfo(3468)` aparece como «Puntos de rango» con cantidad `0`, y `C_CurrencyInfo(3473)` como «Renombre - Rango de JcJ» con cantidad `0` y máximo `7`. El código de la pestaña PvP de Forever confirma que `renownLevel` es el rango y que `renownReputationEarned` es el valor de Rank Points mostrado en la interfaz; `renownLevelThreshold` es el objetivo del siguiente rango. Esta fuente ya está integrada en `Core/Stats.lua` y General. El nivel `0` se presenta como sin rango; el rango 1 empieza en el título `PVP_RANK_5_<facción>` (Explorador/Scout en Horda). `PVP_RANK_0_<facción>` pertenece al enum legacy y no debe usarse como rango 1. Pendiente: validar un nivel superior y la progresión visual con valores positivos.
 
 
 ## Decisión funcional de producto — v89 (2026-11-18)
