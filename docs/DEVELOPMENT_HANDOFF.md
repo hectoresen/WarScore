@@ -1414,3 +1414,12 @@ This validates positive BG history and objective tracking. Compare the native st
 - Honor values use existing domain data `ns.Stats.ReadHistorical().honorCurrent/.honorMaximum` (Honor currency 1792) and `formatHonorNumber` for thousands separators, with honest `—` fallback. **The mockup's `252 / 25.000` is only an example; do not hardcode or substitute rank points.** Lifetime honorable kills remain sourced exclusively from `data.honorableKills` (GetStatistic 588/fallback) and formatted as before.
 - No changes to Core/Stats, rank calculations or other cards. Version diagnostic increments `/ws version` **119→120**. CI requires the honor TGA in the clean addon ZIP and checks image dimensions and visible alpha before committing `dist/WarScore.zip`.
 - Native-client QA still pending: actual Honor availability, ratio section clearance, panel size, text positions inside top/lower compartments, and preservation of the finalized rank module.
+
+
+## Iteration #120 screenshot → #121: Honor/HK typography refinement (2026-11-19)
+
+- Owner's v120 in-game screenshot approves the new original ornamental Honor panel and its geometry. Request: make the dynamic Honor balance a barely perceptible 2% smaller, reduce the size of the HK count, match its color to the "MUERTES CON HONOR (HK)" caption, and keep both visually centered.
+- In `addon/WarScore/UI/General.lua` only: Honor currency amount font **37 → 36.25** (~2% smaller), with its existing x=0/y=-547, width 460 and height 42 unchanged.
+- HK count font **32 → 28** and color **GOLD → CREAM**, matching the caption. Keep horizontal positioning x=197 within the right side of the Honor panel; change count label top **-592 → -594** and height **40 → 36** to retain the vertical centerline at -612. Update count shadow to match caption.
+- No changes to the approved ornamental `honor_frame_owner_v120`, its title, HK caption, the currency/statistic read paths, or any of the finalized rank UI, lower metric panels and other assets. `UI_ITERATION` increments to **121**.
+- Verify GitHub Actions rebuilds a fresh installable `dist/WarScore.zip` containing the matching v121 `UI/General.lua`, then request user screenshot for visual approval.
