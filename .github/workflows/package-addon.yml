@@ -1,5 +1,5 @@
 name: Package clean WarScore addon
-# v122: package the owner Settings inner frame and reversible General navigation.
+# v123: reuse the original General inner frame for Settings; no duplicate art.
 on:
   push:
     branches: [main]
@@ -29,7 +29,6 @@ jobs:
           python3 tools/prepare_top_icons.py
           python3 tools/prepare_bottom_icons.py
           python3 tools/prepare_settings_gear.py
-          python3 tools/prepare_settings_view.py
           python3 tools/prepare_honor_panel.py
           python3 tools/prepare_rank_bar.py
           python3 tools/prepare_italic_font.py
@@ -87,19 +86,22 @@ jobs:
                   assert honor_art.size == (512, 128), honor_art.size
                   assert honor_art.convert("RGBA").getchannel("A").getbbox(), "Blank honor panel"
               # v122: original empty-tab Settings artwork and interactive UI.
-              settings_asset = "WarScore/Media/General/settings_inner_frame_owner_v122.tga"
-              assert settings_asset in names, f"Missing Settings frame: {settings_asset}"
-              with Image.open(io.BytesIO(z.read(settings_asset))) as settings_art:
-                  assert settings_art.size == (1024, 1024), settings_art.size
-                  assert settings_art.convert("RGBA").getchannel("A").getbbox(), "Blank Settings frame"
-              assert archive_version.group(1) == "122", "Expected v122 in the clean ZIP"
+              # v123 must reuse the original approved General frame, without
+              # shipping or drawing the mismatched Settings replacement image.
+              assert "WarScore/Media/General/inner_frame_owner_v64.tga" in names
+              assert "WarScore/Media/General/settings_inner_frame_owner_v122.tga" not in names
+              assert archive_version.group(1) == "123", "Expected v123 in the clean ZIP"
+              assert '[innerArt] = true' in runtime_ui
+              assert 'settings_inner_frame_owner_v122' not in runtime_ui
+              assert 'settingsTab:SetPoint("TOPLEFT", settingsPage, "TOPLEFT", 193, -102)' in runtime_ui
+              assert 'returnTab:SetPoint("TOPLEFT", settingsPage, "TOPLEFT", 366, -102)' in runtime_ui
               assert "settingsPage:Show()" in runtime_ui
               assert "settingsPage:Hide()" in runtime_ui
               assert "returnTab:SetScript(\"OnClick\", showGeneralView)" in runtime_ui
               loc = z.read("WarScore/Core/Localization.lua").decode("utf-8")
               assert 'tab_settings = "Ajustes"' in loc
               assert 'tab_back = "Volver"' in loc
-              print("Verified v122 Settings frame, Spanish tabs and view switching")
+              print("Verified v123 shared General inner frame, aligned tabs and view switching")
               print("Verified owner-provided v120 Honor/HK frame in ZIP")
               print("Verified all three visible v115 ornaments inside installable ZIP")
               print("Verified embedded WarScore UI version:", archive_version.group(1))
@@ -111,7 +113,6 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add addon/WarScore/Media/General/settings_inner_frame_owner_v122.tga
           git add addon/WarScore/Media/General/honor_frame_owner_v120.tga
           git add addon/WarScore/Media/General/rank_label_current_owner_v115.tga addon/WarScore/Media/General/rank_label_next_owner_v115.tga addon/WarScore/Media/General/rank_divider_advance_owner_v115.tga
           git add docs/assets/rank_panel_owner_v108_source.png addon/WarScore/Media/General/rank_panel_owner_v108.tga addon/WarScore/Media/General/rank_fill_*.tga addon/WarScore/Media/General/rank_bar_frame_owner_v104.tga addon/WarScore/Media/General/rank_name_plate_owner_v102.tga addon/WarScore/Media/Fonts/Spectral-Italic.ttf dist/WarScore.zip addon/WarScore/Media/General/honor_panel_owner_v98.tga addon/WarScore/Media/General/settings_gear_owner_v94.tga addon/WarScore/Media/General/ratios_frame_owner_v70.tga addon/WarScore/Media/General/stat_band_top_owner_v74.tga addon/WarScore/Media/General/stat_band_bottom_owner_v75.tga addon/WarScore/Media/General/icon_duels_owner_v77.tga addon/WarScore/Media/General/icon_bg_played_owner_v77.tga addon/WarScore/Media/General/icon_bg_wins_owner_v77.tga addon/WarScore/Media/General/icon_bg_rate_owner_v79.tga addon/WarScore/Media/General/icon_duel_rate_owner_v79.tga addon/WarScore/Media/General/icon_favorite_bg_owner_v79.tga
