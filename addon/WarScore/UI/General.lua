@@ -4,7 +4,7 @@ ns.UI = ns.UI or {}
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
 local showGeneralView, showSettingsView
-local UI_ITERATION = "125"
+local UI_ITERATION = "126"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -868,6 +868,16 @@ function ns.UI.ShowGeneral()
     if showGeneralView then showGeneralView() end
     window:Show()
     refresh()
+end
+
+-- v126: shared window toggle for the minimap icon. Closing preserves all
+-- stored PvP statistics and settings; reopening shows the usual General page.
+function ns.UI.ToggleGeneral()
+    if window and window:IsShown() then
+        window:Hide()
+    else
+        ns.UI.ShowGeneral()
+    end
 end
 
 SLASH_WARSCORE1 = "/warscore"
