@@ -1,5 +1,5 @@
 name: Package clean WarScore addon
-# v115: rebuild clean ZIP after verifying the three owner-supplied PNGs.
+# v116: verify raised rank ornament layers and include all three TGA graphics.
 on:
   push:
     branches: [main]
@@ -62,6 +62,24 @@ jobs:
                   f"Version mismatch: ZIP={archive_version.group(1)}, source={source_version.group(1)}"
               )
               assert runtime_ui == source_ui, "ZIP includes stale UI/General.lua"
+              # v116: assert the three independent authored ornaments really
+              # ship in the installable ZIP and retain visible alpha content.
+              import io
+              from PIL import Image
+              ornament_sizes = {
+                  "rank_label_current_owner_v115.tga": (512, 64),
+                  "rank_label_next_owner_v115.tga": (512, 64),
+                  "rank_divider_advance_owner_v115.tga": (1024, 64),
+              }
+              for filename, expected_size in ornament_sizes.items():
+                  asset_path = "WarScore/Media/General/" + filename
+                  assert asset_path in names, f"Missing ornament: {asset_path}"
+                  with Image.open(io.BytesIO(z.read(asset_path))) as asset:
+                      assert asset.size == expected_size, f"Wrong ornament size: {asset_path}"
+                      assert asset.convert("RGBA").getchannel("A").getbbox(), (
+                          f"Transparent/blank ornament: {asset_path}"
+                      )
+              print("Verified all three visible v115 ornaments inside installable ZIP")
               print("Verified embedded WarScore UI version:", archive_version.group(1))
           print("Verified installable WarScore ZIP:", p.stat().st_size, "bytes")
           PY
