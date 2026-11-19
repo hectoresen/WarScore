@@ -24,6 +24,8 @@ Iterate in the **same current development line (`main`)**. Assistant commits one
 - Added `Core/Localization.lua` with Spanish default and English catalog for the General view.
 - Added compatible `WarScoreDB.settings.language` persistence and temporary `/ws lang`, `/ws lang es` and `/ws lang en` commands.
 - General-view copies now refresh when the language changes; no settings UI control was added.
+- Implementation is pushed in commit `d6883cc` on `main`.
+- Static validation passed with `git diff --check`; client QA is still pending because the addon must be tested inside WoW.
 - Static checks and hardcoded visible-copy scan were run; in-client English/Spanish QA is **PENDING**.
 
 ## Actual client test #1 — owner screenshot (2026-11-17)

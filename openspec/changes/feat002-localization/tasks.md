@@ -12,4 +12,4 @@
 - [x] Add missing-key fallback and invalid command handling.
 - [x] Run static checks and inspect the diff for remaining visible hardcoded Spanish strings.
 - [ ] Owner tests `/reload`, `/ws`, `/ws lang en`, `/ws lang es` and sends a screenshot or error output.
-- [ ] Update `docs/DEVELOPMENT_HANDOFF.md` with the implementation commit and client QA result.
+- [x] Update `docs/DEVELOPMENT_HANDOFF.md` with implementation commit `d6883cc`; client QA remains pending.
