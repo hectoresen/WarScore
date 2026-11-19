@@ -1488,3 +1488,12 @@ This validates positive BG history and objective tracking. Compare the native st
 - No change to the approved v125 General, Honor, PvP rank or Settings geometry. UI iteration diagnostic advances to **126**.
 - GitHub Actions verifies the standalone minimap module, 64×64 alpha TGA, translated tooltip keys, TOC inclusion, button drag/toggle/persistence hooks, and a clean installable `dist/WarScore.zip`.
 - **Pending real-client QA**: confirm icon appearance on minimap rim, tooltip, click to open and close, drag without accidentally opening, position retained after `/reload`, locale switching, no Lua errors or frame overlap.
+
+
+## Iteration #126 screenshot → #127: native gold circle around minimap shield (2026-11-19)
+
+- Owner's live minimap screenshot confirms original crossed-swords shield at the rim is functional, but it lacks the gold circular frame visible around other Classic addon buttons. Owner requests the original icon to fit within such a ring, slightly smaller if needed, without modifying minimap functionality or drawing a new ring asset.
+- `addon/WarScore/UI/Minimap.lua` now follows Blizzard's built-in `MiniMapTrackingButton` layout: the native `Interface\\Minimap\\MiniMap-TrackingBorder` 54×54 texture is drawn in `OVERLAY`, anchored at the button's TOPLEFT. The exact existing shield remains unchanged as the button's `ARTWORK`, now 20×20 at local TOPLEFT x=7/y=-6. The clickable button itself is now 31×31 (v126: 30×30). No external dependency, graphic editing or additional media.
+- The click/drag/tooltip logic, minimap angular position and saved `WarScoreDB.settings.minimapAngle`, localization and lazy main-window toggle are unchanged. The General, Honor, PvP rank and Settings UI stay protected.
+- `/ws version` updates to **127**. GitHub Actions validates the built-in border texture reference and icon size in the clean installable `dist/WarScore.zip`. The built-in ring is referenced by a Blizzard path and **must not** appear as a bundled custom TGA.
+- **Native client QA pending:** check that the gold circle is concentric with the shield and matches other minimap addon buttons, shield remains legible, dragging and one-click open/close still work, and position survives `/reload`. If ring placement is off, only tune the icon/border local anchors.
