@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "113"
+local UI_ITERATION = "114"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -378,7 +378,9 @@ local function build()
     innerArt:SetAlpha(1)
 
     -- Keep brand text dynamic. The background plate is supplied artwork.
-    local brandTitle = label(window, "WarScore", 33, GOLD, 0, -27, 360, 43)
+    -- v114: shift the brand copy down within the real title plate and
+    -- reduce it slightly so its glyphs clear the upper steel rail.
+    local brandTitle = label(window, "WarScore", 31, GOLD, 0, -36, 360, 40)
     brandTitle:SetShadowColor(0.34, 0.16, 0.03, 0.93)
     brandTitle:SetShadowOffset(1, -1)
 
@@ -522,9 +524,9 @@ local function build()
     -- Source frame proportions and genuine metal/gems are preserved.
     local rankPanel = window:CreateTexture(nil, "BORDER")
     rankPanel:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_panel_owner_v108")
-    -- v113: narrow the three-compartment owner frame by 10% only.
-    -- Preserve its height and centered horizontal position as requested.
-    rankPanel:SetSize(589.95, 61.75)
+    -- v114: another 5% reduction of the triptych width only, still
+    -- horizontally centered and with its approved height unchanged.
+    rankPanel:SetSize(560.4525, 61.75)
     rankPanel:SetPoint("TOP", window, "TOP", 0, -443.625)
 
     -- v110: no progress-fill texture. The unified frame's dark central
@@ -536,11 +538,11 @@ local function build()
     -- Centers follow the actual outer-section centers of the owner
     -- artwork after scaling, not the former independent plate offsets.
     -- Narrow text bounds stop long names at the red divider gems.
-    -- v113: scale the two optically centered caption offsets and their text
-    -- bounds in proportion to the new narrower asset; PR remains centered.
-    fields.rankFrom = label(window, "—", 13, CREAM, -214.2, -463, 112.86, 25)
-    fields.rankTo = label(window, "—", 13, CREAM, 214.2, -463, 112.86, 25)
-    fields.rankPoints = label(window, "—", 14, CREAM, 0, -464.125, 256.5, 23)
+    -- v114: match both rank caption centers and text widths to the 95%
+    -- horizontal frame scale; retain real PR centered at x=0.
+    fields.rankFrom = label(window, "—", 13, CREAM, -203.49, -463, 107.217, 25)
+    fields.rankTo = label(window, "—", 13, CREAM, 203.49, -463, 107.217, 25)
+    fields.rankPoints = label(window, "—", 14, CREAM, 0, -464.125, 243.675, 23)
     fields.rankPoints:SetShadowColor(0.02, 0.01, 0.01, 1)
     fields.rankPoints:SetShadowOffset(1, -1)
 
