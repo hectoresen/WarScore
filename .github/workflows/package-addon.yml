@@ -1,5 +1,5 @@
 name: Package clean WarScore addon
-# v115: build all three owner-provided rank ornaments and clean addon ZIP.
+# v115: rebuild clean ZIP after verifying the three owner-supplied PNGs.
 on:
   push:
     branches: [main]
