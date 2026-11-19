@@ -1,5 +1,5 @@
 name: Package clean WarScore addon
-# v112: rebuild the clean installable ZIP with centered PvP rank captions.
+# v114: package the centered, narrower rank module and inset header title.
 on:
   push:
     branches: [main]
