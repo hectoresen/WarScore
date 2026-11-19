@@ -251,3 +251,16 @@ La implementación de General consulta **exclusivamente la moneda 1792**, identi
 **Restricción de producto:** no proponer como solución para la pestaña «Hoy» ni la resta de contadores acumulados ni seguimiento local ni persistencia propia. Si una métrica no está disponible directamente por API nativa con semántica diaria validada, declararla no disponible y dejarla fuera de esa vista hasta nueva evidencia.
 
 **Estado:** investigación pendiente; no implica implementación ni cambios gráficos.
+
+
+## Pendiente — HK de mundo abierto por continente (2026-11-19)
+
+**Objetivo:** investigar y validar si WoW Forever 1.60.1 expone mediante APIs nativas el **número histórico de muertes con honor (HK) de mundo abierto para cada continente** (no solo el continente dominante), sin almacenamiento ni seguimiento local del addon.
+
+- Partir de las fuentes ya verificadas: `GetStatistic(381)` (HK en mundo abierto), `GetStatistic(382)` (HK en BG), `GetStatistic(588)` (HK totales) y `GetStatistic(1458)` (continente dominante de HK).
+- Enumerar categorías, estadísticas e interfaces nativas relacionadas con HK por zona/continente; buscar IDs o funciones que proporcionen **conteos individuales por continente**, y comprobar su semántica exacta (PvP vs PvE, mundo abierto vs BG, total vs máximo).
+- Ejecutar diagnósticos dentro del cliente y contrastar resultados positivos con la UI nativa cuando sea posible; registrar IDs, retornos, ejemplos, ámbito y grado de validación.
+- Verificar expresamente si `1458` identifica el continente dominante **exclusivamente de mundo abierto** o entre todas las HK; no asumir exclusividad sin prueba.
+- Si no existe desglose nativo completo, documentar la limitación y no fabricar cifras ni sugerir que el ID `1458` devuelve los valores de cada continente.
+
+**Estado:** pendiente de investigación; no implica implementación.
