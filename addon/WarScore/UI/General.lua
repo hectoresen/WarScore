@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "110"
+local UI_ITERATION = "111"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -522,12 +522,11 @@ local function build()
     -- Source frame proportions and genuine metal/gems are preserved.
     local rankPanel = window:CreateTexture(nil, "BORDER")
     rankPanel:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_panel_owner_v108")
-    -- v109: inset the entire owner frame so neither end compartment
-    -- reaches the inner window rails. Keep the source aspect ratio intact.
-    rankPanel:SetSize(690, 65)
-    -- v110: move the unified authored frame and all three live labels right
-    -- together by 8 UI units, balancing clearance at the inner-frame rails.
-    rankPanel:SetPoint("TOP", window, "TOP", 8, -442)
+    -- v111: reduce the whole three-compartment owner asset by ~5%, keeping
+    -- its original proportions, and center it on the window's X=0 axis.
+    -- Keep its vertical center at the same position as v110.
+    rankPanel:SetSize(655.5, 61.75)
+    rankPanel:SetPoint("TOP", window, "TOP", 0, -443.625)
 
     -- v110: no progress-fill texture. The unified frame's dark central
     -- compartment is left empty except for the live Rank Points value.
@@ -538,9 +537,11 @@ local function build()
     -- Centers follow the actual outer-section centers of the owner
     -- artwork after scaling, not the former independent plate offsets.
     -- Narrow text bounds stop long names at the red divider gems.
-    fields.rankFrom = label(window, "—", 13, CREAM, -251, -462, 132, 26)
-    fields.rankTo = label(window, "—", 13, CREAM, 267, -462, 132, 26)
-    fields.rankPoints = label(window, "—", 14, CREAM, 8, -463, 300, 23)
+    -- v111: move live captions into the resized panel's actual centers.
+    -- Keep font sizes legible while reducing text bounds with the artwork.
+    fields.rankFrom = label(window, "—", 13, CREAM, -246.05, -463, 125.4, 25)
+    fields.rankTo = label(window, "—", 13, CREAM, 246.05, -463, 125.4, 25)
+    fields.rankPoints = label(window, "—", 14, CREAM, 0, -464.125, 285, 23)
     fields.rankPoints:SetShadowColor(0.02, 0.01, 0.01, 1)
     fields.rankPoints:SetShadowOffset(1, -1)
 
