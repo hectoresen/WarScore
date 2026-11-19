@@ -136,6 +136,18 @@ local function printCurrencies()
     if not found then output("No se encontro una moneda con nombre Honor/Rango") end
 end
 
+local function printFields(label, info, fields)
+    if type(info) ~= "table" then
+        output(label .. ": " .. show(info))
+        return
+    end
+    local parts = {}
+    for _, field in ipairs(fields) do
+        parts[#parts + 1] = field .. "=" .. show(info[field])
+    end
+    output(label .. ": " .. table.concat(parts, " | "))
+end
+
 local function printRankData()
     output("Rango PvP y Rank Points (pruebas directas)")
     inspect("GetPVPLifetimeStats", GetPVPLifetimeStats)
@@ -152,6 +164,45 @@ local function printRankData()
         inspect("C_PvP.GetNextHonorLevelForReward", C_PvP.GetNextHonorLevelForReward, UnitHonorLevel("player"))
     else
         output("C_PvP: namespace no disponible")
+    end
+    if C_MajorFactions and type(C_MajorFactions.GetMajorFactionProgressionInfo) == "function" then
+        local ok, info = pcall(C_MajorFactions.GetMajorFactionProgressionInfo, 2800)
+        if ok then
+            printFields("C_MajorFactions 2800", info, {
+                "renownLevel", "renownReputationEarned", "renownReputationRequired",
+                "isLocked", "hasMaximumRenown", "factionID"
+            })
+        else
+            output("C_MajorFactions 2800: ERROR " .. show(info))
+        end
+    else
+        output("C_MajorFactions.GetMajorFactionProgressionInfo: API no disponible")
+    end
+    if C_Reputation and type(C_Reputation.GetFactionDataByID) == "function" then
+        local ok, info = pcall(C_Reputation.GetFactionDataByID, 2800)
+        if ok then
+            printFields("C_Reputation faction 2800", info, {
+                "factionID", "name", "currentStanding", "barMin", "barMax", "barValue"
+            })
+        else
+            output("C_Reputation faction 2800: ERROR " .. show(info))
+        end
+    else
+        output("C_Reputation.GetFactionDataByID: API no disponible")
+    end
+    if C_CurrencyInfo and type(C_CurrencyInfo.GetCurrencyInfo) == "function" then
+        for _, id in ipairs({ 3468, 3473 }) do
+            local ok, info = pcall(C_CurrencyInfo.GetCurrencyInfo, id)
+            if ok then
+                printFields("C_CurrencyInfo " .. id, info, {
+                    "name", "quantity", "maxQuantity", "totalEarned", "quantityEarnedThisSeason"
+                })
+            else
+                output("C_CurrencyInfo " .. id .. ": ERROR " .. show(info))
+            end
+        end
+    else
+        output("C_CurrencyInfo.GetCurrencyInfo: API no disponible")
     end
     output("Si Rank Points no aparece aqui, ejecuta tambien /wsdiag currencies")
 end

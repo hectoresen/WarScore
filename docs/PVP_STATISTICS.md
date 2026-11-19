@@ -221,6 +221,8 @@ La fuente correcta para el saldo de Honor de Forever es la moneda `Puntos de hon
 
 `/wsdiag rank` prueba `GetPVPLifetimeStats()`, las funciones clásicas de rango (`UnitPVPRank`, `GetPVPRankInfo`, `GetPVPRankProgress`) y candidatos de `C_PvP`. Debe compararse con `/wsdiag currencies` para detectar una posible moneda llamada Rank Points. `UnitHonorLevel("player")` se conserva como dato separado y no se interpreta como rango PvP.
 
+Nueva pista pendiente de validación en cliente: el código de interfaz de Forever puede modelar el rango como la major faction `2800` (PvP Rank Points), con progreso consultable mediante `C_MajorFactions.GetMajorFactionProgressionInfo(2800)`. El diagnóstico también prueba `C_Reputation.GetFactionDataByID(2800)` y las monedas relacionadas `3468`/`3473`; esta pista no se considera confirmada hasta obtener una salida real del personaje.
+
 
 ## Decisión funcional de producto — v89 (2026-11-18)
 

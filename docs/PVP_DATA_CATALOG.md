@@ -141,7 +141,7 @@ Forever devolvió 26 categorías. Las relevantes son:
 
 1. Probar `/wsdiag battlefield` durante y justo después de una BG; el diagnóstico intenta `C_PvP.GetScoreInfoByPlayerGuid()` y deja `GetBattlefieldScore()` como fallback.
 2. Integrar la moneda de Honor `1792` en la UI y mostrar el máximo `25.000` cuando esté disponible.
-3. Ejecutar `/wsdiag rank` y auditar las APIs de rango/`C_PvP`; mantener «No disponible» hasta validar Rank Points y nombre.
+3. Ejecutar `/wsdiag rank` y auditar la major faction `2800`, `C_Reputation`, monedas `3468/3473` y APIs de rango/`C_PvP`; mantener «No disponible» hasta validar Rank Points y nombre.
 4. Probar `GetPVPThisWeekStats()` y `GetPVPLastWeekStats()` desde el addon.
 5. Investigar `GetInspectArenaData()` y APIs de arenas en Forever.
 6. Validar cambio de fecha para HK/DK de ayer.
