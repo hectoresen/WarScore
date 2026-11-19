@@ -48,7 +48,7 @@ jobs:
           assert offset > 3000, "Unable to locate known owner PNG segment"
           segment = Path("tools/rank_panel_v108_repair_segment.b64").read_text().strip()
           assert len(segment) == 1000
-          restored = encoded[:3000] + segment + encoded[offset:]
+          restored = encoded[:3000] + segment + encoded[offset:] + "=="
           assert len(restored) == 7932, f"Incorrect owner image length {len(restored)}; raw={len(encoded)}; offset={offset}; tail={encoded[-40:]}"
           payload = base64.b64decode(restored, validate=True)
           import hashlib
