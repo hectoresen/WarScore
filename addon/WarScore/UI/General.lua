@@ -268,12 +268,13 @@ end
 -- A renown level of zero has no rank, even if some Rank Points are earned.
 local function rankName(level, faction)
     if type(level) ~= "number" or level < 0 then return "—" end
-    if level == 0 then return "Sin rango" end
+    if level == 0 then return text("no_rank") end
+    if ns.L:GetLanguage() == "en" then return text("rank_level", tostring(level)) end
     local factionIndex = faction == "Horde" and 0 or (faction == "Alliance" and 1 or nil)
-    if not factionIndex then return "Rango " .. tostring(level) end
+    if not factionIndex then return text("rank_caption") .. " " .. tostring(level) end
     local key = "PVP_RANK_" .. tostring(level + 4) .. "_" .. tostring(factionIndex)
     local value = _G[key]
-    return type(value) == "string" and value ~= "" and value or ("Rango " .. tostring(level))
+    return type(value) == "string" and value ~= "" and value or (text("rank_caption") .. " " .. tostring(level))
 end
 
 local function roundedRankStep(points, maximum)
@@ -284,9 +285,17 @@ end
 
 local function refresh()
     if not window or not window:IsShown() then return end
+    fields.generalText:SetText(text("tab_general"))
+    fields.todayText:SetText(text("tab_today"))
+    fields.rankCaption:SetText(text("rank_caption"))
+    fields.honorHeading:SetText(text("honor_title"))
+    fields.hkCaption:SetText(text("honorable_kills"))
+    fields.hkDescription:SetText(text("hk_death_ratio_description"))
+    for i, key in ipairs(fields.statCaptionKeys) do fields.statCaptions[i]:SetText(text(key)) end
+    for i, key in ipairs(fields.statCaptionKeysSecondary) do fields.statCaptionsSecondary[i]:SetText(text(key)) end
     local data = ns.Stats.ReadHistorical()
-    fields.name:SetText(UnitName("player") or "Personaje")
-    fields.level:SetText("Nivel " .. tostring(UnitLevel("player") or "?") .. " · " .. (UnitClass("player") or "Clase"))
+    fields.name:SetText(UnitName("player") or text("character_fallback"))
+    fields.level:SetText(text("level_format", tostring(UnitLevel("player") or "?"), UnitClass("player") or text("class_fallback")))
     if fields.portrait and type(SetPortraitTexture) == "function" then
         SetPortraitTexture(fields.portrait, "player")
     end
@@ -306,17 +315,17 @@ local function refresh()
         fields.rank:SetText(rankName(level, faction))
         fields.rankFrom:SetText(rankName(level, faction))
         local atMax = type(data.pvpRankMaxLevel) == "number" and level >= data.pvpRankMaxLevel
-        fields.rankTo:SetText(atMax and "Máximo" or rankName(level + 1, faction))
+        fields.rankTo:SetText(atMax and text("rank_max") or rankName(level + 1, faction))
         local points, threshold = data.pvpRankPoints, data.pvpRankThreshold
         if type(points) == "number" then
-            fields.rankPoints:SetText(formatHonorNumber(points) .. " / " .. formatHonorNumber(threshold) .. " PR")
+            fields.rankPoints:SetText(formatHonorNumber(points) .. " / " .. formatHonorNumber(threshold) .. " " .. text("rank_points_suffix"))
         else
             fields.rankPoints:SetText("—")
         end
         -- v110: progress artwork temporarily disabled at the owner's request.
         -- Keep raw Rank Points and the max-rank label; do not fabricate a bar.
     else
-        fields.rank:SetText("No disponible")
+        fields.rank:SetText(text("rank_unavailable"))
         fields.rankFrom:SetText("—")
         fields.rankTo:SetText("—")
         fields.rankPoints:SetText("—")
@@ -331,7 +340,7 @@ local function refresh()
     if favorite and data.favoriteBattlegroundPlayed then
         fields.favorite:SetText(favorite)
         local count = data.favoriteBattlegroundPlayed
-        fields.favoritePlayed:SetText(formatNumber(count) .. (count == 1 and " vez jugado" or " veces jugado"))
+        fields.favoritePlayed:SetText(text(count == 1 and "played_once" or "played_many", formatNumber(count)))
     else
         fields.favorite:SetText("—")
         fields.favoritePlayed:SetText("")
@@ -404,7 +413,7 @@ local function build()
     local general = CreateFrame("Button", nil, window)
     general:SetSize(150, 38)
     general:SetPoint("TOPLEFT", window, "TOPLEFT", 193, -102)
-    local generalText = label(general, "General", 16, GOLD, 0, -2, 135, 29)
+    local generalText = label(general, text("tab_general"), 16, GOLD, 0, -2, 135, 29)
     generalText:SetShadowColor(0.17, 0.08, 0.015, 0.94)
     generalText:SetShadowOffset(1, -1)
 
@@ -412,18 +421,18 @@ local function build()
     today:SetSize(150, 38)
     today:SetPoint("TOPLEFT", window, "TOPLEFT", 366, -102)
     -- v96: center the copy optically within the painted inactive tab.
-    local todayText = label(today, "Hoy", 15, CREAM, -5, -2, 135, 29)
+    local todayText = label(today, text("tab_today"), 15, CREAM, -5, -2, 135, 29)
     todayText:SetTextColor(0.72, 0.66, 0.55)
     -- v98: mirror the native-style settings hover tooltip.
     today:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Hoy (Próximamente)", 1, 0.82, 0.40)
+        GameTooltip:SetText(text("today_coming_soon"), 1, 0.82, 0.40)
         GameTooltip:Show()
     end)
     today:SetScript("OnLeave", function() GameTooltip:Hide() end)
     today:SetScript("OnClick", function()
         if DEFAULT_CHAT_FRAME then
-            DEFAULT_CHAT_FRAME:AddMessage("|cffffc34dWarScore:|r La pestaña Hoy estará disponible en una próxima versión.")
+            DEFAULT_CHAT_FRAME:AddMessage("|cffffc34dWarScore:|r " .. text("today_message"))
         end
     end)
 
@@ -443,7 +452,7 @@ local function build()
     settingsFrame:EnableMouse(true)
     settingsFrame:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Ajustes (próximamente)", 1, 0.82, 0.40)
+        GameTooltip:SetText(text("settings_coming_soon"), 1, 0.82, 0.40)
         GameTooltip:Show()
     end)
     settingsFrame:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -514,9 +523,9 @@ local function build()
     -- Clean centered rank inscription: a small section name and an honest
     -- unavailable value, like the two-tier reference ribbon.
     -- Reserve a visible margin below the rank value and above the HK divider.
-    local rankCaption = label(rankPlate, "Rango PvP", 13, CREAM, 0, -3, 280, 15)
+    local rankCaption = label(rankPlate, text("rank_caption"), 13, CREAM, 0, -3, 280, 15)
     rankCaption:SetTextColor(0.89, 0.70, 0.39)
-    fields.rank = label(rankPlate, "No disponible", 18, GOLD, 0, -19, 280, 20)
+    fields.rank = label(rankPlate, text("rank_unavailable"), 18, GOLD, 0, -19, 280, 20)
     fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
     fields.rank:SetShadowOffset(1, -1)
     -- The supplied Horde plaque already has a lower gold rim and ruby:
@@ -598,7 +607,7 @@ local function build()
 
     -- Header title, current/maximum Honor currency, and lifetime HK are
     -- independent live font strings; no text is embedded in the owner PNG.
-    local honorHeading = label(window, "HONOR", 23, GOLD, 0, -519, 260, 28)
+    local honorHeading = label(window, text("honor_title"), 23, GOLD, 0, -519, 260, 28)
     honorHeading:SetShadowColor(0.24, 0.12, 0.02, 0.85)
     honorHeading:SetShadowOffset(1, -1)
     -- v121: reduce the dynamic Honor amount by ~2% without moving the panel.
@@ -606,7 +615,7 @@ local function build()
     fields.honor:SetShadowColor(0.35, 0.20, 0.04, 0.95)
     fields.honor:SetShadowOffset(2, -2)
 
-    local hkCaption = label(window, "MUERTES CON HONOR (HK)", 17, CREAM, -83, -597, 365, 27)
+    local hkCaption = label(window, text("honorable_kills"), 17, CREAM, -83, -597, 365, 27)
     hkCaption:SetShadowColor(0.22, 0.10, 0.02, 0.84)
     hkCaption:SetShadowOffset(1, -1)
     -- v121: reduce and vertically center the live HK count in its right-side
@@ -627,18 +636,18 @@ local function build()
     -- Iteration 72: compact the text stack inside the fixed owner frame.
     -- Iteration 73: shift the entire ratio art + text block up 10 UI units.
     -- Keep all relative positions and font sizes established by v72.
-    label(window, "HK/D", 18, GOLD, -165, -683, 270, 22)
+    label(window, text("hk_death_ratio"), 18, GOLD, -165, -683, 270, 22)
     -- v90: align right-column heading and counter to the actual right panel axis.
     -- The previous +165 offset was visibly right of the ornamental cell center.
     local rightMetricX = 150
-    label(window, "MUERTES PvP SUFRIDAS", 16, RED, rightMetricX, -683, 290, 22)
+    label(window, text("pvp_deaths"), 16, RED, rightMetricX, -683, 290, 22)
     fields.hkd = label(window, "—", 34, CREAM, -165, -705, 270, 37)
     fields.deaths = label(window, "—", 34, RED, rightMetricX, -705, 270, 37)
     fields.hkd:SetShadowColor(0.34, 0.19, 0.06, 0.72)
     fields.hkd:SetShadowOffset(1, -1)
     fields.deaths:SetShadowColor(0.32, 0.05, 0.035, 0.70)
     fields.deaths:SetShadowOffset(1, -1)
-    local hkDescription = label(window, "HK / muertes PvP sufridas", 11, CREAM, -165, -741, 300, 18)
+    local hkDescription = label(window, text("hk_death_ratio_description"), 11, CREAM, -165, -741, 300, 18)
     hkDescription:SetTextColor(0.77, 0.69, 0.58)
     -- Deliberately no descriptive copy under the raw PvP death counter;
     -- the raw count's title already states the metric unambiguously.
@@ -646,24 +655,35 @@ local function build()
     -- Lower ratio rail and central sapphire are part of the new owner asset.
 
     local firstRow = statBand(window, -779, {
-        { title = "DUELOS GANADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duels_owner_v77" },
-        { title = "CAMPOS DE BATALLA JUGADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_played_owner_v77" },
-        { title = "BG GANADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_wins_owner_v77" },
+        { title = "duel_wins", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duels_owner_v77" },
+        { title = "battlegrounds_played", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_played_owner_v77" },
+        { title = "battlegrounds_won", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_wins_owner_v77" },
     })
     fields.duels, fields.bgPlayed, fields.bgWon = unpack(firstRow)
     -- v88: lift the entire lower band 8 UI units to clear the parent bottom rim.
     -- Keep the owner TGA, band dimensions and the text/icon local anchors intact.
     local secondRow = statBand(window, -890, {
-        { title = "WIN RATE BG", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_rate_owner_v79" },
-        { title = "WIN RATE DUELOS", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duel_rate_owner_v79" },
-        { title = "CAMPO DE BATALLA FAVORITO", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_favorite_bg_owner_v79", valueSize = 17 },
+        { title = "battleground_win_rate", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_rate_owner_v79" },
+        { title = "duel_win_rate", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duel_rate_owner_v79" },
+        { title = "favorite_battleground", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_favorite_bg_owner_v79", valueSize = 17 },
     }, true)
     fields.bgRate, fields.duelRate, fields.favorite = unpack(secondRow)
     fields.favoritePlayed = secondRow.favoritePlayed
+    fields.rankCaption = rankCaption
+    fields.honorHeading = honorHeading
+    fields.hkCaption = hkCaption
+    fields.hkDescription = hkDescription
+    fields.generalText = generalText
+    fields.todayText = todayText
+    fields.statCaptions = firstRow.captions
+    fields.statCaptionKeys = { "duel_wins", "battlegrounds_played", "battlegrounds_won" }
+    fields.statCaptionsSecondary = secondRow.captions
+    fields.statCaptionKeysSecondary = { "battleground_win_rate", "duel_win_rate", "favorite_battleground" }
 
     -- The reference's tall two-row composition needs additional height.
     window:SetHeight(1105)
     window:SetScript("OnShow", refresh)
+    ns.L:RegisterRefresh(refresh)
 end
 
 function ns.UI.ShowGeneral()
@@ -676,6 +696,18 @@ SLASH_WARSCORE1 = "/warscore"
 SLASH_WARSCORE2 = "/ws"
 SlashCmdList.WARSCORE = function(message)
     local command = type(message) == "string" and message:match("^%s*(%S+)") or nil
+    local argument = type(message) == "string" and message:match("^%s*%S+%s+(%S+)") or nil
+    if command and command:lower() == "lang" then
+        local requested = argument and argument:lower() or nil
+        if requested and ns.L:SetLanguage(requested) then
+            if DEFAULT_CHAT_FRAME then
+                DEFAULT_CHAT_FRAME:AddMessage("|cffffc34dWarScore|r " .. text("language_changed", requested == "en" and "English" or "Español"))
+            end
+        elseif DEFAULT_CHAT_FRAME then
+            DEFAULT_CHAT_FRAME:AddMessage("|cffffc34dWarScore|r " .. (requested and text("language_invalid") or text("language_usage")))
+        end
+        return
+    end
     if command and command:lower() == "version" then
         if DEFAULT_CHAT_FRAME then
             DEFAULT_CHAT_FRAME:AddMessage("|cffffc34dWarScore|r UI iteración " .. UI_ITERATION)
