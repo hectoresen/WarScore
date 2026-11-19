@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "120"
+local UI_ITERATION = "121"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -598,16 +598,19 @@ local function build()
     local honorHeading = label(window, "HONOR", 23, GOLD, 0, -519, 260, 28)
     honorHeading:SetShadowColor(0.24, 0.12, 0.02, 0.85)
     honorHeading:SetShadowOffset(1, -1)
-    fields.honor = label(window, "—", 37, GOLD, 0, -547, 460, 42)
+    -- v121: reduce the dynamic Honor amount by ~2% without moving the panel.
+    fields.honor = label(window, "—", 36.25, GOLD, 0, -547, 460, 42)
     fields.honor:SetShadowColor(0.35, 0.20, 0.04, 0.95)
     fields.honor:SetShadowOffset(2, -2)
 
     local hkCaption = label(window, "MUERTES CON HONOR (HK)", 17, CREAM, -83, -597, 365, 27)
     hkCaption:SetShadowColor(0.22, 0.10, 0.02, 0.84)
     hkCaption:SetShadowOffset(1, -1)
-    fields.hk = label(window, "—", 32, GOLD, 197, -592, 130, 40)
-    fields.hk:SetShadowColor(0.45, 0.22, 0.025, 0.96)
-    fields.hk:SetShadowOffset(2, -2)
+    -- v121: reduce and vertically center the live HK count in its right-side
+    -- area. Match the CREAM color of the accompanying HK description.
+    fields.hk = label(window, "—", 28, CREAM, 197, -594, 130, 36)
+    fields.hk:SetShadowColor(0.22, 0.10, 0.02, 0.84)
+    fields.hk:SetShadowOffset(1, -1)
 
     -- Iteration 70: owner-provided complete ornamental frame, improved source resolution for the ratios.
     -- Replaces the upper/lower rules and the vertical separator.
