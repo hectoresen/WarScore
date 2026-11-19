@@ -217,6 +217,10 @@ WarScore 2. Puntos de honor | cantidad 252 | max 25000 | ID 1792
 
 La fuente correcta para el saldo de Honor de Forever es la moneda `Puntos de honor`, ID `1792`, leída mediante `C_CurrencyInfo.GetCurrencyListInfo()`. `UnitHonor("player")` devolvía `0` en el mismo personaje y no debe utilizarse para representar el saldo mostrado en la UI. El rango PvP y los Rank Points siguen pendientes de localizar; `UnitHonorLevel("player")` no se interpreta como rango PvP.
 
+## Plan de comprobación — rango PvP y Rank Points
+
+`/wsdiag rank` prueba `GetPVPLifetimeStats()`, las funciones clásicas de rango (`UnitPVPRank`, `GetPVPRankInfo`, `GetPVPRankProgress`) y candidatos de `C_PvP`. Debe compararse con `/wsdiag currencies` para detectar una posible moneda llamada Rank Points. `UnitHonorLevel("player")` se conserva como dato separado y no se interpreta como rango PvP.
+
 
 ## Decisión funcional de producto — v89 (2026-11-18)
 

@@ -136,6 +136,26 @@ local function printCurrencies()
     if not found then output("No se encontro una moneda con nombre Honor/Rango") end
 end
 
+local function printRankData()
+    output("Rango PvP y Rank Points (pruebas directas)")
+    inspect("GetPVPLifetimeStats", GetPVPLifetimeStats)
+    inspect("UnitPVPRank(player)", UnitPVPRank, "player")
+    inspect("GetPVPRankInfo(0)", GetPVPRankInfo, 0)
+    inspect("GetPVPRankInfo(1)", GetPVPRankInfo, 1)
+    inspect("GetPVPRankProgress", GetPVPRankProgress)
+    inspect("UnitHonorLevel(player) [no es rango PvP]", UnitHonorLevel, "player")
+    if C_PvP then
+        inspect("C_PvP.GetSeasonBestInfo", C_PvP.GetSeasonBestInfo)
+        inspect("C_PvP.GetPVPActiveMatchPersonalRatedInfo", C_PvP.GetPVPActiveMatchPersonalRatedInfo)
+        inspect("C_PvP.GetActiveMatchBracket", C_PvP.GetActiveMatchBracket)
+        inspect("C_PvP.GetActiveMatchState", C_PvP.GetActiveMatchState)
+        inspect("C_PvP.GetNextHonorLevelForReward", C_PvP.GetNextHonorLevelForReward, UnitHonorLevel("player"))
+    else
+        output("C_PvP: namespace no disponible")
+    end
+    output("Si Rank Points no aparece aqui, ejecuta tambien /wsdiag currencies")
+end
+
 honorFrame:SetScript("OnEvent", function(_, event)
     if event == "INSPECT_HONOR_UPDATE" then
         if honorRequestPending then
@@ -228,12 +248,14 @@ SlashCmdList.WARSCOREDIAG = function(message)
         printBattlefieldScore()
     elseif mode == "currencies" or mode == "currency" then
         printCurrencies()
+    elseif mode == "rank" or mode == "ranks" then
+        printRankData()
     elseif mode == "daily" then
         output("Fecha cliente: " .. (type(date) == "function" and show(date("%Y-%m-%d %H:%M")) or "API no disponible"))
         inspect("GetPVPSessionStats", GetPVPSessionStats)
         inspect("GetPVPYesterdayStats", GetPVPYesterdayStats)
     else
         basics()
-        output("Opciones: /wsdiag honor | battlefield | currencies | list 21 | categories | detail | daily")
+        output("Opciones: /wsdiag honor | battlefield | currencies | rank | list 21 | categories | detail | daily")
     end
 end
