@@ -1270,3 +1270,12 @@ This validates positive BG history and objective tracking. Compare the native st
 - UI version 104. Client visual QA pending: assess frame fidelity and side labels, confirm raw PR centered, and inspect equal row widths and bottom inset. Keep Honor removed until a future specified iteration.
 
 - Final v104 rendering correction before distribution: the original asset's alpha-visible aspect is ~5.61:1, so its in-game view is 365×65 (not horizontally stretched to 365×48). The rank frame uses BORDER instead of OVERLAY layer, allowing the authentic 0–100% dynamic ARTWORK fill to remain visible above its dark interior; content stays inset inside golden edges and data text remains above both.
+
+
+## Iteration #104 screenshot → #105 (2026-11-19)
+
+- Actual WoW addon iteration only (no mockups). User v104 screenshot shows too much height in central rank container, lower card rows too high, and card values/icons too close to their bottom rims, especially italic favorite play-count.
+- Keep **exactly the existing owner v104 ornamental frame TGA**; narrow its displayed vertical height from 365×65 at y=-441 to **365×48 at y=-450**. The existing dynamic rank fill becomes 326×21 at y=-464 to occupy the interior more closely. Raw current/goal PR remains centered; all 21 progress steps and rank API remain unchanged.
+- Move both stat-card rows down **12 UI units**, first y=-767→-779 and second y=-878→-890; retain their identical **688×100** frames and current divider arrangements.
+- Scale all six icons and numeric values to **95%** without scaling the frames; shift icons 2 units inward/up and values 3 units up. Favorite play-count italic is font 12.35, raised from y=-74 to -66, with its independent centered caption preserved. Captions and stat readings remain dynamic and unchanged.
+- UI diagnostic version = **105**. Client QA pending for centered fill, breathing room and lower-frame clearance.

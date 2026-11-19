@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "104"
+local UI_ITERATION = "105"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -174,13 +174,14 @@ local function statBand(parent, y, definitions, secondary)
         -- Favorite-BG pennant and the entire upper row keep their approved size.
         local iconSize = ownerBottomIcon and (i == 1 and 47.5 or (i == 2 and 44 or 50))
             or (ownerIcon and 50 or 43)
-        icon:SetSize(iconSize, iconSize)
+        -- v105: harmonize icon size (-5%) while preserving band dimensions.
+        icon:SetSize(iconSize * 0.95, iconSize * 0.95)
         -- v78: move only the crossed swords inward, clear of the left gold bevel.
         -- v81: use consistent inner clearance for the normalized lower art.
         -- Keep the owner-approved upper icon placement untouched.
         local iconInset = ownerTopIcon and (i == 1 and 24 or 10)
             or (ownerBottomIcon and (i == 1 and 16 or (i == 2 and 16 or 18)) or 8)
-        icon:SetPoint("LEFT", segment, "LEFT", iconInset, ownerIcon and -7 or -1)
+        icon:SetPoint("LEFT", segment, "LEFT", iconInset + 2, ownerIcon and -5 or 1)
         icon:SetTexCoord(0, 1, 0, 1)
         -- Owner art has real alpha; avoid circular masking and opacity reduction.
         icon:SetAlpha(ownerIcon and 1 or (secondary and 0.78 or 0.91))
@@ -209,8 +210,10 @@ local function statBand(parent, y, definitions, secondary)
         local valueWidth = isRate and 105 or (isFavorite and 265 or 145)
         -- v85: separate the favorite's name from the played-count caption.
         -- The latter uses the client's built-in italic face when available.
-        local value = label(segment, "—", definition.valueSize or (secondary and 29 or 35),
-            secondary and GREEN or GOLD, valueX, isFavorite and -49 or -53,
+        -- v105: values are independently positioned, scaled to 95% and raised.
+        local valueFontSize = (definition.valueSize or (secondary and 29 or 35)) * 0.95
+        local value = label(segment, "—", valueFontSize,
+            secondary and GREEN or GOLD, valueX, isFavorite and -46 or -50,
             valueWidth, isFavorite and 28 or 45)
         value:SetShadowColor(0.26, 0.14, 0.045, secondary and 0.45 or 0.72)
         value:SetShadowOffset(1, -1)
@@ -218,11 +221,11 @@ local function statBand(parent, y, definitions, secondary)
         if isFavorite then
             -- v86: center under the favorite card heading (segment x=0),
             -- independently from the name, which is shifted right of the pennant.
-            local playedCaption = label(segment, "", 13, CREAM, 0, -74, 190, 20)
+            local playedCaption = label(segment, "", 12.35, CREAM, 0, -66, 190, 20)
             -- v87: own actual italic TTF. WoW has no SetFont italic flag;
             -- QuestFont/ITALIC_TEXT_FONT rendered upright on Forever v86.
             -- File is vendored from Google Fonts (Spectral, SIL OFL 1.1).
-            playedCaption:SetFont("Interface\\AddOns\\WarScore\\Media\\Fonts\\Spectral-Italic.ttf", 13, "OUTLINE")
+            playedCaption:SetFont("Interface\\AddOns\\WarScore\\Media\\Fonts\\Spectral-Italic.ttf", 12.35, "OUTLINE")
             playedCaption:SetTextColor(0.84, 0.77, 0.64)
             playedCaption:SetShadowColor(0.20, 0.10, 0.03, 0.6)
             playedCaption:SetShadowOffset(1, -1)
@@ -528,12 +531,13 @@ local function build()
     -- Put the opaque ornament behind the dynamic progress fill.
     local rankBarFrame = window:CreateTexture(nil, "BORDER")
     rankBarFrame:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_bar_frame_owner_v104")
-    rankBarFrame:SetSize(365, 65)
-    rankBarFrame:SetPoint("TOP", window, "TOP", 0, -441)
+    -- v105: tighten gold frame around the actual fill.
+    rankBarFrame:SetSize(365, 48)
+    rankBarFrame:SetPoint("TOP", window, "TOP", 0, -450)
 
     fields.rankFill = window:CreateTexture(nil, "ARTWORK")
-    fields.rankFill:SetSize(326, 19)
-    fields.rankFill:SetPoint("TOP", window, "TOP", 0, -466)
+    fields.rankFill:SetSize(326, 21)
+    fields.rankFill:SetPoint("TOP", window, "TOP", 0, -464)
     fields.rankFill:Hide()
 
     -- Title plates come from the original 'rank bars' folder; preserve
@@ -614,7 +618,7 @@ local function build()
 
     -- Lower ratio rail and central sapphire are part of the new owner asset.
 
-    local firstRow = statBand(window, -767, {
+    local firstRow = statBand(window, -779, {
         { title = "DUELOS GANADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duels_owner_v77" },
         { title = "CAMPOS DE BATALLA JUGADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_played_owner_v77" },
         { title = "BG GANADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_wins_owner_v77" },
@@ -622,7 +626,7 @@ local function build()
     fields.duels, fields.bgPlayed, fields.bgWon = unpack(firstRow)
     -- v88: lift the entire lower band 8 UI units to clear the parent bottom rim.
     -- Keep the owner TGA, band dimensions and the text/icon local anchors intact.
-    local secondRow = statBand(window, -878, {
+    local secondRow = statBand(window, -890, {
         { title = "WIN RATE BG", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_rate_owner_v79" },
         { title = "WIN RATE DUELOS", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duel_rate_owner_v79" },
         { title = "CAMPO DE BATALLA FAVORITO", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_favorite_bg_owner_v79", valueSize = 17 },
