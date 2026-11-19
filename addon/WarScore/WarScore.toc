@@ -10,4 +10,5 @@ Core/Storage.lua
 Core/Localization.lua
 Core/Stats.lua
 UI/General.lua
+UI/Minimap.lua
 Core/Diagnostics.lua
