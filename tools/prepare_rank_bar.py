@@ -71,3 +71,24 @@ with Image.open(panel_source) as original:
         raise ValueError("Owner v108 panel has no visible pixels")
     panel.save(out / "rank_panel_owner_v108.tga", format="TGA")
 print("Prepared original single-piece v108 rank panel")
+
+
+# v115: three separate original owner PNG ornaments for the approved rank
+# triptych. Convert directly to alpha-preserving power-of-two TGA images.
+# Do not redraw, crop, or combine them with the approved v108 frame.
+owner_v115 = (
+    ("rank_label_current_owner_v115_source.png", (512, 64), "rank_label_current_owner_v115.tga"),
+    ("rank_label_next_owner_v115_source.png", (512, 64), "rank_label_next_owner_v115.tga"),
+    ("rank_divider_advance_owner_v115_source.png", (1024, 64), "rank_divider_advance_owner_v115.tga"),
+)
+for source_name, expected_size, target_name in owner_v115:
+    source_file = root / "docs/assets" / source_name
+    with Image.open(source_file) as original:
+        original.load()
+        if original.size != expected_size:
+            raise ValueError(f"Unexpected owner v115 asset dimensions: {source_file}: {original.size}")
+        image = original.convert("RGBA")
+        if not image.getchannel("A").getbbox():
+            raise ValueError(f"Empty owner v115 asset: {source_file}")
+        image.save(out / target_name, format="TGA")
+print("Prepared all three original v115 rank ornaments")
