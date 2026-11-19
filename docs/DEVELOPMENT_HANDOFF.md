@@ -1473,3 +1473,15 @@ This validates positive BG history and objective tracking. Compare the native st
 - v125 removes this unsupported API call. Instead, `styleDropdown.Button:Disable()` disables the standard native dropdown arrow and `styleDropdown:EnableMouse(false)` prevents mouse interaction on the style frame; the current style remains visible as `Classic Forever`. Guard access to the arrow with `if styleDropdown.Button then` and dim arrow via `SetAlpha(0.45)`.
 - No changes to `ns.L:SetLanguage`, persistent Spanish/English setting, translation callbacks, original General/Settings frame geometry, Honor, PvP rankings, other statistics or original assets.
 - `UI_ITERATION` increments **124→125**. CI assertions explicitly reject `UIDropDownMenu_Disable(styleDropdown)` and check the replacement native button and correct installable ZIP version. **In-game QA pending**: open `/ws` with no Lua errors, go to Settings, open language dropdown and switch to English, return to General to confirm translations, and confirm Classic Forever cannot be opened.
+
+
+## Iteration #125 → #126: owner shield as draggable minimap launcher (2026-11-19)
+
+- Owner supplied the original red/gold shield with crossed silver swords `Escudo heráldico con espadas cruzadas(1).png`. The icon is adapted to a power-of-two 64×64 transparent canvas, preserving the shield design without an extra circular rim. The compact owner PNG transport is in `docs/assets/minimap_icon_owner_v126_source.png`; `tools/prepare_minimap_icon.py` creates `addon/WarScore/Media/Minimap/warscore_icon_owner_v126.tga`.
+- New dedicated `addon/WarScore/UI/Minimap.lua` is loaded after `UI/General.lua` in the TOC. It creates `WarScoreMinimapButton` on `PLAYER_LOGIN` as a 30×30 native Button parented to `Minimap`, displaying only the supplied transparent TGA.
+- **Left click** calls `ns.UI.ToggleGeneral()` in General.lua, which hides the existing window if displayed, otherwise shows the existing General view. Window creation remains lazy and uses existing lifecycle and fresh statistics.
+- **Drag left** tracks cursor relative to minimap center using effective scale and atan2 (with classic Lua fallback), snaps to the minimap circumference, and persists the angle to `WarScoreDB.settings.minimapAngle` when dragging ends. Default position is 225°. New SavedVariables fields are added without replacing the existing DB or language preference.
+- Hover shows `WarScore` and localized `Abrir/Cerrar WarScore` / `Open/Close WarScore` using the existing localization catalog.
+- No change to the approved v125 General, Honor, PvP rank or Settings geometry. UI iteration diagnostic advances to **126**.
+- GitHub Actions verifies the standalone minimap module, 64×64 alpha TGA, translated tooltip keys, TOC inclusion, button drag/toggle/persistence hooks, and a clean installable `dist/WarScore.zip`.
+- **Pending real-client QA**: confirm icon appearance on minimap rim, tooltip, click to open and close, drag without accidentally opening, position retained after `/reload`, locale switching, no Lua errors or frame overlap.
