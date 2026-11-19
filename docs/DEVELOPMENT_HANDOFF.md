@@ -1505,3 +1505,10 @@ This validates positive BG history and objective tracking. Compare the native st
 - Only `addon/WarScore/UI/Minimap.lua` icon geometry changes: shield artwork **20×20 → 23×23** (+15%), its local TOPLEFT **(7,-6) → (5.5,-4.5)** to retain the original visual center. The Blizzard `MiniMap-TrackingBorder` remains 54×54 with identical anchor, and native clickable button remains 31×31.
 - No changes to the original uploaded shield TGA, draggable angle math, `WarScoreDB.settings.minimapAngle`, tooltip, click toggle, UI layouts, translations or PvP data. Diagnostic `UI_ITERATION` increments **127→128**.
 - CI verifies unchanged Blizzard border reference, 23-pixel shield geometry, correct center offset and clean `dist/WarScore.zip`. In-client visual QA remains pending.
+
+
+## Iteration #128 screenshot → #129: slightly enlarge the minimap shield (2026-11-19)
+
+- Owner accepts the native Classic gold circular ring in v128 but wants the red crossed-swords shield just a little larger.
+- `UI/Minimap.lua`: grow the original icon from 23×23 to **25×25**, changing TOPLEFT inset from (5.5,-4.5) to **(4.5,-3.5)** to keep the same center point. Keep button 31×31, Blizzard `MiniMap-TrackingBorder` 54×54 and the original owner image unchanged.
+- Preserve drag/save, toggle click, tooltip, all visual modules, DB and translation logic. Update `/ws version` to **129**. CI validates clean ZIP including 25px icon layout. In-game QA pending.
