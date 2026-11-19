@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "93"
+local UI_ITERATION = "94"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -368,22 +368,16 @@ local function build()
         end
     end)
 
-    -- v93: use the existing original cog, but move its ONE frame under
-    -- the restored close X on the same vertical axis. No duplicated gear.
-    local settingsFrame = CreateFrame("Frame", nil, window, "BackdropTemplate")
-    settingsFrame:SetSize(36, 36)
-    settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -51.5, -85)
-    settingsFrame:SetBackdrop({
-        bgFile = "Interface\\Buttons\\WHITE8X8",
-        edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-        edgeSize = 12,
-    })
-    settingsFrame:SetBackdropColor(0.02, 0.013, 0.009, 0.97)
-    settingsFrame:SetBackdropBorderColor(0.71, 0.48, 0.18, 0.92)
+    -- v94: the owner-provided GOLD gear graphic replaces the whole older
+    -- settings widget (the asset itself includes the metallic/red frame).
+    -- The X remains baked into the outer frame, with its original click target.
+    -- Their horizontal centers both lie 69.5 units in from the window right.
+    local settingsFrame = CreateFrame("Frame", nil, window)
+    settingsFrame:SetSize(38, 38)
+    settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -50.5, -78)
     local settingsIcon = settingsFrame:CreateTexture(nil, "ARTWORK")
-    settingsIcon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\settings_cog")
-    settingsIcon:SetSize(30, 30)
-    settingsIcon:SetPoint("CENTER", settingsFrame, "CENTER", 0, 0)
+    settingsIcon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\settings_gear_owner_v94")
+    settingsIcon:SetAllPoints(settingsFrame)
     settingsFrame:EnableMouse(true)
     settingsFrame:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
