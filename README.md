@@ -2,7 +2,7 @@
 
 **WarScore** es un addon PvP local para **World of Warcraft Forever** (TOC Interface `16001`). No requiere servidores, cuentas ni servicios externos.
 
-**Estado:** MVP en desarrollo. La pantalla **General**, Ajustes y el lanzador de minimapa están implementados hasta **UI v126**. La pestaña **Hoy** está pendiente; la compatibilidad y semántica de cada estadística requieren comprobación independiente.
+**Estado:** MVP en desarrollo. La pantalla **General**, Ajustes y el lanzador de minimapa están implementados hasta **UI v128**. La pestaña **Hoy** está pendiente; la compatibilidad y semántica de cada estadística requieren comprobación independiente.
 
 ## Instalación
 

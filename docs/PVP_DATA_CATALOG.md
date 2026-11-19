@@ -2,7 +2,7 @@
 
 > Catálogo funcional y técnico de los datos que WarScore puede mostrar, de los que se han comprobado en WoW Forever y de los que quedan como investigación futura.
 >
-> Cliente de referencia: WoW Forever 1.60.1 / Interface 16001. Última auditoría real: 2026-11-18. Estado del addon revisado contra `main` en `UI_ITERATION 126` (2026-11-19).
+> Cliente de referencia: WoW Forever 1.60.1 / Interface 16001. Última auditoría real: 2026-11-18. Estado del addon revisado contra `main` en `UI_ITERATION 128` (2026-11-19).
 
 ## Cómo leer este documento
 

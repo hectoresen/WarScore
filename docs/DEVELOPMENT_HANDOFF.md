@@ -1,6 +1,6 @@
 # WarScore — live development handoff
 
-**Last updated:** 2026-11-19 (UI iteration 126; API validation review pending client evidence).
+**Last updated:** 2026-11-19 (UI iteration 128; API validation review pending client evidence).
 
 ## Read in this order
 1. `AGENTS.md`, `openspec/README.md` — lightweight SDD and approval boundaries.
@@ -14,7 +14,7 @@ Iterate in the **same current development line (`main`)**. Assistant commits one
 
 ## Current implementation
 - `Core/Stats.lua`: reads lifetime HK 588, PvP deaths 1501, Honor currency 1792, PvP rank/Rank Points from major faction 2800, duels 319/320, BG played/won 839/840, favorite BG among 53/55/52/64179, HK/D and win rates. KB/D remains intentionally unavailable.
-- `UI/General.lua`: `/ws` or `/warscore` opens the current movable ornamental UI (iteration 126) with character identity, rank/Rank Points, Honor/HK panel, ratios, two rows of cards and a functional language/settings view. The Hoy page remains a placeholder.
+- `UI/General.lua`: `/ws` or `/warscore` opens the current movable ornamental UI (iteration 128) with character identity, rank/Rank Points, Honor/HK panel, ratios, two rows of cards and a functional language/settings view. The Hoy page remains a placeholder.
 - `UI/Minimap.lua`: owner-provided draggable minimap launcher toggles General and persists `WarScoreDB.settings.minimapAngle`.
 - `Core/Diagnostics.lua`: existing `/wsdiag` diagnostics; preserve.
 - No original expanded mockup PNG committed; `docs/assets/general-layout-guide.svg` is **only** a vector measurement guide. Source screenshot exists in earlier chat; obtain/upload original PNG for proper comparison.

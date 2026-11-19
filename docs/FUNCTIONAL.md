@@ -1,6 +1,6 @@
 # Funcionalidad actual — WarScore
 
-**Corte:** 19/11/2026; versión actual de UI: **v126**. Fuentes: `addon/WarScore/Core/Stats.lua`, `UI/General.lua` y [contrato PvP](PVP_STATISTICS.md).
+**Corte:** 19/11/2026; versión actual de UI: **v128**. Fuentes: `addon/WarScore/Core/Stats.lua`, `UI/General.lua` y [contrato PvP](PVP_STATISTICS.md).
 
 ## Implementado
 - Comandos públicos: `/ws` abre General, `/ws version` muestra la versión, `/ws lang en|es` cambia el idioma y `/ws settings` abre Ajustes. `/warscore` se conserva como alias compatible de `/ws`.
