@@ -1387,3 +1387,11 @@ This validates positive BG history and objective tracking. Compare the native st
 - **Only three Y positions change** in `addon/WarScore/UI/General.lua`: `rank_label_current_owner_v115` and `rank_label_next_owner_v115` move from top=-400 to **top=-432**, preserving X ±203.49, size 175×32, original artworks and raised rendering layers. The `rank_divider_advance_owner_v115` moves from top=-498 to **top=-488**, preserving X=0 and size 560.4525×30.
 - The entire approved single-piece main triptych `rank_panel_owner_v108`, live localized rank captions, `points / threshold PR`, hidden progress fill, header, HK and other UI modules are unchanged. No new art or files.
 - UI diagnostic increments `/ws version` **116→117**. GitHub Actions rebuilds and verifies clean `dist/WarScore.zip`. Native-client QA still needed for precise clearance to panel gold borders and HK section.
+
+
+## Iteration #117 screenshot → #118: true horizontal centering of Actual/Siguiente ornament art (2026-11-19)
+
+- The owner's screenshot of the working v117 UI confirms both title ornaments now render at the correct vertical level directly above the left/right rank compartments, but their optical horizontal centers remain too far toward the inner red gem separators. Preserve the approved single-piece rank frame, live current/next text, PR counter and bottom decorative advance-chevron.
+- Align the standalone original owner PNG titles against the **actual left/right gold compartment centerlines**, not the inner live-caption offsets. Set `rank_label_current_owner_v115` x **-203.49 → -220** and `rank_label_next_owner_v115` x **+203.49 → +220**. Both stay at y=-432, size 175×32, with unchanged texture, alpha and raised frame level, ensuring equal vertical alignment and consistent clearance to the gold frame.
+- No modifications to the gold rank panel (560.4525×61.75), title strings inside it, PR, lower arrow, HK, PvP stats, header, banners or other UI. Only two X offsets and the diagnostic `UI_ITERATION 117→118` change.
+- GitHub Actions must produce and validate a new clean installable `dist/WarScore.zip`; in-game screenshot QA is still required.
