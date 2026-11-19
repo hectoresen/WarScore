@@ -1333,3 +1333,11 @@ This validates positive BG history and objective tracking. Compare the native st
 - Reposition live labels to the scaled, truly symmetric compartment centers: current rank x **-246.05**, next rank x **+246.05**, and current/threshold PR x **0**. Names use width 125.4 and top -463; points width 285 and top -464.125. Font sizes unchanged to preserve text legibility.
 - Progress fill remains entirely absent. No change to the real rank API, value formatting, 21 preserved source fill textures, other metrics, banners, cards, or overall window layout.
 - `/ws version` now **111**. CI rebuilds the clean installable `dist/WarScore.zip`. The resized result still requires real WoW screenshot QA from the owner.
+
+
+## Iteration #111 screenshot → #112: optical centering of two rank captions (2026-11-19)
+
+- Owner confirms v111 unified rank module geometry and size are acceptable, but current/next rank text is slightly off-center inside its respective gold-bordered compartment. **Change only the live text position**, leaving the gold panel, its scale, and all other UI intact.
+- In `addon/WarScore/UI/General.lua`, move `fields.rankFrom` x **-246.05 → -238** and `fields.rankTo` x **+246.05 → +238**, both inward by 8.05 UI units. Keep widths 125.4, y=-463, font 13, colors, dynamic localization and point label exactly as in v111.
+- The 655.5×61.75 single-piece `rank_panel_owner_v108` stays at x=0, top=-443.625. Progress fill remains hidden; 21 pre-existing fill assets remain available for potential future work. No change to PvP data acquisition or other UI modules.
+- Set `UI_ITERATION = "112"` for `/ws version`. GitHub Actions should rebuild and validate the clean installable `dist/WarScore.zip`. Native WoW screenshot QA remains pending to confirm optical centering.
