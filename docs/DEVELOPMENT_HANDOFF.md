@@ -1315,3 +1315,12 @@ This validates positive BG history and objective tracking. Compare the native st
 - Re-anchor real current/next rank labels from x±281 to **x±259**, top -462, width 132 (was 155), matching the panel's left/right compartments. PR label remains x0, top -463 and unmodified. No new assets or fake progress graphics.
 - Diagnostic `/ws version` increments to **109**. No changes to major faction data, rank name resolution, counters, cards, banners, portrait, or frame visuals elsewhere.
 - Packaging CI must produce a fresh installable `dist/WarScore.zip` containing v109, generated from the existing original textures; verify ZIP version parity and valid TGA paths. Client render is still pending owner screenshot; check margins, gem clearance, 5% gold cap, and 0%/100% progress as possible.
+
+
+## Iteration #109 screenshot → #110: center owner triptych; temporarily hide progress fill (2026-11-19)
+
+- Owner's in-game v109 screenshot confirms the unified three-box PvP rank frame is close to the intended result, but looks offset left against the inner-window border. User requests moving **the complete frame, both rank names and the PR counter** slightly right together.
+- Move owner `rank_panel_owner_v108` 690×65 from x=0 to **x=+8**, keeping top=-442 and existing proportions/texture. Move the live left rank caption x=-259→**-251**, right rank caption x=+259→**+267**, and center PR x=0→**+8**, so the entire module shifts as one unit.
+- Per explicit owner instruction, temporarily **remove the rendered 5%-step progress fill**; the center compartment displays only the live real `points / threshold PR` text. Remove runtime creation/use of `fields.rankFill` to prevent an accidental fill rendering. Preserve all original 21 0–100% texture assets, percentage calculation helper and real PvP-rank data acquisition for future iterations.
+- All three gold boxes, red divider gems, rank-name localization, character/rank plaque, HK, deaths, ratios and lower stats cards are unchanged. UI diagnostic `/ws version` increments **109→110**.
+- CI package must contain updated `UI/General.lua` reporting v110; installable `dist/WarScore.zip` must be verified. In-game screenshot QA pending for balanced left/right margin, aligned live captions and empty dark center compartment.
