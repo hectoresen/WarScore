@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "116"
+local UI_ITERATION = "117"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -568,12 +568,14 @@ local function build()
         return ornamentFrame
     end
 
-    -- Two title lines sit above the corresponding side chambers.
-    addRankOrnament("Interface\\AddOns\\WarScore\\Media\\General\\rank_label_current_owner_v115", -203.49, -400, 175, 32)
-    addRankOrnament("Interface\\AddOns\\WarScore\\Media\\General\\rank_label_next_owner_v115", 203.49, -400, 175, 32)
+    -- v117: bring both owner title ornaments close to their respective
+    -- side chambers while keeping their original x coordinates and scale.
+    addRankOrnament("Interface\\AddOns\\WarScore\\Media\\General\\rank_label_current_owner_v115", -203.49, -432, 175, 32)
+    addRankOrnament("Interface\\AddOns\\WarScore\\Media\\General\\rank_label_next_owner_v115", 203.49, -432, 175, 32)
 
-    -- The advance chevron is purely decorative: PR remains only numeric.
-    addRankOrnament("Interface\\AddOns\\WarScore\\Media\\General\\rank_divider_advance_owner_v115", 0, -498, 560.4525, 30)
+    -- v117: lift the decorative divider 10 units closer to the PR chamber.
+    -- It remains ornamental; PR remains numeric and the fill remains hidden.
+    addRankOrnament("Interface\\AddOns\\WarScore\\Media\\General\\rank_divider_advance_owner_v115", 0, -488, 560.4525, 30)
 
     -- Iteration 68: the owner's transparent HK asset supplies both laurels,
     -- upper/lower gold rails and diamonds. No more separate HK laurels, 
