@@ -1186,3 +1186,10 @@ This validates positive BG history and objective tracking. Compare the native st
 - Move the **single** framed settings gear a further 4 UI units left and 1 unit up: TOPRIGHT `(-53.5, -76)` → `(-57.5, -75)`. Leave its 38×38 size, graphic, tooltip and the **X close art/click area** completely unchanged.
 - Move only the `Hoy` FontString 5 UI units left relative to its existing button: x `0` → `-5`, y remains `-2`, 15pt font, 135×29 text frame and unchanged tab hitbox. The General tab, backgrounds and other UI are untouched.
 - Diagnostic version = 96. **WoW screenshot QA pending:** install verified ZIP, `/reload`, `/ws version`=96, `/ws`; inspect gear center relative to X and optical horizontal centering of `Hoy` inside painted tab, with no effect on closing or hover tooltip.
+
+
+## Iteration #96 screenshot → #97 settings gear final micro-alignment (2026-11-19)
+
+- Owner visually inspected v96 and asks for another tiny optical correction of the gear: approximately 1 mm to the left and 2 down. This translates to a conservative 1 UI unit left and 2 UI units down for an in-game follow-up, with no other changes.
+- v97 adjusts only the same settings-gear TOPRIGHT anchor from (-57.5,-75) to **(-58.5,-77)**. Keep the owner's 38×38 gold gear art, its tooltip, the original baked close X and click target, General/Hoy tabs, and all stats unchanged.
+- Diagnostic UI iteration = 97. **Client QA pending**: install version-pinned ZIP, run `/reload`, `/ws version` (97), `/ws`, verify centered alignment under the X without touching the tab/inner border.
