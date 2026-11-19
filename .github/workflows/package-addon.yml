@@ -1,5 +1,5 @@
 name: Package clean WarScore addon
-# v130: verify minimal settings gear offset, retaining all approved v129 modules.
+# v131: localized Statistics tab and coming-soon hover, with approved UI intact.
 on:
   push:
     branches: [main]
@@ -92,7 +92,7 @@ jobs:
               # shipping or drawing the mismatched Settings replacement image.
               assert "WarScore/Media/General/inner_frame_owner_v64.tga" in names
               assert "WarScore/Media/General/settings_inner_frame_owner_v122.tga" not in names
-              assert archive_version.group(1) == "130", "Expected v130 in the clean ZIP"
+              assert archive_version.group(1) == "131", "Expected v131 in the clean ZIP"
               assert '[innerArt] = true' in runtime_ui
               assert 'settings_inner_frame_owner_v122' not in runtime_ui
               assert 'settingsTab:SetPoint("TOPLEFT", settingsPage, "TOPLEFT", 193, -102)' in runtime_ui
@@ -103,6 +103,13 @@ jobs:
               loc = z.read("WarScore/Core/Localization.lua").decode("utf-8")
               assert 'tab_settings = "Ajustes"' in loc
               assert 'tab_back = "Volver"' in loc
+              assert 'tab_today = "Estadísticas"' in loc
+              assert 'tab_today = "Statistics"' in loc
+              assert 'today_coming_soon = "Estadísticas (próximamente)"' in loc
+              assert 'today_coming_soon = "Statistics (Coming soon)"' in loc
+              assert 'today_message = "La pestaña Estadísticas estará disponible en una próxima versión."' in loc
+              assert 'today_message = "The Statistics tab will be available in a future version."' in loc
+              assert 'GameTooltip:SetText(text("today_coming_soon")' in runtime_ui
               assert 'settings_language = "Idioma"' in loc
               assert 'settings_visual_style = "Estilo visual"' in loc
               assert 'settings_language = "Language"' in loc
