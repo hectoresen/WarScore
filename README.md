@@ -33,6 +33,9 @@ dist/WarScore.zip        # Artefacto instalable
 
 ## Documentación
 
+**[Índice completo de documentación](docs/INDEX.md)** — Guía de los documentos Markdown del proyecto, con una descripción y enlace para cada uno (producto, APIs PvP, diseño, desarrollo, OpenSpec y agentes).
+
+
 - [Funcionalidad](docs/FUNCTIONAL.md), [catálogo de datos y vistas PvP](docs/PVP_DATA_CATALOG.md) y [contrato PvP](docs/PVP_STATISTICS.md)
 - [Arquitectura](docs/ARCHITECTURE.md), [desarrollo](docs/DEVELOPMENT.md) e [instalación](docs/INSTALLATION.md)
 - [Vista General](docs/GENERAL_VIEW.md) y [especificación visual](docs/GENERAL_VISUAL_SPEC.md)
