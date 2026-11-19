@@ -1,5 +1,5 @@
 name: Package clean WarScore addon
-# v124: native Classic Settings controls, shared original frame, live localization.
+# v125: use WoW Forever-compatible native dropdown button disable instead of missing API.
 on:
   push:
     branches: [main]
@@ -90,7 +90,7 @@ jobs:
               # shipping or drawing the mismatched Settings replacement image.
               assert "WarScore/Media/General/inner_frame_owner_v64.tga" in names
               assert "WarScore/Media/General/settings_inner_frame_owner_v122.tga" not in names
-              assert archive_version.group(1) == "124", "Expected v124 in the clean ZIP"
+              assert archive_version.group(1) == "125", "Expected v125 in the clean ZIP"
               assert '[innerArt] = true' in runtime_ui
               assert 'settings_inner_frame_owner_v122' not in runtime_ui
               assert 'settingsTab:SetPoint("TOPLEFT", settingsPage, "TOPLEFT", 193, -102)' in runtime_ui
@@ -109,10 +109,12 @@ jobs:
               assert '"UIDropDownMenuTemplate"' in runtime_ui
               assert 'UIDropDownMenu_SetWidth(languageDropdown, 210)' in runtime_ui
               assert 'ns.L:SetLanguage(languageCode)' in runtime_ui
-              assert 'UIDropDownMenu_Disable(styleDropdown)' in runtime_ui
+              assert 'styleDropdown.Button:Disable()' in runtime_ui
+              assert 'styleDropdown:EnableMouse(false)' in runtime_ui
+              assert 'UIDropDownMenu_Disable(styleDropdown)' not in runtime_ui
               assert 'Classic Forever' in runtime_ui
               assert 'ns.L:RegisterRefresh(function()' in runtime_ui
-              print("Verified v124 shared frame, editable native language selector and disabled Classic Forever style")
+              print("Verified v125 native dropdown without unsupported Disable API")
               print("Verified owner-provided v120 Honor/HK frame in ZIP")
               print("Verified all three visible v115 ornaments inside installable ZIP")
               print("Verified embedded WarScore UI version:", archive_version.group(1))
