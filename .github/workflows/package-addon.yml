@@ -40,7 +40,18 @@ jobs:
           })
           with urllib.request.urlopen(req) as response:
               result = json.load(response)
-          payload = base64.b64decode(result["content"])
+          encoded = "".join(result["content"].split())
+          marker = "xP8wVmR9xUYA8HSO"
+          offset = encoded.find(marker)
+          assert offset > 3000, "Unable to locate known owner PNG segment"
+          segment = Path("tools/rank_panel_v108_repair_segment.b64").read_text().strip()
+          assert len(segment) == 1000
+          restored = encoded[:3000] + segment + encoded[offset:]
+          assert len(restored) == 7932, f"Incorrect owner image length {len(restored)}"
+          payload = base64.b64decode(restored, validate=True)
+          import hashlib
+          prefix = b"blob " + str(len(payload)).encode() + b"\\0"
+          assert hashlib.sha1(prefix + payload).hexdigest() == "422a0bb5e270c127bfb9437a046901a6517f0620"
           path = Path("docs/assets/rank_panel_owner_v108_source.png")
           path.write_bytes(payload)
           from PIL import Image
