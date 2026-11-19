@@ -234,3 +234,20 @@ El propietario confirma que no se puede recuperar una fuente fiable de golpes de
 ## Fuente de Honor vigente en General — v93 (2026-11-18)
 
 La implementación de General consulta **exclusivamente la moneda 1792**, identificada en `/wsdiag currencies` como `Puntos de honor`. La API `C_CurrencyInfo.GetCurrencyListInfo(index)` recibe **índice de lista**, no ID de moneda; localizar la fila mediante `GetCurrencyListSize()` y `info.currencyTypesID` o `info.currencyID` igual a `1792`. Lecturas observadas: cantidad 252, máximo 25000. Mostrar `252 / 25.000`, con `—` si falta la moneda o el máximo. Este saldo es gastable, no honor histórico. `UnitHonor()`, `UnitHonorMax()` y `GetInspectHonorData()` quedan explícitamente descartadas como fuentes del saldo principal.
+
+
+## Pendiente — investigación exhaustiva de APIs nativas para la vista «Hoy» (2026-11-19)
+
+**Objetivo:** identificar y validar todas las APIs nativas disponibles en WoW Forever 1.60.1 (Interface 16001) que permitan consultar estadísticas correspondientes al **día natural actual** directamente desde el cliente, sin cálculos de diferencias de contadores, sin registro de eventos y sin guardar histórico o snapshots propios en SavedVariables.
+
+**Alcance de la investigación:**
+- Enumerar y probar funciones globales y namespaces pertinentes del cliente (PvP, honor, estadísticas, campos de batalla, duelos, facciones, monedas y datos diarios), incluyendo APIs específicas de Forever y posibles alternativas a las APIs clásicas.
+- Investigar si se pueden leer directamente **HK de hoy, DK de hoy, honor ganado hoy, muertes PvP sufridas hoy, duelos ganados/perdidos hoy, BG jugados/ganados hoy, estadísticas de BG por tipo, objetivos de BG y puntos de rango ganados hoy**.
+- Revisar primero la evidencia documentada de `GetPVPSessionStats()`, `GetPVPYesterdayStats()`, `GetPVPThisWeekStats()`, `GetPVPLastWeekStats()`, `GetInspectHonorData()` y los diagnósticos `/wsdiag`. No asumir que «sesión» equivale a «hoy»: contrastar qué ocurre tras desconectar/reconectar y al cambiar la fecha.
+- Distinguir explícitamente **valor diario nativo**, **valor de sesión**, **valor semanal**, **saldo actual** e **histórico acumulado**. En particular, la moneda de honor `1792` es saldo gastable, no honor ganado hoy.
+- Para cada API candidata, documentar firma, ejemplo de retorno real, significado, ámbito temporal, comportamiento en reinicio de sesión y cambio de día, disponibilidad en Forever, grado de validación y limitaciones. Marcar los resultados no probados como pendientes, sin inferir que `--` equivale a cero.
+- Elaborar una matriz final por métrica: **disponible directamente para hoy / solo sesión / solo histórico u otro período / no encontrada / pendiente de validar**.
+
+**Restricción de producto:** no proponer como solución para la pestaña «Hoy» ni la resta de contadores acumulados ni seguimiento local ni persistencia propia. Si una métrica no está disponible directamente por API nativa con semántica diaria validada, declararla no disponible y dejarla fuera de esa vista hasta nueva evidencia.
+
+**Estado:** investigación pendiente; no implica implementación ni cambios gráficos.
