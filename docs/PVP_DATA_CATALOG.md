@@ -155,3 +155,8 @@ La evidencia literal y las decisiones de normalización permanecen en [PVP_STATI
 ## Rank progress in General (v100)
 
 The General screen now reads major faction ID **2800** through `C_MajorFactions.GetMajorFactionProgressionInfo`. Ranks (renownLevel), Rank Points toward next level (renownReputationEarned), and threshold (renownLevelThreshold) are displayed only when the API provides them. Fill textures are the 21 supplied 5%-step PNG files (rounded to nearest step); raw points and percentage are not rounded to these steps. For missing threshold the UI renders `—`, not 0%. Rank names use `PVP_RANK_<level+4>_<faction>` from the loaded WoW localization, with unranked level 0 called `Sin rango`. Client visual acceptance pending.
+
+
+## v101 provisional design decision
+
+Honor currency 1792 remains collected in `Core/Stats.lua`, but its standalone visual card has been **removed temporarily from General** at the owner's request; final Honor placement/design remains open. The complete framed rank-progress asset replaces the two detached visual plates. Rank Points and threshold are displayed within the central framed progress meter, retaining the verified Major Faction 2800 API.

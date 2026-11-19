@@ -1230,3 +1230,14 @@ This validates positive BG history and objective tracking. Compare the native st
 - Diagnostic `/ws version`=100. **CLIENT QA PENDING** for authentic art placement, whether nameplates have correct aspect ratio, text overlap, overall height, and runtime data at level 0; obtain screenshot and iterate without asking for routine confirmation.
 
 - CI fix: package_addon.py enumerates all 21 dynamically chosen `rank_fill_000..100.tga` files; the partial literal path `rank_fill_` is not a physical file. Asset-generation order remains before packaging.
+
+
+## Iteration #100 screenshot → #101 Honor removal and accurate full-frame rank bar (2026-11-19)
+
+- The v100 screenshot exposed three clear regressions: an improvised skinny track instead of the user's fully framed gold rank bar; stretched, detached rank plaques; and over-expansion of the window with lower cards shifted too far down.
+- The owner supplied a **new complete gold-framed PvP progress bar** in `Marco dorado de barra de progreso fantástica(1).png`, original 2048×682 with transparent margins. v101 uses its authentic frame silhouette, cropped from the source (x=145..1905, y=220..450), then a transparent 512×64 transport PNG and a 1024×128 RGBA TGA. No extra bevels/lines or stretched separate plaques.
+- Keep the 21 originally supplied progress-fill textures and real Major Faction 2800 source. Fill lies inside the central portion of this one 640×72 frame at top -440. Rank-current/next names live inside the end portions, current/threshold PR is centered *inside* the bar, and percentage is a small secondary value at its lower center. The 0%, partial and 100% fill states remain dynamic; no fake percentages. The old external rank-name plates are no longer referenced or shipped.
+- Temporarily remove the entire Honor card from the General UI (no title, no graphic, no live counter). **Do not remove or alter collection of currency 1792 in Core/Stats.lua**, so it remains ready for a future redesign.
+- Reflow: HK card top -512, ratio ornament top -640, first and second statistic bands top -817 / -936. Overall window height reduces from 1145 to 1105, preserving about 58 px to the bottom border; extend the interior artwork height from 943 to 985 so it encloses the lower cards. Other visuals and the upper PvP plaque remain untouched. Rank bar and cards remain horizontally centered.
+- CI generates the rank-bar TGA from the transport PNG and verifies the addon ZIP contains only runtime files. UI diagnostic version **101**.
+- **Real WoW screenshot QA pending**: inspect frame and fill alignment, visibility of both names, text legibility at 25/750 and bottom clearance. Iterate from screenshot, do not assume code is a substitute for in-client visual validation.

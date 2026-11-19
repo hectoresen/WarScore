@@ -1,4 +1,4 @@
-"""Prepare the designer's 21 PvP rank-fill variants and nameplate for WoW.
+"""Prepare 21 rank fills and the complete ornamental PvP rank bar for WoW.
 
 Assets reside in docs/assets/rank bars/. Keep native 900x50 bar proportions
 while converting into power-of-two RGBA 1024x64 textures for compatibility.
@@ -23,18 +23,18 @@ for percent in range(0, 101, 5):
             out / f"rank_fill_{percent:03d}.tga", format="TGA"
         )
 
-plate_file = source / "Placa dorada hexagonal para rango PvP.png"
-with Image.open(plate_file) as original:
+# The owner provided a separate high-resolution PNG in this iteration.
+# The transport copy is cropped from its real alpha bounds, 512x64
+# and preserves original appearance without rebuilding the border in Lua.
+frame_source = root / "docs/assets/rank_bar_frame_owner_v101_source.png"
+with Image.open(frame_source) as original:
     original.load()
-    plate = original.convert("RGBA")
-    bbox = plate.getchannel("A").getbbox()
-    if not bbox:
-        raise ValueError("Owner rank plate has no visible content")
-    plate = plate.crop(bbox)
-    # Convert into an alpha-preserving rectangular horizontal nameplate.
-    # The source's ornamental aspect ratio will be inspected in game.
-    plate.thumbnail((256, 128), Image.Resampling.LANCZOS)
-    transparent = Image.new("RGBA", (256, 128), (0, 0, 0, 0))
-    transparent.paste(plate, ((256 - plate.width)//2, (128 - plate.height)//2))
-    transparent.save(out / "rank_name_plate_owner_v100.tga", format="TGA")
-print("Prepared 21 rank-fill steps and 1 PvP-rank nameplate")
+    if original.size != (512, 64):
+        raise ValueError(f"Unexpected rank frame dimensions: {original.size}")
+    frame = original.convert("RGBA")
+    if not frame.getchannel("A").getbbox():
+        raise ValueError("Rank bar frame has no visible pixels")
+    frame.resize((1024, 128), Image.Resampling.LANCZOS).save(
+        out / "rank_bar_frame_owner_v101.tga", format="TGA"
+    )
+print("Prepared 21 rank-fill steps and full v101 rank-bar frame")
