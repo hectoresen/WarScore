@@ -786,12 +786,13 @@ local function build()
             { value = "en", title = "English" },
         }
         for _, choice in ipairs(choices) do
+            local languageCode = choice.value
             local info = UIDropDownMenu_CreateInfo()
             info.text = choice.title
-            info.value = choice.value
-            info.checked = current == choice.value
+            info.value = languageCode
+            info.checked = current == languageCode
             info.func = function()
-                ns.L:SetLanguage(choice.value)
+                ns.L:SetLanguage(languageCode)
             end
             UIDropDownMenu_AddButton(info, level or 1)
         end
