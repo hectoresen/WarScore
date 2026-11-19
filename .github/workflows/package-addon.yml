@@ -1,5 +1,5 @@
 name: Package clean WarScore addon
-# v129: clean package of the larger shield inside the same native gold ring.
+# v130: verify minimal settings gear offset, retaining all approved v129 modules.
 on:
   push:
     branches: [main]
@@ -63,6 +63,7 @@ jobs:
                   f"Version mismatch: ZIP={archive_version.group(1)}, source={source_version.group(1)}"
               )
               assert runtime_ui == source_ui, "ZIP includes stale UI/General.lua"
+              assert 'settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -62.5, -83)' in runtime_ui, "Unexpected gear position"
               # v116: assert the three independent authored ornaments really
               # ship in the installable ZIP and retain visible alpha content.
               import io
@@ -91,7 +92,7 @@ jobs:
               # shipping or drawing the mismatched Settings replacement image.
               assert "WarScore/Media/General/inner_frame_owner_v64.tga" in names
               assert "WarScore/Media/General/settings_inner_frame_owner_v122.tga" not in names
-              assert archive_version.group(1) == "129", "Expected v129 in the clean ZIP"
+              assert archive_version.group(1) == "130", "Expected v130 in the clean ZIP"
               assert '[innerArt] = true' in runtime_ui
               assert 'settings_inner_frame_owner_v122' not in runtime_ui
               assert 'settingsTab:SetPoint("TOPLEFT", settingsPage, "TOPLEFT", 193, -102)' in runtime_ui
