@@ -1,5 +1,5 @@
 name: Package clean WarScore addon
-# v114: package the centered, narrower rank module and inset header title.
+# v115: build all three owner-provided rank ornaments and clean addon ZIP.
 on:
   push:
     branches: [main]
@@ -71,6 +71,7 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add addon/WarScore/Media/General/rank_label_current_owner_v115.tga addon/WarScore/Media/General/rank_label_next_owner_v115.tga addon/WarScore/Media/General/rank_divider_advance_owner_v115.tga
           git add docs/assets/rank_panel_owner_v108_source.png addon/WarScore/Media/General/rank_panel_owner_v108.tga addon/WarScore/Media/General/rank_fill_*.tga addon/WarScore/Media/General/rank_bar_frame_owner_v104.tga addon/WarScore/Media/General/rank_name_plate_owner_v102.tga addon/WarScore/Media/Fonts/Spectral-Italic.ttf dist/WarScore.zip addon/WarScore/Media/General/honor_panel_owner_v98.tga addon/WarScore/Media/General/settings_gear_owner_v94.tga addon/WarScore/Media/General/ratios_frame_owner_v70.tga addon/WarScore/Media/General/stat_band_top_owner_v74.tga addon/WarScore/Media/General/stat_band_bottom_owner_v75.tga addon/WarScore/Media/General/icon_duels_owner_v77.tga addon/WarScore/Media/General/icon_bg_played_owner_v77.tga addon/WarScore/Media/General/icon_bg_wins_owner_v77.tga addon/WarScore/Media/General/icon_bg_rate_owner_v79.tga addon/WarScore/Media/General/icon_duel_rate_owner_v79.tga addon/WarScore/Media/General/icon_favorite_bg_owner_v79.tga
           if ! git diff --cached --quiet; then
             git commit -m "build: refresh verified WarScore ZIP [skip ci]"
