@@ -1,12 +1,12 @@
 # WarScore — Vista General: contexto y propuestas de diseño
 
-> **ESTADO VISUAL: VISTA GENERAL IMPLEMENTADA Y AVANZADA HASTA UI v121 (2026-11-19).** El boceto objetivo sigue siendo una referencia de largo plazo, no un asset runtime. Las propuestas y jerarquías históricas de este documento se conservan como contexto; la implementación real y la evidencia se encuentran en `addon/WarScore/UI/General.lua`, `docs/PVP_DATA_CATALOG.md` y `docs/DEVELOPMENT_HANDOFF.md`.
+> **ESTADO VISUAL: VISTA GENERAL IMPLEMENTADA Y AVANZADA HASTA UI v126 (2026-11-19).** El boceto objetivo sigue siendo una referencia de largo plazo, no un asset runtime. Las propuestas y jerarquías históricas de este documento se conservan como contexto; la implementación real y la evidencia se encuentran en `addon/WarScore/UI/General.lua`, `docs/PVP_DATA_CATALOG.md` y `docs/DEVELOPMENT_HANDOFF.md`.
 >
 > Documento vivo para el agente de UI/UX. Leer junto a `docs/MVP_CONTEXT.md`. Actualizar este archivo cuando se confirme, descarte o cambie una métrica. **No implica que la API haya sido probada en el cliente.**
 >
 > Última actualización del estado: 2026-11-19.
 
-> **Estado técnico actual:** Honor actual (`1792`), rango PvP y Rank Points (`C_MajorFactions` `2800`) ya están integrados en General. Para la disponibilidad real de cada dato prevalece `docs/PVP_DATA_CATALOG.md`.
+> **Estado técnico actual:** Honor actual (`1792`), rango PvP y Rank Points (`C_MajorFactions` `2800`) ya están integrados en General. La vista de Ajustes permite seleccionar idioma y el icono de minimapa abre/cierra la ventana y conserva su posición. Para la disponibilidad real de cada dato prevalece `docs/PVP_DATA_CATALOG.md`.
 
 ## Jerarquía visual acordada (obligatoria)
 
