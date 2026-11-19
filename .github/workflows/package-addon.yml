@@ -24,6 +24,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          exec > >(tee /tmp/war_score_v108_build.log) 2>&1
+          trap 'status=$?; if [ "$status" -ne 0 ]; then cp /tmp/war_score_v108_build.log docs/V108_BUILD_DIAGNOSTIC.txt; git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"; git add docs/V108_BUILD_DIAGNOSTIC.txt; git commit -m "ci: record v108 packaging failure [skip ci]"; git push || true; fi' EXIT
           python3 -m pip install --quiet Pillow
           # One-time transport for the owner PNG already uploaded as a GitHub blob.
           # After the successful build it is committed into docs/assets, making
