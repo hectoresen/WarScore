@@ -1178,3 +1178,11 @@ This validates positive BG history and objective tracking. Compare the native st
 - The owner reports that the new gold cog appears slightly right and low compared to the existing top-right X. The owner explicitly instructed to iterate without asking for confirmation whenever the requested adjustment is clear.
 - v95 moves **only** the existing settings gear frame by 3 UI units left and 2 UI units up: TOPRIGHT from (-50.5,-78) to (-53.5,-76). Keep its 38×38 size, owner-supplied TGA, tooltip, transparency and single-instance behavior. The original built-in X and its click target remain untouched; all gameplay stats, honor currency, other assets and panels remain unchanged.
 - UI diagnostic = 95. **IN-GAME QA PENDING:** install the pinned verified ZIP; `/reload`, `/ws version` 95, `/ws`; inspect the visual alignment of the gear directly below the X without overlap or offsets.
+
+
+## Iteration #95 owner screenshot → #96 settings gear and 'Hoy' tab alignment (2026-11-19)
+
+- Owner's v95 in-game screenshot confirms gear asset is correct but still requires a slight placement refinement; the owner additionally requests that the dynamic `Hoy` label be visually centered within its inactive painted tab. No new assets requested.
+- Move the **single** framed settings gear a further 4 UI units left and 1 unit up: TOPRIGHT `(-53.5, -76)` → `(-57.5, -75)`. Leave its 38×38 size, graphic, tooltip and the **X close art/click area** completely unchanged.
+- Move only the `Hoy` FontString 5 UI units left relative to its existing button: x `0` → `-5`, y remains `-2`, 15pt font, 135×29 text frame and unchanged tab hitbox. The General tab, backgrounds and other UI are untouched.
+- Diagnostic version = 96. **WoW screenshot QA pending:** install verified ZIP, `/reload`, `/ws version`=96, `/ws`; inspect gear center relative to X and optical horizontal centering of `Hoy` inside painted tab, with no effect on closing or hover tooltip.

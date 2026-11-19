@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "95"
+local UI_ITERATION = "96"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -360,7 +360,8 @@ local function build()
     local today = CreateFrame("Button", nil, window)
     today:SetSize(150, 38)
     today:SetPoint("TOPLEFT", window, "TOPLEFT", 366, -102)
-    local todayText = label(today, "Hoy", 15, CREAM, 0, -2, 135, 29)
+    -- v96: center the copy optically within the painted inactive tab.
+    local todayText = label(today, "Hoy", 15, CREAM, -5, -2, 135, 29)
     todayText:SetTextColor(0.72, 0.66, 0.55)
     today:SetScript("OnClick", function()
         if DEFAULT_CHAT_FRAME then
@@ -375,7 +376,8 @@ local function build()
     local settingsFrame = CreateFrame("Frame", nil, window)
     settingsFrame:SetSize(38, 38)
     -- v95: small optical adjustment: 3 units left and 2 units upward.
-    settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -53.5, -76)
+    -- v96: refine gear alignment under the unchanged close X.
+    settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -57.5, -75)
     local settingsIcon = settingsFrame:CreateTexture(nil, "ARTWORK")
     settingsIcon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\settings_gear_owner_v94")
     settingsIcon:SetAllPoints(settingsFrame)
