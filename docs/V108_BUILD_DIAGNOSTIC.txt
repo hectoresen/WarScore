@@ -1,3 +1,0 @@
-Traceback (most recent call last):
-  File "<stdin>", line 18, in <module>
-AssertionError: Incorrect owner image length 7930; raw=7928; offset=3998; tail=PBAsBgML4U/wdOFMgwPy+qLwAAAABJRU5ErkJggg
