@@ -19,10 +19,36 @@ jobs:
         with:
           persist-credentials: true
       - name: Build standard ZIP and verify contents
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
           set -euo pipefail
           python3 -m pip install --quiet Pillow
+          # One-time transport for the owner PNG already uploaded as a GitHub blob.
+          # After the successful build it is committed into docs/assets, making
+          # all future builds fully reproducible without this API fallback.
+          if [ ! -f docs/assets/rank_panel_owner_v108_source.png ]; then
+            python3 - <<'PY'
+          import base64, json, os, urllib.request
+          from pathlib import Path
+          sha = "dc9eba84206b47c27bf8a3807ca284201ce182e9"
+          url = f"https://api.github.com/repos/hectoresen/WarScore/git/blobs/{sha}"
+          req = urllib.request.Request(url, headers={
+              "Authorization": f"Bearer {os.environ['GITHUB_TOKEN']}",
+              "Accept": "application/vnd.github+json",
+          })
+          with urllib.request.urlopen(req) as response:
+              result = json.load(response)
+          payload = base64.b64decode(result["content"])
+          path = Path("docs/assets/rank_panel_owner_v108_source.png")
+          path.write_bytes(payload)
+          from PIL import Image
+          with Image.open(path) as im:
+              im.load()
+              assert im.size == (1024, 128)
+          PY
+          fi
           python3 tools/prepare_ratio_asset.py
           python3 tools/prepare_card_asset.py  # inspect transport image before release
           python3 tools/prepare_top_icons.py
@@ -70,7 +96,7 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add addon/WarScore/Media/General/rank_fill_*.tga addon/WarScore/Media/General/rank_bar_frame_owner_v104.tga addon/WarScore/Media/General/rank_name_plate_owner_v102.tga addon/WarScore/Media/Fonts/Spectral-Italic.ttf dist/WarScore.zip addon/WarScore/Media/General/honor_panel_owner_v98.tga addon/WarScore/Media/General/settings_gear_owner_v94.tga addon/WarScore/Media/General/ratios_frame_owner_v70.tga addon/WarScore/Media/General/stat_band_top_owner_v74.tga addon/WarScore/Media/General/stat_band_bottom_owner_v75.tga addon/WarScore/Media/General/icon_duels_owner_v77.tga addon/WarScore/Media/General/icon_bg_played_owner_v77.tga addon/WarScore/Media/General/icon_bg_wins_owner_v77.tga addon/WarScore/Media/General/icon_bg_rate_owner_v79.tga addon/WarScore/Media/General/icon_duel_rate_owner_v79.tga addon/WarScore/Media/General/icon_favorite_bg_owner_v79.tga
+          git add docs/assets/rank_panel_owner_v108_source.png addon/WarScore/Media/General/rank_panel_owner_v108.tga addon/WarScore/Media/General/rank_fill_*.tga addon/WarScore/Media/General/rank_bar_frame_owner_v104.tga addon/WarScore/Media/General/rank_name_plate_owner_v102.tga addon/WarScore/Media/Fonts/Spectral-Italic.ttf dist/WarScore.zip addon/WarScore/Media/General/honor_panel_owner_v98.tga addon/WarScore/Media/General/settings_gear_owner_v94.tga addon/WarScore/Media/General/ratios_frame_owner_v70.tga addon/WarScore/Media/General/stat_band_top_owner_v74.tga addon/WarScore/Media/General/stat_band_bottom_owner_v75.tga addon/WarScore/Media/General/icon_duels_owner_v77.tga addon/WarScore/Media/General/icon_bg_played_owner_v77.tga addon/WarScore/Media/General/icon_bg_wins_owner_v77.tga addon/WarScore/Media/General/icon_bg_rate_owner_v79.tga addon/WarScore/Media/General/icon_duel_rate_owner_v79.tga addon/WarScore/Media/General/icon_favorite_bg_owner_v79.tga
           if ! git diff --cached --quiet; then
             git commit -m "build: refresh verified WarScore ZIP [skip ci]"
             git push
