@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "118"
+local UI_ITERATION = "119"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -538,10 +538,12 @@ local function build()
     -- Centers follow the actual outer-section centers of the owner
     -- artwork after scaling, not the former independent plate offsets.
     -- Narrow text bounds stop long names at the red divider gems.
-    -- v114: match both rank caption centers and text widths to the 95%
-    -- horizontal frame scale; retain real PR centered at x=0.
-    fields.rankFrom = label(window, "—", 13, CREAM, -203.49, -463, 107.217, 25)
-    fields.rankTo = label(window, "—", 13, CREAM, 203.49, -463, 107.217, 25)
+    -- v119: use the two chamber midlines from the original unified texture
+    -- for ALL related labels, rather than independent optical offsets.
+    -- Both chamber name captions stay vertically centered in their panels.
+    local sideRankCenter = 213
+    fields.rankFrom = label(window, "—", 13, CREAM, -sideRankCenter, -463, 107.217, 25)
+    fields.rankTo = label(window, "—", 13, CREAM, sideRankCenter, -463, 107.217, 25)
     fields.rankPoints = label(window, "—", 14, CREAM, 0, -464.125, 243.675, 23)
     fields.rankPoints:SetShadowColor(0.02, 0.01, 0.01, 1)
     fields.rankPoints:SetShadowOffset(1, -1)
@@ -568,13 +570,10 @@ local function build()
         return ornamentFrame
     end
 
-    -- v118: align the visual centers of Actual and Siguiente with the
-    -- true centerlines of their respective gold rank chambers. The source
-    -- PNGs have symmetrical alpha padding; position their frames 220 units
-    -- from the window center, not at the live rank-text offsets.
-    -- Both titles share the same top coordinate and 175x32 display size.
-    addRankOrnament("Interface\\AddOns\\WarScore\\Media\\General\\rank_label_current_owner_v115", -220, -432, 175, 32)
-    addRankOrnament("Interface\\AddOns\\WarScore\\Media\\General\\rank_label_next_owner_v115", 220, -432, 175, 32)
+    -- v119: place each ornament over the SAME chamber center as its live
+    -- rank name; matching height and size keep both titles level.
+    addRankOrnament("Interface\\AddOns\\WarScore\\Media\\General\\rank_label_current_owner_v115", -sideRankCenter, -432, 175, 32)
+    addRankOrnament("Interface\\AddOns\\WarScore\\Media\\General\\rank_label_next_owner_v115", sideRankCenter, -432, 175, 32)
 
     -- v117: lift the decorative divider 10 units closer to the PR chamber.
     -- It remains ornamental; PR remains numeric and the fill remains hidden.
