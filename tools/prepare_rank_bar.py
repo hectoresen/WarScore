@@ -23,7 +23,7 @@ for percent in range(0, 101, 5):
             out / f"rank_fill_{percent:03d}.tga", format="TGA"
         )
 
-# v101: byte-verified owner PNG, Git blob 355e9981409281e0e2fde15eeb039db429e4824d.
+# v104: verified exact-owner-image transport PNG, Git blob f09dbf388a919306d0ae0a849fdd84b183a21fbb.
 # The owner provided a separate high-resolution PNG in this iteration.
 # The transport copy is cropped from its real alpha bounds, 512x64
 # and preserves original appearance without rebuilding the border in Lua.
