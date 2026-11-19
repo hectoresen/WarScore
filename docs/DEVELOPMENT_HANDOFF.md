@@ -1359,3 +1359,13 @@ This validates positive BG history and objective tracking. Compare the native st
 - Header title: adjust only `brandTitle` from font **33→31**, y **-27→-36**, caption box height **43→40**; keep x=0 and dynamic text. This moves painted glyphs inward/down from the upper metal rail without changing the supplied header asset.
 - Rank progress fill remains hidden; retain 21 original 5%-interval fill assets, real PR/threshold string and localized titles. Other UI sections, portrait, flags, counters, cards and faction/point API unaffected.
 - Update `UI_ITERATION` to **114**. Build/verify clean `dist/WarScore.zip` using GitHub Actions before delivery; screenshot QA still requires owner test inside WoW.
+
+
+## Iteration #114 → #115: three new owner-authored ornaments above/below approved rank module (2026-11-19)
+
+- The owner approves the entire v114 unified PvP-rank triptych and requests explicitly that **its frame, dimensions, dynamic rank captions and PR text must not be modified again**. Three separate uploaded PNGs are authoritative: `WarScore_Etiqueta_Actual(1).png`, `WarScore_Etiqueta_Siguiente(1).png`, and `WarScore_Divisor_Avance(1).png`.
+- Source transport PNGs are stored under `docs/assets/rank_label_current_owner_v115_source.png`, `rank_label_next_owner_v115_source.png` (512×64), and `rank_divider_advance_owner_v115_source.png` (1024×64). Originals were preserved visually, converted to transparent power-of-two canvases for compatibility, and `tools/prepare_rank_bar.py` converts them to independent alpha-preserving TGA textures under `Media/General/` without repainting or merging with the existing frame.
+- `UI/General.lua` version **115** introduces only three ARTWORK textures: current title at x=-203.49/top=-404, next title at x=+203.49/top=-404 (each 155×28), and decorative advancement separator at x=0/top=-500 (560.4525×25). All coordinates are relative to the original main window. Decorative elements do not change PvP calculations or the temporarily hidden graphical progress fill.
+- **No changes** to the gold owner triptych at 560.4525×61.75/top=-443.625, rank name/PR bindings, player plaque, HK, ratio, lower cards, tabs, panel backdrop or banner art.
+- CI workflow now stages the three new TGA outputs before committing `dist/WarScore.zip`. CI must validate ZIP contents and `/ws version=115`, with no documentation or tools in the clean installable archive.
+- **Pending in-game QA**: verify the line-and-title artwork centers above the left/right plates, the advancement motif sits between the rank panel and HK divider without overlap, original ranks and points remain readable, no stretched/broken alpha and no Lua errors. Fine-tune only these three new elements from the owner's screenshot.
