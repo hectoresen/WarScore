@@ -36,6 +36,13 @@ def source_files():
         for font in re.findall(r"Interface/AddOns/WarScore/Media/Fonts/([A-Za-z0-9_-]+[.]ttf)", content):
             media.add(Path("Media/Fonts") / font)
             media.add(Path("Media/Fonts/OFL.txt"))
+    # Rank bar fill textures are selected dynamically in Lua by percentage.
+    # Static source-path extraction cannot resolve their concatenated suffixes.
+    if any("rank_fill_" in (ROOT / script).read_text(encoding="utf-8") for script in scripts):
+        for percent in range(0, 101, 5):
+            media.add(Path("Media/General") / f"rank_fill_{percent:03d}.tga")
+    # Remove the incomplete path from the partial dynamic Lua literal.
+    media.discard(Path("Media/General/rank_fill_.tga"))
     files.extend(sorted(media))
     for path in files:
         if path.is_absolute() or ".." in path.parts:
