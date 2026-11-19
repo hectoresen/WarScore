@@ -1305,3 +1305,13 @@ This validates positive BG history and objective tracking. Compare the native st
 - Asset transport is authored from owner's supplied artwork; the first pass downsampled/quantized transport image uses 1024×128 RGBA-compatible source dimensions, then converts directly to a TGA using `tools/prepare_rank_bar.py`. Keep the original user PNG as the visual master for any future quality improvement.
 - One-time GitHub bootstrap uses an uploaded Git blob plus checksum-verified correction segment, and commits the transport PNG so subsequent builds are self-contained. The packaging workflow must include the new `rank_panel_owner_v108.tga` in the addon ZIP and validate that `/ws version` reports 108.
 - **Owner native-client QA pending**: check all three compartments, 5% fill visually matching the center track, rank titles do not cross red gems, and no collisions with banner or HK module. Verify both 0% and 100% when attainable. Reiterate only from owner's screenshot.
+
+
+## Iteration #108 screenshot → #109: inset complete rank frame and align fill/labels (2026-11-19)
+
+- Owner's real v108 screenshot: the single-piece gold PvP frame renders successfully, but its side compartments sit too close to / beyond the inner window edges. The 5% fill overlaps the center gold rails instead of fitting fully inside its dark center aperture. The current/next names must stay centered in their separate boxes.
+- Change **only** `addon/WarScore/UI/General.lua`: unified `rank_panel_owner_v108` frame from 730×69, top -440 to **690×65, top -442**, preserving the original image aspect ratio and center. Both outer ends are now inset by 20 units per side, without modifying other UI components.
+- Authentic 21-step fill is unchanged as an asset and still selected from real PvP rank points; resize from 362×32, top -459 to **310×24, top -462**, so the round 5% gold cap fits within the center dark aperture, without painting over the border/gems.
+- Re-anchor real current/next rank labels from x±281 to **x±259**, top -462, width 132 (was 155), matching the panel's left/right compartments. PR label remains x0, top -463 and unmodified. No new assets or fake progress graphics.
+- Diagnostic `/ws version` increments to **109**. No changes to major faction data, rank name resolution, counters, cards, banners, portrait, or frame visuals elsewhere.
+- Packaging CI must produce a fresh installable `dist/WarScore.zip` containing v109, generated from the existing original textures; verify ZIP version parity and valid TGA paths. Client render is still pending owner screenshot; check margins, gem clearance, 5% gold cap, and 0%/100% progress as possible.
