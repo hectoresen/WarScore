@@ -33,6 +33,14 @@ lower_dst = root / "addon/WarScore/Media/General/stat_band_bottom_owner_v75.tga"
 with Image.open(lower_src) as file:
     lower = file.convert("RGBA")
     lower.load()  # Fail the packaging job on a damaged transport PNG.
+    # v103: use same alpha-visible crop algorithm as upper row.
+    alpha = lower.getchannel("A")
+    bounds = alpha.point(lambda value: 255 if value >= 8 else 0).getbbox()
+    if bounds is None:
+        raise ValueError("Owner lower card art is fully transparent")
+    left, top, right, bottom = bounds
+    lower = lower.crop((max(0, left-2), max(0, top-2),
+                        min(lower.width, right+2), min(lower.height, bottom+2)))
     lower = lower.resize((1024, 256), Image.Resampling.LANCZOS)
     lower.save(lower_dst, format="TGA")
 print("Converted owner lower stat frame:", lower_dst, lower_dst.stat().st_size, "bytes")

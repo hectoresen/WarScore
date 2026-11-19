@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "102"
+local UI_ITERATION = "103"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -539,15 +539,15 @@ local function build()
     local rankNamePlate = "Interface\\AddOns\\WarScore\\Media\\General\\rank_name_plate_owner_v102"
     local leftPlate = window:CreateTexture(nil, "BORDER")
     leftPlate:SetTexture(rankNamePlate)
-    leftPlate:SetSize(136, 55)
-    leftPlate:SetPoint("TOP", window, "TOP", -257, -446)
+    leftPlate:SetSize(185, 115)
+    leftPlate:SetPoint("TOP", window, "TOP", -267, -417)
     local rightPlate = window:CreateTexture(nil, "BORDER")
     rightPlate:SetTexture(rankNamePlate)
-    rightPlate:SetSize(136, 55)
-    rightPlate:SetPoint("TOP", window, "TOP", 257, -446)
+    rightPlate:SetSize(185, 115)
+    rightPlate:SetPoint("TOP", window, "TOP", 267, -417)
 
-    fields.rankFrom = label(window, "—", 12, CREAM, -257, -460, 130, 28)
-    fields.rankTo = label(window, "—", 12, CREAM, 257, -460, 130, 28)
+    fields.rankFrom = label(window, "—", 13, CREAM, -267, -462, 156, 26)
+    fields.rankTo = label(window, "—", 13, CREAM, 267, -462, 156, 26)
     -- The raw points sit at the center of the actual bar interior,
     -- not at the center of the entire rank/plate composition.
     fields.rankPoints = label(window, "—", 14, CREAM, 0, -463, 300, 23)
@@ -612,7 +612,7 @@ local function build()
 
     -- Lower ratio rail and central sapphire are part of the new owner asset.
 
-    local firstRow = statBand(window, -793, {
+    local firstRow = statBand(window, -775, {
         { title = "DUELOS GANADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duels_owner_v77" },
         { title = "CAMPOS DE BATALLA JUGADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_played_owner_v77" },
         { title = "BG GANADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_wins_owner_v77" },
@@ -620,7 +620,7 @@ local function build()
     fields.duels, fields.bgPlayed, fields.bgWon = unpack(firstRow)
     -- v88: lift the entire lower band 8 UI units to clear the parent bottom rim.
     -- Keep the owner TGA, band dimensions and the text/icon local anchors intact.
-    local secondRow = statBand(window, -908, {
+    local secondRow = statBand(window, -890, {
         { title = "WIN RATE BG", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_rate_owner_v79" },
         { title = "WIN RATE DUELOS", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duel_rate_owner_v79" },
         { title = "CAMPO DE BATALLA FAVORITO", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_favorite_bg_owner_v79", valueSize = 17 },

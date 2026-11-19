@@ -1251,3 +1251,11 @@ This validates positive BG history and objective tracking. Compare the native st
 - Lift first/lower statistics rows from -817/-936 to **-793/-908** respectively. Their painted background height changes 112→104, segment viewport 108→100; interior texts/icon offsets remain untouched. This provides clear bottom inset and retains a modest gap between two rows.
 - Keep main window size/outer texture, gear/close, portraits, rank API and HK/ratio layout unchanged. UI iteration = **102**.
 - **WoW visual QA pending:** inspect side-plate shapes, center PR text and actual bar fill, ratio-to-first-card margin, bottom clearances, overflow, hover text. Fine-tune from in-game screenshot.
+
+
+## Iteration #102 screenshot → #103 (2026-11-19)
+
+- The user clarified the previously generated image is **only the visual reference**. v103 implements actual WoW Lua and assets, not another mockup.
+- Fix pointed PvP rank plates: original source has stray near-transparent pixels; crop using alpha >= 8 before resizing to existing 256x128 TGA. Draw each plate at 185x115, x ±267, top -417, with dynamic 13pt labels centered x ±267 at y -462. Visible plates are enlarged and closely flank the 365x48 gold central progress bar; the central bar and live 25/750 PR remain unchanged.
+- Move both lower statistic rows upward by 18: first y -793 to -775; second y -908 to -890. Both share a 688x104 frame size and preserve the intentionally different column divisions and live text. Normalize the bottom card PNG alpha crop using the same threshold/2px expansion already used on the upper PNG to eliminate source-padding variations in painted outer dimensions.
+- Version 103; no Honor card, no changes to PvP rank API, X, gear, portrait or stats. Client screenshot validation pending.

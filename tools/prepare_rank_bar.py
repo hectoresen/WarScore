@@ -46,7 +46,8 @@ plate_file = source / "Placa dorada hexagonal para rango PvP.png"
 with Image.open(plate_file) as original:
     original.load()
     rgba = original.convert("RGBA")
-    bbox = rgba.getchannel("A").getbbox()
+    # Ignore faint stray pixels around the source's real pointed silhouette.
+    bbox = rgba.getchannel("A").point(lambda alpha: 255 if alpha >= 8 else 0).getbbox()
     if not bbox:
         raise ValueError("Owner rank plate is transparent")
     plate = rgba.crop(bbox)
