@@ -1,8 +1,8 @@
 local _, ns = ...
 ns.UI = ns.UI or {}
 
--- WarScore v126: classic-client minimap launcher.
--- No third-party libraries, no decorative circular button texture.
+-- WarScore v127: native Classic minimap gold circular border.
+-- The owner's shield remains the only icon inside Blizzard's existing frame.
 local minimapButton
 local DEFAULT_ANGLE = 225
 
@@ -47,16 +47,26 @@ local function createMinimapButton()
     if minimapButton or not Minimap then return end
 
     minimapButton = CreateFrame("Button", "WarScoreMinimapButton", Minimap)
-    minimapButton:SetSize(30, 30)
+    minimapButton:SetSize(31, 31)
     minimapButton:SetFrameLevel(Minimap:GetFrameLevel() + 8)
     minimapButton:EnableMouse(true)
     minimapButton:RegisterForClicks("LeftButtonUp")
     minimapButton:RegisterForDrag("LeftButton")
 
+    -- Keep the original shield but shrink it inside the 31px native button.
+    -- These pixel offsets follow Blizzard's classic MiniMapTrackingButton
+    -- layout: art in the 20px middle, native 54px circular border on top.
     local icon = minimapButton:CreateTexture(nil, "ARTWORK")
     icon:SetTexture("Interface\\AddOns\\WarScore\\Media\\Minimap\\warscore_icon_owner_v126")
-    icon:SetAllPoints(minimapButton)
+    icon:SetSize(20, 20)
+    icon:SetPoint("TOPLEFT", minimapButton, "TOPLEFT", 7, -6)
     icon:SetAlpha(1)
+
+    local border = minimapButton:CreateTexture(nil, "OVERLAY")
+    border:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
+    border:SetSize(54, 54)
+    border:SetPoint("TOPLEFT", minimapButton, "TOPLEFT", 0, 0)
+    border:SetAlpha(1)
 
     local dragging = false
     local justDragged = false
