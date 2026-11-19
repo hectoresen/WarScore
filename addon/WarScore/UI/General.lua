@@ -4,7 +4,7 @@ ns.UI = ns.UI or {}
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
 local showGeneralView, showSettingsView
-local UI_ITERATION = "129"
+local UI_ITERATION = "130"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -446,8 +446,10 @@ local function build()
     settingsFrame:SetSize(38, 38)
     -- v95: small optical adjustment: 3 units left and 2 units upward.
     -- v96: refine gear alignment under the unchanged close X.
-    -- v97: optical micro-adjustment: 1 unit left, 2 units down.
-    settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -58.5, -77)
+    -- v130: add clearance beneath the unchanged close X; shift the gear
+    -- approximately 0.5% of the 800px-wide window (4 UI units) left and
+    -- 6 UI units down. No other anchors or artwork are altered.
+    settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -62.5, -83)
     local settingsIcon = settingsFrame:CreateTexture(nil, "ARTWORK")
     settingsIcon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\settings_gear_owner_v94")
     settingsIcon:SetAllPoints(settingsFrame)
