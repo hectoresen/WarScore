@@ -3,7 +3,8 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "121"
+local showGeneralView, showSettingsView
+local UI_ITERATION = "122"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -453,10 +454,17 @@ local function build()
     settingsFrame:EnableMouse(true)
     settingsFrame:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText(text("settings_coming_soon"), 1, 0.82, 0.40)
+        GameTooltip:SetText(text("tab_settings"), 1, 0.82, 0.40)
         GameTooltip:Show()
     end)
     settingsFrame:SetScript("OnLeave", function() GameTooltip:Hide() end)
+    -- v122: the existing gold gear opens Settings instead of a tooltip-only
+    -- placeholder. The view closures are initialized at the end of build().
+    settingsFrame:SetScript("OnMouseUp", function(_, mouseButton)
+        if mouseButton == "LeftButton" and showSettingsView then
+            showSettingsView()
+        end
+    end)
 
     fields = {}
     -- Both banners are baked into innerArt; no separate banner sprites.
@@ -682,7 +690,82 @@ local function build()
     fields.statCaptionsSecondary = secondRow.captions
     fields.statCaptionKeysSecondary = { "battleground_win_rate", "duel_win_rate", "favorite_battleground" }
 
-    -- The reference's tall two-row composition needs additional height.
+    -- v122: freeze the complete v121 General view as its own visibility
+    -- group. These are the original region/child objects: no layout, anchor,
+    -- artwork, statistic or font is rebuilt or reparented.
+    -- Common outer/background/header, the X and the gear remain visible.
+    local sharedRegions = {
+        [interiorBacking] = true,
+        [outerArt] = true,
+        [brandTitle] = true,
+    }
+    local sharedChildren = {
+        [close] = true,
+        [settingsFrame] = true,
+    }
+    local generalObjects = {}
+    local regionCount = select("#", window:GetRegions())
+    for index = 1, regionCount do
+        local region = select(index, window:GetRegions())
+        if region and not sharedRegions[region] then
+            generalObjects[#generalObjects + 1] = region
+        end
+    end
+    local childCount = select("#", window:GetChildren())
+    for index = 1, childCount do
+        local child = select(index, window:GetChildren())
+        if child and not sharedChildren[child] then
+            generalObjects[#generalObjects + 1] = child
+        end
+    end
+
+    -- The supplied second inner frame uses the same authored canvas as
+    -- inner_frame_owner_v64, with empty tabs for live localized captions.
+    local settingsPage = CreateFrame("Frame", nil, window)
+    settingsPage:SetAllPoints(window)
+    settingsPage:SetFrameLevel(window:GetFrameLevel() + 2)
+    local settingsArtwork = settingsPage:CreateTexture(nil, "ARTWORK")
+    settingsArtwork:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\settings_inner_frame_owner_v122")
+    settingsArtwork:SetSize(774, 985)
+    settingsArtwork:SetPoint("TOP", settingsPage, "TOP", 5, -82)
+
+    local settingsTitle = label(settingsPage, text("tab_settings"), 16, GOLD, -160, -104, 160, 29)
+    settingsTitle:SetShadowColor(0.17, 0.08, 0.015, 0.94)
+    settingsTitle:SetShadowOffset(1, -1)
+
+    local returnTab = CreateFrame("Button", nil, settingsPage)
+    returnTab:SetSize(160, 38)
+    returnTab:SetPoint("TOP", settingsPage, "TOP", 30, -102)
+    local returnTitle = label(returnTab, text("tab_back"), 15, CREAM, 0, -2, 150, 29)
+    returnTitle:SetTextColor(0.72, 0.66, 0.55)
+    returnTab:SetScript("OnEnter", function()
+        returnTitle:SetTextColor(1, 0.86, 0.52)
+    end)
+    returnTab:SetScript("OnLeave", function()
+        returnTitle:SetTextColor(0.72, 0.66, 0.55)
+    end)
+
+    showGeneralView = function()
+        settingsPage:Hide()
+        for _, object in ipairs(generalObjects) do object:Show() end
+        refresh()
+    end
+    showSettingsView = function()
+        for _, object in ipairs(generalObjects) do object:Hide() end
+        settingsPage:Show()
+        -- Keep the shared close X and clickable gear above Settings artwork.
+        close:SetFrameLevel(window:GetFrameLevel() + 10)
+        settingsFrame:SetFrameLevel(window:GetFrameLevel() + 10)
+    end
+    returnTab:SetScript("OnClick", showGeneralView)
+    settingsPage:Hide()
+
+    ns.L:RegisterRefresh(function()
+        settingsTitle:SetText(text("tab_settings"))
+        returnTitle:SetText(text("tab_back"))
+    end)
+
+    -- Preserve the original reference window height and refresh lifecycle.
     window:SetHeight(1105)
     window:SetScript("OnShow", refresh)
     ns.L:RegisterRefresh(refresh)
@@ -690,6 +773,7 @@ end
 
 function ns.UI.ShowGeneral()
     if not window then build() end
+    if showGeneralView then showGeneralView() end
     window:Show()
     refresh()
 end
