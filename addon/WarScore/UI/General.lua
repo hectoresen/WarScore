@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "94"
+local UI_ITERATION = "95"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -374,7 +374,8 @@ local function build()
     -- Their horizontal centers both lie 69.5 units in from the window right.
     local settingsFrame = CreateFrame("Frame", nil, window)
     settingsFrame:SetSize(38, 38)
-    settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -50.5, -78)
+    -- v95: small optical adjustment: 3 units left and 2 units upward.
+    settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -53.5, -76)
     local settingsIcon = settingsFrame:CreateTexture(nil, "ARTWORK")
     settingsIcon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\settings_gear_owner_v94")
     settingsIcon:SetAllPoints(settingsFrame)

@@ -1171,3 +1171,10 @@ This validates positive BG history and objective tracking. Compare the native st
 - The initial v94 source PNG blob was corrupt in GitHub despite working on the local machine; CI correctly rejected its broken image stream and **no v94 ZIP was released**.
 - Replaced source with a CRC-valid 48×48 transparent palette-optimized copy of the original owner art (Git blob SHA `00cde674f21aa97a60b7e02d6cdbe62243ed8a89`, validated against local bytes). The final game TGA is still 128×128 with full alpha. This smaller transfer size is suitable for the 38×38 UI draw area.
 - Re-run CI packaging and confirm source read, TGA, and embedded `UI_ITERATION = 94` before distributing.
+
+
+## Iteration #94 owner screenshot → #95 settings-gear optical alignment (2026-11-19)
+
+- The owner reports that the new gold cog appears slightly right and low compared to the existing top-right X. The owner explicitly instructed to iterate without asking for confirmation whenever the requested adjustment is clear.
+- v95 moves **only** the existing settings gear frame by 3 UI units left and 2 UI units up: TOPRIGHT from (-50.5,-78) to (-53.5,-76). Keep its 38×38 size, owner-supplied TGA, tooltip, transparency and single-instance behavior. The original built-in X and its click target remain untouched; all gameplay stats, honor currency, other assets and panels remain unchanged.
+- UI diagnostic = 95. **IN-GAME QA PENDING:** install the pinned verified ZIP; `/reload`, `/ws version` 95, `/ws`; inspect the visual alignment of the gear directly below the X without overlap or offsets.
