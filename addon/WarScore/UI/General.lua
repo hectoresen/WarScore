@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "114"
+local UI_ITERATION = "115"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -545,6 +545,27 @@ local function build()
     fields.rankPoints = label(window, "—", 14, CREAM, 0, -464.125, 243.675, 23)
     fields.rankPoints:SetShadowColor(0.02, 0.01, 0.01, 1)
     fields.rankPoints:SetShadowOffset(1, -1)
+
+    -- v115: the original gold triptych and all three dynamic captions above
+    -- are unchanged. Each additional owner-authored PNG is independent.
+    -- Their ornaments have transparent padding on a power-of-two TGA canvas.
+    -- Put the two titles above their corresponding pointed rank chambers.
+    local rankCurrentOrnament = window:CreateTexture(nil, "ARTWORK")
+    rankCurrentOrnament:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_label_current_owner_v115")
+    rankCurrentOrnament:SetSize(155, 28)
+    rankCurrentOrnament:SetPoint("TOP", window, "TOP", -203.49, -404)
+
+    local rankNextOrnament = window:CreateTexture(nil, "ARTWORK")
+    rankNextOrnament:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_label_next_owner_v115")
+    rankNextOrnament:SetSize(155, 28)
+    rankNextOrnament:SetPoint("TOP", window, "TOP", 203.49, -404)
+
+    -- Decorative-only advance motif immediately below the points panel.
+    -- It is not a data-driven fill, and does not change the existing PR value.
+    local rankAdvanceOrnament = window:CreateTexture(nil, "ARTWORK")
+    rankAdvanceOrnament:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_divider_advance_owner_v115")
+    rankAdvanceOrnament:SetSize(560.4525, 25)
+    rankAdvanceOrnament:SetPoint("TOP", window, "TOP", 0, -500)
 
     -- Iteration 68: the owner's transparent HK asset supplies both laurels,
     -- upper/lower gold rails and diamonds. No more separate HK laurels, 
