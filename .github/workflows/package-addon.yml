@@ -1,5 +1,5 @@
 name: Package clean WarScore addon
-# v125: use WoW Forever-compatible native dropdown button disable instead of missing API.
+# v126: include alpha shield minimap icon, module and reversible launcher.
 on:
   push:
     branches: [main]
@@ -30,6 +30,7 @@ jobs:
           python3 tools/prepare_bottom_icons.py
           python3 tools/prepare_settings_gear.py
           python3 tools/prepare_honor_panel.py
+          python3 tools/prepare_minimap_icon.py
           python3 tools/prepare_rank_bar.py
           python3 tools/prepare_italic_font.py
           python3 tools/package_addon.py
@@ -90,7 +91,7 @@ jobs:
               # shipping or drawing the mismatched Settings replacement image.
               assert "WarScore/Media/General/inner_frame_owner_v64.tga" in names
               assert "WarScore/Media/General/settings_inner_frame_owner_v122.tga" not in names
-              assert archive_version.group(1) == "125", "Expected v125 in the clean ZIP"
+              assert archive_version.group(1) == "126", "Expected v126 in the clean ZIP"
               assert '[innerArt] = true' in runtime_ui
               assert 'settings_inner_frame_owner_v122' not in runtime_ui
               assert 'settingsTab:SetPoint("TOPLEFT", settingsPage, "TOPLEFT", 193, -102)' in runtime_ui
@@ -114,7 +115,22 @@ jobs:
               assert 'UIDropDownMenu_Disable(styleDropdown)' not in runtime_ui
               assert 'Classic Forever' in runtime_ui
               assert 'ns.L:RegisterRefresh(function()' in runtime_ui
-              print("Verified v125 native dropdown without unsupported Disable API")
+              # v126: verify original shield icon and minimap Lua are included.
+              minimap_module = "WarScore/UI/Minimap.lua"
+              minimap_asset = "WarScore/Media/Minimap/warscore_icon_owner_v126.tga"
+              assert minimap_module in names and minimap_asset in names
+              with Image.open(io.BytesIO(z.read(minimap_asset))) as minimap_art:
+                  assert minimap_art.size == (64, 64), minimap_art.size
+                  assert minimap_art.convert("RGBA").getchannel("A").getbbox(), "Blank minimap icon"
+              minimap_ui = z.read(minimap_module).decode("utf-8")
+              assert 'RegisterForDrag("LeftButton")' in minimap_ui
+              assert 'GetCursorPosition()' in minimap_ui
+              assert 'settings.minimapAngle' in minimap_ui
+              assert 'ns.UI.ToggleGeneral()' in minimap_ui
+              assert 'function ns.UI.ToggleGeneral()' in runtime_ui
+              assert 'minimap_toggle = "Abrir/Cerrar WarScore"' in loc
+              assert 'minimap_toggle = "Open/Close WarScore"' in loc
+              print("Verified WarScore v126 minimap shield, drag/save, toggle and tooltips")
               print("Verified owner-provided v120 Honor/HK frame in ZIP")
               print("Verified all three visible v115 ornaments inside installable ZIP")
               print("Verified embedded WarScore UI version:", archive_version.group(1))
@@ -126,6 +142,7 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add addon/WarScore/Media/Minimap/warscore_icon_owner_v126.tga
           git add addon/WarScore/Media/General/honor_frame_owner_v120.tga
           git add addon/WarScore/Media/General/rank_label_current_owner_v115.tga addon/WarScore/Media/General/rank_label_next_owner_v115.tga addon/WarScore/Media/General/rank_divider_advance_owner_v115.tga
           git add docs/assets/rank_panel_owner_v108_source.png addon/WarScore/Media/General/rank_panel_owner_v108.tga addon/WarScore/Media/General/rank_fill_*.tga addon/WarScore/Media/General/rank_bar_frame_owner_v104.tga addon/WarScore/Media/General/rank_name_plate_owner_v102.tga addon/WarScore/Media/Fonts/Spectral-Italic.ttf dist/WarScore.zip addon/WarScore/Media/General/honor_panel_owner_v98.tga addon/WarScore/Media/General/settings_gear_owner_v94.tga addon/WarScore/Media/General/ratios_frame_owner_v70.tga addon/WarScore/Media/General/stat_band_top_owner_v74.tga addon/WarScore/Media/General/stat_band_bottom_owner_v75.tga addon/WarScore/Media/General/icon_duels_owner_v77.tga addon/WarScore/Media/General/icon_bg_played_owner_v77.tga addon/WarScore/Media/General/icon_bg_wins_owner_v77.tga addon/WarScore/Media/General/icon_bg_rate_owner_v79.tga addon/WarScore/Media/General/icon_duel_rate_owner_v79.tga addon/WarScore/Media/General/icon_favorite_bg_owner_v79.tga
