@@ -530,7 +530,7 @@ local function build()
     -- the central compartment, never the two rank labels.
     -- Source frame proportions and genuine metal/gems are preserved.
     local rankPanel = window:CreateTexture(nil, "BORDER")
-    rankPanel:SetTexture("Interface\\\\AddOns\\\\WarScore\\\\Media\\\\General\\\\rank_panel_owner_v108")
+    rankPanel:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_panel_owner_v108")
     rankPanel:SetSize(730, 69)
     rankPanel:SetPoint("TOP", window, "TOP", 0, -440)
 
