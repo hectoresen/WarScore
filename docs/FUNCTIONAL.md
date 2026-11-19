@@ -1,18 +1,20 @@
 # Funcionalidad actual — WarScore
 
-**Corte:** 18/11/2026; última iteración visual sometida a prueba de cliente: **v83**. Fuentes: `addon/WarScore/Core/Stats.lua`, `UI/General.lua` y [contrato PvP](PVP_STATISTICS.md).
+**Corte:** 19/11/2026; versión actual de UI: **v126**. Fuentes: `addon/WarScore/Core/Stats.lua`, `UI/General.lua` y [contrato PvP](PVP_STATISTICS.md).
 
 ## Implementado
-- Abrir ventana nativa con `/ws` o `/warscore`; tabs General y Hoy (Hoy todavía sin contenido funcional).
+- Comandos públicos: `/ws` abre General, `/ws version` muestra la versión, `/ws lang en|es` cambia el idioma y `/ws settings` abre Ajustes. `/warscore` se conserva como alias compatible de `/ws`.
+- `/wsdiag` se conserva como comando técnico separado para validar APIs y estadísticas dentro del cliente.
+- La vista incluye General y Ajustes; Hoy todavía no tiene contenido funcional.
 - Retrato, nombre, nivel y clase del personaje activo; ornamentos de facción, con arte de Horda y fallback para Alianza.
 - Muertes con honor, **honor actual gastable** (API `UnitHonor("player")`), muertes sufridas por otros jugadores y ratio HK/D histórico cuando la API dispone de cifras.
 - Duelos ganados, BG jugados, BG ganados, porcentajes de victoria calculados con denominadores válidos y campo de batalla favorito por partidas; empates explícitos.
 - Dos filas de tarjetas con assets ornamentales, iconos y cifras dinámicas.
-- `/ws version` (iteración de UI; independiente del campo `Version: 0.1.0` del manifiesto), diagnósticos `/wsdiag`.
+- `/ws version` (iteración de UI; independiente del campo `Version: 0.1.0` del manifiesto), `/ws lang en|es`, `/ws settings` y diagnósticos técnicos `/wsdiag`.
 
 ## No disponibles deliberadamente
 - **KB/D**: retirado de la pantalla General por no existir una fuente confirmada de golpes de gracia *exclusivamente PvP*. El ID 1487 es de categoría general y no se utiliza.
-- **Rango PvP**: fuente confirmada en `C_MajorFactions.GetMajorFactionProgressionInfo(2800)`; la UI debe mostrar rango y progreso cuando la integración se complete, con «No disponible» solo como fallback.
+- **Rango PvP**: fuente confirmada en `C_MajorFactions.GetMajorFactionProgressionInfo(2800)`; la UI muestra rango y Rank Points cuando la API responde, con «No disponible» solo como fallback.
 - Valores desconocidos no se sustituyen por datos ficticios; la normalización a cero de duelos vacíos es un caso específico contrastado.
 
 ## Pendiente

@@ -870,6 +870,12 @@ function ns.UI.ShowGeneral()
     refresh()
 end
 
+function ns.UI.ShowSettings()
+    if not window then build() end
+    window:Show()
+    if showSettingsView then showSettingsView() end
+end
+
 -- v126: shared window toggle for the minimap icon. Closing preserves all
 -- stored PvP statistics and settings; reopening shows the usual General page.
 function ns.UI.ToggleGeneral()
@@ -894,6 +900,10 @@ SlashCmdList.WARSCORE = function(message)
         elseif DEFAULT_CHAT_FRAME then
             DEFAULT_CHAT_FRAME:AddMessage("|cffffc34dWarScore|r " .. (requested and text("language_invalid") or text("language_usage")))
         end
+        return
+    end
+    if command and command:lower() == "settings" then
+        ns.UI.ShowSettings()
         return
     end
     if command and command:lower() == "version" then
