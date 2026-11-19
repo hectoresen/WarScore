@@ -4,7 +4,7 @@ ns.UI = ns.UI or {}
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
 local showGeneralView, showSettingsView
-local UI_ITERATION = "123"
+local UI_ITERATION = "124"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -749,6 +749,86 @@ local function build()
         returnTitle:SetTextColor(0.72, 0.66, 0.55)
     end)
 
+    -- v124: a reusable vertical Settings layout. Each row has a localized
+    -- caption and a native WoW Classic UIDropDownMenuTemplate control.
+    -- Future settings can be added as new rows without moving the frame.
+    local settingsContent = CreateFrame("Frame", nil, settingsPage)
+    settingsContent:SetSize(490, 500)
+    settingsContent:SetPoint("TOP", settingsPage, "TOP", 0, -270)
+    local sectionTitle = label(settingsContent, text("settings_section"), 19, GOLD, 0, 0, 410, 32)
+
+    local sectionRule = settingsContent:CreateTexture(nil, "ARTWORK")
+    sectionRule:SetTexture("Interface\\Buttons\\WHITE8X8")
+    sectionRule:SetVertexColor(0.72, 0.48, 0.17, 0.65)
+    sectionRule:SetSize(390, 1)
+    sectionRule:SetPoint("TOP", settingsContent, "TOP", 0, -39)
+
+    local function addSettingsRow(titleKey, y)
+        local container = CreateFrame("Frame", nil, settingsContent)
+        container:SetSize(420, 112)
+        container:SetPoint("TOP", settingsContent, "TOP", 0, y)
+        local title = label(container, text(titleKey), 16, CREAM, 0, 0, 370, 26)
+        return container, title
+    end
+
+    local languageRow, languageTitle = addSettingsRow("settings_language", -67)
+    local languageDropdown = CreateFrame("Frame", "WarScoreSettingsLanguageDropdown", languageRow, "UIDropDownMenuTemplate")
+    languageDropdown:SetPoint("TOP", languageRow, "TOP", -17, -32)
+    UIDropDownMenu_SetWidth(languageDropdown, 210)
+
+    -- Same translation service as '/ws lang es' and '/ws lang en'. Its
+    -- listeners update all General copies and Settings captions in place.
+    UIDropDownMenu_Initialize(languageDropdown, function(_, level)
+        if level and level ~= 1 then return end
+        local current = ns.L:GetLanguage()
+        local choices = {
+            { value = "es", title = "Español" },
+            { value = "en", title = "English" },
+        }
+        for _, choice in ipairs(choices) do
+            local info = UIDropDownMenu_CreateInfo()
+            info.text = choice.title
+            info.value = choice.value
+            info.checked = current == choice.value
+            info.func = function()
+                ns.L:SetLanguage(choice.value)
+            end
+            UIDropDownMenu_AddButton(info, level or 1)
+        end
+    end)
+
+    local styleRow, styleTitle = addSettingsRow("settings_visual_style", -199)
+    local styleDropdown = CreateFrame("Frame", "WarScoreSettingsStyleDropdown", styleRow, "UIDropDownMenuTemplate")
+    styleDropdown:SetPoint("TOP", styleRow, "TOP", -17, -32)
+    UIDropDownMenu_SetWidth(styleDropdown, 210)
+    UIDropDownMenu_Initialize(styleDropdown, function(_, level)
+        if level and level ~= 1 then return end
+        local info = UIDropDownMenu_CreateInfo()
+        info.text = "Classic Forever"
+        info.value = "classic-forever"
+        info.checked = true
+        info.disabled = true
+        UIDropDownMenu_AddButton(info, level or 1)
+    end)
+    UIDropDownMenu_SetSelectedValue(styleDropdown, "classic-forever")
+    UIDropDownMenu_SetText(styleDropdown, "Classic Forever")
+    -- Disable the whole native dropdown: this is a visible future setting,
+    -- not an interactive or misleading menu in v124.
+    UIDropDownMenu_Disable(styleDropdown)
+    local styleHint = label(styleRow, text("settings_style_unavailable"), 12, CREAM, 0, -91, 370, 20)
+    styleHint:SetTextColor(0.58, 0.53, 0.47)
+
+    local function updateSettingsLanguage()
+        sectionTitle:SetText(text("settings_section"))
+        languageTitle:SetText(text("settings_language"))
+        styleTitle:SetText(text("settings_visual_style"))
+        styleHint:SetText(text("settings_style_unavailable"))
+        local current = ns.L:GetLanguage()
+        UIDropDownMenu_SetSelectedValue(languageDropdown, current)
+        UIDropDownMenu_SetText(languageDropdown, current == "en" and "English" or "Español")
+    end
+    updateSettingsLanguage()
+
     showGeneralView = function()
         settingsPage:Hide()
         for _, object in ipairs(generalObjects) do object:Show() end
@@ -767,6 +847,7 @@ local function build()
     ns.L:RegisterRefresh(function()
         settingsTitle:SetText(text("tab_settings"))
         returnTitle:SetText(text("tab_back"))
+        updateSettingsLanguage()
     end)
 
     -- Preserve the original reference window height and refresh lifecycle.
