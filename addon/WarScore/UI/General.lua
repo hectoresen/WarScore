@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "105"
+local UI_ITERATION = "106"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -531,13 +531,14 @@ local function build()
     -- Put the opaque ornament behind the dynamic progress fill.
     local rankBarFrame = window:CreateTexture(nil, "BORDER")
     rankBarFrame:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_bar_frame_owner_v104")
-    -- v105: tighten gold frame around the actual fill.
-    rankBarFrame:SetSize(365, 48)
-    rankBarFrame:SetPoint("TOP", window, "TOP", 0, -450)
+    -- v106: fit the owner's gold surround snugly to the real progress fill.
+    -- Preserve overall bar width and center (the image is not replaced).
+    rankBarFrame:SetSize(365, 38)
+    rankBarFrame:SetPoint("TOP", window, "TOP", 0, -455)
 
     fields.rankFill = window:CreateTexture(nil, "ARTWORK")
-    fields.rankFill:SetSize(326, 21)
-    fields.rankFill:SetPoint("TOP", window, "TOP", 0, -464)
+    fields.rankFill:SetSize(326, 25)
+    fields.rankFill:SetPoint("TOP", window, "TOP", 0, -461)
     fields.rankFill:Hide()
 
     -- Title plates come from the original 'rank bars' folder; preserve
@@ -545,15 +546,15 @@ local function build()
     local rankNamePlate = "Interface\\AddOns\\WarScore\\Media\\General\\rank_name_plate_owner_v102"
     local leftPlate = window:CreateTexture(nil, "BORDER")
     leftPlate:SetTexture(rankNamePlate)
-    leftPlate:SetSize(178, 108)
-    leftPlate:SetPoint("TOP", window, "TOP", -269, -421)
+    leftPlate:SetSize(169, 103)
+    leftPlate:SetPoint("TOP", window, "TOP", -265, -423)
     local rightPlate = window:CreateTexture(nil, "BORDER")
     rightPlate:SetTexture(rankNamePlate)
-    rightPlate:SetSize(178, 108)
-    rightPlate:SetPoint("TOP", window, "TOP", 269, -421)
+    rightPlate:SetSize(169, 103)
+    rightPlate:SetPoint("TOP", window, "TOP", 265, -423)
 
-    fields.rankFrom = label(window, "—", 13, CREAM, -269, -462, 148, 26)
-    fields.rankTo = label(window, "—", 13, CREAM, 269, -462, 148, 26)
+    fields.rankFrom = label(window, "—", 13, CREAM, -265, -462, 143, 26)
+    fields.rankTo = label(window, "—", 13, CREAM, 265, -462, 143, 26)
     -- The raw points sit at the center of the actual bar interior,
     -- not at the center of the entire rank/plate composition.
     fields.rankPoints = label(window, "—", 14, CREAM, 0, -463, 300, 23)

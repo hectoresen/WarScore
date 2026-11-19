@@ -1279,3 +1279,11 @@ This validates positive BG history and objective tracking. Compare the native st
 - Move both stat-card rows down **12 UI units**, first y=-767→-779 and second y=-878→-890; retain their identical **688×100** frames and current divider arrangements.
 - Scale all six icons and numeric values to **95%** without scaling the frames; shift icons 2 units inward/up and values 3 units up. Favorite play-count italic is font 12.35, raised from y=-74 to -66, with its independent centered caption preserved. Captions and stat readings remain dynamic and unchanged.
 - UI diagnostic version = **105**. Client QA pending for centered fill, breathing room and lower-frame clearance.
+
+
+## Iteration #105 screenshot → #106: rank frame fitting and symmetric plaques (2026-11-19)
+
+- User explicitly requests **only a real addon iteration, never mockups**. Keep all other v105 visuals, cards, statistics, and layout untouched.
+- Retain the exact designer-supplied central rank bar texture `rank_bar_frame_owner_v104` and existing 21 increment textures; the central frame is **365×38** (was 365×48), top **-455** (was -450), maintaining the exact center and width. Increase dynamic fill to **326×25** (was 326×21), top **-461** (was -464), to occupy the visibly reduced interior. Real PR values stay centered and unchanged.
+- Reuse exact owner-pointed nameplate texture `rank_name_plate_owner_v102`: shrink both plates by approximately 5%, from **178×108 to 169×103**. Center both at **x=-265/+265** (previously -269/+269), top **-423** (previously -421) so their outer edges are equal and now farther inside the surrounding parent border. Center the labels on the same ±265 axes with 143-wide text areas; no other text changes.
+- Increment `UI_ITERATION` to 106. Leave lower rows exactly as validated in v105. **WoW client visual QA pending** on gold bar fit, 5%-step fill overlay, left/right margins and titles.
