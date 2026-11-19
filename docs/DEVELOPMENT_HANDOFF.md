@@ -19,6 +19,13 @@ Iterate in the **same current development line (`main`)**. Assistant commits one
 - No original expanded mockup PNG committed; `docs/assets/general-layout-guide.svg` is **only** a vector measurement guide. Source screenshot exists in earlier chat; obtain/upload original PNG for proper comparison.
 - No automated Lua tests or CLI OpenSpec validation executed so far. OpenSpec structure was authored manually.
 
+## Localization foundation — 2026-11-19
+
+- Added `Core/Localization.lua` with Spanish default and English catalog for the General view.
+- Added compatible `WarScoreDB.settings.language` persistence and temporary `/ws lang`, `/ws lang es` and `/ws lang en` commands.
+- General-view copies now refresh when the language changes; no settings UI control was added.
+- Static checks and hardcoded visible-copy scan were run; in-client English/Spanish QA is **PENDING**.
+
 ## Actual client test #1 — owner screenshot (2026-11-17)
 Environment: WoW Forever 1.60.1; character Krawer, level 29 Priest. Screenshot supplied in conversation, **not uploaded to repository**.
 - **PASS observed:** /ws renders, character name/level/class; HK=32, PvP deaths=8, HK/D=4.00; duels won=0; unavailable BG and KB/D displayed as dashes.

@@ -9,6 +9,7 @@ local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
 local GREEN = { 0.50, 0.88, 0.31 }
 local function rgb(color) return unpack(color) end
+local function text(key, ...) return ns.L:Get(key, ...) end
 
 local function label(parent, text, size, color, x, y, width, height)
     local font = parent:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -197,7 +198,7 @@ local function statBand(parent, y, definitions, secondary)
 
         -- x=0 means centered on the FULL segment, not offset by its icon.
         -- Width reserves a small gap from the left decorative pictogram.
-        local caption = label(segment, definition.title, secondary and 12 or 13,
+        local caption = label(segment, text(definition.title), secondary and 12 or 13,
             CREAM, 0, -12, 145, 38)
         caption:SetTextColor(0.94, 0.84, 0.65)
         -- Ratios in the two narrow lower cells have their own fixed text area,
@@ -218,6 +219,8 @@ local function statBand(parent, y, definitions, secondary)
         value:SetShadowColor(0.26, 0.14, 0.045, secondary and 0.45 or 0.72)
         value:SetShadowOffset(1, -1)
         values[i] = value
+        values.captions = values.captions or {}
+        values.captions[i] = caption
         if isFavorite then
             -- v86: center under the favorite card heading (segment x=0),
             -- independently from the name, which is shifted right of the pennant.
