@@ -160,3 +160,20 @@ The General screen now reads major faction ID **2800** through `C_MajorFactions.
 ## v101 provisional design decision
 
 Honor currency 1792 remains collected in `Core/Stats.lua`, but its standalone visual card has been **removed temporarily from General** at the owner's request; final Honor placement/design remains open. The complete framed rank-progress asset replaces the two detached visual plates. Rank Points and threshold are displayed within the central framed progress meter, retaining the verified Major Faction 2800 API.
+
+
+## Propuesta futura — pestaña «Estadísticas» → «Mundo abierto» (2026-11-19)
+
+**Objetivo funcional:** mostrar un resumen histórico de PvP en mundo abierto con datos consultados directamente al cliente, sin guardar históricos ni registrar eventos propios.
+
+| Indicador propuesto | Fuente nativa | Estado y presentación |
+| --- | --- | --- |
+| **Muertes con honor en mundo abierto (HK)** | `GetStatistic(381)` | **Confirmado**. Número absoluto; no llamarlo simplemente «muertes» porque podría confundirse con muertes sufridas. |
+| **Porcentaje de HK en mundo abierto respecto a todas las HK** | `GetStatistic(381) / GetStatistic(588) × 100` | **Derivable de datos confirmados**; calcular en pantalla, sin persistencia. Mostrar `—` cuando falta algún dato o el total es cero. |
+| **Continente con más HK** | `GetStatistic(1458)` | **Identificado/probado como continente dominante de HK**; queda por validar si el ámbito corresponde exclusivamente a mundo abierto. No etiquetarlo como «continente con más HK en mundo abierto» hasta confirmar ese punto. |
+
+**Propuesta visual:** dos indicadores principales (HK en mundo abierto y porcentaje del total), acompañados del continente dominante cuando la semántica haya sido validada. Ejemplo de datos reales anteriores: 34 HK mundo abierto y 92 HK totales (aprox. 37 %); son evidencia de prueba, no valores fijos de interfaz.
+
+**Investigación vinculada:** determinar si existen APIs/IDs para **HK de mundo abierto por cada continente**, con cantidades individuales y no solo el continente destacado. Ver pendiente en [PVP_STATISTICS.md](PVP_STATISTICS.md). No mostrar desglose por continente sin confirmación.
+
+**Estado:** propuesta funcional documentada, sin aprobación de maqueta ni implementación.
