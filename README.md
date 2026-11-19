@@ -1,46 +1,99 @@
 # WarScore
 
-**WarScore** es un addon PvP local para **World of Warcraft Forever** (TOC Interface `16001`). No requiere servidores, cuentas ni servicios externos.
+**Tus estadísticas PvP de World of Warcraft Forever, de un vistazo.**
 
-**Estado:** MVP en desarrollo. La pantalla **General**, Ajustes y el lanzador de minimapa están implementados hasta **UI v128**. La pestaña **Hoy** está pendiente; la compatibilidad y semántica de cada estadística requieren comprobación independiente.
+WarScore es un addon para **WoW Forever** que reúne la información de tu personaje en un panel visual inspirado en la estética clásica de Warcraft. Consulta tus muertes con honor, tu rango PvP, tus resultados en duelos y campos de batalla y mucho más, sin salir del juego.
+
+**Gratis · Sin cuentas · Sin servidores externos · Datos proporcionados por el propio juego**
+
+## Qué puedes ver
+
+### Pestaña General
+
+La pantalla principal muestra el historial PvP del personaje con el que estás jugando.
+
+| Sección | Información |
+| --- | --- |
+| **Tu personaje** | Retrato, nombre, nivel y clase. |
+| **Honor** | Puntos de honor disponibles y límite indicado por el juego. Es tu saldo actual, no todo el honor que has ganado históricamente. |
+| **Rango PvP** | Rango actual, próximo rango y puntos de rango (RP/PR) necesarios para progresar, cuando el juego facilita esos datos. |
+| **Muertes con honor (HK)** | Total histórico de muertes con honor registradas por WoW. |
+| **Muertes PvP sufridas** | Veces que otros jugadores han eliminado a tu personaje. |
+| **Ratio HK/D** | Relación entre muertes con honor y muertes PvP sufridas. |
+| **Duelos** | Duelos ganados y porcentaje de victorias. |
+| **Campos de batalla** | Partidas jugadas, victorias y porcentaje de victorias. |
+| **Campo de batalla favorito** | Campo que más has jugado y número de partidas disputadas en él. |
+
+> **HK** significa *Honorable Kills* (muertes con honor). **BG** significa *Battleground* (campo de batalla). Si alguna estadística no está disponible en el cliente, WarScore evita inventar el dato.
+
+### Ajustes y personalización
+
+- **Español e inglés:** cambia el idioma desde **Ajustes → Idioma** o con los comandos de chat.
+- **Interfaz integrada en WoW:** marcos ornamentales, retrato del personaje y diseño inspirado en Warcraft.
+- **Estilo visual:** el aspecto **Classic Forever** está disponible; el selector de otros estilos se reserva para versiones futuras.
+- **Ventana desplazable:** mueve el panel por la pantalla y ciérralo cuando no lo necesites.
+
+### Icono en el minimapa
+
+WarScore añade un botón en el borde del minimapa para acceder rápidamente al addon.
+
+- **Clic izquierdo:** abre o cierra la ventana.
+- **Arrastrar:** coloca el icono en el punto del borde del minimapa que prefieras.
+- **Posición recordada:** el addon conserva su ubicación para la próxima vez que entres.
+
+## ¿De dónde salen los datos?
+
+WarScore consulta **las APIs y estadísticas nativas disponibles en WoW Forever**, incluyendo los contadores PvP del personaje, el sistema de honor, los campos de batalla, los duelos y la progresión de rango.
+
+Los datos históricos proceden del propio juego: **no empiezan a contarse desde la instalación de WarScore**. Al abrir la vista General se vuelven a consultar para mostrar la información disponible más reciente. El addon no requiere conexión a una web, registro de usuario ni base de datos remota.
+
+Algunos porcentajes y ratios se calculan en el momento a partir de los valores que proporciona WoW. Las preferencias, como el idioma o la posición del botón del minimapa, se guardan localmente.
+
+Para conocer las fuentes, limitaciones y pruebas técnicas, consulta la [documentación de estadísticas PvP](docs/PVP_STATISTICS.md).
 
 ## Instalación
 
-**[Descargar WarScore.zip listo para instalar](https://github.com/hectoresen/WarScore/raw/refs/heads/main/dist/WarScore.zip)**. Descomprímelo en `World of Warcraft/_forever_/Interface/AddOns/`; debe quedar `Interface/AddOns/WarScore/WarScore.toc`. No utilices el ZIP automático de código fuente de GitHub. También puedes copiar **solo** `addon/WarScore/` desde un clon.
+1. **[Descarga WarScore.zip](https://github.com/hectoresen/WarScore/raw/refs/heads/main/dist/WarScore.zip)**, el paquete preparado para instalar.
+2. Descomprímelo en la carpeta de addons de WoW Forever:
+   ```text
+   World of Warcraft/_forever_/Interface/AddOns/
+   ```
+3. Comprueba que existe esta ruta:
+   ```text
+   Interface/AddOns/WarScore/WarScore.toc
+   ```
+4. Abre el juego (o escribe `/reload` si ya estás dentro) y utiliza `/ws` o el botón del minimapa.
 
-En el juego usa `/reload`, `/ws` para abrir General, `/ws settings` para Ajustes, `/ws version` para consultar la iteración visual, `/ws lang en|es` para cambiar el idioma y `/wsdiag` para diagnósticos nativos.
+**Importante:** descarga el archivo `WarScore.zip` enlazado arriba, no el ZIP automático del código fuente de GitHub.
 
-## Funcionalidad actual
+## Comandos
 
-General muestra retrato real, nivel/clase, muertes con honor, Honor actual, rango/Rank Points, muertes PvP sufridas, ratio HK/D, duelos ganados, BG jugados y ganados, win rates y BG favorito cuando las APIs aportan valores adecuados. **KB/D** no está disponible porque no existe una fuente confirmada de golpes de gracia exclusivamente PvP. No se inventan datos históricos.
+| Comando | Acción |
+| --- | --- |
+| `/ws` o `/warscore` | Abrir WarScore en General. |
+| `/ws settings` | Abrir Ajustes. |
+| `/ws lang es` | Cambiar a español. |
+| `/ws lang en` | Cambiar a inglés. |
+| `/ws version` | Mostrar la iteración de la interfaz. |
+| `/wsdiag` | Diagnósticos técnicos para comprobar las APIs del juego. |
 
-## Estructura (siguiendo CraftAtlas)
+## Próximamente
 
-```text
-addon/WarScore/          # Única carpeta instalable
-  WarScore.toc
-  Core/                  # Inicio, estadísticas, SavedVariables, diagnósticos
-  UI/                    # Interfaz nativa de WoW
-  Media/General/         # Arte y texturas TGA
-docs/                    # Funcionalidad, arquitectura, instalación, diseño, QA
-openspec/                # Especificaciones y propuestas
-tools/                   # Conversión de assets y empaquetado
-.github/workflows/       # Build y validación automática
-dist/WarScore.zip        # Artefacto instalable
-```
+La pestaña **Estadísticas** está visible, pero su contenido avanzado todavía está en desarrollo. Entre las funciones propuestas se encuentran los desgloses de PvP en **mundo abierto**, la comparación con las muertes con honor obtenidas en campos de batalla y estadísticas más detalladas de cada BG.
 
-**La ruta interna del addon instalado no cambia**; las texturas siguen resolviéndose como `Interface\\AddOns\\WarScore\\Media\\...`.
+Solo se incorporarán métricas cuya fuente y significado estén suficientemente verificados en WoW Forever. Consulta el [catálogo de datos y funcionalidades futuras](docs/PVP_DATA_CATALOG.md).
 
-## Documentación
+## Compatibilidad y estado
 
-**[Índice completo de documentación](docs/INDEX.md)** — Guía de los documentos Markdown del proyecto, con una descripción y enlace para cada uno (producto, APIs PvP, diseño, desarrollo, OpenSpec y agentes).
+- **Juego:** World of Warcraft Forever.
+- **Interfaz del cliente de referencia:** `16001` (Forever 1.60.1).
+- **Estado del proyecto:** en desarrollo activo; pueden existir limitaciones propias del cliente.
+- **Privacidad:** funcionamiento local, sin servicios externos ni necesidad de cuenta adicional.
 
+WarScore es un proyecto independiente y no está afiliado a Blizzard Entertainment.
 
-- [Funcionalidad](docs/FUNCTIONAL.md), [catálogo de datos y vistas PvP](docs/PVP_DATA_CATALOG.md) y [contrato PvP](docs/PVP_STATISTICS.md)
-- [Arquitectura](docs/ARCHITECTURE.md), [desarrollo](docs/DEVELOPMENT.md) e [instalación](docs/INSTALLATION.md)
-- [Vista General](docs/GENERAL_VIEW.md) y [especificación visual](docs/GENERAL_VISUAL_SPEC.md)
-- [Handoff e iteraciones](docs/DEVELOPMENT_HANDOFF.md), [flujo OpenSpec](openspec/README.md)
+## Documentación y desarrollo
 
-## Empaquetado
+Si quieres saber cómo funciona internamente o contribuir al proyecto, el **[índice completo de documentación](docs/INDEX.md)** reúne las guías funcionales, arquitectura, APIs investigadas, especificaciones visuales y proceso de desarrollo.
 
-Instala Pillow (`python3 -m pip install Pillow`) y ejecuta los generadores `tools/prepare_ratio_asset.py`, `prepare_card_asset.py`, `prepare_top_icons.py`, `prepare_bottom_icons.py`, seguidos de `python3 tools/package_addon.py`. GitHub Actions ejecuta y valida este flujo automáticamente al cambiar runtime y herramientas. Su resultado contiene una sola carpeta raíz `WarScore/` sin documentación ni scripts.
+El código del addon está en [`addon/WarScore/`](addon/WarScore/). Las herramientas de empaquetado se encuentran en [`tools/`](tools/).
