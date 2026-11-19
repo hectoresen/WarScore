@@ -223,7 +223,7 @@ La fuente correcta para el saldo de Honor de Forever es la moneda `Puntos de hon
 
 Nueva pista pendiente de validación en cliente: el código de interfaz de Forever puede modelar el rango como la major faction `2800` (PvP Rank Points), con progreso consultable mediante `C_MajorFactions.GetMajorFactionProgressionInfo(2800)`. El diagnóstico también prueba `C_Reputation.GetFactionDataByID(2800)` y las monedas relacionadas `3468`/`3473`; esta pista no se considera confirmada hasta obtener una salida real del personaje.
 
-Primera salida real de `/wsdiag rank`: `renownLevel=0`, `renownReputationEarned=25`; `C_CurrencyInfo(3468)` aparece como «Puntos de rango» con cantidad `0`, y `C_CurrencyInfo(3473)` como «Renombre - Rango de JcJ» con cantidad `0` y máximo `7`. Estos valores confirman que las estructuras existen, pero todavía requieren leer `renownLevelThreshold`, el límite semanal y el nombre del rango antes de calcular o mostrar progreso.
+Primera salida real de `/wsdiag rank`: `renownLevel=0`, `renownReputationEarned=25`; `C_CurrencyInfo(3468)` aparece como «Puntos de rango» con cantidad `0`, y `C_CurrencyInfo(3473)` como «Renombre - Rango de JcJ» con cantidad `0` y máximo `7`. El código de la pestaña PvP de Forever confirma que `renownLevel` es el rango y que `renownReputationEarned` es el valor de Rank Points mostrado en la interfaz; `renownLevelThreshold` es el objetivo del siguiente rango. El nivel `0` se presenta como sin rango; el rango 1 empieza en el título `PVP_RANK_5_<facción>` (Explorador/Scout en Horda). `PVP_RANK_0_<facción>` pertenece al enum legacy y no debe usarse como rango 1.
 
 
 ## Decisión funcional de producto — v89 (2026-11-18)

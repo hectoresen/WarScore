@@ -215,6 +215,7 @@ local function printRankData()
     local factionIndex = faction == "Horde" and 0 or (faction == "Alliance" and 1 or nil)
     if factionIndex then
         output("Nombres de rango cargados para " .. faction .. " (índice " .. factionIndex .. ")")
+        output("PVP_RANK_0_NAME = " .. show(_G.PVP_RANK_0_NAME))
         for rank = 0, 14 do
             local key = "PVP_RANK_" .. rank .. "_" .. factionIndex
             if _G[key] then output(key .. " = " .. show(_G[key])) end

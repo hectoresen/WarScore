@@ -44,7 +44,7 @@ La vista General representa el historial PvP acumulado del personaje activo. No 
 
 - KB PvP histórico contra jugadores enemigos: no hay contador confirmado.
 - `1487`, `1488`, `1491`: golpes de gracia generales bajo `137 Víctimas`; no usarlos como KB PvP.
-- KB/D y rango PvP actual/progreso: no disponibles en el cliente probado.
+- KB/D histórico sigue sin estar disponible; rango PvP y Rank Points ya tienen fuente confirmada en la major faction `2800`, aunque falta integrar la lectura en la UI.
 - Honor histórico total ganado: no identificado; la fuente confirmada es el saldo de moneda `1792`.
 - HK/DK de sesión o ayer: pertenecen a otras vistas.
 
@@ -141,7 +141,7 @@ Forever devolvió 26 categorías. Las relevantes son:
 
 1. Probar `/wsdiag battlefield` durante y justo después de una BG; el diagnóstico intenta `C_PvP.GetScoreInfoByPlayerGuid()` y deja `GetBattlefieldScore()` como fallback.
 2. Integrar la moneda de Honor `1792` en la UI y mostrar el máximo `25.000` cuando esté disponible.
-3. Ejecutar `/wsdiag rank` y auditar la major faction `2800`, `C_Reputation`, monedas `3468/3473` y APIs de rango/`C_PvP`; mantener «No disponible» hasta validar Rank Points y nombre.
+3. Integrar en la UI la major faction `2800`: `renownLevel`, `renownReputationEarned` y `renownLevelThreshold`; mantener «No disponible» solo si la API no responde.
 4. Probar `GetPVPThisWeekStats()` y `GetPVPLastWeekStats()` desde el addon.
 5. Investigar `GetInspectArenaData()` y APIs de arenas en Forever.
 6. Validar cambio de fecha para HK/DK de ayer.

@@ -12,7 +12,7 @@
 
 ## No disponibles deliberadamente
 - **KB/D**: retirado de la pantalla General por no existir una fuente confirmada de golpes de gracia *exclusivamente PvP*. El ID 1487 es de categoría general y no se utiliza.
-- **Rango PvP**: fuente no confirmada. El panel muestra «No disponible».
+- **Rango PvP**: fuente confirmada en `C_MajorFactions.GetMajorFactionProgressionInfo(2800)`; la UI debe mostrar rango y progreso cuando la integración se complete, con «No disponible» solo como fallback.
 - Valores desconocidos no se sustituyen por datos ficticios; la normalización a cero de duelos vacíos es un caso específico contrastado.
 
 ## Pendiente
