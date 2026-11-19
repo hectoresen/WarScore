@@ -1341,3 +1341,12 @@ This validates positive BG history and objective tracking. Compare the native st
 - In `addon/WarScore/UI/General.lua`, move `fields.rankFrom` x **-246.05 → -238** and `fields.rankTo` x **+246.05 → +238**, both inward by 8.05 UI units. Keep widths 125.4, y=-463, font 13, colors, dynamic localization and point label exactly as in v111.
 - The 655.5×61.75 single-piece `rank_panel_owner_v108` stays at x=0, top=-443.625. Progress fill remains hidden; 21 pre-existing fill assets remain available for potential future work. No change to PvP data acquisition or other UI modules.
 - Set `UI_ITERATION = "112"` for `/ws version`. GitHub Actions should rebuild and validate the clean installable `dist/WarScore.zip`. Native WoW screenshot QA remains pending to confirm optical centering.
+
+
+## Iteration #112 screenshot → #113: PvP rank triptych 10% narrower (2026-11-19)
+
+- Owner accepts v112 three-compartment rank module and live text positions, but requests that the whole module be about **10% less wide**, preserving its horizontal center and without changing other modules.
+- In `addon/WarScore/UI/General.lua`, change display width of the existing single-piece `rank_panel_owner_v108` **655.5 → 589.95** (10% less); **height remains 61.75**, top remains -443.625 and X remains exactly 0. This is an intentional horizontal-only compression; no new texture was generated.
+- Keep labels positioned within their own resized chambers: current and next x **±238 → ±214.2**, widths **125.4 → 112.86**, same vertical coordinates and font sizes. The current/threshold Rank Points label remains x=0, with width **285 → 256.5**. Maintain live rank strings and points formatting.
+- Graphical progress remains hidden, and all original 0..100% fill textures remain available for future iterations. No changes to data acquisition, character/rank plaque, banners, honor kills, deaths, HK/D, lower cards, or outer frame.
+- Set `/ws version` = **113**. CI must generate and validate the updated clean installable `dist/WarScore.zip` before delivering. Owner in-game screenshot QA still pending.
