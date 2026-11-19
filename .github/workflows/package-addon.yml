@@ -1,5 +1,5 @@
 name: Package clean WarScore addon
-# v129: slightly enlarge shield again without altering the native gold ring.
+# v129: clean package of the larger shield inside the same native gold ring.
 on:
   push:
     branches: [main]
