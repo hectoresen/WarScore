@@ -1379,3 +1379,11 @@ This validates positive BG history and objective tracking. Compare the native st
 - The owner-approved rank module, its TGA, width 560.4525, height 61.75, top -443.625, the dynamic rank names, PR text, header and all other modules remain unchanged. Graphical progress fill remains hidden.
 - GitHub Actions ZIP validation now also checks all three expected TGAs exist inside `dist/WarScore.zip`, have their exact power-of-two dimensions and contain visible alpha pixels. `/ws version` increments **115→116**.
 - The next in-game screenshot must confirm that the three ornaments appear, are positioned above/below the rank boxes, do not overlap the HK rail or portrait plaque, and that no UI modules moved. If still absent, use in-game texture-loading inspection before further cosmetic adjustments.
+
+
+## Iteration #116 screenshot → #117: align three visible ornaments closer to PvP rank boxes (2026-11-19)
+
+- Owner's v116 screenshot confirms all three original TGA ornaments render successfully in raised independent UI frames. The two title ornaments are too far above `Sin rango` and `Explorador`, and the horizontal advance-divider is too far below the center `25 / 750 PR` chamber.
+- **Only three Y positions change** in `addon/WarScore/UI/General.lua`: `rank_label_current_owner_v115` and `rank_label_next_owner_v115` move from top=-400 to **top=-432**, preserving X ±203.49, size 175×32, original artworks and raised rendering layers. The `rank_divider_advance_owner_v115` moves from top=-498 to **top=-488**, preserving X=0 and size 560.4525×30.
+- The entire approved single-piece main triptych `rank_panel_owner_v108`, live localized rank captions, `points / threshold PR`, hidden progress fill, header, HK and other UI modules are unchanged. No new art or files.
+- UI diagnostic increments `/ws version` **116→117**. GitHub Actions rebuilds and verifies clean `dist/WarScore.zip`. Native-client QA still needed for precise clearance to panel gold borders and HK section.
