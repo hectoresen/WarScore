@@ -1350,3 +1350,12 @@ This validates positive BG history and objective tracking. Compare the native st
 - Keep labels positioned within their own resized chambers: current and next x **±238 → ±214.2**, widths **125.4 → 112.86**, same vertical coordinates and font sizes. The current/threshold Rank Points label remains x=0, with width **285 → 256.5**. Maintain live rank strings and points formatting.
 - Graphical progress remains hidden, and all original 0..100% fill textures remain available for future iterations. No changes to data acquisition, character/rank plaque, banners, honor kills, deaths, HK/D, lower cards, or outer frame.
 - Set `/ws version` = **113**. CI must generate and validate the updated clean installable `dist/WarScore.zip` before delivering. Owner in-game screenshot QA still pending.
+
+
+## Iteration #113 screenshot → #114: 5% extra width reduction and title within header (2026-11-19)
+
+- Owner's real v113 in-client screenshot validates the narrower unified rank/PR module and requests one more modest 5% width reduction, along with ensuring the dynamic brand `WarScore` text sits inside the painted steel header rather than touching/overlapping its upper rail.
+- In `addon/WarScore/UI/General.lua`, preserve original unified owner TGA, rank panel height 61.75 and central x=0. Reduce only its width **589.95 → 560.4525** (5% less); keep top=-443.625. The current and next title offsets scale symmetrically from ±214.2 to **±203.49**; their text widths from 112.86 to **107.217**. Center PR x=0, width from 256.5 to **243.675**. All label vertical positions, fonts and real data remain unchanged.
+- Header title: adjust only `brandTitle` from font **33→31**, y **-27→-36**, caption box height **43→40**; keep x=0 and dynamic text. This moves painted glyphs inward/down from the upper metal rail without changing the supplied header asset.
+- Rank progress fill remains hidden; retain 21 original 5%-interval fill assets, real PR/threshold string and localized titles. Other UI sections, portrait, flags, counters, cards and faction/point API unaffected.
+- Update `UI_ITERATION` to **114**. Build/verify clean `dist/WarScore.zip` using GitHub Actions before delivery; screenshot QA still requires owner test inside WoW.
