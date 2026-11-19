@@ -39,3 +39,20 @@ with Image.open(frame_source) as original:
         out / "rank_bar_frame_owner_v101.tga", format="TGA"
     )
 print("Prepared 21 rank-fill steps and full v101 rank-bar frame")
+
+# v102: restore the original gold hexagonal rank-label plate on each side.
+# Cropping out transparent padding before resizing prevents flattening.
+plate_file = source / "Placa dorada hexagonal para rango PvP.png"
+with Image.open(plate_file) as original:
+    original.load()
+    rgba = original.convert("RGBA")
+    bbox = rgba.getchannel("A").getbbox()
+    if not bbox:
+        raise ValueError("Owner rank plate is transparent")
+    plate = rgba.crop(bbox)
+    # Keep a generous 256x128 alpha canvas, respecting source aspect.
+    plate.thumbnail((240, 112), Image.Resampling.LANCZOS)
+    canvas = Image.new("RGBA", (256, 128), (0, 0, 0, 0))
+    canvas.paste(plate, ((256 - plate.width)//2, (128 - plate.height)//2))
+    canvas.save(out / "rank_name_plate_owner_v102.tga", format="TGA")
+print("Prepared separate owner PvP rank nameplates")

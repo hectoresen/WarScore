@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "101"
+local UI_ITERATION = "102"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -131,7 +131,8 @@ local function statBand(parent, y, definitions, secondary)
     local band = CreateFrame("Frame", nil, parent, "BackdropTemplate")
     -- v76: inset both owner-painted rows 8 units per side to clear parent rail.
     local bandWidth = 688
-    band:SetSize(bandWidth, 112)
+    -- v102: slightly shorter frame viewport while keeping captions fixed.
+    band:SetSize(bandWidth, 104)
     band:SetPoint("TOP", parent, "TOP", 0, y)
     backdrop(band, 0.92)
     -- Owner artwork supplies all metal rails, corners and vertical dividers.
@@ -152,7 +153,7 @@ local function statBand(parent, y, definitions, secondary)
     for i, definition in ipairs(definitions) do
         local segmentWidth = widths[i]
         local segment = CreateFrame("Frame", nil, band)
-        segment:SetSize(segmentWidth, 108)
+        segment:SetSize(segmentWidth, 100)
         segment:SetPoint("TOPLEFT", band, "TOPLEFT", offset, -2)
         offset = offset + segmentWidth
 
@@ -520,28 +521,38 @@ local function build()
         ornamentDiamond(window, -389, 8)
     end
 
-    -- v101: use the owner's actual framed rank-bar asset as ONE full
-    -- ornamental panel. No improvised lines or stretched external plaques.
-    -- Text is dynamic and layered over the original artwork.
-    local rankBarFrame = window:CreateTexture(nil, "BORDER")
+    -- v102: three independent author-painted elements.
+    -- The central gold ornament encloses ONLY the progress meter.
+    -- Two separate, unflattened hexagonal plates carry rank titles.
+    local rankBarFrame = window:CreateTexture(nil, "OVERLAY")
     rankBarFrame:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_bar_frame_owner_v101")
-    rankBarFrame:SetSize(640, 72)
-    rankBarFrame:SetPoint("TOP", window, "TOP", 0, -440)
+    rankBarFrame:SetSize(365, 48)
+    rankBarFrame:SetPoint("TOP", window, "TOP", 0, -451)
 
-    -- The 21 player-authored fills represent 0%-100% in 5% steps.
-    -- Their shared bounds fit the interior between the two rank captions.
     fields.rankFill = window:CreateTexture(nil, "ARTWORK")
-    fields.rankFill:SetSize(342, 22)
-    fields.rankFill:SetPoint("TOP", window, "TOP", 0, -468)
+    fields.rankFill:SetSize(326, 19)
+    fields.rankFill:SetPoint("TOP", window, "TOP", 0, -466)
     fields.rankFill:Hide()
 
-    -- Labels are placed INSIDE the single continuous frame, never in
-    -- separately scaled/flattened plaques.
-    fields.rankFrom = label(window, "—", 12, CREAM, -252, -465, 138, 26)
-    fields.rankTo = label(window, "—", 12, CREAM, 252, -465, 138, 26)
-    fields.rankPoints = label(window, "—", 14, CREAM, 0, -451, 324, 23)
-    fields.rankPercent = label(window, "—", 12, GOLD, 0, -488, 110, 18)
-    fields.rankPoints:SetShadowColor(0.03, 0.02, 0.015, 1)
+    -- Title plates come from the original 'rank bars' folder; preserve
+    -- their aspect ratios inside equally sized, independent viewports.
+    local rankNamePlate = "Interface\\AddOns\\WarScore\\Media\\General\\rank_name_plate_owner_v102"
+    local leftPlate = window:CreateTexture(nil, "BORDER")
+    leftPlate:SetTexture(rankNamePlate)
+    leftPlate:SetSize(136, 55)
+    leftPlate:SetPoint("TOP", window, "TOP", -257, -446)
+    local rightPlate = window:CreateTexture(nil, "BORDER")
+    rightPlate:SetTexture(rankNamePlate)
+    rightPlate:SetSize(136, 55)
+    rightPlate:SetPoint("TOP", window, "TOP", 257, -446)
+
+    fields.rankFrom = label(window, "—", 12, CREAM, -257, -460, 130, 28)
+    fields.rankTo = label(window, "—", 12, CREAM, 257, -460, 130, 28)
+    -- The raw points sit at the center of the actual bar interior,
+    -- not at the center of the entire rank/plate composition.
+    fields.rankPoints = label(window, "—", 14, CREAM, 0, -463, 300, 23)
+    fields.rankPercent = label(window, "—", 12, GOLD, 0, -499, 100, 16)
+    fields.rankPoints:SetShadowColor(0.02, 0.01, 0.01, 1)
     fields.rankPoints:SetShadowOffset(1, -1)
 
     -- Iteration 68: the owner's transparent HK asset supplies both laurels,
@@ -601,7 +612,7 @@ local function build()
 
     -- Lower ratio rail and central sapphire are part of the new owner asset.
 
-    local firstRow = statBand(window, -817, {
+    local firstRow = statBand(window, -793, {
         { title = "DUELOS GANADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duels_owner_v77" },
         { title = "CAMPOS DE BATALLA JUGADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_played_owner_v77" },
         { title = "BG GANADOS", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_wins_owner_v77" },
@@ -609,7 +620,7 @@ local function build()
     fields.duels, fields.bgPlayed, fields.bgWon = unpack(firstRow)
     -- v88: lift the entire lower band 8 UI units to clear the parent bottom rim.
     -- Keep the owner TGA, band dimensions and the text/icon local anchors intact.
-    local secondRow = statBand(window, -936, {
+    local secondRow = statBand(window, -908, {
         { title = "WIN RATE BG", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_rate_owner_v79" },
         { title = "WIN RATE DUELOS", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duel_rate_owner_v79" },
         { title = "CAMPO DE BATALLA FAVORITO", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_favorite_bg_owner_v79", valueSize = 17 },

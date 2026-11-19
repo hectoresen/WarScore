@@ -1241,3 +1241,13 @@ This validates positive BG history and objective tracking. Compare the native st
 - Reflow: HK card top -512, ratio ornament top -640, first and second statistic bands top -817 / -936. Overall window height reduces from 1145 to 1105, preserving about 58 px to the bottom border; extend the interior artwork height from 943 to 985 so it encloses the lower cards. Other visuals and the upper PvP plaque remain untouched. Rank bar and cards remain horizontally centered.
 - CI generates the rank-bar TGA from the transport PNG and verifies the addon ZIP contains only runtime files. UI diagnostic version **101**.
 - **Real WoW screenshot QA pending**: inspect frame and fill alignment, visibility of both names, text legibility at 25/750 and bottom clearance. Iterate from screenshot, do not assume code is a substitute for in-client visual validation.
+
+
+## Iteration #101 screenshot → #102 separated rank components and card clearance (2026-11-19)
+
+- Confirmed client's v101 screenshot: decorative long gold bar had been incorrectly drawn 640 UI units wide, thus enclosing rank names and fill inside one panel, instead of gold center bar plus separate side rank plates; lower stat bands also overlap the inner parent frame's bottom rail.
+- **Rebuild only rank arrangement** using the real v101 owner frame at 365×48, x0, y=-451 as a separate central texture. Reuse all 21 progressive fill textures inside at 326×19, x0, y=-466. The real current/next values and PR numerator/denominator remain dynamic, with PR centered *inside* bar at y=-463; percentage is a small caption immediately beneath at y=-499. Honor remains temporarily absent.
+- Restore separately generated `rank_name_plate_owner_v102.tga` from the actual original 1 MB PNG `docs/assets/rank bars/Placa dorada hexagonal para rango PvP.png`. Crop transparent empty margins, preserve the source aspect in a 256×128 alpha canvas (no stretched 139×40 nameplate). Draw two independent plates at x±257, y=-446 with 136×55 viewports and names centered x±257 at y=-460. Plates visually flank the meter; neither is inside the meter's gold border.
+- Lift first/lower statistics rows from -817/-936 to **-793/-908** respectively. Their painted background height changes 112→104, segment viewport 108→100; interior texts/icon offsets remain untouched. This provides clear bottom inset and retains a modest gap between two rows.
+- Keep main window size/outer texture, gear/close, portraits, rank API and HK/ratio layout unchanged. UI iteration = **102**.
+- **WoW visual QA pending:** inspect side-plate shapes, center PR text and actual bar fill, ratio-to-first-card margin, bottom clearances, overflow, hover text. Fine-tune from in-game screenshot.
