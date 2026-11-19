@@ -1204,3 +1204,10 @@ This validates positive BG history and objective tracking. Compare the native st
 - Diagnostic version 98. **In-game QA pending**: verify tooltip appears on hover only, that Honor panel fits between 92 HK and ratio rails without overlapping either, HONOR and value stay centered, and the rest of the layout/X/gear remain unchanged. No new mockup is a substitute for this game test.
 
 - Transport asset checked against local original conversion (Git blob `9e33ef95ddfe069784363d14bfda31e5cd542df9`). Optimized small source for runtime display; original upload remains the high-quality master.
+
+
+## Iteration #98 client screenshot → #99 Honor heading optical alignment (2026-11-19)
+
+- User confirms the ornamental Honor frame is appropriate but notes the `HONOR` FontString sits too low within the small raised top plaque. Keep its x center = 0 and font size = 17 while moving it vertically 10 UI units up: y -544 to -534. Currency value, gear/X, tooltips, and the entire rest of the UI remain unchanged.
+- Visual softness of the gold borders diagnosed: earlier asset was downsampled from owner's high-resolution original to **256×64 with only 48 palette colors**, then enlarged to 1024×256 before being drawn at 640×134, losing genuine detail. The original 2048×682 RGBA user asset was located again and should be the source for a future unquantized revision; stretching after aggressive downsampling cannot restore lost detail. Do not request another original from the owner.
+- UI version 99; WoW visual QA pending.

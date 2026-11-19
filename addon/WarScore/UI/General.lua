@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "98"
+local UI_ITERATION = "99"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -503,7 +503,8 @@ local function build()
     honorArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\honor_panel_owner_v98")
     honorArt:SetSize(640, 134)
     honorArt:SetPoint("TOP", window, "TOP", 0, -520)
-    label(window, "HONOR", 17, GOLD, 0, -544, 430, 27)
+    -- v99: center the dynamic heading vertically inside the raised plaque.
+    label(window, "HONOR", 17, GOLD, 0, -534, 430, 27)
     fields.honor = label(window, "—", 32, GOLD, 0, -573, 390, 54)
     fields.honor:SetShadowColor(0.32, 0.18, 0.04, 0.64)
     fields.honor:SetShadowOffset(1, -1)
