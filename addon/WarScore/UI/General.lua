@@ -3,7 +3,7 @@ ns.UI = ns.UI or {}
 
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
-local UI_ITERATION = "119"
+local UI_ITERATION = "120"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -288,8 +288,13 @@ local function refresh()
         SetPortraitTexture(fields.portrait, "player")
     end
     fields.hk:SetText(formatNumber(data.honorableKills))
-    -- v101: Honor is intentionally hidden from General; leave stats collection
-    -- intact for the later redesign of this metric.
+    -- v120: Honor currency 1792 is distinct from rank points and lifetime HK.
+    -- Never substitute the mockup's 252 / 25.000 when client data is missing.
+    if type(data.honorCurrent) == "number" then
+        fields.honor:SetText(formatHonorNumber(data.honorCurrent) .. " / " .. formatHonorNumber(data.honorMaximum))
+    else
+        fields.honor:SetText("—")
+    end
     fields.deaths:SetText(formatNumber(data.pvpDeaths))
     fields.hkd:SetText(formatRatio(data.hkDeathRatio))
     local level = data.pvpRank
@@ -579,32 +584,30 @@ local function build()
     -- It remains ornamental; PR remains numeric and the fill remains hidden.
     addRankOrnament("Interface\\AddOns\\WarScore\\Media\\General\\rank_divider_advance_owner_v115", 0, -488, 560.4525, 30)
 
-    -- Iteration 68: the owner's transparent HK asset supplies both laurels,
-    -- upper/lower gold rails and diamonds. No more separate HK laurels, 
-    -- line, diamond or flat material panel behind it.
-    local hkOrnament = window:CreateTexture(nil, "ARTWORK")
-    hkOrnament:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\hk_frame_owner_v68")
-    hkOrnament:SetSize(600, 119)
-    hkOrnament:SetPoint("TOP", window, "TOP", 0, -512)
+    -- v120: new owner-supplied, text-free Honor + honorable kills panel.
+    -- Only this pre-existing HK region is replaced; the finalized rank/PVP
+    -- module above and the ratio/stat modules below remain unchanged.
+    local honorPanel = window:CreateTexture(nil, "ARTWORK")
+    honorPanel:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\honor_frame_owner_v120")
+    honorPanel:SetSize(600, 128)
+    honorPanel:SetPoint("TOP", window, "TOP", 0, -508)
+    honorPanel:SetAlpha(1)
 
-    -- Same horizontal X=0 as portrait, name, level and PvP rank.
-    -- Move the rank down 6 units to give level/class a little more breathing room.
-    local hkTitle = label(window, "MUERTES CON HONOR", 23, GOLD, 0, -530, 460, 32)
-    hkTitle:SetShadowColor(0.22, 0.10, 0.02, 0.9)
-    hkTitle:SetShadowOffset(1, -1)
+    -- Header title, current/maximum Honor currency, and lifetime HK are
+    -- independent live font strings; no text is embedded in the owner PNG.
+    local honorHeading = label(window, "HONOR", 23, GOLD, 0, -519, 260, 28)
+    honorHeading:SetShadowColor(0.24, 0.12, 0.02, 0.85)
+    honorHeading:SetShadowOffset(1, -1)
+    fields.honor = label(window, "—", 37, GOLD, 0, -547, 460, 42)
+    fields.honor:SetShadowColor(0.35, 0.20, 0.04, 0.95)
+    fields.honor:SetShadowOffset(2, -2)
 
-    fields.hk = label(window, "—", 61, GOLD, 0, -557, 500, 67)
-    fields.hk:SetShadowColor(0.60, 0.30, 0.035, 0.9)
+    local hkCaption = label(window, "MUERTES CON HONOR (HK)", 17, CREAM, -83, -597, 365, 27)
+    hkCaption:SetShadowColor(0.22, 0.10, 0.02, 0.84)
+    hkCaption:SetShadowOffset(1, -1)
+    fields.hk = label(window, "—", 32, GOLD, 197, -592, 130, 40)
+    fields.hk:SetShadowColor(0.45, 0.22, 0.025, 0.96)
     fields.hk:SetShadowOffset(2, -2)
-
-    -- The owner-supplied HK graphic already has a lower rule and a diamond.
-    -- Do not render the previously separate -514px divider over it.
-
-    -- v101: remove the Honor hero card from General for now.
-    -- Its original ornamental asset and live currency source remain in the
-    -- repository so this metric can be redesigned without losing data.
-
-    -- No floating side strokes: the soft plaque and red number carry this KPI.
 
     -- Iteration 70: owner-provided complete ornamental frame, improved source resolution for the ratios.
     -- Replaces the upper/lower rules and the vertical separator.
