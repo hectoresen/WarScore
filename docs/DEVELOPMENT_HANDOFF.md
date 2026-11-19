@@ -1512,3 +1512,10 @@ This validates positive BG history and objective tracking. Compare the native st
 - Owner accepts the native Classic gold circular ring in v128 but wants the red crossed-swords shield just a little larger.
 - `UI/Minimap.lua`: grow the original icon from 23×23 to **25×25**, changing TOPLEFT inset from (5.5,-4.5) to **(4.5,-3.5)** to keep the same center point. Keep button 31×31, Blizzard `MiniMap-TrackingBorder` 54×54 and the original owner image unchanged.
 - Preserve drag/save, toggle click, tooltip, all visual modules, DB and translation logic. Update `/ws version` to **129**. CI validates clean ZIP including 25px icon layout. In-game QA pending.
+
+
+## Iteration #129 screenshot → #130: settings gear spacing (2026-11-19)
+
+- Owner requests only a small spacing change to the gold gear below the top-right close X: move it slightly downward to avoid crowding the X and about 0.5% of the main 800-unit window width to the left.
+- In `addon/WarScore/UI/General.lua`, modify only `settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -58.5, -77)` to **(-62.5, -83)**: left 4 and down 6 UI units. Preserve gear size 38×38, its user-provided texture, hover and click behavior, original close X, all other anchors, the minimap button and all approved General/Settings/stats modules.
+- `UI_ITERATION` increments to **130**. CI checks exact anchor and clean installable `dist/WarScore.zip`. In-game screenshot QA pending.
