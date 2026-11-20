@@ -799,6 +799,7 @@ local function build()
     local languageDropdown = CreateFrame("Frame", "WarScoreSettingsLanguageDropdown", languageRow, "UIDropDownMenuTemplate")
     languageDropdown:SetPoint("TOP", languageRow, "TOP", -17, -32)
     UIDropDownMenu_SetWidth(languageDropdown, 210)
+    languageDropdown:SetScale(1.05)
 
     -- Same translation service as '/ws lang es' and '/ws lang en'. Its
     -- listeners update all General copies and Settings captions in place.
@@ -826,6 +827,7 @@ local function build()
     local styleDropdown = CreateFrame("Frame", "WarScoreSettingsStyleDropdown", styleRow, "UIDropDownMenuTemplate")
     styleDropdown:SetPoint("TOP", styleRow, "TOP", -17, -32)
     UIDropDownMenu_SetWidth(styleDropdown, 210)
+    styleDropdown:SetScale(1.05)
     UIDropDownMenu_Initialize(styleDropdown, function(_, level)
         if level and level ~= 1 then return end
         local info = UIDropDownMenu_CreateInfo()
