@@ -1,5 +1,5 @@
 name: Package clean WarScore addon
-# v133: scale player portrait and supplied ornamental gold ring together by 5%.
+# v134: reduce only upper Duelos ganados swords by 2% and preserve layout.
 on:
   push:
     branches: [main]
@@ -64,6 +64,8 @@ jobs:
                   f"Version mismatch: ZIP={archive_version.group(1)}, source={source_version.group(1)}"
               )
               assert runtime_ui == source_ui, "ZIP includes stale UI/General.lua"
+              assert 'local duelIconReduction = not secondary and i == 1 and ownerTopIcon and 0.98 or 1' in runtime_ui
+              assert 'iconDisplaySize * duelIconReduction' in runtime_ui
               # v132: original user ring replaces the visible portrait border;
               # it has an alpha-transparent center so the unit portrait shows.
               portrait_ring_path = "WarScore/Media/General/portrait_ring_owner_v132.tga"
@@ -111,7 +113,7 @@ jobs:
               # shipping or drawing the mismatched Settings replacement image.
               assert "WarScore/Media/General/inner_frame_owner_v64.tga" in names
               assert "WarScore/Media/General/settings_inner_frame_owner_v122.tga" not in names
-              assert archive_version.group(1) == "133", "Expected v133 in the clean ZIP"
+              assert archive_version.group(1) == "134", "Expected v134 in the clean ZIP"
               assert '[innerArt] = true' in runtime_ui
               assert 'settings_inner_frame_owner_v122' not in runtime_ui
               assert 'settingsTab:SetPoint("TOPLEFT", settingsPage, "TOPLEFT", 193, -102)' in runtime_ui
