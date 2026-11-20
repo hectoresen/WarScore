@@ -1535,3 +1535,10 @@ This validates positive BG history and objective tracking. Compare the native st
 - `UI/General.lua` expands the live portrait 90×90→100×100, enlarges the ring container 106×106→118×118, repositions its top -168→-159 to keep the avatar centered, and overlays the original owner texture. The circular portrait mask expands to 100×100; retain the tested legacy fallback for clients lacking native mask support.
 - `UI_ITERATION` 131→132. No changes to approved PvP/Honor/Settings/minimap/stats. CI has packaged and verified the new ring texture and updated source inside `dist/WarScore.zip`.
 - **Owner in-game QA pending**: check avatar scale, center alignment, double rings on maskless clients and name clearance.
+
+
+## Iteration #132 screenshot → #133: scale portrait and gold ring together by 5% (2026-11-20)
+
+- Owner approves v132 ring design and asks for exactly ~5% proportional enlargement of both the live player avatar and the matching supplied ornamental gold ring; all other modules remain untouched.
+- `UI/General.lua`: portrait 100×100 → **105×105**; mask 100×100 → **105×105**; parent, owner ring and non-mask legacy backing ring 118×118 → **123.9×123.9**. Anchor top -159 → **-156.05**, preserving the old vertical center (−218) precisely. No manual independent image offsets or artwork editing.
+- `UI_ITERATION` 132→133; CI verifies all four dimensions, unchanged owner TGA and packaged addon. In-game QA pending for centering, border overlap and text clearance.
