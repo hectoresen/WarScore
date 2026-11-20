@@ -362,7 +362,7 @@ local function build()
     tinsert(UISpecialFrames, "WarScoreGeneralFrame")
     window:SetSize(870, 1105)
     -- Scale the entire window uniformly; child anchors and assets stay unchanged.
-    window:SetScale(0.7557)
+    window:SetScale(0.7179)
     window:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
     window:SetFrameStrata("DIALOG")
     window:SetMovable(true)
