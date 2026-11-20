@@ -21,6 +21,16 @@ WarScore es un addon Lua nativo y local para WoW Forever (Interface 16001). Cód
 - **Contribuciones:** seguir [CONTRIBUTING.md](CONTRIBUTING.md). Código y documentación originales bajo MIT; consultar [ASSET_LICENSES.md](ASSET_LICENSES.md) antes de reutilizar recursos gráficos.
 - **Gobernanza:** no aplicar automáticamente normas de otro repositorio (CraftAtlas, reglas de PR, automerge, etc.).
 
+## Control de PR y merge — exclusivo del propietario
+
+- Los agentes y colaboradores **pueden crear ramas, hacer commits en esas ramas, abrir y actualizar pull requests**, responder comentarios y corregir errores de CI.
+- **PROHIBIDO para agentes:** fusionar PRs, activar o programar auto-merge, ejecutar `gh pr merge`, llamar a APIs de merge, activar `--auto`, hacer push directo a `main` o usar bypass de reglas para fusionar. No cerrar una PR como sustituto del merge.
+- **Solo el propietario humano (@hectoresen) revisa y ejecuta manualmente el merge.** Que CI esté verde, que exista una aprobación anterior o que el agente use credenciales con permisos Admin **no autoriza** a fusionar.
+- Si el agente tiene habilitada una herramienta que pueda fusionar, **no utilizarla**. Entregar el enlace a la PR, pruebas PASS/FAIL/NOT RUN y riesgos, y detenerse esperando la decisión humana.
+- Las PRs generadas por agentes deben quedarse abiertas. No habilitar automatismos de fusión en workflows, bots, scripts, instrucciones o herramientas de agente.
+
+**Límite de seguridad:** estas instrucciones son una política de trabajo; una cuenta o token con permisos administrativos todavía podría técnicamente hacer bypass. Configurar los agentes con una identidad independiente y permisos reducidos es necesario para una barrera efectiva.
+
 ## OpenSpec — flujo obligatorio para cambios funcionales
 1. Explorar código, evidencia y specs existentes.
 2. Crear propuesta mediante CLI de OpenSpec, documentar alcance, diseño, requisitos verificables, tareas y riesgos.
