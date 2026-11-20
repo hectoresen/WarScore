@@ -53,18 +53,20 @@ Para conocer las fuentes, limitaciones y pruebas técnicas, consulta la [documen
 
 ## Instalación
 
-1. **[Descarga WarScore.zip](https://github.com/hectoresen/WarScore/raw/refs/heads/main/dist/WarScore.zip)**, el paquete preparado para instalar.
-2. Descomprímelo en la carpeta de addons de WoW Forever:
+La carpeta [`addon/WarScore/`](addon/WarScore/) contiene **todo el addon listo para instalar** (Lua, `.toc`, texturas TGA y fuentes), sin necesidad de generar paquetes ni convertir assets.
+
+1. Abre [`addon/WarScore/`](addon/WarScore/) y copia o descarga su contenido completo.
+2. Pega la carpeta `WarScore` dentro de:
    ```text
    World of Warcraft/_forever_/Interface/AddOns/
    ```
-3. Comprueba que existe esta ruta:
+3. Verifica que el archivo quede en:
    ```text
    Interface/AddOns/WarScore/WarScore.toc
    ```
-4. Abre el juego (o escribe `/reload` si ya estás dentro) y utiliza `/ws` o el botón del minimapa.
+4. Abre el juego o ejecuta `/reload`; usa `/ws` o el botón del minimapa.
 
-**Importante:** descarga el archivo `WarScore.zip` enlazado arriba, no el ZIP automático del código fuente de GitHub.
+**Importante:** copia la carpeta `WarScore` íntegra, no solamente los archivos Lua. Los recursos de `Media/` son necesarios. El repositorio ya no publica `dist/WarScore.zip`.
 
 ## Comandos
 
@@ -104,4 +106,4 @@ Los recursos gráficos suministrados al proyecto están sujetos a revisión indi
 
 Si quieres saber cómo funciona internamente o contribuir al proyecto, el **[índice completo de documentación](docs/INDEX.md)** reúne las guías funcionales, arquitectura, APIs investigadas, especificaciones visuales y proceso de desarrollo.
 
-El código del addon está en [`addon/WarScore/`](addon/WarScore/). Las herramientas de empaquetado se encuentran en [`tools/`](tools/).
+El addon completo está en [`addon/WarScore/`](addon/WarScore/). El workflow de GitHub comprueba que su contenido se puede instalar directamente.
