@@ -1,24 +1,30 @@
 # Arquitectura de WarScore
 
-**La fuente instalable está en `addon/WarScore/`.** El runtime no se conecta a servicios externos.
+WarScore es un addon **Lua nativo, local y sin dependencias remotas** para WoW Forever (Interface 16001). La única carpeta instalable está en `addon/WarScore/`.
 
-| Archivo | Responsabilidad |
+| Archivo/directorio | Responsabilidad |
 | --- | --- |
-| `WarScore.toc` | Manifiesto, SavedVariables `WarScoreDB`, orden de carga |
-| `Core/Bootstrap.lua` | `ADDON_LOADED`, inicialización |
-| `Core/Storage.lua` | Reserva de persistencia local; multipersonaje completo pendiente |
-| `Core/Stats.lua` | Consulta y normalización de estadísticas, ratios, BG favorito |
-| `Core/Diagnostics.lua` | Diagnósticos de APIs mediante `/wsdiag` |
-| `UI/General.lua` | Frames, texturas, retrato, cifras dinámicas y comandos |
-| `Media/General/` | Texturas TGA e iconografía del propietario |
-
-El manifiesto usa rutas relativas a su propio directorio. Las texturas mantienen rutas **en el juego**, `Interface\\AddOns\\WarScore\\Media\\...`, que no cambian al reorganizar Git.
+| `WarScore.toc` | Manifiesto, orden de carga y declaración de `WarScoreDB`. |
+| `Core/Bootstrap.lua` | Inicialización del addon durante `ADDON_LOADED`. |
+| `Core/Storage.lua` | Acceso a preferencias/SavedVariables; navegación multipersonaje pendiente. |
+| `Core/Localization.lua` | Catálogos español/inglés, preferencias y notificación de cambios. |
+| `Core/Stats.lua` | Acceso protegido a estadísticas nativas, normalización y ratios. |
+| `Core/Diagnostics.lua` | Herramientas manuales de inspección mediante `/wsdiag`. |
+| `UI/General.lua` | Interfaz General/Ajustes, textos, texturas y comandos. |
+| `UI/Minimap.lua` | Botón arrastrable y persistencia de posición alrededor del minimapa. |
+| `Media/` | Recursos gráficos y fuente con sus archivos de licencia. |
 
 ## Contratos
-- Solo APIs nativas de WoW Forever con lecturas protegidas y valores desconocidos neutros.
-- Métricas históricas desde el cliente, no desde contadores inventados por el addon.
-- No calcular KB/D ni mostrar rango PvP hasta conocer sus fuentes reales.
-- No copiar capas Domain/Infrastructure/Features de CraftAtlas sin necesidad: se adopta su **estructura de entrega**, no su complejidad funcional.
 
-## Entrega
-`tools/package_addon.py` lee `addon/WarScore/WarScore.toc`, resuelve los Lua y las texturas referenciadas, y crea `dist/WarScore.zip` con un único directorio `WarScore/`. Las transformaciones gráficas escriben bajo `addon/WarScore/Media/General/`. CI valida ZIP y listado de archivos; las capturas del cliente validan por separado el resultado visual.
+- Las cifras históricas proceden de **APIs nativas**, no de un registro de combates construido por el addon.
+- La interfaz lee los valores disponibles de nuevo al abrir General. No utilizar caché de métricas que pueda ocultar cambios recientes.
+- Los datos desconocidos mantienen semántica de desconocido, salvo excepciones contrastadas.
+- La moneda de honor actual es distinta del rango PvP y del honor histórico ganado.
+- No usar estadísticas generales de golpes de gracia como si fueran exclusivamente PvP.
+- La UI preserva el diseño y los assets del propietario; cambios visuales necesitan validación específica en cliente.
+
+## Construcción y entrega
+
+`tools/package_addon.py` construye `dist/WarScore.zip` con una única raíz `WarScore/` y contenido instalable. CI valida estructura/paquete, pero no puede certificar el resultado en WoW Forever.
+
+Lee también [DEVELOPMENT.md](DEVELOPMENT.md) y [PVP_STATISTICS.md](PVP_STATISTICS.md).
