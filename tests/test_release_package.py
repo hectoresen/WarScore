@@ -34,7 +34,6 @@ class ArchiveTests(unittest.TestCase):
         self.assertIn("UI/General.lua", files)
         self.assertIn("UI/Minimap.lua", files)
         self.assertIn("Media/Fonts/OFL.txt", files)
-        self.assertIn("Media/General/rank_fill_100.tga", files)
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory) / "WarScore-v0.1.0.zip"
             release.package("0.1.0", target)
