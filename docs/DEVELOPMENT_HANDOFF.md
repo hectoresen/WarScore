@@ -1527,3 +1527,11 @@ This validates positive BG history and objective tracking. Compare the native st
 - Update its native hover tooltip to `Estadísticas (próximamente)` / `Statistics (Coming soon)`, and the message on clicking the placeholder to refer to Statistics. Existing localization keys `tab_today`, `today_coming_soon`, `today_message` stay unchanged internally to avoid functional changes. The tab remains non-navigable until the future Statistics view is implemented.
 - No coordinate, font, art, frame, PvP stats, rank, Honor, Settings, minimap or SavedVariables modifications. Preserve v130 and all previously approved functionality.
 - `UI_ITERATION` increments 130→131; CI asserts Spanish/English tab, hover tooltip, message and clean installable ZIP. In-game visual QA pending.
+
+
+## Iteration #131 → #132: larger character portrait with user-supplied gold ring (2026-11-20)
+
+- Owner supplied an original transparent bronze-gold ornamental circle (1254×1254) to frame a slightly larger player avatar. The optimized alpha-preserving transport PNG is `docs/assets/portrait_ring_owner_v132_source.png`; `tools/prepare_portrait_ring_v132.py` converts it to a 128×128 WoW-compatible TGA while validating center transparency.
+- `UI/General.lua` expands the live portrait 90×90→100×100, enlarges the ring container 106×106→118×118, repositions its top -168→-159 to keep the avatar centered, and overlays the original owner texture. The circular portrait mask expands to 100×100; retain the tested legacy fallback for clients lacking native mask support.
+- `UI_ITERATION` 131→132. No changes to approved PvP/Honor/Settings/minimap/stats. CI has packaged and verified the new ring texture and updated source inside `dist/WarScore.zip`.
+- **Owner in-game QA pending**: check avatar scale, center alignment, double rings on maskless clients and name clearance.
