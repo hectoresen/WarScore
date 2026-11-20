@@ -15,7 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Validate tracked documentation and addon manifest
-        run: python3 tests/validate_repository.py
+        run: |
+          python3 tests/validate_repository.py
+          python3 -m unittest discover -s tests -p 'test_release_package.py' -v
 
   traceability:
     name: traceability
