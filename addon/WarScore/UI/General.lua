@@ -4,7 +4,6 @@ ns.UI = ns.UI or {}
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
 local showGeneralView, showSettingsView
-local UI_ITERATION = "136"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -931,7 +930,8 @@ SlashCmdList.WARSCORE = function(message)
     end
     if command and command:lower() == "version" then
         if DEFAULT_CHAT_FRAME then
-            DEFAULT_CHAT_FRAME:AddMessage("|cffffc34dWarScore|r UI iteración " .. UI_ITERATION)
+            local version = GetAddOnMetadata(ns.addonName or "WarScore", "Version") or "unknown"
+            DEFAULT_CHAT_FRAME:AddMessage("|cffffc34dWarScore|r v" .. version)
         end
         return
     end

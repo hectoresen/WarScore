@@ -43,6 +43,12 @@ Los cambios previos al uso disciplinado de OpenSpec pueden reconstruirse como **
 
 Comandos y condiciones: [openspec/README.md](openspec/README.md). Para sincronización: [skills/documentation-sync/SKILL.md](skills/documentation-sync/SKILL.md).
 
+## Versionado oficial
+
+- La version publica de WarScore sigue SemVer (MAJOR.MINOR.PATCH) y se asigna al lanzar manualmente el workflow de release con el incremento patch/minor/major elegido por el propietario.
+- El artefacto publicado recibe su version en el campo `## Version` de `WarScore.toc`. El comando `/ws version` debe leer ese metadato del addon instalado, nunca una iteracion visual fija.
+- No utilizar identificadores como v135/v136 como version del producto, ni modificar `main` automaticamente durante una release. Los cambios se preparan en una rama y se integran solo por el propietario.
+
 ## Entrega y verificación
 - Comprobar sintaxis, referencias de texturas y la carpeta instalable `addon/WarScore/`. El ZIP versionado se genera únicamente durante la publicación manual de una release.
 - Indicar versión/commit y separar claramente «verificado offline», «verificado en cliente» y «pendiente».

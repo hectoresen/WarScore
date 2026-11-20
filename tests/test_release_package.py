@@ -50,6 +50,19 @@ class ArchiveTests(unittest.TestCase):
         self.assertIn("## Version: 0.1.0",
                       (release.ADDON / "WarScore.toc").read_text())
 
+    def test_release_version_matches_runtime_metadata(self):
+        # The release job stamps the TOC in the archive; /ws version reads it.
+        with tempfile.TemporaryDirectory() as directory:
+            version = "2.4.7"
+            target = Path(directory) / f"WarScore-v{version}.zip"
+            release.package(version, target)
+            with zipfile.ZipFile(target) as archive:
+                toc = archive.read("WarScore/WarScore.toc").decode("utf-8")
+                ui = archive.read("WarScore/UI/General.lua").decode("utf-8")
+            self.assertIn(f"## Version: {version}", toc)
+            self.assertIn('GetAddOnMetadata(ns.addonName or "WarScore", "Version")', ui)
+            self.assertNotIn("UI_ITERATION", ui)
+
     def test_bad_version(self):
         with tempfile.TemporaryDirectory() as directory:
             for version in ("0.1", "0.1.0-dev", "01.2.3", "a.b.c", "1.2.3.4"):
