@@ -18,6 +18,7 @@ WarScore es un addon Lua nativo y local para WoW Forever (Interface 16001). Cód
 - **Diseño:** preservar arte, jerarquía, tamaños y posiciones aprobados. No redibujar ni sustituir recursos proporcionados por el propietario sin autorización. Pedir assets faltantes; se permite convertir/ajustar los originales sin alterar su contenido artístico.
 - **Cambios:** no añadir características ni modificar comportamiento fuera del alcance aprobado; no confundir pruebas automatizadas con aceptación visual en el juego.
 - **Documentación:** README para jugadores; detalles de IDs y pruebas en docs; entregas e iteraciones en el handoff, evitando trasladar historiales interminables a documentos de portada.
+- **Contribuciones:** seguir [CONTRIBUTING.md](CONTRIBUTING.md). Código y documentación originales bajo MIT; consultar [ASSET_LICENSES.md](ASSET_LICENSES.md) antes de reutilizar recursos gráficos.
 - **Gobernanza:** no aplicar automáticamente normas de otro repositorio (CraftAtlas, reglas de PR, automerge, etc.).
 
 ## OpenSpec — flujo obligatorio para cambios funcionales
