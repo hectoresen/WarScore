@@ -361,7 +361,8 @@ local function build()
     -- Let the native WoW Escape handler close the addon from any view.
     tinsert(UISpecialFrames, "WarScoreGeneralFrame")
     window:SetSize(870, 1105)
-    -- Scale the entire window uniformly; child anchors and assets stay unchanged.
+    -- Canonical 100% window size for any future user-adjustable UI scale.
+    -- Scale child frames uniformly; preserve their approved anchors and artwork.
     window:SetScale(0.7179)
     window:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
     window:SetFrameStrata("DIALOG")
