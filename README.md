@@ -1,107 +1,108 @@
 # WarScore
 
-**Tus estadísticas PvP de World of Warcraft Forever, de un vistazo.**
+**Your World of Warcraft Forever PvP journey, at a glance.**
 
-WarScore es un addon para **WoW Forever** que reúne la información de tu personaje en un panel visual inspirado en la estética clásica de Warcraft. Consulta tus muertes con honor, tu rango PvP, tus resultados en duelos y campos de batalla y mucho más, sin salir del juego.
+WarScore is a free, open-source PvP statistics addon for **World of Warcraft Forever**. Explore your character's PvP achievements, Honor, rank progression, duels, and battleground performance in one Warcraft-inspired interface—powered by the game's own data.
 
-**Código abierto (MIT) · Gratis · Sin cuentas · Sin servidores externos · Datos proporcionados por el propio juego**
+**Open source (MIT) · No account required · No external servers · English & Spanish**
 
-## Qué puedes ver
+## General — your PvP overview
 
-### Pestaña General
+<p align="center">
+  <img src="docs/screenshots/WarScore2.png" width="620" alt="WarScore General tab with character portrait, rank progression, Honor, honorable kills and battleground statistics" />
+</p>
 
-La pantalla principal muestra el historial PvP del personaje con el que estás jugando.
+The **General** tab brings together your character's real portrait, name, level and class, alongside a detailed PvP overview.
 
-| Sección | Información |
+| Statistic | What it means |
 | --- | --- |
-| **Tu personaje** | Retrato, nombre, nivel y clase. |
-| **Honor** | Puntos de honor disponibles y límite indicado por el juego. Es tu saldo actual, no todo el honor que has ganado históricamente. |
-| **Rango PvP** | Rango actual, próximo rango y puntos de rango (RP/PR) necesarios para progresar, cuando el juego facilita esos datos. |
-| **Muertes con honor (HK)** | Total histórico de muertes con honor registradas por WoW. |
-| **Muertes PvP sufridas** | Veces que otros jugadores han eliminado a tu personaje. |
-| **Ratio HK/D** | Relación entre muertes con honor y muertes PvP sufridas. |
-| **Duelos** | Duelos ganados y porcentaje de victorias. |
-| **Campos de batalla** | Partidas jugadas, victorias y porcentaje de victorias. |
-| **Campo de batalla favorito** | Campo que más has jugado y número de partidas disputadas en él. |
+| **PvP Rank** | Your current PvP rank, next rank and Rank Points (RP) progress toward the next level. |
+| **Honor** | Your current Honor balance and maximum, as reported by WoW Forever. |
+| **Honorable Kills (HK)** | Your lifetime total of honorable kills. |
+| **PvP Deaths** | Total deaths caused by other players. |
+| **HK/D Ratio** | Honorable kills divided by PvP deaths. |
+| **Duels Won** | Total number of duels won. |
+| **Battlegrounds Played** | Total battleground matches played. |
+| **BG Wins** | Total battleground victories. |
+| **BG Win Rate** | Percentage of battleground matches won. |
+| **Duel Win Rate** | Percentage of duels won. |
+| **Favorite Battleground** | Your most-played battleground and number of matches played. |
 
-> **HK** significa *Honorable Kills* (muertes con honor). **BG** significa *Battleground* (campo de batalla). Si alguna estadística no está disponible en el cliente, WarScore evita inventar el dato.
+The top navigation also includes a **Statistics** tab, reserved for more advanced features in a future update. Use the **X** to close the window or the **gear icon** to open Settings. You can move the main window around the game screen.
 
-### Ajustes y personalización
+> **Accurate game data:** historical PvP statistics are read from the game, so they do not start at zero when WarScore is installed. Honor represents your **current spendable balance**, not lifetime Honor earned. If a reliable value is unavailable, WarScore does not invent it.
 
-- **Español e inglés:** cambia el idioma desde **Ajustes → Idioma** o con los comandos de chat.
-- **Interfaz integrada en WoW:** marcos ornamentales, retrato del personaje y diseño inspirado en Warcraft.
-- **Estilo visual:** el aspecto **Classic Forever** está disponible; el selector de otros estilos se reserva para versiones futuras.
-- **Ventana desplazable:** mueve el panel por la pantalla y ciérralo cuando no lo necesites.
+## Settings — personalize your experience
 
-### Icono en el minimapa
+<p align="center">
+  <img src="docs/screenshots/WarScore3.png" width="620" alt="WarScore Settings tab with Language selection, Visual Style and Back navigation" />
+</p>
 
-WarScore añade un botón en el borde del minimapa para acceder rápidamente al addon.
+The **Settings** page includes two preference areas:
 
-- **Clic izquierdo:** abre o cierra la ventana.
-- **Arrastrar:** coloca el icono en el punto del borde del minimapa que prefieras.
-- **Posición recordada:** el addon conserva su ubicación para la próxima vez que entres.
+- **Language:** switch between **English and Spanish** at any time. Your choice is saved for future sessions.
+- **Visual Style:** **Classic Forever** is the current Warcraft-themed look. Additional visual styles are planned for future releases; this selector is not yet customizable.
 
-## ¿De dónde salen los datos?
+Use the **Back** tab to return to General, or close WarScore with the top-right **X**. Settings can also be opened directly with `/ws settings`.
 
-WarScore consulta **las APIs y estadísticas nativas disponibles en WoW Forever**, incluyendo los contadores PvP del personaje, el sistema de honor, los campos de batalla, los duelos y la progresión de rango.
+## Minimap button — quick access
 
-Los datos históricos proceden del propio juego: **no empiezan a contarse desde la instalación de WarScore**. Al abrir la vista General se vuelven a consultar para mostrar la información disponible más reciente. El addon no requiere conexión a una web, registro de usuario ni base de datos remota.
+<p align="center">
+  <img src="docs/screenshots/WarScore4.png" width="420" alt="Crossed-swords WarScore button on the WoW minimap with a tooltip" />
+</p>
 
-Algunos porcentajes y ratios se calculan en el momento a partir de los valores que proporciona WoW. Las preferencias, como el idioma o la posición del botón del minimapa, se guardan localmente.
+WarScore adds a small **crossed-swords icon** with a circular Warcraft-style border to the edge of the minimap.
 
-Para conocer las fuentes, limitaciones y pruebas técnicas, consulta la [documentación de estadísticas PvP](docs/PVP_STATISTICS.md).
+- **Left-click** to open or close the addon.
+- **Drag the icon** around the minimap border to position it wherever you prefer.
+- **Your chosen position is remembered** after reloading the game interface.
 
-## Instalación
+## Powered by native WoW Forever APIs
 
-1. **[Descarga WarScore.zip](https://github.com/hectoresen/WarScore/raw/refs/heads/main/dist/WarScore.zip)**, el paquete preparado para instalar.
-2. Descomprímelo en la carpeta de addons de WoW Forever:
+WarScore retrieves your statistics using the **native APIs provided by WoW Forever**, including PvP records, the Honor currency, rank progression, duels, and battleground results. It calculates ratios and win rates from those reported values. The General view reads the latest available data when opened.
+
+The addon does **not require a website, account, external database, or remote synchronization**. Only local preferences, such as your language and minimap icon position, are saved. See the [technical PvP statistics documentation](docs/PVP_STATISTICS.md) for API evidence and limitations.
+
+## Installation
+
+1. **[Download the installable WarScore.zip](https://github.com/hectoresen/WarScore/raw/refs/heads/main/dist/WarScore.zip)**.
+2. Extract the ZIP into your WoW Forever addon directory:
    ```text
    World of Warcraft/_forever_/Interface/AddOns/
    ```
-3. Comprueba que existe esta ruta:
+3. Ensure the installation contains:
    ```text
    Interface/AddOns/WarScore/WarScore.toc
    ```
-4. Abre el juego (o escribe `/reload` si ya estás dentro) y utiliza `/ws` o el botón del minimapa.
+4. Enable WarScore in the game's AddOns menu. Run `/reload` if the game is already open, then type `/ws` or use the minimap button.
 
-**Importante:** descarga el archivo `WarScore.zip` enlazado arriba, no el ZIP automático del código fuente de GitHub.
+**Important:** download the installable ZIP above, not GitHub's automatically generated **Source code** archive. Developers can alternatively copy the [`addon/WarScore/`](addon/WarScore/) folder.
 
-## Comandos
+## Commands
 
-| Comando | Acción |
+| Command | Description |
 | --- | --- |
-| `/ws` o `/warscore` | Abrir WarScore en General. |
-| `/ws settings` | Abrir Ajustes. |
-| `/ws lang es` | Cambiar a español. |
-| `/ws lang en` | Cambiar a inglés. |
-| `/ws version` | Mostrar la iteración de la interfaz. |
-| `/wsdiag` | Diagnósticos técnicos para comprobar las APIs del juego. |
+| `/ws` or `/warscore` | Open the General tab. |
+| `/ws settings` | Open Settings. |
+| `/ws lang en` | Switch to English. |
+| `/ws lang es` | Switch to Spanish. |
+| `/ws version` | Display the current UI iteration. |
+| `/wsdiag` | Inspect native game statistics for diagnostics. |
 
-## Próximamente
+## Coming soon
 
-La pestaña **Estadísticas** está visible, pero su contenido avanzado todavía está en desarrollo. Entre las funciones propuestas se encuentran los desgloses de PvP en **mundo abierto**, la comparación con las muertes con honor obtenidas en campos de batalla y estadísticas más detalladas de cada BG.
+The **Statistics** tab is already visible, but its advanced views are **not implemented yet**. Planned work includes open-world PvP summaries, battleground breakdowns, and additional insights based on verified native game data. Follow the [PvP data catalog](docs/PVP_DATA_CATALOG.md) for current research and proposals.
 
-Solo se incorporarán métricas cuya fuente y significado estén suficientemente verificados en WoW Forever. Consulta el [catálogo de datos y funcionalidades futuras](docs/PVP_DATA_CATALOG.md).
+## Compatibility and project status
 
-## Compatibilidad y estado
+WarScore targets **World of Warcraft Forever** (reference client **1.60.1**, Interface `16001`). It is actively developed, and some information depends on which APIs the game makes available.
 
-- **Juego:** World of Warcraft Forever.
-- **Interfaz del cliente de referencia:** `16001` (Forever 1.60.1).
-- **Estado del proyecto:** en desarrollo activo; pueden existir limitaciones propias del cliente.
-- **Privacidad:** funcionamiento local, sin servicios externos ni necesidad de cuenta adicional.
+WarScore is an independent community project and is not affiliated with Blizzard Entertainment or the operators of WoW Forever.
 
-WarScore es un proyecto independiente y no está afiliado a Blizzard Entertainment.
+## Open source and contributing
 
-## Código abierto y comunidad
+WarScore's original source code and documentation are distributed under the [**MIT License**](LICENSE). Contributions, bug reports, and suggestions are welcome. Read the [contribution guidelines](CONTRIBUTING.md), our [Code of Conduct](CODE_OF_CONDUCT.md), or [open an issue](https://github.com/hectoresen/WarScore/issues/new/choose).
 
-WarScore es un proyecto **de código abierto bajo licencia MIT** para su código y documentación originales. Puedes consultar su implementación, proponer mejoras y enviar pull requests. Consulta la [licencia MIT](LICENSE) y la [guía para contribuir](CONTRIBUTING.md).
+Bundled artwork may be subject to separate rights, and the Spectral font retains its own license. Please check [asset licenses and attribution](ASSET_LICENSES.md) before reusing graphical assets.
 
-Los recursos gráficos suministrados al proyecto están sujetos a revisión individual de derechos y la tipografía incluida conserva su licencia original. Antes de reutilizar assets, lee [licencias y atribuciones](ASSET_LICENSES.md).
-
-¿Has encontrado un error o tienes una idea? Abre un [issue en GitHub](https://github.com/hectoresen/WarScore/issues/new/choose). Para comunicar problemas de seguridad, sigue [SECURITY.md](SECURITY.md). Las contribuciones se rigen por nuestro [código de conducta](CODE_OF_CONDUCT.md).
-
-## Documentación y desarrollo
-
-Si quieres saber cómo funciona internamente o contribuir al proyecto, el **[índice completo de documentación](docs/INDEX.md)** reúne las guías funcionales, arquitectura, APIs investigadas, especificaciones visuales y proceso de desarrollo.
-
-El código del addon está en [`addon/WarScore/`](addon/WarScore/). Las herramientas de empaquetado se encuentran en [`tools/`](tools/).
+For technical details, visit the [documentation index](docs/INDEX.md), browse the [addon source](addon/WarScore/), or explore the [development tools](tools/).
