@@ -4,7 +4,7 @@ ns.UI = ns.UI or {}
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
 local showGeneralView, showSettingsView
-local UI_ITERATION = "132"
+local UI_ITERATION = "133"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -470,14 +470,13 @@ local function build()
 
     fields = {}
     -- Both banners are baked into innerArt; no separate banner sprites.
-    -- v132: preserve the portrait's horizontal center and almost the same
-    -- vertical center while enlarging its canvas and adding the owner's
-    -- original bronze/gold circular ornament above the existing mask.
+    -- v133: enlarge portrait and original ornamental circle together by 5%.
+    -- Hold the exact v132 center (-218 from window top) to prevent layout drift.
     local portraitRing = CreateFrame("Frame", nil, window)
-    portraitRing:SetSize(118, 118)
-    portraitRing:SetPoint("TOP", window, "TOP", 0, -159)
+    portraitRing:SetSize(123.9, 123.9)
+    portraitRing:SetPoint("TOP", window, "TOP", 0, -156.05)
     local portrait = portraitRing:CreateTexture(nil, "ARTWORK")
-    portrait:SetSize(100, 100)
+    portrait:SetSize(105, 105)
     portrait:SetPoint("CENTER")
     fields.portrait = portrait
     -- Retain the proven circular mask and classic-client fallback.
@@ -487,7 +486,7 @@ local function build()
         local ok = pcall(function()
             local mask = portraitRing:CreateMaskTexture(nil, "ARTWORK")
             mask:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_mask")
-            mask:SetSize(100, 100)
+            mask:SetSize(105, 105)
             mask:SetPoint("CENTER", portrait, "CENTER", 0, 0)
             portrait:AddMaskTexture(mask)
         end)
@@ -498,12 +497,12 @@ local function build()
     if not maskApplied then
         local legacyRing = portraitRing:CreateTexture(nil, "OVERLAY")
         legacyRing:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring")
-        legacyRing:SetSize(118, 118)
+        legacyRing:SetSize(123.9, 123.9)
         legacyRing:SetPoint("CENTER", portraitRing, "CENTER", 0, 0)
     end
     local ring = portraitRing:CreateTexture(nil, "OVERLAY")
     ring:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring_owner_v132")
-    ring:SetSize(118, 118)
+    ring:SetSize(123.9, 123.9)
     ring:SetPoint("CENTER", portraitRing, "CENTER", 0, 0)
     fields.name = label(window, "—", 23, CREAM, 0, -279, 360, 32)
     fields.level = label(window, "—", 15, CREAM, 0, -310, 360, 24)
