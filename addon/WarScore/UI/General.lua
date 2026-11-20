@@ -812,7 +812,7 @@ local function build()
     local languageDropdown = CreateFrame("Frame", "WarScoreSettingsLanguageDropdown", languageRow, "UIDropDownMenuTemplate")
     languageDropdown:SetPoint("TOP", languageRow, "TOP", -17, -32)
     UIDropDownMenu_SetWidth(languageDropdown, 210)
-    languageDropdown:SetScale(1.1025)
+    languageDropdown:SetScale(1.4)
 
     -- Same translation service as '/ws lang es' and '/ws lang en'. Its
     -- listeners update all General copies and Settings captions in place.
@@ -840,7 +840,7 @@ local function build()
     local scaleDropdown = CreateFrame("Frame", "WarScoreSettingsScaleDropdown", scaleRow, "UIDropDownMenuTemplate")
     scaleDropdown:SetPoint("TOP", scaleRow, "TOP", -17, -32)
     UIDropDownMenu_SetWidth(scaleDropdown, 210)
-    scaleDropdown:SetScale(1.1025)
+    scaleDropdown:SetScale(1.4)
     UIDropDownMenu_Initialize(scaleDropdown, function(_, level)
         if level and level ~= 1 then return end
         local current = getUIScalePercent()
@@ -870,7 +870,7 @@ local function build()
     local styleDropdown = CreateFrame("Frame", "WarScoreSettingsStyleDropdown", styleRow, "UIDropDownMenuTemplate")
     styleDropdown:SetPoint("TOP", styleRow, "TOP", -17, -32)
     UIDropDownMenu_SetWidth(styleDropdown, 210)
-    styleDropdown:SetScale(1.1025)
+    styleDropdown:SetScale(1.4)
     UIDropDownMenu_Initialize(styleDropdown, function(_, level)
         if level and level ~= 1 then return end
         local info = UIDropDownMenu_CreateInfo()
