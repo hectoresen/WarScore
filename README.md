@@ -4,7 +4,7 @@
 
 WarScore es un addon para **WoW Forever** que reúne la información de tu personaje en un panel visual inspirado en la estética clásica de Warcraft. Consulta tus muertes con honor, tu rango PvP, tus resultados en duelos y campos de batalla y mucho más, sin salir del juego.
 
-**Gratis · Sin cuentas · Sin servidores externos · Datos proporcionados por el propio juego**
+**Código abierto (MIT) · Gratis · Sin cuentas · Sin servidores externos · Datos proporcionados por el propio juego**
 
 ## Qué puedes ver
 
@@ -91,6 +91,14 @@ Solo se incorporarán métricas cuya fuente y significado estén suficientemente
 - **Privacidad:** funcionamiento local, sin servicios externos ni necesidad de cuenta adicional.
 
 WarScore es un proyecto independiente y no está afiliado a Blizzard Entertainment.
+
+## Código abierto y comunidad
+
+WarScore es un proyecto **de código abierto bajo licencia MIT** para su código y documentación originales. Puedes consultar su implementación, proponer mejoras y enviar pull requests. Consulta la [licencia MIT](LICENSE) y la [guía para contribuir](CONTRIBUTING.md).
+
+Los recursos gráficos suministrados al proyecto están sujetos a revisión individual de derechos y la tipografía incluida conserva su licencia original. Antes de reutilizar assets, lee [licencias y atribuciones](ASSET_LICENSES.md).
+
+¿Has encontrado un error o tienes una idea? Abre un [issue en GitHub](https://github.com/hectoresen/WarScore/issues/new/choose). Para comunicar problemas de seguridad, sigue [SECURITY.md](SECURITY.md). Las contribuciones se rigen por nuestro [código de conducta](CODE_OF_CONDUCT.md).
 
 ## Documentación y desarrollo
 
