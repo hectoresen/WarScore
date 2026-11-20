@@ -16,7 +16,7 @@ end
 
 local function decorate(parent, name, width, height, y)
     local tex = parent:CreateTexture(nil, "ARTWORK")
-    tex:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\" .. name)
+    tex:SetTexture("Interface\\AddOns\\WarScore\\Media\\" .. "General\\" .. name)
     tex:SetSize(width, height)
     tex:SetPoint("TOP", parent, "TOP", 0, y)
     return tex
