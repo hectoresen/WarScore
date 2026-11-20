@@ -4,7 +4,7 @@ ns.UI = ns.UI or {}
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
 local showGeneralView, showSettingsView
-local UI_ITERATION = "135"
+local UI_ITERATION = "136"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -358,6 +358,8 @@ end
 
 local function build()
     window = CreateFrame("Frame", "WarScoreGeneralFrame", UIParent, "BackdropTemplate")
+    -- Let the native WoW Escape handler close the addon from any view.
+    tinsert(UISpecialFrames, "WarScoreGeneralFrame")
     window:SetSize(870, 1105)
     window:SetScale(0.86)
     window:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
@@ -416,6 +418,12 @@ local function build()
     close:SetSize(43, 43)
     close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -48, -28)
     close:SetScript("OnClick", function() window:Hide() end)
+    close:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText(text("close_warscore"), 1, 0.82, 0.40)
+        GameTooltip:Show()
+    end)
+    close:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
     -- The supplied graphic already paints both tab plates; only live text
     -- and hitboxes are needed. Their placement follows the asset's geometry.
