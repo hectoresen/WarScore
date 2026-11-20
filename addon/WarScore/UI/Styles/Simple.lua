@@ -87,11 +87,11 @@ function ns.UI.CreateSimpleGeneral(window)
     values.level = makeText(frame, 16, 0, -318, 430, 27, CREAM)
 
     -- The rank ornament is supplied as art without baked-in dynamic values.
-    local rank = decorate(frame, "simple_rank_plaque_owner", 530, 105, -348)
+    local rank = decorate(frame, "simple_rank_plaque_owner", 525, 125, -343)
     -- Source texture has transparent padding. Crop only the padding with UVs.
     rank:SetTexCoord(0, 1, 0.166, 0.834)
-    values.rankHeading = makeText(frame, 15, 0, -383, 320, 23, CREAM)
-    values.rank = makeText(frame, 22, 0, -409, 350, 28, GOLD)
+    values.rankHeading = makeText(frame, 15, 0, -379, 320, 23, CREAM)
+    values.rank = makeText(frame, 22, 0, -403, 350, 28, GOLD)
     -- Rank progression remains accessible without adding screenshot-inconsistent
     -- extra rows to the simplified General view.
     local rankDetails = ""
@@ -117,39 +117,39 @@ function ns.UI.CreateSimpleGeneral(window)
         bar:SetTexCoord(0, 1, 0.18, 0.82)
     end
 
-    majorRule(-435)
-    local mainHKCaption = makeText(frame, 24, -136, -511, 450, 40, CREAM, "LEFT")
-    values.hk = makeText(frame, 47, 259, -496, 160, 58, GOLD, "RIGHT")
-    thinRule(-531)
+    majorRule(-462)
+    local mainHKCaption = makeText(frame, 24, -120, -510, 390, 40, CREAM, "LEFT")
+    values.hk = makeText(frame, 52, 205, -493, 160, 58, GOLD, "RIGHT")
+    thinRule(-556)
 
     local function statRow(key, y, valueSize, valueColor, valueWidth)
-        local caption = makeText(frame, 19, -136, y, 450, 31, CREAM, "LEFT")
-        local amount = makeText(frame, valueSize or 22, 245, y - 2, valueWidth or 230, 32,
+        local caption = makeText(frame, 21, -125, y, 360, 31, CREAM, "LEFT")
+        local amount = makeText(frame, valueSize or 23, 190, y - 2, valueWidth or 230, 32,
             valueColor or GOLD, "RIGHT")
         return caption, amount
     end
-    values.honorCaption, values.honor = statRow("honor_title", -568, 21)
-    thinRule(-580)
-    values.hkdCaption, values.hkd = statRow("hk_death_ratio", -605, 21)
-    thinRule(-615)
-    values.deathsCaption, values.deaths = statRow("pvp_deaths", -642, 21, RED)
-    majorRule(-674)
+    values.honorCaption, values.honor = statRow("honor_title", -575, 23)
+    thinRule(-605)
+    values.hkdCaption, values.hkd = statRow("hk_death_ratio", -616, 23)
+    thinRule(-645)
+    values.deathsCaption, values.deaths = statRow("pvp_deaths", -658, 23, RED)
+    majorRule(-698)
 
-    values.duelsCaption, values.duels = statRow("duel_wins", -723, 20)
-    thinRule(-737)
-    values.bgPlayedCaption, values.bgPlayed = statRow("battlegrounds_played", -760, 20)
-    thinRule(-775)
-    values.bgWonCaption, values.bgWon = statRow("battlegrounds_won", -799, 20)
-    majorRule(-833)
+    values.duelsCaption, values.duels = statRow("duel_wins", -749, 22)
+    thinRule(-768)
+    values.bgPlayedCaption, values.bgPlayed = statRow("battlegrounds_played", -785, 22)
+    thinRule(-809)
+    values.bgWonCaption, values.bgWon = statRow("battlegrounds_won", -822, 22)
+    majorRule(-865)
 
-    values.bgRateCaption, values.bgRate = statRow("battleground_win_rate", -879, 21, GREEN)
-    thinRule(-896)
-    values.duelRateCaption, values.duelRate = statRow("duel_win_rate", -918, 21, GREEN)
-    thinRule(-939)
-    values.favoriteCaption = makeText(frame, 19, -136, -962, 380, 30, CREAM, "LEFT")
-    values.favorite = makeText(frame, 18, 186, -958, 410, 29, GOLD, "RIGHT")
-    values.favoritePlayed = makeText(frame, 13, 202, -986, 365, 23, MUTED, "RIGHT")
-    thinRule(-1026)
+    values.bgRateCaption, values.bgRate = statRow("battleground_win_rate", -911, 23, GREEN)
+    thinRule(-929)
+    values.duelRateCaption, values.duelRate = statRow("duel_win_rate", -949, 23, GREEN)
+    thinRule(-970)
+    values.favoriteCaption = makeText(frame, 20, -148, -991, 325, 30, CREAM, "LEFT")
+    values.favorite = makeText(frame, 17, 150, -987, 320, 29, GOLD, "RIGHT")
+    values.favoritePlayed = makeText(frame, 13, 170, -1014, 280, 23, MUTED, "RIGHT")
+    thinRule(-1055)
 
     local function localize()
         generalTitle:SetText(ns.L:Get("tab_general"))
