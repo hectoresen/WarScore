@@ -87,9 +87,9 @@ function ns.UI.CreateSimpleGeneral(window)
     values.level = makeText(frame, 16, 0, -318, 430, 27, CREAM)
 
     -- The rank ornament is supplied as art without baked-in dynamic values.
-    local rank = decorate(frame, "simple_rank_plaque_owner", 525, 125, -343)
-    -- Source texture has transparent padding. Crop only the padding with UVs.
-    rank:SetTexCoord(0, 1, 0.166, 0.834)
+    local rank = decorate(frame, "simple_rank_plaque_owner", 390, 85, -350)
+    -- UVs crop transparent padding using measured TGA alpha bounds.
+    rank:SetTexCoord(0.046, 0.956, 0.291, 0.690)
     values.rankHeading = makeText(frame, 15, 0, -379, 320, 23, CREAM)
     values.rank = makeText(frame, 22, 0, -403, 350, 28, GOLD)
     -- Rank progression remains accessible without adding screenshot-inconsistent
@@ -108,13 +108,15 @@ function ns.UI.CreateSimpleGeneral(window)
     end)
     rankInfo:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
+    -- Preserve the art aspect ratios: diamond 1001:73; thin rule 1014:9.
+    -- Cropping the transparent canvas avoids squashing the center ornament.
     local function majorRule(y)
-        local bar = decorate(frame, "simple_divider_diamond_owner", 670, 54, y)
-        bar:SetTexCoord(0, 1, 0.195, 0.807)
+        local bar = decorate(frame, "simple_divider_diamond_owner", 660, 48, y)
+        bar:SetTexCoord(0.010, 0.987, 0.435, 0.578)
     end
     local function thinRule(y)
-        local bar = decorate(frame, "simple_divider_thin_owner", 675, 19, y)
-        bar:SetTexCoord(0, 1, 0.18, 0.82)
+        local bar = decorate(frame, "simple_divider_thin_owner", 660, 6, y)
+        bar:SetTexCoord(0.009, 0.999, 0.496, 0.514)
     end
 
     majorRule(-462)
