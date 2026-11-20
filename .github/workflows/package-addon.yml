@@ -1,5 +1,5 @@
 name: Package clean WarScore addon
-# v132: slightly larger player portrait and original ornamental bronze/gold ring.
+# v133: scale player portrait and supplied ornamental gold ring together by 5%.
 on:
   push:
     branches: [main]
@@ -69,8 +69,11 @@ jobs:
               portrait_ring_path = "WarScore/Media/General/portrait_ring_owner_v132.tga"
               assert portrait_ring_path in names
               assert 'ring:SetTexture("Interface\\\\AddOns\\\\WarScore\\\\Media\\\\General\\\\portrait_ring_owner_v132")' in runtime_ui
-              assert 'portraitRing:SetSize(118, 118)' in runtime_ui
-              assert 'portrait:SetSize(100, 100)' in runtime_ui
+              assert 'portraitRing:SetSize(123.9, 123.9)' in runtime_ui
+              assert 'portrait:SetSize(105, 105)' in runtime_ui
+              assert 'mask:SetSize(105, 105)' in runtime_ui
+              assert 'ring:SetSize(123.9, 123.9)' in runtime_ui
+              assert 'portraitRing:SetPoint("TOP", window, "TOP", 0, -156.05)' in runtime_ui
               import io
               from PIL import Image
               with Image.open(io.BytesIO(z.read(portrait_ring_path))) as art:
@@ -108,7 +111,7 @@ jobs:
               # shipping or drawing the mismatched Settings replacement image.
               assert "WarScore/Media/General/inner_frame_owner_v64.tga" in names
               assert "WarScore/Media/General/settings_inner_frame_owner_v122.tga" not in names
-              assert archive_version.group(1) == "132", "Expected v132 in the clean ZIP"
+              assert archive_version.group(1) == "133", "Expected v133 in the clean ZIP"
               assert '[innerArt] = true' in runtime_ui
               assert 'settings_inner_frame_owner_v122' not in runtime_ui
               assert 'settingsTab:SetPoint("TOPLEFT", settingsPage, "TOPLEFT", 193, -102)' in runtime_ui
