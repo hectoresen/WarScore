@@ -9,7 +9,7 @@ WarScore is a free, open-source PvP statistics addon for **World of Warcraft For
 ## General — your PvP overview
 
 <p align="center">
-  <img src="docs/screenshots/WarScore2.png" width="620" alt="WarScore General tab with character portrait, rank progression, Honor, honorable kills and battleground statistics" />
+  <img src="docs/addon%20v0.1/WarScore2.png" width="620" alt="WarScore General tab with character portrait, rank progression, Honor, honorable kills and battleground statistics" />
 </p>
 
 The **General** tab brings together your character's real portrait, name, level and class, alongside a detailed PvP overview.
@@ -35,7 +35,7 @@ The top navigation also includes a **Statistics** tab, reserved for more advance
 ## Settings — personalize your experience
 
 <p align="center">
-  <img src="docs/screenshots/WarScore3.png" width="620" alt="WarScore Settings tab with Language selection, Visual Style and Back navigation" />
+  <img src="docs/addon%20v0.1/WarScore3.png" width="620" alt="WarScore Settings tab with Language selection, Visual Style and Back navigation" />
 </p>
 
 The **Settings** page includes two preference areas:
@@ -48,7 +48,7 @@ Use the **Back** tab to return to General, or close WarScore with the top-right 
 ## Minimap button — quick access
 
 <p align="center">
-  <img src="docs/screenshots/WarScore4.png" width="420" alt="Crossed-swords WarScore button on the WoW minimap with a tooltip" />
+  <img src="docs/addon%20v0.1/WarScore4.png" width="420" alt="Crossed-swords WarScore button on the WoW minimap with a tooltip" />
 </p>
 
 WarScore adds a small **crossed-swords icon** with a circular Warcraft-style border to the edge of the minimap.
