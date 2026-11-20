@@ -87,7 +87,7 @@ function ns.UI.CreateSimpleGeneral(window)
     values.level = makeText(frame, 16, 0, -318, 430, 27, CREAM)
 
     -- The rank ornament is supplied as art without baked-in dynamic values.
-    local rank = decorate(frame, "simple_rank_plaque_owner", 530, 176, -343)
+    local rank = decorate(frame, "simple_rank_plaque_owner", 530, 105, -348)
     -- Source texture has transparent padding. Crop only the padding with UVs.
     rank:SetTexCoord(0, 1, 0.166, 0.834)
     values.rankHeading = makeText(frame, 15, 0, -383, 320, 23, CREAM)
