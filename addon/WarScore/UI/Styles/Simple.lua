@@ -57,9 +57,17 @@ function ns.UI.CreateSimpleGeneral(window)
         end
     end)
 
-    local portraitFrame = CreateFrame("Frame", nil, frame)
+    -- Only the Simple General interior is compacted; tabs and window chrome
+    -- retain their approved sizes and anchors.
+    local content = CreateFrame("Frame", nil, frame)
+    content:SetSize(870, 1105)
+    content:SetPoint("TOP", frame, "TOP", 0, 0)
+    content:SetScale(0.965)
+    content:EnableMouse(false)
+
+    local portraitFrame = CreateFrame("Frame", nil, content)
     portraitFrame:SetSize(123.9, 123.9)
-    portraitFrame:SetPoint("TOP", frame, "TOP", 0, -156.05)
+    portraitFrame:SetPoint("TOP", content, "TOP", 0, -156.05)
     local portrait = portraitFrame:CreateTexture(nil, "ARTWORK")
     portrait:SetSize(105, 105)
     portrait:SetPoint("CENTER", portraitFrame, "CENTER")
@@ -83,21 +91,21 @@ function ns.UI.CreateSimpleGeneral(window)
     ring:SetAllPoints(portraitFrame)
 
     local values = {}
-    values.name = makeText(frame, 27, 0, -283, 380, 37, CREAM)
-    values.level = makeText(frame, 16, 0, -318, 430, 27, CREAM)
+    values.name = makeText(content, 27, 0, -283, 380, 37, CREAM)
+    values.level = makeText(content, 16, 0, -318, 430, 27, CREAM)
 
     -- The rank ornament is supplied as art without baked-in dynamic values.
-    local rank = decorate(frame, "simple_rank_plaque_owner", 390, 85, -350)
+    local rank = decorate(content, "simple_rank_plaque_owner", 390, 85, -350)
     -- UVs crop transparent padding using measured TGA alpha bounds.
     rank:SetTexCoord(0.046, 0.956, 0.291, 0.690)
-    values.rankHeading = makeText(frame, 15, 0, -379, 320, 23, CREAM)
-    values.rank = makeText(frame, 22, 0, -403, 350, 28, GOLD)
+    values.rankHeading = makeText(content, 15, 0, -379, 320, 23, CREAM)
+    values.rank = makeText(content, 19, 0, -402, 310, 23, GOLD)
     -- Rank progression remains accessible without adding screenshot-inconsistent
     -- extra rows to the simplified General view.
     local rankDetails = ""
-    local rankInfo = CreateFrame("Frame", nil, frame)
+    local rankInfo = CreateFrame("Frame", nil, content)
     rankInfo:SetSize(400, 58)
-    rankInfo:SetPoint("TOP", frame, "TOP", 0, -378)
+    rankInfo:SetPoint("TOP", content, "TOP", 0, -378)
     rankInfo:EnableMouse(true)
     rankInfo:SetScript("OnEnter", function(self)
         if rankDetails == "" then return end
@@ -111,22 +119,22 @@ function ns.UI.CreateSimpleGeneral(window)
     -- Preserve the art aspect ratios: diamond 1001:73; thin rule 1014:9.
     -- Cropping the transparent canvas avoids squashing the center ornament.
     local function majorRule(y)
-        local bar = decorate(frame, "simple_divider_diamond_owner", 660, 48, y)
+        local bar = decorate(content, "simple_divider_diamond_owner", 660, 48, y)
         bar:SetTexCoord(0.010, 0.987, 0.435, 0.578)
     end
     local function thinRule(y)
-        local bar = decorate(frame, "simple_divider_thin_owner", 660, 6, y)
+        local bar = decorate(content, "simple_divider_thin_owner", 660, 6, y)
         bar:SetTexCoord(0.009, 0.999, 0.496, 0.514)
     end
 
     majorRule(-462)
-    local mainHKCaption = makeText(frame, 24, -120, -510, 390, 40, CREAM, "LEFT")
-    values.hk = makeText(frame, 52, 205, -493, 160, 58, GOLD, "RIGHT")
+    local mainHKCaption = makeText(content, 24, -120, -510, 390, 40, CREAM, "LEFT")
+    values.hk = makeText(content, 52, 205, -493, 160, 58, GOLD, "RIGHT")
     thinRule(-556)
 
     local function statRow(key, y, valueSize, valueColor, valueWidth)
-        local caption = makeText(frame, 21, -125, y, 360, 31, CREAM, "LEFT")
-        local amount = makeText(frame, valueSize or 23, 190, y - 2, valueWidth or 230, 32,
+        local caption = makeText(content, 19, -125, y, 360, 27, CREAM, "LEFT")
+        local amount = makeText(content, valueSize or 21, 190, y - 2, valueWidth or 230, 27,
             valueColor or GOLD, "RIGHT")
         return caption, amount
     end
@@ -137,21 +145,21 @@ function ns.UI.CreateSimpleGeneral(window)
     values.deathsCaption, values.deaths = statRow("pvp_deaths", -658, 23, RED)
     majorRule(-698)
 
-    values.duelsCaption, values.duels = statRow("duel_wins", -749, 22)
-    thinRule(-768)
-    values.bgPlayedCaption, values.bgPlayed = statRow("battlegrounds_played", -785, 22)
-    thinRule(-809)
-    values.bgWonCaption, values.bgWon = statRow("battlegrounds_won", -822, 22)
+    values.duelsCaption, values.duels = statRow("duel_wins", -746, 20)
+    thinRule(-780)
+    values.bgPlayedCaption, values.bgPlayed = statRow("battlegrounds_played", -791, 20)
+    thinRule(-825)
+    values.bgWonCaption, values.bgWon = statRow("battlegrounds_won", -837, 20)
     majorRule(-865)
 
-    values.bgRateCaption, values.bgRate = statRow("battleground_win_rate", -911, 23, GREEN)
-    thinRule(-929)
-    values.duelRateCaption, values.duelRate = statRow("duel_win_rate", -949, 23, GREEN)
-    thinRule(-970)
-    values.favoriteCaption = makeText(frame, 20, -148, -991, 325, 30, CREAM, "LEFT")
-    values.favorite = makeText(frame, 17, 150, -987, 320, 29, GOLD, "RIGHT")
-    values.favoritePlayed = makeText(frame, 13, 170, -1014, 280, 23, MUTED, "RIGHT")
-    thinRule(-1055)
+    values.bgRateCaption, values.bgRate = statRow("battleground_win_rate", -929, 21, GREEN)
+    thinRule(-962)
+    values.duelRateCaption, values.duelRate = statRow("duel_win_rate", -975, 21, GREEN)
+    thinRule(-1006)
+    values.favoriteCaption = makeText(content, 19, -140, -1021, 305, 26, CREAM, "LEFT")
+    values.favorite = makeText(content, 16, 150, -1019, 310, 23, GOLD, "RIGHT")
+    values.favoritePlayed = makeText(content, 12, 170, -1043, 280, 19, MUTED, "RIGHT")
+    thinRule(-1082)
 
     local function localize()
         generalTitle:SetText(ns.L:Get("tab_general"))
