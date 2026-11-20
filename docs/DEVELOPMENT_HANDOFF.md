@@ -1542,3 +1542,10 @@ This validates positive BG history and objective tracking. Compare the native st
 - Owner approves v132 ring design and asks for exactly ~5% proportional enlargement of both the live player avatar and the matching supplied ornamental gold ring; all other modules remain untouched.
 - `UI/General.lua`: portrait 100×100 → **105×105**; mask 100×100 → **105×105**; parent, owner ring and non-mask legacy backing ring 118×118 → **123.9×123.9**. Anchor top -159 → **-156.05**, preserving the old vertical center (−218) precisely. No manual independent image offsets or artwork editing.
 - `UI_ITERATION` 132→133; CI verifies all four dimensions, unchanged owner TGA and packaged addon. In-game QA pending for centering, border overlap and text clearance.
+
+
+## Iteration #133 → #134: 2% smaller duels-won swords only (2026-11-20)
+
+- Owner approved v133 portrait and requests a very slight 1–2% reduction in the decorative crossed-swords icon of the **upper Duelos ganados** card only. All other card icons, their frames and contents must stay untouched.
+- In `UI/General.lua`, keep the shared `statBand` icon geometry and existing common factor 0.95; add a conditional `duelIconReduction = not secondary and i == 1 and ownerTopIcon and 0.98 or 1`. Only the upper-left swords are reduced 2% (47.5→46.55 UI units). Shift their anchor 0.475 UI units right (half the reduction) to preserve the horizontal visual center; vertical center stays fixed.
+- `UI_ITERATION` increments 133→134. No new textures. The CI packaging validates the new conditional and clean addon ZIP. Native-client screenshot QA is pending.
