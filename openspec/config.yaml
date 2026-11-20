@@ -1,24 +1,25 @@
 schema: spec-driven
 context: |
-  WarScore is a native offline Lua addon for World of Warcraft Forever,
-  TOC Interface 16001. Current code is an early scaffold, not a finished UI.
-  Historical PvP metrics and in-client evidence are documented in
-  docs/PVP_STATISTICS.md; the chosen visual target is described in
-  docs/GENERAL_VIEW.md and docs/GENERAL_VISUAL_SPEC.md.
-  Read README.md and AGENTS.md; inspect actual source before implementation.
-  Never assume retail WoW API support or fabricate missing values.
-  Use Core/ for data and normalization and UI/ for native frames.
-  No remote services, mandatory CI, or CraftAtlas-specific GitHub governance.
+  WarScore is an active native offline Lua addon for World of Warcraft Forever,
+  Interface 16001. Its public README describes the current functionality.
+  Source of truth is addon/WarScore/, especially Core/Stats.lua,
+  Core/Localization.lua, UI/General.lua and UI/Minimap.lua.
+  Evidence about native APIs and semantics is in docs/PVP_STATISTICS.md.
+  The ornate visual target is documented in docs/GENERAL_VIEW.md and
+  docs/GENERAL_VISUAL_SPEC.md. Read AGENTS.md and openspec/README.md.
+  Do not conflate old iterations with the current release. Never fabricate
+  APIs, screenshots, test results, owner acceptance or historical metrics.
+  Use official OpenSpec CLI validation and archival; preserve the approval gate.
 rules:
   proposal:
-    - State goal, in-scope/out-of-scope, risks, fallback and approval status.
-    - Record WoW Forever API evidence and assets/provenance assumptions.
+    - State goal, scope, exclusions, risks, available evidence and explicit approval status.
+    - For retrospective documentation, label the reconstruction and its evidence.
   specs:
     - Use testable SHALL requirements with WHEN/THEN scenarios.
-    - Cover unavailable values, zero denominators, offline characters and UI constraints.
+    - Cover unsupported APIs, missing values and UI compatibility.
   design:
-    - Specify native-Lua module boundaries, texture assets, data contracts and compatibility checks.
-    - Treat the reference image as a target, not as a deployable texture.
+    - Describe Lua module boundaries, data contracts, assets and compatibility tests.
   tasks:
-    - Include offline checks, real-client manual verification, documentation and acceptance.
-    - Do not mark tests complete without actual evidence.
+    - Distinguish implemented, offline verified, in-client verified, and NOT RUN.
+    - Do not mark owner acceptance or command execution complete without evidence.
+    - Archive only after evidence review, approval and actual CLI validation.
