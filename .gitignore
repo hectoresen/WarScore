@@ -4,3 +4,6 @@ Thumbs.db
 *.zip
 .vscode/
 .idea/
+
+# Metadatos descargados de Windows
+*:Zone.Identifier
