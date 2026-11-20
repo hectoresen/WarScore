@@ -155,17 +155,17 @@ function ns.UI.CreateSimpleGeneral(window)
         generalTitle:SetText(ns.L:Get("tab_general"))
         todayTitle:SetText(ns.L:Get("tab_today"))
         values.rankHeading:SetText(ns.L:Get("rank_caption"))
-        mainHKCaption:SetText(ns.L:Get("honorable_kills"))
+        mainHKCaption:SetText(ns.L:Get("simple_honorable_kills"))
         local keys = {
-            honorCaption = "honor_title",
+            honorCaption = "simple_honor",
             hkdCaption = "hk_death_ratio",
-            deathsCaption = "pvp_deaths",
-            duelsCaption = "duel_wins",
-            bgPlayedCaption = "battlegrounds_played",
-            bgWonCaption = "battlegrounds_won",
-            bgRateCaption = "battleground_win_rate",
-            duelRateCaption = "duel_win_rate",
-            favoriteCaption = "favorite_battleground",
+            deathsCaption = "simple_deaths",
+            duelsCaption = "simple_duel_wins",
+            bgPlayedCaption = "simple_bg_played",
+            bgWonCaption = "simple_bg_won",
+            bgRateCaption = "simple_bg_win_rate",
+            duelRateCaption = "simple_duel_win_rate",
+            favoriteCaption = "simple_favorite_bg",
         }
         for field, key in pairs(keys) do values[field]:SetText(ns.L:Get(key)) end
     end
