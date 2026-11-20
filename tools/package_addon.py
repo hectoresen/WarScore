@@ -43,6 +43,13 @@ def source_files():
             media.add(Path("Media/General") / f"rank_fill_{percent:03d}.tga")
     # Remove the incomplete path from the partial dynamic Lua literal.
     media.discard(Path("Media/General/rank_fill_.tga"))
+    # New style artwork is required for the Simple renderer. Never publish
+    # an installable package whose selected view would show empty textures.
+    media.update({
+        Path("Media/General/simple_rank_plaque_owner.tga"),
+        Path("Media/General/simple_divider_diamond_owner.tga"),
+        Path("Media/General/simple_divider_thin_owner.tga"),
+    })
     files.extend(sorted(media))
     for path in files:
         if path.is_absolute() or ".." in path.parts:
