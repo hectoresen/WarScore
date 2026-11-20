@@ -1,0 +1,30 @@
+name: "Bug report"
+description: "Notifica un problema con WarScore en WoW Forever"
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: "¿Qué ocurre?"
+      description: "Describe qué esperabas y qué ha ocurrido."
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: "Versión de WarScore y WoW Forever"
+      placeholder: "Ej.: /ws version y versión del cliente"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: "Pasos para reproducirlo"
+      description: "Incluye errores Lua, capturas y si ocurre tras /reload."
+    validations:
+      required: true
+  - type: textarea
+    id: extra
+    attributes:
+      label: "Información adicional (opcional)"
