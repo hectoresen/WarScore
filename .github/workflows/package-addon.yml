@@ -1,5 +1,5 @@
 name: Package clean WarScore addon
-# v135: reduce duel swords further and move only Honor/HK group down 8 units.
+# v135: verified clean archive refresh for revised Honor/HK placement and duel swords.
 on:
   push:
     branches: [main]
