@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: "Guía de contribución"
+    url: "https://github.com/hectoresen/WarScore/blob/main/CONTRIBUTING.md"
+    about: "Lee cómo proponer cambios y enviar pull requests."
+  - name: "Problemas de seguridad"
+    url: "https://github.com/hectoresen/WarScore/blob/main/SECURITY.md"
+    about: "No publiques vulnerabilidades explotables en issues."
