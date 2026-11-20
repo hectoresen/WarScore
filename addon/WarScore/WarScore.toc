@@ -9,6 +9,8 @@ Core/Bootstrap.lua
 Core/Storage.lua
 Core/Localization.lua
 Core/Stats.lua
+UI/Styles/Registry.lua
+UI/Styles/Simple.lua
 UI/General.lua
 UI/Minimap.lua
 Core/Diagnostics.lua
