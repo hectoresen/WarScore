@@ -11,10 +11,12 @@
 - `docs/FUNCTIONAL.md`, `ARCHITECTURE.md`, `INSTALLATION.md`, `INDEX.md`: información obsoleta sustituida/organizada.
 - `openspec/README.md`, `config.yaml`, skill documental: flujo de propuesta, CLI, validación y archivado; sin afirmar pasos no ejecutados.
 - Eliminados dos `:Zone.Identifier` de Windows e incluida exclusión para futuras incorporaciones.
+- Añadidos `LICENSE`, `ASSET_LICENSES.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md` y plantillas de issues/PRs adaptadas desde CraftAtlas.
 
 ## Pendientes antes de promocionar el repositorio
 
-- [ ] **Licencia:** GitHub no declara una licencia para el repositorio. Elegir expresamente una para el código y aclarar las condiciones del arte y la atribución de terceros. No publicar con expectativas de reutilización sin resolverlo.
+- [x] **Licencia del código y documentación originales:** MIT en `LICENSE`, enlazada desde README. La fuente Spectral conserva SIL OFL 1.1.
+- [ ] **Derechos de assets gráficos:** confirmar autorización expresa para distribuir, modificar y relicenciar los diseños suministrados; ver `ASSET_LICENSES.md`. Hasta verificarlo, no afirmar que todos los gráficos son MIT.
 - [ ] **Descripción de GitHub:** actualmente promete `daily performance`. Cambiar por una descripción centrada en General, estadísticas PvP históricas, honor, duelos y BG; la vista Estadísticas aún está pendiente.
 - [ ] **ZIP:** reconstruir y comprobar `dist/WarScore.zip` desde la versión final; ejecutar smoke test en Forever (incluido minimapa, idiomas, ajustes y datos tras reabrir).
 - [ ] **OpenSpec feat001:** reconciliar spec y tareas antiguas con la implementación, comprobar excepciones y registrar aceptación.
