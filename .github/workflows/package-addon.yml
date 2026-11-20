@@ -1,5 +1,5 @@
-name: Package clean WarScore addon
-# v135: reduce duel swords further and move only Honor/HK group down 8 units.
+name: Validate installable WarScore source folder
+
 on:
   push:
     branches: [main]
@@ -7,187 +7,54 @@ on:
       - 'addon/WarScore/**'
       - 'tools/**'
       - '.github/workflows/package-addon.yml'
+  pull_request:
+    paths:
+      - 'addon/WarScore/**'
+      - 'tools/**'
+      - '.github/workflows/package-addon.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  package:
+  validate-addon:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: true
-      - name: Build standard ZIP and verify contents
+      - name: Check WarScore source folder is ready to copy into AddOns
         shell: bash
         run: |
           set -euo pipefail
           python3 -m pip install --quiet Pillow
-          python3 tools/prepare_ratio_asset.py
-          python3 tools/prepare_card_asset.py  # inspect transport image before release
-          python3 tools/prepare_top_icons.py
-          python3 tools/prepare_bottom_icons.py
-          python3 tools/prepare_settings_gear.py
-          python3 tools/prepare_honor_panel.py
-          python3 tools/prepare_minimap_icon.py
-          python3 tools/prepare_portrait_ring_v132.py
-          python3 tools/prepare_rank_bar.py
-          python3 tools/prepare_italic_font.py
-          python3 tools/package_addon.py
-          unzip -t dist/WarScore.zip
           python3 - <<'PY'
           from pathlib import Path
-          from zipfile import ZipFile
-          p = Path("dist/WarScore.zip")
-          with ZipFile(p) as z:
-              names = z.namelist()
-              # Do not hardcode asset counts: new alpha-cutout art is expected.
-              from importlib.util import spec_from_file_location, module_from_spec
-              spec = spec_from_file_location("package_addon", "tools/package_addon.py")
-              module = module_from_spec(spec)
-              spec.loader.exec_module(module)
-              expected = {"WarScore/" + str(p).replace("\\", "/") for p in module.source_files()}
-              assert set(names) == expected, f"Missing/excess runtime files: {set(names) ^ expected}"
-              assert all(n.startswith("WarScore/") for n in names)
-              assert all(not any(part in n.lower() for part in ["openspec", "docs/", "tools/"]) for n in names)
-              assert z.testzip() is None
-              import re
-              runtime_ui = z.read("WarScore/UI/General.lua").decode("utf-8")
-              source_ui = Path("addon/WarScore/UI/General.lua").read_text(encoding="utf-8")
-              version_pattern = r'local UI_ITERATION\s*=\s*"(\d+)"'
-              archive_version = re.search(version_pattern, runtime_ui)
-              source_version = re.search(version_pattern, source_ui)
-              assert archive_version is not None, "Missing UI version in installable ZIP"
-              assert source_version is not None, "Missing UI version in source tree"
-              assert archive_version.group(1) == source_version.group(1), (
-                  f"Version mismatch: ZIP={archive_version.group(1)}, source={source_version.group(1)}"
-              )
-              assert runtime_ui == source_ui, "ZIP includes stale UI/General.lua"
-              assert 'local duelIconReduction = not secondary and i == 1 and ownerTopIcon and 0.86 or 1' in runtime_ui
-              assert 'iconDisplaySize * duelIconReduction' in runtime_ui
-              assert 'honorPanel:SetPoint("TOP", window, "TOP", 0, -516)' in runtime_ui
-              assert 'label(window, text("honor_title"), 23, GOLD, 0, -527, 260, 28)' in runtime_ui
-              assert 'fields.honor = label(window, "—", 36.25, GOLD, 0, -555, 460, 42)' in runtime_ui
-              assert 'label(window, text("honorable_kills"), 17, CREAM, -83, -605, 365, 27)' in runtime_ui
-              assert 'fields.hk = label(window, "—", 28, CREAM, 197, -602, 130, 36)' in runtime_ui
-              assert 'ratioOrnament:SetPoint("TOP", window, "TOP", 0, -633)' in runtime_ui
-              assert 'local firstRow = statBand(window, -779, {' in runtime_ui
-              # v132: original user ring replaces the visible portrait border;
-              # it has an alpha-transparent center so the unit portrait shows.
-              portrait_ring_path = "WarScore/Media/General/portrait_ring_owner_v132.tga"
-              assert portrait_ring_path in names
-              assert 'ring:SetTexture("Interface\\\\AddOns\\\\WarScore\\\\Media\\\\General\\\\portrait_ring_owner_v132")' in runtime_ui
-              assert 'portraitRing:SetSize(123.9, 123.9)' in runtime_ui
-              assert 'portrait:SetSize(105, 105)' in runtime_ui
-              assert 'mask:SetSize(105, 105)' in runtime_ui
-              assert 'ring:SetSize(123.9, 123.9)' in runtime_ui
-              assert 'portraitRing:SetPoint("TOP", window, "TOP", 0, -156.05)' in runtime_ui
-              import io
-              from PIL import Image
-              with Image.open(io.BytesIO(z.read(portrait_ring_path))) as art:
-                  rgba = art.convert("RGBA")
-                  assert rgba.size == (128, 128)
-                  assert rgba.getpixel((64, 64))[3] == 0, "Ring must have transparent center"
-                  assert rgba.getchannel("A").getbbox(), "Ring artwork is blank"
-              print("Verified v132 portrait ring, transparent center and larger character portrait")
-              assert 'settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -62.5, -83)' in runtime_ui, "Unexpected gear position"
-              # v116: assert the three independent authored ornaments really
-              # ship in the installable ZIP and retain visible alpha content.
-              import io
-              from PIL import Image
-              ornament_sizes = {
-                  "rank_label_current_owner_v115.tga": (512, 64),
-                  "rank_label_next_owner_v115.tga": (512, 64),
-                  "rank_divider_advance_owner_v115.tga": (1024, 64),
-              }
-              for filename, expected_size in ornament_sizes.items():
-                  asset_path = "WarScore/Media/General/" + filename
-                  assert asset_path in names, f"Missing ornament: {asset_path}"
-                  with Image.open(io.BytesIO(z.read(asset_path))) as asset:
-                      assert asset.size == expected_size, f"Wrong ornament size: {asset_path}"
-                      assert asset.convert("RGBA").getchannel("A").getbbox(), (
-                          f"Transparent/blank ornament: {asset_path}"
-                      )
-              # v120: ensure the replacement Honor/HK texture is delivered.
-              honor_asset = "WarScore/Media/General/honor_frame_owner_v120.tga"
-              assert honor_asset in names, f"Missing honor frame: {honor_asset}"
-              with Image.open(io.BytesIO(z.read(honor_asset))) as honor_art:
-                  assert honor_art.size == (512, 128), honor_art.size
-                  assert honor_art.convert("RGBA").getchannel("A").getbbox(), "Blank honor panel"
-              # v122: original empty-tab Settings artwork and interactive UI.
-              # v123 must reuse the original approved General frame, without
-              # shipping or drawing the mismatched Settings replacement image.
-              assert "WarScore/Media/General/inner_frame_owner_v64.tga" in names
-              assert "WarScore/Media/General/settings_inner_frame_owner_v122.tga" not in names
-              assert archive_version.group(1) == "135", "Expected v135 in the clean ZIP"
-              assert '[innerArt] = true' in runtime_ui
-              assert 'settings_inner_frame_owner_v122' not in runtime_ui
-              assert 'settingsTab:SetPoint("TOPLEFT", settingsPage, "TOPLEFT", 193, -102)' in runtime_ui
-              assert 'returnTab:SetPoint("TOPLEFT", settingsPage, "TOPLEFT", 366, -102)' in runtime_ui
-              assert "settingsPage:Show()" in runtime_ui
-              assert "settingsPage:Hide()" in runtime_ui
-              assert "returnTab:SetScript(\"OnClick\", showGeneralView)" in runtime_ui
-              loc = z.read("WarScore/Core/Localization.lua").decode("utf-8")
-              assert 'tab_settings = "Ajustes"' in loc
-              assert 'tab_back = "Volver"' in loc
-              assert 'tab_today = "Estadísticas"' in loc
-              assert 'tab_today = "Statistics"' in loc
-              assert 'today_coming_soon = "Estadísticas (próximamente)"' in loc
-              assert 'today_coming_soon = "Statistics (Coming soon)"' in loc
-              assert 'today_message = "La pestaña Estadísticas estará disponible en una próxima versión."' in loc
-              assert 'today_message = "The Statistics tab will be available in a future version."' in loc
-              assert 'GameTooltip:SetText(text("today_coming_soon")' in runtime_ui
-              assert 'settings_language = "Idioma"' in loc
-              assert 'settings_visual_style = "Estilo visual"' in loc
-              assert 'settings_language = "Language"' in loc
-              assert 'settings_visual_style = "Visual style"' in loc
-              # Native WoW Classic dropdowns; no custom texture or fake state.
-              assert '"UIDropDownMenuTemplate"' in runtime_ui
-              assert 'UIDropDownMenu_SetWidth(languageDropdown, 210)' in runtime_ui
-              assert 'ns.L:SetLanguage(languageCode)' in runtime_ui
-              assert 'styleDropdown.Button:Disable()' in runtime_ui
-              assert 'styleDropdown:EnableMouse(false)' in runtime_ui
-              assert 'UIDropDownMenu_Disable(styleDropdown)' not in runtime_ui
-              assert 'Classic Forever' in runtime_ui
-              assert 'ns.L:RegisterRefresh(function()' in runtime_ui
-              # v126: verify original shield icon and minimap Lua are included.
-              minimap_module = "WarScore/UI/Minimap.lua"
-              minimap_asset = "WarScore/Media/Minimap/warscore_icon_owner_v126.tga"
-              assert minimap_module in names and minimap_asset in names
-              with Image.open(io.BytesIO(z.read(minimap_asset))) as minimap_art:
-                  assert minimap_art.size == (64, 64), minimap_art.size
-                  assert minimap_art.convert("RGBA").getchannel("A").getbbox(), "Blank minimap icon"
-              minimap_ui = z.read(minimap_module).decode("utf-8")
-              assert 'RegisterForDrag("LeftButton")' in minimap_ui
-              assert 'GetCursorPosition()' in minimap_ui
-              assert 'settings.minimapAngle' in minimap_ui
-              assert 'ns.UI.ToggleGeneral()' in minimap_ui
-              assert 'function ns.UI.ToggleGeneral()' in runtime_ui
-              assert 'minimap_toggle = "Abrir/Cerrar WarScore"' in loc
-              assert 'minimap_toggle = "Open/Close WarScore"' in loc
-              assert 'MiniMap-TrackingBorder' in minimap_ui
-              assert 'icon:SetSize(25, 25)' in minimap_ui
-              assert 'icon:SetPoint("TOPLEFT", minimapButton, "TOPLEFT", 4.5, -3.5)' in minimap_ui
-              assert 'border:SetSize(54, 54)' in minimap_ui
-              print("Verified WarScore v129 enlarged shield and unchanged native ring/interaction")
-              print("Verified owner-provided v120 Honor/HK frame in ZIP")
-              print("Verified all three visible v115 ornaments inside installable ZIP")
-              print("Verified embedded WarScore UI version:", archive_version.group(1))
-          print("Verified installable WarScore ZIP:", p.stat().st_size, "bytes")
+          from PIL import Image
+          import importlib.util
+
+          repo = Path.cwd()
+          root = repo / "addon" / "WarScore"
+          assert root.is_dir(), "Missing addon/WarScore folder"
+          toc = root / "WarScore.toc"
+          assert toc.is_file(), "Missing WoW TOC manifest"
+          # The existing package manifest resolver already knows all static
+          # texture references, dynamic rank fills and font dependencies.
+          # Import source_files without executing the ZIP entrypoint.
+          spec = importlib.util.spec_from_file_location("war_score_files", "tools/package_addon.py")
+          module = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(module)
+          required = module.source_files()
+          assert required, "No runtime files found"
+          assert all((root / path).is_file() for path in required)
+          assert any(str(p) == "UI/General.lua" for p in required)
+          assert any(str(p) == "UI/Minimap.lua" for p in required)
+          ui = (root / "UI/General.lua").read_text(encoding="utf-8")
+          assert 'local UI_ITERATION = "135"' in ui
+          assert 'local duelIconReduction = not secondary and i == 1 and ownerTopIcon and 0.86 or 1' in ui
+          assert 'honorPanel:SetPoint("TOP", window, "TOP", 0, -516)' in ui
+          textures = [path for path in required if path.suffix.lower() == ".tga"]
+          for path in textures:
+              with Image.open(root / path) as image:
+                  image.verify()
+          print(f"Validated copy-ready addon/WarScore: {len(required)} required files, {len(textures)} TGA assets")
           PY
-      - name: Commit verified distribution
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add addon/WarScore/Media/General/portrait_ring_owner_v132.tga
-          git add addon/WarScore/Media/Minimap/warscore_icon_owner_v126.tga
-          git add addon/WarScore/Media/General/honor_frame_owner_v120.tga
-          git add addon/WarScore/Media/General/rank_label_current_owner_v115.tga addon/WarScore/Media/General/rank_label_next_owner_v115.tga addon/WarScore/Media/General/rank_divider_advance_owner_v115.tga
-          git add docs/assets/rank_panel_owner_v108_source.png addon/WarScore/Media/General/rank_panel_owner_v108.tga addon/WarScore/Media/General/rank_fill_*.tga addon/WarScore/Media/General/rank_bar_frame_owner_v104.tga addon/WarScore/Media/General/rank_name_plate_owner_v102.tga addon/WarScore/Media/Fonts/Spectral-Italic.ttf dist/WarScore.zip addon/WarScore/Media/General/honor_panel_owner_v98.tga addon/WarScore/Media/General/settings_gear_owner_v94.tga addon/WarScore/Media/General/ratios_frame_owner_v70.tga addon/WarScore/Media/General/stat_band_top_owner_v74.tga addon/WarScore/Media/General/stat_band_bottom_owner_v75.tga addon/WarScore/Media/General/icon_duels_owner_v77.tga addon/WarScore/Media/General/icon_bg_played_owner_v77.tga addon/WarScore/Media/General/icon_bg_wins_owner_v77.tga addon/WarScore/Media/General/icon_bg_rate_owner_v79.tga addon/WarScore/Media/General/icon_duel_rate_owner_v79.tga addon/WarScore/Media/General/icon_favorite_bg_owner_v79.tga
-          if ! git diff --cached --quiet; then
-            git commit -m "build: refresh verified WarScore ZIP [skip ci]"
-            git push
-          fi

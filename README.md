@@ -65,18 +65,19 @@ The addon does **not require a website, account, external database, or remote sy
 
 ## Installation
 
-1. **[Download the installable WarScore.zip](https://github.com/hectoresen/WarScore/raw/refs/heads/main/dist/WarScore.zip)**.
-2. Extract the ZIP into your WoW Forever addon directory:
+The ready-to-install addon lives in [`addon/WarScore/`](addon/WarScore/), including Lua scripts, the `.toc` manifest, textures and fonts. No build step is needed when installing directly from source.
+
+1. Download the addon source from the [`addon/WarScore/` folder](addon/WarScore/) (or clone/download the repository) and copy the **WarScore** directory into:
    ```text
    World of Warcraft/_forever_/Interface/AddOns/
    ```
-3. Ensure the installation contains:
+2. Ensure this exact file exists:
    ```text
    Interface/AddOns/WarScore/WarScore.toc
    ```
-4. Enable WarScore in the game's AddOns menu. Run `/reload` if the game is already open, then type `/ws` or use the minimap button.
+3. Enable WarScore in the game's AddOns menu, run `/reload` if necessary, then use `/ws` or the minimap button.
 
-**Important:** download the installable ZIP above, not GitHub's automatically generated **Source code** archive. Developers can alternatively copy the [`addon/WarScore/`](addon/WarScore/) folder.
+**For published versions:** installable ZIP downloads will be available under [GitHub Releases](https://github.com/hectoresen/WarScore/releases). The repository source folder remains the canonical development source; development builds do not automatically produce ZIPs.
 
 ## Commands
 
