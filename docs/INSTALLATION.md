@@ -1,16 +1,26 @@
-# Instalación y verificación de WarScore
+# Instalación y comprobación — WarScore
 
-Descarga [el ZIP instalable](https://github.com/hectoresen/WarScore/raw/refs/heads/main/dist/WarScore.zip), no el archivo de código fuente que GitHub ofrece automáticamente.
+## Para jugadores
 
-Descomprime en `World of Warcraft/_forever_/Interface/AddOns/` hasta obtener **`Interface/AddOns/WarScore/WarScore.toc`**. El ZIP ya contiene la carpeta `WarScore/`; evita una doble carpeta.
+1. Descarga **[WarScore.zip](https://github.com/hectoresen/WarScore/raw/refs/heads/main/dist/WarScore.zip)**, no el ZIP automático del código fuente de GitHub.
+2. Extrae el contenido en `World of Warcraft/_forever_/Interface/AddOns/`.
+3. Comprueba que existe `Interface/AddOns/WarScore/WarScore.toc`. El ZIP ya incluye `WarScore/`: evita crear `WarScore/WarScore/`.
+4. Activa el addon en WoW Forever y ejecuta `/reload` si ya estás dentro del juego.
+5. Abre el panel con `/ws` o el botón del minimapa.
 
-Si trabajas desde el repositorio, copia **`addon/WarScore/`** a `Interface/AddOns/`. Sobrescribe la versión anterior.
+## Comprobación rápida
 
-## Prueba
-1. Activa WarScore en los addons del cliente.
-2. Ejecuta `/reload`, `/ws version` (iteración UI 83 tras la reorganización) y `/ws`.
-3. Comprueba retrato, marcos, métricas y dos filas de tarjetas sin errores Lua.
-4. Comprueba `/wsdiag` si necesitas inspeccionar el acceso a datos.
-5. Usa una captura real para confirmar alineación. Build correcto y aspecto aceptado son evidencias distintas.
+- General muestra el retrato, nombre, nivel y estadísticas PvP disponibles sin errores Lua.
+- Compara muertes con honor, muertes PvP y honor con las pantallas nativas correspondientes de WoW Forever.
+- Haz clic en el botón del minimapa, arrástralo y comprueba su posición tras `/reload`.
+- Abre Ajustes y cambia entre español e inglés; comprueba que se mantiene tras recargar.
+- Verifica el botón cerrar y el retorno de Ajustes a General.
 
-**Advertencia:** la pestaña Hoy no está implementada como vista de día natural; KB/D y rango PvP carecen de fuente fiable.
+Si alguna API no devuelve datos, WarScore no debe presentar cifras inventadas. La pestaña **Estadísticas** es una funcionalidad prevista, todavía no implementada.
+
+## Para colaboradores
+
+- Copia `addon/WarScore/` directamente desde un clon o genera el ZIP con `python3 tools/package_addon.py`.
+- `/ws version` muestra la iteración visual; `/wsdiag` ofrece diagnósticos de APIs.
+- Las pruebas de empaquetado o sintaxis **no sustituyen** la validación visual y de datos dentro del cliente.
+- Ver [desarrollo](DEVELOPMENT.md), [contrato PvP](PVP_STATISTICS.md) y [OpenSpec](../openspec/README.md).
