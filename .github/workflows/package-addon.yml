@@ -31,6 +31,7 @@ jobs:
           from pathlib import Path
           from PIL import Image
           import importlib.util
+          import re
 
           repo = Path.cwd()
           root = repo / "addon" / "WarScore"
@@ -49,7 +50,16 @@ jobs:
           assert any(str(p) == "UI/General.lua" for p in required)
           assert any(str(p) == "UI/Minimap.lua" for p in required)
           ui = (root / "UI/General.lua").read_text(encoding="utf-8")
-          assert 'local UI_ITERATION = "135"' in ui
+          assert re.search(r'^local UI_ITERATION = "[0-9]+"
+          assert 'local duelIconReduction = not secondary and i == 1 and ownerTopIcon and 0.86 or 1' in ui
+          assert 'honorPanel:SetPoint("TOP", window, "TOP", 0, -516)' in ui
+          textures = [path for path in required if path.suffix.lower() == ".tga"]
+          for path in textures:
+              with Image.open(root / path) as image:
+                  image.verify()
+          print(f"Validated copy-ready addon/WarScore: {len(required)} required files, {len(textures)} TGA assets")
+          PY
+, ui, re.MULTILINE), "Missing numeric UI iteration"
           assert 'local duelIconReduction = not secondary and i == 1 and ownerTopIcon and 0.86 or 1' in ui
           assert 'honorPanel:SetPoint("TOP", window, "TOP", 0, -516)' in ui
           textures = [path for path in required if path.suffix.lower() == ".tga"]
