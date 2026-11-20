@@ -1,23 +1,44 @@
-# WarScore — lightweight OpenSpec workflow
+# OpenSpec en WarScore
 
-Adapted from `hectoresen/CraftAtlas` **after inspecting** its `AGENTS.md`, `openspec/config.yaml`, `openspec/README.md` and documentation-sync skill. This repo deliberately **does not** adopt CraftAtlas's two-PR enforcement, rulesets, CI status requirements, strict branch conventions, approval provenance validator or release governance.
+Este directorio gestiona el diseño y seguimiento verificable de cambios. **No es un changelog automático ni un lugar donde mover documentación retrospectiva sin validación.** Las especificaciones consolidadas viven en `openspec/specs/`; los cambios activos, en `openspec/changes/`; los aceptados y archivados, en `openspec/changes/archive/`.
 
-## Lifecycle
-1. **Explore**: read AGENTS.md, README.md, relevant source, docs/PVP_STATISTICS.md, docs/GENERAL_VIEW.md and docs/GENERAL_VISUAL_SPEC.md.
-2. **Propose**: create `openspec/changes/<id>/proposal.md`, `design.md`, `specs/<capability>/spec.md`, `tasks.md`.
-3. **Owner approval gate**: show proposal and open decisions; wait for explicit approval before changing behavior/UI.
-4. **Apply**: implement approved scenarios in small steps; use current client APIs and local assets.
-5. **Verify**: automated checks plus in-game screenshots/observations. `NOT RUN` is not `PASS`.
-6. **Sync and close**: run `skills/documentation-sync/SKILL.md`, reconcile specs/docs, then archive accepted changes if useful. Do not archive unverified work.
+## Flujo estricto con CLI
 
-The official OpenSpec CLI is optional until installed/configured locally; its generated commands depend on the installed profile. Do not claim a CLI command was run merely because these files exist. Example CLI sequence (after installing a supported Node version and `@fission-ai/openspec`): `openspec init`, `openspec list`, `openspec validate --all --strict --no-interactive` (confirm actual CLI help).
+Requisitos: Node.js compatible y `@fission-ai/openspec` instalado. Ejecutar desde la raíz del repositorio. Antes de actuar, consultar `openspec --help` y la ayuda de cada subcomando de la versión instalada.
 
-## First proposed change
-`feat001-general-pvp-dashboard`: original proposal with implementation history. General is implemented, with in-client visual iteration through v83; task closure and complete API acceptance are separate. Check actual source and `docs/DEVELOPMENT_HANDOFF.md` before declaring acceptance.
+```bash
+# Preparar herramienta (una vez por entorno)
+npm install -g @fission-ai/openspec@latest
+openspec --version
+openspec list
 
-## Sources of truth
-- Implemented behavior: code + README.
-- Proposed behavior: pending change under `openspec/changes/`.
-- Historical statistics contract: `docs/PVP_STATISTICS.md`.
-- UI target: `docs/GENERAL_VISUAL_SPEC.md`, `docs/GENERAL_VIEW.md`.
-- Evidence: actual in-client diagnostics and screenshots, not mockup numbers.
+# Para un cambio nuevo
+openspec new change <nombre>
+openspec status --change <nombre>
+# Crear/editar proposal.md, design.md, specs/<capacidad>/spec.md y tasks.md
+openspec validate <nombre> --strict
+
+# Tras implementación, pruebas y aceptación documentadas
+openspec archive <nombre> --yes
+openspec validate --all --strict
+```
+
+La sintaxis y las opciones deben confirmarse en la versión instalada; **no declarar un paso PASS sin ejecutarlo**. El archivado oficial valida las specs, las integra en `openspec/specs/` y mueve la carpeta a `openspec/changes/archive/`. No trasladar manualmente a `archive/` y no usar `--no-validate` para forzar el cierre.
+
+## Criterios de aprobación y cierre
+
+1. **Explore:** revisar `AGENTS.md`, implementación y evidencia real.
+2. **Propose:** requisitos comprobables, límites y escenarios; detenerse a esperar aprobación del propietario.
+3. **Apply:** implementar solo lo aprobado.
+4. **Verify:** pruebas estáticas y en WoW Forever cuando corresponda. Documentar PASS/FAIL/NOT RUN; el código implementado no demuestra por sí solo aceptación en cliente.
+5. **Sync:** comparar la implementación con requisitos, actualizar README/docs y registrar resultados en `tasks.md`.
+6. **Archive:** ejecutar CLI únicamente si la propuesta está aceptada y las comprobaciones exigidas están cerradas, indicando cualquier excepción expresamente aprobada.
+
+## Estado de los cambios heredados
+
+- `feat001-general-pvp-dashboard`: implementación y muchas iteraciones visuales registradas, pero el `tasks.md` conserva verificaciones pendientes y la spec incluye decisiones antiguas. Reconciliar con el código y conseguir aceptación explícita antes de archivar.
+- `feat002-localization`: español/inglés implementados, pero su checklist mantiene prueba manual pendiente. Validar con el cliente y registrar aceptación antes de archivar.
+
+**No renombrar ni archivar estos cambios automáticamente** hasta comprobarlos. Un cierre retroactivo debe decir expresamente qué evidencia histórica se ha revisado y qué no se puede demostrar.
+
+Más detalles técnicos: [documentación de OpenSpec](https://github.com/Fission-AI/OpenSpec/blob/main/docs/cli.md). <https://github.com/Fission-AI/OpenSpec>
