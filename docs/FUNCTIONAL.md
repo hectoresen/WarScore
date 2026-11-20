@@ -1,36 +1,50 @@
-# Funcionalidad actual — WarScore
+# WarScore — funcionalidad implementada
 
-**Corte:** 19/11/2026; versión actual de UI: **v128**. Fuentes: `addon/WarScore/Core/Stats.lua`, `UI/General.lua` y [contrato PvP](PVP_STATISTICS.md).
+> Referencia funcional a fecha **20/11/2026**. Para el estado exacto, consultar siempre `addon/WarScore/`. Este documento describe lo implementado, no equivale a aceptación de todas las combinaciones de cliente.
 
-## Implementado
-- Comandos públicos: `/ws` abre General, `/ws version` muestra la versión, `/ws lang en|es` cambia el idioma y `/ws settings` abre Ajustes. `/warscore` se conserva como alias compatible de `/ws`.
-- `/wsdiag` se conserva como comando técnico separado para validar APIs y estadísticas dentro del cliente.
-- La vista incluye General y Ajustes; Hoy todavía no tiene contenido funcional.
-- Retrato, nombre, nivel y clase del personaje activo; ornamentos de facción, con arte de Horda y fallback para Alianza.
-- Muertes con honor, **honor actual gastable** (API `UnitHonor("player")`), muertes sufridas por otros jugadores y ratio HK/D histórico cuando la API dispone de cifras.
-- Duelos ganados, BG jugados, BG ganados, porcentajes de victoria calculados con denominadores válidos y campo de batalla favorito por partidas; empates explícitos.
-- Dos filas de tarjetas con assets ornamentales, iconos y cifras dinámicas.
-- `/ws version` (iteración de UI; independiente del campo `Version: 0.1.0` del manifiesto), `/ws lang en|es`, `/ws settings` y diagnósticos técnicos `/wsdiag`.
+## General
 
-## No disponibles deliberadamente
-- **KB/D**: retirado de la pantalla General por no existir una fuente confirmada de golpes de gracia *exclusivamente PvP*. El ID 1487 es de categoría general y no se utiliza.
-- **Rango PvP**: fuente confirmada en `C_MajorFactions.GetMajorFactionProgressionInfo(2800)`; la UI muestra rango y Rank Points cuando la API responde, con «No disponible» solo como fallback.
-- Valores desconocidos no se sustituyen por datos ficticios; la normalización a cero de duelos vacíos es un caso específico contrastado.
+WarScore abre una ventana nativa desplazable y muestra el personaje activo (retrato, nombre, clase y nivel).
 
-## Pendiente
-- Vista Hoy con día natural y snapshots parciales correctamente etiquetados.
-- Navegación real multipersonaje y separación de datos actuales frente a cacheados.
-- Historial de enfrentamientos, rivales por clase/facción, rachas y sesiones.
-- Validación positiva de BG/duelos y semántica de rango/KB en el cliente.
+| Datos presentados | Origen / interpretación |
+| --- | --- |
+| Muertes con honor (HK) | Histórico proporcionado por las estadísticas nativas de Forever. |
+| Muertes PvP sufridas | Contador histórico de muertes causadas por otros jugadores. |
+| Ratio HK/D | HK totales divididas por muertes PvP sufridas; no se calcula con denominador inválido. |
+| Honor | **Saldo actual** de la moneda de honor de Forever (no honor histórico ganado); cantidad y máximo cuando están disponibles. |
+| Rango PvP y puntos de rango | Progresión nativa de rango de Forever; rango actual, siguiente rango y puntos hacia el siguiente. |
+| Duelos | Victorias y porcentaje de victorias, cuando hay datos utilizables. |
+| Campos de batalla | Partidas jugadas, victorias, porcentaje de victorias y campo favorito por partidas jugadas. |
 
-Las capturas de la v83 y anteriores confirman el trabajo visual, **no** constituyen una certificación integral de APIs o clientes.
+No hay un contador fiable confirmado de **golpes de gracia exclusivamente PvP** para mostrar KB/D. La interfaz no inventa estadísticas históricas cuando la API carece de datos. Algunos valores desconocidos se presentan de manera neutra; los criterios exactos están en [PVP_STATISTICS.md](PVP_STATISTICS.md).
 
+## Navegación y preferencias
 
-## Cambio de distribución — UI v89 (2026-11-18)
+- Acceso desde `/ws`, `/warscore` o **icono en el minimapa**.
+- Icono arrastrable alrededor del minimapa, con posición guardada en las preferencias locales; clic izquierdo para mostrar/ocultar.
+- **Ajustes** desde el engranaje o `/ws settings`.
+- Cambio entre **español e inglés**, desde Ajustes o `/ws lang es` / `/ws lang en`, con persistencia tras `/reload`.
+- Estilo visual **Classic Forever** actualmente fijo; otros estilos no están implementados.
+- Pestaña **Estadísticas** visible como marcador de futura funcionalidad avanzada.
 
-La sección central muestra **HONOR** (actual, no histórico, obtenido con `UnitHonor("player")`) en dorado; la columna derecha del marco de ratios, donde antes aparecía KB/D, muestra **MUERTES PvP SUFRIDAS** en rojo con el valor de `GetStatistic(1501)`. La fórmula HK/D se conserva y todas las demás tarjetas permanecen intactas. Validación visual en cliente pendiente.
+## Origen, persistencia y compatibilidad
 
+Los datos de rendimiento se consultan en APIs nativas de **WoW Forever 1.60.1 (Interface 16001)**. Las cifras históricas proceden del cliente, no de contadores acumulados desde la instalación del addon. Al abrir la vista General, se consultan nuevamente. No necesita servidores o servicios web; `WarScoreDB` guarda preferencias locales.
 
-## Corrección del saldo de honor — UI v93 (2026-11-18)
+Para IDs, pruebas y limitaciones: [PVP_STATISTICS.md](PVP_STATISTICS.md). Para propuestas de las futuras pestañas: [PVP_DATA_CATALOG.md](PVP_DATA_CATALOG.md).
 
-General muestra `HONOR` como `cantidad / máximo`, leyendo la moneda **1792** mediante la lista `C_CurrencyInfo.GetCurrencyListInfo(index)` y comprobación de ID. Ejemplo probado por diagnósticos: `252 / 25.000`. Ya no usa `UnitHonor`, porque devolvía 0 en el mismo personaje. Cuando no está disponible muestra `—`. Se conserva el carácter de saldo actual, no histórico. También se restaura el botón de cierre v90 y se recoloca el único engranaje justo debajo de la X.
+## Comandos
+
+| Comando | Comportamiento |
+| --- | --- |
+| `/ws` o `/warscore` | Abre General. |
+| `/ws settings` | Abre Ajustes. |
+| `/ws lang es` / `/ws lang en` | Cambia de idioma. |
+| `/ws version` | Informa de la iteración visual. |
+| `/wsdiag` | Inspección técnica de APIs para diagnóstico. |
+
+## Pendiente (no implementado)
+
+Estadísticas avanzadas por mundo abierto/BG, desglose por continente, historial propio de encuentros, navegación multipersonaje, y disponibilidad de métricas diarias sin snapshots. Estos elementos requieren investigación, spec y aprobación por separado.
+
+La documentación de iteraciones anteriores permanece en [DEVELOPMENT_HANDOFF.md](DEVELOPMENT_HANDOFF.md) como evidencia histórica, no como fotografía del estado actual.
