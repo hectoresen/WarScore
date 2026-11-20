@@ -4,7 +4,7 @@ ns.UI = ns.UI or {}
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
 local showGeneralView, showSettingsView
-local UI_ITERATION = "131"
+local UI_ITERATION = "132"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -470,35 +470,40 @@ local function build()
 
     fields = {}
     -- Both banners are baked into innerArt; no separate banner sprites.
+    -- v132: preserve the portrait's horizontal center and almost the same
+    -- vertical center while enlarging its canvas and adding the owner's
+    -- original bronze/gold circular ornament above the existing mask.
     local portraitRing = CreateFrame("Frame", nil, window)
-    portraitRing:SetSize(106, 106)
-    portraitRing:SetPoint("TOP", window, "TOP", 0, -168)
+    portraitRing:SetSize(118, 118)
+    portraitRing:SetPoint("TOP", window, "TOP", 0, -159)
     local portrait = portraitRing:CreateTexture(nil, "ARTWORK")
-    portrait:SetSize(90, 90)
+    portrait:SetSize(100, 100)
     portrait:SetPoint("CENTER")
     fields.portrait = portrait
-    -- Prefer a real alpha mask: it removes the square portrait corners without
-    -- painting an opaque square over the varying background.
-    -- The Forever client may not expose this API; keep the tested old overlay.
+    -- Retain the proven circular mask and classic-client fallback.
     local maskApplied = false
     if type(portraitRing.CreateMaskTexture) == "function"
         and type(portrait.AddMaskTexture) == "function" then
         local ok = pcall(function()
             local mask = portraitRing:CreateMaskTexture(nil, "ARTWORK")
             mask:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_mask")
-            mask:SetSize(90, 90)
+            mask:SetSize(100, 100)
             mask:SetPoint("CENTER", portrait, "CENTER", 0, 0)
             portrait:AddMaskTexture(mask)
         end)
         maskApplied = ok
     end
-    local ring = portraitRing:CreateTexture(nil, "OVERLAY")
-    if maskApplied then
-        ring:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring_transparent")
-    else
-        ring:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring")
+    -- Preserve the old fallback to hide square portrait corners on clients
+    -- without mask support. Avoid a second old gold border when masked.
+    if not maskApplied then
+        local legacyRing = portraitRing:CreateTexture(nil, "OVERLAY")
+        legacyRing:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring")
+        legacyRing:SetSize(118, 118)
+        legacyRing:SetPoint("CENTER", portraitRing, "CENTER", 0, 0)
     end
-    ring:SetSize(106, 106)
+    local ring = portraitRing:CreateTexture(nil, "OVERLAY")
+    ring:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_ring_owner_v132")
+    ring:SetSize(118, 118)
     ring:SetPoint("CENTER", portraitRing, "CENTER", 0, 0)
     fields.name = label(window, "—", 23, CREAM, 0, -279, 360, 32)
     fields.level = label(window, "—", 15, CREAM, 0, -310, 360, 24)
