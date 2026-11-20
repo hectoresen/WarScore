@@ -1,0 +1,22 @@
+name: "Feature request"
+description: "Propón una mejora para WarScore"
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: "¿Qué te gustaría conseguir?"
+      description: "Explica el problema y la mejora esperada."
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: "¿Cómo sabríamos que funciona?"
+      description: "Escenarios o ejemplos de aceptación."
+  - type: textarea
+    id: evidence
+    attributes:
+      label: "Compatibilidad o APIs nativas conocidas"
+      description: "Si depende de estadísticas de Forever, comparte pruebas o referencias."
