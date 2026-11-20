@@ -4,7 +4,7 @@ ns.UI = ns.UI or {}
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
 local showGeneralView, showSettingsView
-local UI_ITERATION = "133"
+local UI_ITERATION = "134"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -177,13 +177,20 @@ local function statBand(parent, y, definitions, secondary)
         local iconSize = ownerBottomIcon and (i == 1 and 47.5 or (i == 2 and 44 or 50))
             or (ownerIcon and 50 or 43)
         -- v105: harmonize icon size (-5%) while preserving band dimensions.
-        icon:SetSize(iconSize * 0.95, iconSize * 0.95)
+        -- v134: reduce ONLY the upper-left Duelos ganados swords by 2%.
+        local iconDisplaySize = iconSize * 0.95
+        local duelIconReduction = not secondary and i == 1 and ownerTopIcon and 0.98 or 1
+        icon:SetSize(iconDisplaySize * duelIconReduction, iconDisplaySize * duelIconReduction)
         -- v78: move only the crossed swords inward, clear of the left gold bevel.
         -- v81: use consistent inner clearance for the normalized lower art.
         -- Keep the owner-approved upper icon placement untouched.
         local iconInset = ownerTopIcon and (i == 1 and 24 or 10)
             or (ownerBottomIcon and (i == 1 and 16 or (i == 2 and 16 or 18)) or 8)
-        icon:SetPoint("LEFT", segment, "LEFT", iconInset + 2, ownerIcon and -5 or 1)
+        -- Offset by half the size delta so the slightly smaller swords
+        -- retain their previously approved horizontal visual center.
+        icon:SetPoint("LEFT", segment, "LEFT",
+            iconInset + 2 + (iconDisplaySize * (1 - duelIconReduction) / 2),
+            ownerIcon and -5 or 1)
         icon:SetTexCoord(0, 1, 0, 1)
         -- Owner art has real alpha; avoid circular masking and opacity reduction.
         icon:SetAlpha(ownerIcon and 1 or (secondary and 0.78 or 0.91))
