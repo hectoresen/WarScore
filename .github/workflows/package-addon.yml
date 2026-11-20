@@ -1,5 +1,5 @@
 name: Package clean WarScore addon
-# v131: localized Statistics tab and coming-soon hover, with approved UI intact.
+# v132: slightly larger player portrait and original ornamental bronze/gold ring.
 on:
   push:
     branches: [main]
@@ -31,6 +31,7 @@ jobs:
           python3 tools/prepare_settings_gear.py
           python3 tools/prepare_honor_panel.py
           python3 tools/prepare_minimap_icon.py
+          python3 tools/prepare_portrait_ring_v132.py
           python3 tools/prepare_rank_bar.py
           python3 tools/prepare_italic_font.py
           python3 tools/package_addon.py
@@ -63,6 +64,21 @@ jobs:
                   f"Version mismatch: ZIP={archive_version.group(1)}, source={source_version.group(1)}"
               )
               assert runtime_ui == source_ui, "ZIP includes stale UI/General.lua"
+              # v132: original user ring replaces the visible portrait border;
+              # it has an alpha-transparent center so the unit portrait shows.
+              portrait_ring_path = "WarScore/Media/General/portrait_ring_owner_v132.tga"
+              assert portrait_ring_path in names
+              assert 'ring:SetTexture("Interface\\\\AddOns\\\\WarScore\\\\Media\\\\General\\\\portrait_ring_owner_v132")' in runtime_ui
+              assert 'portraitRing:SetSize(118, 118)' in runtime_ui
+              assert 'portrait:SetSize(100, 100)' in runtime_ui
+              import io
+              from PIL import Image
+              with Image.open(io.BytesIO(z.read(portrait_ring_path))) as art:
+                  rgba = art.convert("RGBA")
+                  assert rgba.size == (128, 128)
+                  assert rgba.getpixel((64, 64))[3] == 0, "Ring must have transparent center"
+                  assert rgba.getchannel("A").getbbox(), "Ring artwork is blank"
+              print("Verified v132 portrait ring, transparent center and larger character portrait")
               assert 'settingsFrame:SetPoint("TOPRIGHT", window, "TOPRIGHT", -62.5, -83)' in runtime_ui, "Unexpected gear position"
               # v116: assert the three independent authored ornaments really
               # ship in the installable ZIP and retain visible alpha content.
@@ -92,7 +108,7 @@ jobs:
               # shipping or drawing the mismatched Settings replacement image.
               assert "WarScore/Media/General/inner_frame_owner_v64.tga" in names
               assert "WarScore/Media/General/settings_inner_frame_owner_v122.tga" not in names
-              assert archive_version.group(1) == "131", "Expected v131 in the clean ZIP"
+              assert archive_version.group(1) == "132", "Expected v132 in the clean ZIP"
               assert '[innerArt] = true' in runtime_ui
               assert 'settings_inner_frame_owner_v122' not in runtime_ui
               assert 'settingsTab:SetPoint("TOPLEFT", settingsPage, "TOPLEFT", 193, -102)' in runtime_ui
@@ -154,6 +170,7 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add addon/WarScore/Media/General/portrait_ring_owner_v132.tga
           git add addon/WarScore/Media/Minimap/warscore_icon_owner_v126.tga
           git add addon/WarScore/Media/General/honor_frame_owner_v120.tga
           git add addon/WarScore/Media/General/rank_label_current_owner_v115.tga addon/WarScore/Media/General/rank_label_next_owner_v115.tga addon/WarScore/Media/General/rank_divider_advance_owner_v115.tga
