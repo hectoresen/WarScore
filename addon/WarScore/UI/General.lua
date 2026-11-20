@@ -4,6 +4,7 @@ ns.UI = ns.UI or {}
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
 local showGeneralView, showSettingsView
+local simpleGeneral
 -- 100% is the owner-approved compact window scale.
 local BASE_WINDOW_SCALE = 0.7179
 local UI_SCALE_OPTIONS = { 75, 100, 125 }
@@ -365,6 +366,18 @@ local function refresh()
     else
         fields.favorite:SetText("—")
         fields.favoritePlayed:SetText("")
+    end
+    -- Both renderers consume the values formatted by this single native refresh.
+    -- No second GetStatistic/ReadHistorical call is introduced for Simple.
+    if simpleGeneral then
+        local keys = {
+            "name", "level", "rank", "rankFrom", "rankTo", "rankPoints",
+            "hk", "honor", "hkd", "deaths", "duels", "bgPlayed",
+            "bgWon", "bgRate", "duelRate", "favorite", "favoritePlayed",
+        }
+        local model = {}
+        for _, key in ipairs(keys) do model[key] = fields[key]:GetText() end
+        simpleGeneral:Refresh(model)
     end
 end
 
@@ -871,48 +884,60 @@ local function build()
     styleDropdown:SetPoint("TOP", styleRow, "TOP", -17, -32)
     UIDropDownMenu_SetWidth(styleDropdown, 210)
     styleDropdown:SetScale(1.4)
+    local function updateStyleSelection()
+        local style = ns.UI.StyleRegistry.Current()
+        UIDropDownMenu_SetSelectedValue(styleDropdown, style.id)
+        UIDropDownMenu_SetText(styleDropdown, text(style.labelKey))
+    end
     UIDropDownMenu_Initialize(styleDropdown, function(_, level)
         if level and level ~= 1 then return end
-        local info = UIDropDownMenu_CreateInfo()
-        info.text = "Classic Forever"
-        info.value = "classic-forever"
-        info.checked = true
-        info.disabled = true
-        UIDropDownMenu_AddButton(info, level or 1)
+        local current = ns.UI.StyleRegistry.Current().id
+        for _, style in ipairs(ns.UI.StyleRegistry.List()) do
+            local selected = style
+            local info = UIDropDownMenu_CreateInfo()
+            info.text = text(selected.labelKey)
+            info.value = selected.id
+            info.checked = selected.id == current
+            info.func = function()
+                if ns.UI.StyleRegistry.Set(selected.id) then
+                    updateStyleSelection()
+                    -- The selected renderer is already built, and will be
+                    -- shown on Back without UI reload or duplicated frames.
+                    if simpleGeneral then refresh() end
+                end
+            end
+            UIDropDownMenu_AddButton(info, level or 1)
+        end
     end)
-    UIDropDownMenu_SetSelectedValue(styleDropdown, "classic-forever")
-    UIDropDownMenu_SetText(styleDropdown, "Classic Forever")
-    -- v125: WoW Forever does not expose UIDropDownMenu_Disable.
-    -- Disable the actual native arrow button, which is always present on
-    -- UIDropDownMenuTemplate (also verified by the in-game error report).
-    -- Keep the selected style visible but prevent opening/changing it.
-    if styleDropdown.Button then
-        styleDropdown.Button:Disable()
-        styleDropdown.Button:SetAlpha(0.45)
-    end
-    styleDropdown:EnableMouse(false)
-    local styleHint = label(styleRow, text("settings_style_unavailable"), 12, CREAM, 0, -91, 370, 20)
-    styleHint:SetTextColor(0.58, 0.53, 0.47)
+    updateStyleSelection()
 
     local function updateSettingsLanguage()
         sectionTitle:SetText(text("settings_section"))
         languageTitle:SetText(text("settings_language"))
         scaleTitle:SetText(text("settings_ui_scale"))
         styleTitle:SetText(text("settings_visual_style"))
-        styleHint:SetText(text("settings_style_unavailable"))
+        updateStyleSelection()
         local current = ns.L:GetLanguage()
         UIDropDownMenu_SetSelectedValue(languageDropdown, current)
         UIDropDownMenu_SetText(languageDropdown, current == "en" and "English" or "Español")
     end
     updateSettingsLanguage()
 
+    -- Built after the legacy General object snapshot: the Simple renderer
+    -- does not enter the Classic visibility group or duplicate Settings.
+    simpleGeneral = ns.UI.CreateSimpleGeneral(window)
     showGeneralView = function()
         settingsPage:Hide()
-        for _, object in ipairs(generalObjects) do object:Show() end
+        local useSimple = ns.UI.StyleRegistry.Current().id == "classic-forever-simple"
+        for _, object in ipairs(generalObjects) do
+            if useSimple then object:Hide() else object:Show() end
+        end
+        if useSimple then simpleGeneral:Show() else simpleGeneral:Hide() end
         refresh()
     end
     showSettingsView = function()
         for _, object in ipairs(generalObjects) do object:Hide() end
+        simpleGeneral:Hide()
         settingsPage:Show()
         -- Keep the shared close X and clickable gear above Settings artwork.
         close:SetFrameLevel(window:GetFrameLevel() + 10)
