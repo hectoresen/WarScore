@@ -1,0 +1,122 @@
+name: Publish WarScore Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      increment:
+        description: "Select version bump (first release is v0.1.0)"
+        required: true
+        default: patch
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+permissions:
+  contents: read
+
+concurrency:
+  group: warscore-manual-releases
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    if: >-
+      github.repository == 'hectoresen/WarScore' &&
+      github.ref == 'refs/heads/main' &&
+      github.actor == 'hectoresen' &&
+      github.triggering_actor == 'hectoresen'
+    runs-on: ubuntu-latest
+    outputs:
+      main_sha: ${{ steps.source.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Capture immutable source revision
+        id: source
+        shell: bash
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Install Lua 5.1
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lua5.1
+      - name: Validate repository, OpenSpec, Lua and release packaging
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tests/validate_repository.py
+          python3 tests/validate_openspec.py
+          find addon/WarScore -type f -name '*.lua' -exec luac5.1 -p {} +
+          lua5.1 tests/stats_test.lua
+          python3 -m unittest discover -s tests -p 'test_release_package.py' -v
+
+  publish:
+    needs: validate
+    if: >-
+      github.repository == 'hectoresen/WarScore' &&
+      github.ref == 'refs/heads/main' &&
+      github.actor == 'hectoresen' &&
+      github.triggering_actor == 'hectoresen'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.validate.outputs.main_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Revalidate target is still main
+        shell: bash
+        env:
+          VALIDATED_SHA: ${{ needs.validate.outputs.main_sha }}
+        run: |
+          set -euo pipefail
+          git fetch origin main --tags --force
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          test "$(git rev-parse origin/main)" = "$VALIDATED_SHA"
+      - name: Select semantic version from existing tags
+        id: version
+        env:
+          INCREMENT: ${{ inputs.increment }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git tag --list > "$RUNNER_TEMP/warscore-tags.txt"
+          VERSION="$(python3 scripts/release_warscore.py --bump "$INCREMENT" --tags-file "$RUNNER_TEMP/warscore-tags.txt")"
+          TAG="v$VERSION"
+          if git rev-parse --verify --quiet "refs/tags/$TAG" >/dev/null; then
+            echo "::error::Release tag already exists: $TAG"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+      - name: Assemble and verify standalone addon ZIP
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/release_warscore.py --version "$VERSION" --output "WarScore-v$VERSION.zip"
+          unzip -t "WarScore-v$VERSION.zip"
+          unzip -Z1 "WarScore-v$VERSION.zip" | grep -Fx 'WarScore/WarScore.toc'
+      - name: Publish release (owner initiated only)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+          VALIDATED_SHA: ${{ needs.validate.outputs.main_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "::error::Release already exists: $TAG"
+            exit 1
+          fi
+          ARGS=(--target "$VALIDATED_SHA" --title "WarScore $TAG" --generate-notes)
+          if [[ "${VERSION%%.*}" == "0" ]]; then
+            ARGS+=(--prerelease)
+          fi
+          gh release create "$TAG" "WarScore-v$VERSION.zip" "${ARGS[@]}"

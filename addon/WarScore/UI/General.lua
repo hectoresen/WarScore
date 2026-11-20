@@ -4,7 +4,19 @@ ns.UI = ns.UI or {}
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
 local showGeneralView, showSettingsView
-local UI_ITERATION = "135"
+-- 100% is the owner-approved compact window scale.
+local BASE_WINDOW_SCALE = 0.7179
+local UI_SCALE_OPTIONS = { 75, 100, 125 }
+
+local function getUIScalePercent()
+    local settings = type(WarScoreDB) == "table" and WarScoreDB.settings
+    local percent = type(settings) == "table" and settings.uiScale or nil
+    for _, option in ipairs(UI_SCALE_OPTIONS) do
+        if percent == option then return option end
+    end
+    return 100
+end
+
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -358,8 +370,12 @@ end
 
 local function build()
     window = CreateFrame("Frame", "WarScoreGeneralFrame", UIParent, "BackdropTemplate")
+    -- Let the native WoW Escape handler close the addon from any view.
+    tinsert(UISpecialFrames, "WarScoreGeneralFrame")
     window:SetSize(870, 1105)
-    window:SetScale(0.86)
+    -- Canonical 100% window size for any future user-adjustable UI scale.
+    -- Scale child frames uniformly; preserve their approved anchors and artwork.
+    window:SetScale(BASE_WINDOW_SCALE * getUIScalePercent() / 100)
     window:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
     window:SetFrameStrata("DIALOG")
     window:SetMovable(true)
@@ -416,6 +432,12 @@ local function build()
     close:SetSize(43, 43)
     close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -48, -28)
     close:SetScript("OnClick", function() window:Hide() end)
+    close:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText(text("close_warscore"), 1, 0.82, 0.40)
+        GameTooltip:Show()
+    end)
+    close:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
     -- The supplied graphic already paints both tab plates; only live text
     -- and hitboxes are needed. Their placement follows the asset's geometry.
@@ -790,6 +812,7 @@ local function build()
     local languageDropdown = CreateFrame("Frame", "WarScoreSettingsLanguageDropdown", languageRow, "UIDropDownMenuTemplate")
     languageDropdown:SetPoint("TOP", languageRow, "TOP", -17, -32)
     UIDropDownMenu_SetWidth(languageDropdown, 210)
+    languageDropdown:SetScale(1.4)
 
     -- Same translation service as '/ws lang es' and '/ws lang en'. Its
     -- listeners update all General copies and Settings captions in place.
@@ -813,10 +836,41 @@ local function build()
         end
     end)
 
-    local styleRow, styleTitle = addSettingsRow("settings_visual_style", -199)
+    local scaleRow, scaleTitle = addSettingsRow("settings_ui_scale", -199)
+    local scaleDropdown = CreateFrame("Frame", "WarScoreSettingsScaleDropdown", scaleRow, "UIDropDownMenuTemplate")
+    scaleDropdown:SetPoint("TOP", scaleRow, "TOP", -17, -32)
+    UIDropDownMenu_SetWidth(scaleDropdown, 210)
+    scaleDropdown:SetScale(1.4)
+    UIDropDownMenu_Initialize(scaleDropdown, function(_, level)
+        if level and level ~= 1 then return end
+        local current = getUIScalePercent()
+        for _, percent in ipairs(UI_SCALE_OPTIONS) do
+            local selection = percent
+            local info = UIDropDownMenu_CreateInfo()
+            info.text = selection .. "%"
+            info.value = selection
+            info.checked = current == selection
+            info.func = function()
+                WarScoreDB = WarScoreDB or {}
+                WarScoreDB.settings = WarScoreDB.settings or {}
+                WarScoreDB.settings.uiScale = selection
+                window:SetScale(BASE_WINDOW_SCALE * selection / 100)
+                UIDropDownMenu_SetSelectedValue(scaleDropdown, selection)
+                UIDropDownMenu_SetText(scaleDropdown, selection .. "%")
+            end
+            UIDropDownMenu_AddButton(info, level or 1)
+        end
+    end)
+    local selectedScale = getUIScalePercent()
+    UIDropDownMenu_SetSelectedValue(scaleDropdown, selectedScale)
+    UIDropDownMenu_SetText(scaleDropdown, selectedScale .. "%")
+
+    -- Shift only the visual-style row below the new scale control.
+    local styleRow, styleTitle = addSettingsRow("settings_visual_style", -331)
     local styleDropdown = CreateFrame("Frame", "WarScoreSettingsStyleDropdown", styleRow, "UIDropDownMenuTemplate")
     styleDropdown:SetPoint("TOP", styleRow, "TOP", -17, -32)
     UIDropDownMenu_SetWidth(styleDropdown, 210)
+    styleDropdown:SetScale(1.4)
     UIDropDownMenu_Initialize(styleDropdown, function(_, level)
         if level and level ~= 1 then return end
         local info = UIDropDownMenu_CreateInfo()
@@ -843,6 +897,7 @@ local function build()
     local function updateSettingsLanguage()
         sectionTitle:SetText(text("settings_section"))
         languageTitle:SetText(text("settings_language"))
+        scaleTitle:SetText(text("settings_ui_scale"))
         styleTitle:SetText(text("settings_visual_style"))
         styleHint:SetText(text("settings_style_unavailable"))
         local current = ns.L:GetLanguage()
@@ -923,7 +978,8 @@ SlashCmdList.WARSCORE = function(message)
     end
     if command and command:lower() == "version" then
         if DEFAULT_CHAT_FRAME then
-            DEFAULT_CHAT_FRAME:AddMessage("|cffffc34dWarScore|r UI iteración " .. UI_ITERATION)
+            local version = GetAddOnMetadata(ns.addonName or "WarScore", "Version") or "unknown"
+            DEFAULT_CHAT_FRAME:AddMessage("|cffffc34dWarScore|r v" .. version)
         end
         return
     end

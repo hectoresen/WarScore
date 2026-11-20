@@ -1,26 +1,30 @@
-# Instalación y comprobación — WarScore
+# Installation and verification — WarScore
 
-## Para jugadores
+## For players
 
-1. Descarga **[WarScore.zip](https://github.com/hectoresen/WarScore/raw/refs/heads/main/dist/WarScore.zip)**, no el ZIP automático del código fuente de GitHub.
-2. Extrae el contenido en `World of Warcraft/_forever_/Interface/AddOns/`.
-3. Comprueba que existe `Interface/AddOns/WarScore/WarScore.toc`. El ZIP ya incluye `WarScore/`: evita crear `WarScore/WarScore/`.
-4. Activa el addon en WoW Forever y ejecuta `/reload` si ya estás dentro del juego.
-5. Abre el panel con `/ws` o el botón del minimapa.
+1. Open [WarScore Releases](https://github.com/hectoresen/WarScore/releases) and download the latest `WarScore-vX.Y.Z.zip` file attached to a published release (when available).
+2. Extract the ZIP directly into `World of Warcraft/_forever_/Interface/AddOns/`. The archive already has a single `WarScore/` root.
+3. Verify that `Interface/AddOns/WarScore/WarScore.toc` exists. Do not end up with `WarScore/WarScore/`.
+4. Enable WarScore in WoW Forever, use `/reload` if necessary, then open with `/ws` or the minimap button.
 
-## Comprobación rápida
+To test unreleased development code, copy the [`addon/WarScore/`](../addon/WarScore/) folder instead. Do **not** download the automatically generated GitHub **Source code** ZIP as an installable release.
 
-- General muestra el retrato, nombre, nivel y estadísticas PvP disponibles sin errores Lua.
-- Compara muertes con honor, muertes PvP y honor con las pantallas nativas correspondientes de WoW Forever.
-- Haz clic en el botón del minimapa, arrástralo y comprueba su posición tras `/reload`.
-- Abre Ajustes y cambia entre español e inglés; comprueba que se mantiene tras recargar.
-- Verifica el botón cerrar y el retorno de Ajustes a General.
+## Quick in-game checks
 
-Si alguna API no devuelve datos, WarScore no debe presentar cifras inventadas. La pestaña **Estadísticas** es una funcionalidad prevista, todavía no implementada.
+- General shows the character portrait, level, PvP statistics and rank information without Lua errors.
+- Compare honorable kills, PvP deaths and honor against the corresponding native WoW Forever views.
+- Open and drag the minimap button, then verify its saved position after `/reload`.
+- Switch languages in Settings and verify persistence after reload.
+- Check Close and Back from Settings to General.
 
-## Para colaboradores
+Unknown native statistics must not be presented as fabricated numbers. The advanced **Statistics** tab is not implemented yet.
 
-- Copia `addon/WarScore/` directamente desde un clon o genera el ZIP con `python3 tools/package_addon.py`.
-- `/ws version` muestra la iteración visual; `/wsdiag` ofrece diagnósticos de APIs.
-- Las pruebas de empaquetado o sintaxis **no sustituyen** la validación visual y de datos dentro del cliente.
-- Ver [desarrollo](DEVELOPMENT.md), [contrato PvP](PVP_STATISTICS.md) y [OpenSpec](../openspec/README.md).
+## For contributors and maintainers
+
+- Work directly in `addon/WarScore/` and use PRs; the owner reviews and merges manually.
+- Release packaging runs **only** through GitHub Actions `Publish WarScore Release`, manually dispatched by @hectoresen from `main`, with a patch/minor/major choice.
+- The release package contains only the addon runtime; the packaged `.toc` receives the release version without modifying the tracked source.
+- `/ws version` reports the UI iteration, **not necessarily the published semantic release version**.
+- Automated tests do not substitute for in-client gameplay and visual verification.
+
+See [development](DEVELOPMENT.md), [PvP data contract](PVP_STATISTICS.md) and [OpenSpec](../openspec/README.md).
