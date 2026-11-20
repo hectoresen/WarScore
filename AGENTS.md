@@ -1,34 +1,38 @@
-# WarScore — agent contract
+# WarScore — instrucciones para agentes
 
-Applies to all coding agents. **Read first:** README.md, docs/PVP_STATISTICS.md, docs/GENERAL_VIEW.md, docs/GENERAL_VISUAL_SPEC.md, openspec/README.md, and the relevant approved change. Inspect current source under `addon/WarScore/`; documentation is not proof that a feature exists.
+> Leer antes de modificar código, interfaz, documentación o assets. Fuente de verdad: **código vigente** y resultados observados en **WoW Forever**; las notas de iteraciones anteriores no prueban el comportamiento actual.
 
-## Scope and boundaries
-- Offline native Lua addon for World of Warcraft Forever, TOC Interface 16001. Never assume retail APIs work without in-client evidence.
-- Current installable source layout: addon/WarScore/Core/ (lifecycle, API adapters, normalization, SavedVariables), addon/WarScore/UI/ (native game frames). Keep calculations deterministic and testable independently from WoW globals. Introduce extra directories only with a justified design.
-- Preserve the chosen Warcraft visual design; do not simplify ornamental assets or replace it with web-style cards. Use game-supported textures and FontStrings, not CSS. Assets need provenance and valid WoW formats.
-- No fabricated character data, rank, KB/D, BG wins, client test results or API guarantees. Distinguish **identified**, **tested in client**, and **compared with native panel**.
-- Code, specs and technical docs in English for new files; addon-visible labels in Spanish initially, with localization planned. Existing Spanish docs remain authoritative until deliberately reconciled.
+## Contexto
+WarScore es un addon Lua nativo y local para WoW Forever (Interface 16001). Código instalable en `addon/WarScore/`: `Core/` consulta/normaliza datos, `UI/` presenta la interfaz, `Media/` contiene recursos visuales. `WarScore.toc` determina la carga. No añadir red, bases de datos remotas ni datos PvP inventados.
 
-## Lightweight spec-driven workflow
-1. **Explore** code and evidence.
-2. **Propose** an OpenSpec change with proposal, design, requirement scenarios and tasks; **stop for explicit owner approval**.
-3. **Apply** only approved scope; do not modify approved requirements silently.
-4. **Verify** automated tests and manual Forever-client acceptance independently. Mark unavailable checks NOT RUN.
-5. **Sync** README, technical docs, specs and task evidence; archive only after acceptance.
+## Lecturas iniciales
+1. [README.md](README.md) y [docs/INDEX.md](docs/INDEX.md).
+2. [docs/PVP_STATISTICS.md](docs/PVP_STATISTICS.md) para evidencias y limitaciones de APIs.
+3. [docs/GENERAL_VIEW.md](docs/GENERAL_VIEW.md) y [docs/GENERAL_VISUAL_SPEC.md](docs/GENERAL_VISUAL_SPEC.md) antes de tocar diseño.
+4. [openspec/README.md](openspec/README.md) y el cambio OpenSpec correspondiente.
+5. [docs/DEVELOPMENT_HANDOFF.md](docs/DEVELOPMENT_HANDOFF.md) para continuidad y pruebas históricas; no asumir que sus últimas notas siguen vigentes.
 
-No CraftAtlas GitHub rulesets, CI validators, mandatory two-PR process, branch naming policy or auto-merge imported. PRs are optional until owner decides otherwise. Do not change repo governance. A spec proposal is not authorization to implement.
+## Reglas innegociables
+- **APIs:** no asumir compatibilidad con WoW Retail. Diferenciar identificada, probada en cliente y contrastada con la interfaz nativa. Valores desconocidos no son cero por defecto.
+- **Datos actualizados:** al abrir General deben consultarse de nuevo los datos nativos. Se permiten optimizaciones de consultas redundantes, no una caché que presente datos obsoletos.
+- **Diseño:** preservar arte, jerarquía, tamaños y posiciones aprobados. No redibujar ni sustituir recursos proporcionados por el propietario sin autorización. Pedir assets faltantes; se permite convertir/ajustar los originales sin alterar su contenido artístico.
+- **Cambios:** no añadir características ni modificar comportamiento fuera del alcance aprobado; no confundir pruebas automatizadas con aceptación visual en el juego.
+- **Documentación:** README para jugadores; detalles de IDs y pruebas en docs; entregas e iteraciones en el handoff, evitando trasladar historiales interminables a documentos de portada.
+- **Gobernanza:** no aplicar automáticamente normas de otro repositorio (CraftAtlas, reglas de PR, automerge, etc.).
 
-## First change
-`openspec/changes/feat001-general-pvp-dashboard/` records the original proposal and implementation process. General is now implemented and has been visually tested in WoW through UI iteration 83. Check pending acceptance requirements before archiving it. See `openspec/README.md` and `skills/documentation-sync/SKILL.md`.
+## OpenSpec — flujo obligatorio para cambios funcionales
+1. Explorar código, evidencia y specs existentes.
+2. Crear propuesta mediante CLI de OpenSpec, documentar alcance, diseño, requisitos verificables, tareas y riesgos.
+3. **Esperar aprobación explícita del propietario** antes de implementar.
+4. Implementar y comprobar; indicar PASS, FAIL o NOT RUN por prueba.
+5. Sincronizar documentación y verificar mediante CLI.
+6. **Archivar con el comando oficial solo tras aceptación y validación.** El archivado debe consolidar los requisitos en `openspec/specs/`. No mover carpetas a mano ni fingir ejecución de comandos.
 
-## Context handoff
+Los cambios previos al uso disciplinado de OpenSpec pueden reconstruirse como **documentación retrospectiva**, etiquetada expresamente como tal; nunca atribuirles aprobaciones, ejecuciones de CLI o QA inexistentes.
 
-**Read `docs/DEVELOPMENT_HANDOFF.md` at the beginning of every resumed agent session.** It records the current commit, real-client QA, unresolved defects and the next exact test. Update it after every iteration and maintain honest OpenSpec task status.
+Comandos y condiciones: [openspec/README.md](openspec/README.md). Para sincronización: [skills/documentation-sync/SKILL.md](skills/documentation-sync/SKILL.md).
 
-## Asset sourcing and owner approval (mandatory)
-
-- The owner supplies Warcraft-themed artwork when custom visuals are required. **Ask for the exact missing asset before creating, generating, painting, approximating, reconstructing or substituting visual artwork.** Do not invent decorative assets to fill a visual gap.
-- Existing owner-provided assets may be positioned, cropped, converted to a compatible WoW texture format, alpha-composited and scaled **without redrawing their artistic content**. Explain quality or fidelity limitations when converting.
-- Reuse an existing art texture for strictly corrective layout/compositing work when the requested visual treatment already exists (e.g. an interior leather backing). Do not describe this as creating new artwork.
-- When requesting a missing asset, name the piece, intended location, required transparency/format, approximate dimensions and whether it needs separable layers. Do not silently substitute native WoW item icons with unrelated artwork.
-- Keep art acceptance explicit: visually present in game != approved. Document each user screenshot result and keep rejected/provisional pieces open. Do not modify approved assets except for a specifically requested change.
+## Entrega y verificación
+- Comprobar sintaxis/paquete, referencias de texturas y que `dist/WarScore.zip` tenga `WarScore/` como única carpeta raíz.
+- Indicar versión/commit y separar claramente «verificado offline», «verificado en cliente» y «pendiente».
+- Si se cambia funcionalidad, aportar ZIP instalable y solicitar aceptación en el juego antes de cerrar la spec.
