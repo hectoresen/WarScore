@@ -62,7 +62,8 @@ function ns.UI.CreateSimpleGeneral(window)
     local content = CreateFrame("Frame", nil, frame)
     content:SetSize(870, 1105)
     content:SetPoint("TOP", frame, "TOP", 0, 0)
-    content:SetScale(0.965)
+    -- A further ~3.6% reduction keeps the entire Simple composition within the inner frame.
+    content:SetScale(0.93)
     content:EnableMouse(false)
 
     local portraitFrame = CreateFrame("Frame", nil, content)
@@ -98,8 +99,8 @@ function ns.UI.CreateSimpleGeneral(window)
     local rank = decorate(content, "simple_rank_plaque_owner", 390, 85, -350)
     -- UVs crop transparent padding using measured TGA alpha bounds.
     rank:SetTexCoord(0.046, 0.956, 0.291, 0.690)
-    values.rankHeading = makeText(content, 15, 0, -379, 320, 23, CREAM)
-    values.rank = makeText(content, 19, 0, -402, 310, 23, GOLD)
+    values.rankHeading = makeText(content, 15, 0, -374, 320, 23, CREAM)
+    values.rank = makeText(content, 19, 0, -397, 310, 23, GOLD)
     -- Rank progression remains accessible without adding screenshot-inconsistent
     -- extra rows to the simplified General view.
     local rankDetails = ""
@@ -156,9 +157,9 @@ function ns.UI.CreateSimpleGeneral(window)
     thinRule(-962)
     values.duelRateCaption, values.duelRate = statRow("duel_win_rate", -975, 21, GREEN)
     thinRule(-1006)
-    values.favoriteCaption = makeText(content, 19, -140, -1021, 305, 26, CREAM, "LEFT")
+    values.favoriteCaption = makeText(content, 19, -125, -1021, 360, 26, CREAM, "LEFT")
     values.favorite = makeText(content, 16, 150, -1019, 310, 23, GOLD, "RIGHT")
-    values.favoritePlayed = makeText(content, 12, 170, -1043, 280, 19, MUTED, "RIGHT")
+    values.favoritePlayed = makeText(content, 12, 165, -1043, 280, 19, MUTED, "RIGHT")
     thinRule(-1082)
 
     local function localize()
