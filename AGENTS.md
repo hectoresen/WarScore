@@ -44,6 +44,6 @@ Los cambios previos al uso disciplinado de OpenSpec pueden reconstruirse como **
 Comandos y condiciones: [openspec/README.md](openspec/README.md). Para sincronización: [skills/documentation-sync/SKILL.md](skills/documentation-sync/SKILL.md).
 
 ## Entrega y verificación
-- Comprobar sintaxis/paquete, referencias de texturas y que `dist/WarScore.zip` tenga `WarScore/` como única carpeta raíz.
+- Comprobar sintaxis, referencias de texturas y la carpeta instalable `addon/WarScore/`. El ZIP versionado se genera únicamente durante la publicación manual de una release.
 - Indicar versión/commit y separar claramente «verificado offline», «verificado en cliente» y «pendiente».
-- Si se cambia funcionalidad, aportar ZIP instalable y solicitar aceptación en el juego antes de cerrar la spec.
+- Si se cambia funcionalidad, entregar el código actualizado en la rama para probar en el juego y solicitar aceptación antes de cerrar la spec. Los agentes **nunca** deben ejecutar el workflow manual de publicación de releases.

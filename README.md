@@ -77,7 +77,7 @@ The ready-to-install addon lives in [`addon/WarScore/`](addon/WarScore/), includ
    ```
 3. Enable WarScore in the game's AddOns menu, run `/reload` if necessary, then use `/ws` or the minimap button.
 
-**For published versions:** installable ZIP downloads will be available under [GitHub Releases](https://github.com/hectoresen/WarScore/releases). The repository source folder remains the canonical development source; development builds do not automatically produce ZIPs.
+**For published versions:** download the latest installable `WarScore-vX.Y.Z.zip` from [GitHub Releases](https://github.com/hectoresen/WarScore/releases) and extract it into `Interface/AddOns/`. The repository source folder remains the canonical development source; development builds do not automatically produce ZIPs. Releases are published manually by the maintainer.
 
 ## Commands
 
