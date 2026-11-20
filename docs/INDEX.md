@@ -2,6 +2,8 @@
 
 Guía para encontrar las referencias del addon PvP para **WoW Forever**. El [README principal](../README.md) es la portada para jugadores; aquí se mantienen los detalles técnicos, decisiones e historial de desarrollo.
 
+- [Estado de publicación](PUBLICATION_CHECKLIST.md) — Auditoría de exposición pública, pendientes de licencia, QA y archivado OpenSpec.
+
 ## Producto y estadísticas
 - [Funcionalidad actual](FUNCTIONAL.md) — Qué funciona realmente en General, Ajustes, el minimapa y los comandos.
 - [Catálogo de datos y futuras vistas](PVP_DATA_CATALOG.md) — Propuestas para Estadísticas, Mundo abierto, BG, duelos y líneas de investigación; algunas referencias históricas aún usan «Hoy».
