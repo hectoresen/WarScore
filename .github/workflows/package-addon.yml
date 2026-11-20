@@ -1,5 +1,5 @@
 name: Package clean WarScore addon
-# v134: reduce only upper Duelos ganados swords by 2% and preserve layout.
+# v135: reduce duel swords further and move only Honor/HK group down 8 units.
 on:
   push:
     branches: [main]
@@ -64,8 +64,15 @@ jobs:
                   f"Version mismatch: ZIP={archive_version.group(1)}, source={source_version.group(1)}"
               )
               assert runtime_ui == source_ui, "ZIP includes stale UI/General.lua"
-              assert 'local duelIconReduction = not secondary and i == 1 and ownerTopIcon and 0.98 or 1' in runtime_ui
+              assert 'local duelIconReduction = not secondary and i == 1 and ownerTopIcon and 0.86 or 1' in runtime_ui
               assert 'iconDisplaySize * duelIconReduction' in runtime_ui
+              assert 'honorPanel:SetPoint("TOP", window, "TOP", 0, -516)' in runtime_ui
+              assert 'label(window, text("honor_title"), 23, GOLD, 0, -527, 260, 28)' in runtime_ui
+              assert 'fields.honor = label(window, "—", 36.25, GOLD, 0, -555, 460, 42)' in runtime_ui
+              assert 'label(window, text("honorable_kills"), 17, CREAM, -83, -605, 365, 27)' in runtime_ui
+              assert 'fields.hk = label(window, "—", 28, CREAM, 197, -602, 130, 36)' in runtime_ui
+              assert 'ratioOrnament:SetPoint("TOP", window, "TOP", 0, -633)' in runtime_ui
+              assert 'local firstRow = statBand(window, -779, {' in runtime_ui
               # v132: original user ring replaces the visible portrait border;
               # it has an alpha-transparent center so the unit portrait shows.
               portrait_ring_path = "WarScore/Media/General/portrait_ring_owner_v132.tga"
@@ -113,7 +120,7 @@ jobs:
               # shipping or drawing the mismatched Settings replacement image.
               assert "WarScore/Media/General/inner_frame_owner_v64.tga" in names
               assert "WarScore/Media/General/settings_inner_frame_owner_v122.tga" not in names
-              assert archive_version.group(1) == "134", "Expected v134 in the clean ZIP"
+              assert archive_version.group(1) == "135", "Expected v135 in the clean ZIP"
               assert '[innerArt] = true' in runtime_ui
               assert 'settings_inner_frame_owner_v122' not in runtime_ui
               assert 'settingsTab:SetPoint("TOPLEFT", settingsPage, "TOPLEFT", 193, -102)' in runtime_ui
