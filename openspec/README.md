@@ -34,6 +34,10 @@ La sintaxis y las opciones deben confirmarse en la versión instalada; **no decl
 5. **Sync:** comparar la implementación con requisitos, actualizar README/docs y registrar resultados en `tasks.md`.
 6. **Archive:** ejecutar CLI únicamente si la propuesta está aceptada y las comprobaciones exigidas están cerradas, indicando cualquier excepción expresamente aprobada.
 
+## Aprobación y merge en GitHub
+
+La aprobación de una propuesta OpenSpec **no es autorización para fusionar una PR**. Agentes y colaboradores pueden preparar, revisar técnicamente y actualizar PRs; la fusión de cualquier PR es manual y exclusiva del propietario humano (@hectoresen). Está prohibido activar auto-merge, ejecutar comandos/APIs de merge o usar bypass. Consulta [AGENTS.md](../AGENTS.md).
+
 ## Estado de los cambios heredados
 
 - `feat001-general-pvp-dashboard`: implementación y muchas iteraciones visuales registradas, pero el `tasks.md` conserva verificaciones pendientes y la spec incluye decisiones antiguas. Reconciliar con el código y conseguir aceptación explícita antes de archivar.
