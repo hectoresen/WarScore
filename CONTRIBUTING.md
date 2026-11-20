@@ -15,9 +15,17 @@ WarScore funciona en **WoW Forever** y depende de sus APIs nativas. Una función
 3. Para nuevas funcionalidades, cambios relevantes de API o interfaz, sigue el flujo de [OpenSpec](openspec/README.md): propuesta, diseño, requisitos y tareas; **espera aprobación explícita del mantenedor antes de implementar**. Si la CLI no está disponible, indícalo y no simules validaciones.
 4. Aplica cambios pequeños. Conserva el diseño visual aprobado, usa las APIs reales de Forever y actualiza las traducciones y documentación afectadas.
 5. Ejecuta las pruebas que puedas y documenta lo no ejecutado. Para cambios visibles en juego, incluye el resultado de las comprobaciones en WoW Forever, versión del cliente y capturas cuando corresponda.
-6. Abre una **pull request hacia `main`**, enlaza el issue y la spec cuando existan y cumplimenta la plantilla. Espera la revisión del mantenedor; no asumas que disponer de acceso implica permiso de merge.
+6. Abre una **pull request hacia `main`**, enlaza el issue y la spec cuando existan y cumplimenta la plantilla. **Deja la PR abierta para que @hectoresen la revise y fusione manualmente.** Aunque las comprobaciones estén correctas, no puedes habilitar auto-merge ni fusionar por tu cuenta.
 
 Las correcciones menores de documentación no necesitan inventar una spec funcional. Los requisitos de revisión son una **política de contribución**, no una afirmación de que el repositorio tenga actualmente reglas de protección de ramas o CI obligatorios.
+
+## Política de revisión y fusión
+
+- **Todas las PRs** (funcionalidad, corrección, documentación o automatización) deben quedar abiertas después de su preparación y validación.
+- **La fusión la realiza exclusivamente @hectoresen de manera manual**, después de revisar el cambio. Nadie debe activar auto-merge, ejecutar comandos o APIs de merge, ni saltarse protecciones de `main` en nombre del propietario.
+- Los agentes que trabajen con la identidad o credenciales del propietario también están sujetos a esta prohibición. Para imponerla técnicamente, deben usarse credenciales separadas y sin capacidad de bypass.
+- Pasar CI significa que una PR está lista para revisión; **no significa autorización para fusionarla**.
+- En la entrega, incluye enlace a la PR, resumen, pruebas ejecutadas y pendientes. Espera la decisión del propietario.
 
 ## Qué revisar
 

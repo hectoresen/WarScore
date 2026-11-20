@@ -4,6 +4,13 @@ Guía para encontrar las referencias del addon PvP para **WoW Forever**. El [REA
 
 - [Estado de publicación](PUBLICATION_CHECKLIST.md) — Auditoría de exposición pública, pendientes de licencia, QA y archivado OpenSpec.
 
+## Código abierto y colaboración
+- [Licencia MIT](../LICENSE) — Permisos y condiciones de reutilización de código y documentación.
+- [Licencias de recursos](../ASSET_LICENSES.md) — Fuente de terceros y revisión de derechos de assets.
+- [Contribuir](../CONTRIBUTING.md) — Propuestas, pruebas y pull requests.
+- [Código de conducta](../CODE_OF_CONDUCT.md) — Normas de participación.
+- [Seguridad](../SECURITY.md) — Comunicación privada de vulnerabilidades.
+
 ## Producto y estadísticas
 - [Funcionalidad actual](FUNCTIONAL.md) — Qué funciona realmente en General, Ajustes, el minimapa y los comandos.
 - [Catálogo de datos y futuras vistas](PVP_DATA_CATALOG.md) — Propuestas para Estadísticas, Mundo abierto, BG, duelos y líneas de investigación; algunas referencias históricas aún usan «Hoy».
