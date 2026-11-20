@@ -4,7 +4,7 @@ ns.UI = ns.UI or {}
 -- Native WoW first pass. Ornamental texture assets and reference-image QA remain pending.
 local window, fields
 local showGeneralView, showSettingsView
-local UI_ITERATION = "134"
+local UI_ITERATION = "135"
 local GOLD = { 0.95, 0.72, 0.27 }
 local CREAM = { 0.92, 0.83, 0.67 }
 local RED = { 0.96, 0.43, 0.39 }
@@ -177,9 +177,9 @@ local function statBand(parent, y, definitions, secondary)
         local iconSize = ownerBottomIcon and (i == 1 and 47.5 or (i == 2 and 44 or 50))
             or (ownerIcon and 50 or 43)
         -- v105: harmonize icon size (-5%) while preserving band dimensions.
-        -- v134: reduce ONLY the upper-left Duelos ganados swords by 2%.
+        -- v135: visibly reduce ONLY upper-left Duelos ganados swords by 14%.
         local iconDisplaySize = iconSize * 0.95
-        local duelIconReduction = not secondary and i == 1 and ownerTopIcon and 0.98 or 1
+        local duelIconReduction = not secondary and i == 1 and ownerTopIcon and 0.86 or 1
         icon:SetSize(iconDisplaySize * duelIconReduction, iconDisplaySize * duelIconReduction)
         -- v78: move only the crossed swords inward, clear of the left gold bevel.
         -- v81: use consistent inner clearance for the normalized lower art.
@@ -618,31 +618,33 @@ local function build()
     -- It remains ornamental; PR remains numeric and the fill remains hidden.
     addRankOrnament("Interface\\AddOns\\WarScore\\Media\\General\\rank_divider_advance_owner_v115", 0, -488, 560.4525, 30)
 
+    -- v135: move the entire Honor/HK panel and its text 8 units lower,
+    -- keeping HK/D, PvP deaths and the two bottom card rows unchanged.
     -- v120: new owner-supplied, text-free Honor + honorable kills panel.
     -- Only this pre-existing HK region is replaced; the finalized rank/PVP
     -- module above and the ratio/stat modules below remain unchanged.
     local honorPanel = window:CreateTexture(nil, "ARTWORK")
     honorPanel:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\honor_frame_owner_v120")
     honorPanel:SetSize(600, 128)
-    honorPanel:SetPoint("TOP", window, "TOP", 0, -508)
+    honorPanel:SetPoint("TOP", window, "TOP", 0, -516)
     honorPanel:SetAlpha(1)
 
     -- Header title, current/maximum Honor currency, and lifetime HK are
     -- independent live font strings; no text is embedded in the owner PNG.
-    local honorHeading = label(window, text("honor_title"), 23, GOLD, 0, -519, 260, 28)
+    local honorHeading = label(window, text("honor_title"), 23, GOLD, 0, -527, 260, 28)
     honorHeading:SetShadowColor(0.24, 0.12, 0.02, 0.85)
     honorHeading:SetShadowOffset(1, -1)
     -- v121: reduce the dynamic Honor amount by ~2% without moving the panel.
-    fields.honor = label(window, "—", 36.25, GOLD, 0, -547, 460, 42)
+    fields.honor = label(window, "—", 36.25, GOLD, 0, -555, 460, 42)
     fields.honor:SetShadowColor(0.35, 0.20, 0.04, 0.95)
     fields.honor:SetShadowOffset(2, -2)
 
-    local hkCaption = label(window, text("honorable_kills"), 17, CREAM, -83, -597, 365, 27)
+    local hkCaption = label(window, text("honorable_kills"), 17, CREAM, -83, -605, 365, 27)
     hkCaption:SetShadowColor(0.22, 0.10, 0.02, 0.84)
     hkCaption:SetShadowOffset(1, -1)
     -- v121: reduce and vertically center the live HK count in its right-side
     -- area. Match the CREAM color of the accompanying HK description.
-    fields.hk = label(window, "—", 28, CREAM, 197, -594, 130, 36)
+    fields.hk = label(window, "—", 28, CREAM, 197, -602, 130, 36)
     fields.hk:SetShadowColor(0.22, 0.10, 0.02, 0.84)
     fields.hk:SetShadowOffset(1, -1)
 
