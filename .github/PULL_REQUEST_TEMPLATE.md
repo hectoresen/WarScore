@@ -25,4 +25,4 @@ Los cambios funcionales relevantes requieren una propuesta revisada y aprobada *
 
 Versiones del cliente, capturas si hay cambios visuales, limitaciones conocidas, riesgos y cómo revertir el cambio.
 
-**No marcar pruebas que no se hayan ejecutado.** El mantenedor debe revisar la PR antes del merge.
+**No marcar pruebas que no se hayan ejecutado.** La PR debe permanecer abierta hasta revisión y **merge manual de @hectoresen**. Los agentes tienen prohibido habilitar auto-merge o fusionarla, incluso si CI está verde.
