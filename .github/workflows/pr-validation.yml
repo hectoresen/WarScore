@@ -1,0 +1,55 @@
+name: WarScore pull request validation
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repository-validation:
+    name: repository-validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate tracked documentation and addon manifest
+        run: python3 tests/validate_repository.py
+
+  traceability:
+    name: traceability
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate OpenSpec change structure
+        run: python3 tests/validate_openspec.py
+
+  lua-compatibility:
+    name: lua-compatibility
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lua 5.1
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lua5.1
+      - name: Compile all addon Lua files
+        shell: bash
+        run: |
+          set -euo pipefail
+          count=0
+          while IFS= read -r -d '' file; do
+            luac5.1 -p "$file"
+            count=$((count + 1))
+          done < <(find addon/WarScore -type f -name '*.lua' -print0)
+          test "$count" -gt 0
+          echo "Parsed $count Lua 5.1 sources"
+
+  lua-regressions:
+    name: lua-regressions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lua 5.1
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lua5.1
+      - name: Run deterministic statistics regressions
+        run: lua5.1 tests/stats_test.lua
