@@ -8,11 +8,27 @@ WarScore is a free, open-source PvP statistics addon for **World of Warcraft For
 
 ## General — your PvP overview
 
+Choose between two Warcraft-inspired visual styles in **Settings**. Both display the same real character statistics and share the same functionality.
+
+### Classic Forever
+
+The original ornamental dashboard, with detailed PvP panels and decorative stat cards.
+
 <p align="center">
-  <img src="docs/addon%20v0.1/WarScore2.png" width="620" alt="WarScore General tab with character portrait, rank progression, Honor, honorable kills and battleground statistics" />
+  <img src="docs/addon%20v0.3.0/WarScore%201.png" width="440" alt="Classic Forever General view in Spanish" />
+  <img src="docs/addon%20v0.3.0/WarScore%201%20ENG.png" width="440" alt="Classic Forever General view in English" />
 </p>
 
-The **General** tab brings together your character's real portrait, name, level and class, alongside a detailed PvP overview.
+### Classic Forever Simple
+
+A cleaner, more compact General layout with the same PvP data, gold dividers and Warcraft-themed artwork.
+
+<p align="center">
+  <img src="docs/addon%20v0.3.0/War%20Score%201%20SIMPLE.png" width="440" alt="Classic Forever Simple General view in Spanish" />
+  <img src="docs/addon%20v0.3.0/War%20Score%201%20SIMPLE%20ENG.png" width="440" alt="Classic Forever Simple General view in English" />
+</p>
+
+The **General** tab brings together your character's real portrait, name, level and class, alongside a detailed PvP overview. Switching styles changes the presentation only—not the values or calculations.
 
 | Statistic | What it means |
 | --- | --- |
@@ -35,13 +51,16 @@ The top navigation also includes a **Statistics** tab, reserved for more advance
 ## Settings — personalize your experience
 
 <p align="center">
-  <img src="docs/addon%20v0.1/WarScore3.png" width="620" alt="WarScore Settings tab with Language selection, Visual Style and Back navigation" />
+  <img src="docs/addon%20v0.3.0/WarScore%202.png" width="620" alt="WarScore Settings in English with language, interface size and visual style dropdowns" />
 </p>
 
-The **Settings** page includes two preference areas:
+The **Settings** page includes three preference areas:
 
-- **Language:** switch between **English and Spanish** at any time. Your choice is saved for future sessions.
-- **Visual Style:** **Classic Forever** is the current Warcraft-themed look. Additional visual styles are planned for future releases; this selector is not yet customizable.
+- **Language:** switch between **English and Spanish** at any time.
+- **Interface Size:** choose **75%, 100%, or 125%** (100% is the default compact size).
+- **Visual Style:** switch between **Classic Forever** and **Classic Forever Simple** without reloading the game.
+
+All three preferences are saved between sessions, and changes take effect immediately.
 
 Use the **Back** tab to return to General, or close WarScore with the top-right **X**. Settings can also be opened directly with `/ws settings`.
 
@@ -61,7 +80,7 @@ WarScore adds a small **crossed-swords icon** with a circular Warcraft-style bor
 
 WarScore retrieves your statistics using the **native APIs provided by WoW Forever**, including PvP records, the Honor currency, rank progression, duels, and battleground results. It calculates ratios and win rates from those reported values. The General view reads the latest available data when opened.
 
-The addon does **not require a website, account, external database, or remote synchronization**. Only local preferences, such as your language and minimap icon position, are saved. See the [technical PvP statistics documentation](docs/PVP_STATISTICS.md) for API evidence and limitations.
+The addon does **not require a website, account, external database, or remote synchronization**. Only local preferences, such as language, interface size, visual style and minimap icon position, are saved. See the [technical PvP statistics documentation](docs/PVP_STATISTICS.md) for API evidence and limitations.
 
 ## Installation
 
@@ -87,7 +106,7 @@ The ready-to-install addon lives in [`addon/WarScore/`](addon/WarScore/), includ
 | `/ws settings` | Open Settings. |
 | `/ws lang en` | Switch to English. |
 | `/ws lang es` | Switch to Spanish. |
-| `/ws version` | Display the current UI iteration. |
+| `/ws version` | Display the installed addon release version. |
 | `/wsdiag` | Inspect native game statistics for diagnostics. |
 
 ## Coming soon
