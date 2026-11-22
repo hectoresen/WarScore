@@ -1,6 +1,6 @@
 # WarScore — live development handoff
 
-**Last updated:** 2026-11-19 (UI iteration 128; API validation review pending client evidence).
+**Last updated:** 2026-11-22 (collaboration workflow refreshed; historical client-QA observations retained).
 
 ## Read in this order
 1. `AGENTS.md`, `openspec/README.md` — lightweight SDD and approval boundaries.
@@ -9,8 +9,23 @@
 4. `docs/GENERAL_VIEW.md`, `docs/GENERAL_VISUAL_SPEC.md`, `docs/assets/general-layout-guide.svg` — target UI and coordinates.
 5. `Core/Stats.lua`, `UI/General.lua`, `Core/Bootstrap.lua`, `WarScore.toc`.
 
-## Working agreement with owner
-Iterate in the **same current development line (`main`)**. Assistant commits one small focused change, owner downloads `https://github.com/hectoresen/WarScore/archive/refs/heads/main.zip`, replaces addon and tests `/ws` inside WoW Forever, shares screenshot or error; assistant documents outcome and next step here and in OpenSpec tasks. **Never declare client QA passed without owner's real evidence.** Another agent can resume by reading this file and current GitHub code, not by relying on chat history.
+## Current collaboration workflow — authoritative (2026-11-22)
+
+This section supersedes older notes in this historical handoff, including references to working directly on `main`, downloading `main.zip`, automatically opening PRs, or releasing as part of normal iterations. The current source code, `AGENTS.md`, `docs/DEVELOPMENT.md`, and `openspec/README.md` take precedence if this historical record is stale.
+
+1. **New distinct task:** inspect current `main`, relevant code, OpenSpec and assets; check for an existing active task branch. Create a descriptive English `feat/...`, `fix/...`, `docs/...`, or `refactor/...` branch from the latest `main` only if needed.
+2. **Same task, further iteration:** stay on its existing branch; never create a branch per screenshot or adjustment. Implement the requested scope, commit and push to that branch, and repeat after owner feedback.
+3. **Functional features:** research verified Forever 1.60.1 APIs and create/update the OpenSpec proposal, design, specs and tasks; get explicit owner approval *before* implementing. Small in-scope visual adjustments and bug fixes can be iterated without repeated approval.
+4. **Visual work:** compare the owner's actual in-game screenshot against the approved design; preserve accepted elements, artwork, texture transparency, proportions and functional behavior. Do not substitute mockups for code changes unless requested.
+5. **Delivery:** only `addon/WarScore/` is the complete installable source. Commit all runtime assets. **Do not generate ZIPs for normal iterations.** Provide the verified direct GitHub folder URL for the active branch: `https://github.com/hectoresen/WarScore/tree/<branch>/addon/WarScore`. Include branch, commit, concise changes, test status and pending owner acceptance.
+6. **Owner QA:** owner manually downloads the branch's addon folder, installs it in `Interface/AddOns/`, tests inside WoW Forever and supplies screenshots, errors or acceptance. Distinguish automated PASS/FAIL/NOT RUN from **IN-GAME PENDING**; never claim client validation without that evidence.
+7. **PR and merge:** do **not** create a PR unless the owner explicitly requests one; then open/update it targeting `main`, inspect CI and provide its URL. **Never push to `main`, merge a PR, enable auto-merge, close an active PR or publish a release.** Merge and releases are exclusively owner-controlled.
+8. **Versioning:** official public versions follow SemVer through the owner-run release workflow. Historical UI iteration numbers in this file are not public release versions.
+9. **Documentation:** update appropriate README, technical docs and OpenSpec when functionality changes. Preserve this historical log but label superseded directions as historical; use the current implementation as the source of truth.
+
+## Historical working agreement (superseded)
+
+The former workflow used direct development on `main` and a downloadable `main.zip`. **Do not follow it.** It is retained here only to interpret the earlier iteration and test records.
 
 ## Current implementation
 - `Core/Stats.lua`: reads lifetime HK 588, PvP deaths 1501, Honor currency 1792, PvP rank/Rank Points from major faction 2800, duels 319/320, BG played/won 839/840, favorite BG among 53/55/52/64179, HK/D and win rates. KB/D remains intentionally unavailable.
@@ -103,7 +118,7 @@ Git commit: `b20ddb00e9ced29b2d17dc8caa26e61b6c1fe07e`.
 - **NOT YET TESTED in Forever**. A square remaining means fallback likely triggered. A disappearing square is visual evidence only; API support still requires explicit diagnostics for certainty.
 - Next after owner screenshot: improve header/tab art, frame corners, rank plate and ornament details; do not mark full mockup parity.
 
-## Exact next actions for any agent
+## Historical next actions after iteration 10 (superseded; do not execute as current instructions)
 1. **Wait for owner screenshot of iteration 10.** Check whether the square behind portrait disappears. If it persists, the client likely lacks mask support and fallback remains active; do not claim actual mask success. Investigate alternate native cropping or transparent portrait rendering without reintroducing square artifacts.
 2. The `WHITE8X8` + vertex-color technique is now supported by the owner's screenshot; keep it for opaque panels. Do not reintroduce minimap tracking border for portrait.
 3. Then improve layout proportions and asset pipeline toward reference; ensure readable second row, no action-bar overlap, real faction banners and ornaments, correct portrait framing.
@@ -112,8 +127,8 @@ Git commit: `b20ddb00e9ced29b2d17dc8caa26e61b6c1fe07e`.
 6. Keep KB/D, rank, Hoy functional content, multi-character selector out of scope or unavailable as approved. Do not fabricate data.
 7. Keep the spec open until owner accepts **both** real data and visual fidelity.
 
-## Current user instruction
-The owner explicitly wants ongoing incremental development, in-game testing feedback and a durable step-by-step agent handoff because ChatGPT conversations have context limits. This document is the **entry point for future chats/agents**.
+## Historical user instruction
+The owner requested incremental development, in-game testing feedback and a durable agent handoff. The authoritative current workflow is at the top of this document, rather than in the historical iteration entries below.
 
 ## Iteration #10 — owner screenshot PASS (2026-11-17)
 
