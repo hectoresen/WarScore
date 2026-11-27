@@ -1,17 +1,13 @@
 ## ADDED Requirements
 
-### Requirement: Classic Forever favorite battleground card
+### Requirement: Classic Forever lower-row icon visibility
 
-Classic Forever General SHALL display only the favorite battleground card in its lower metrics area. Classic Forever Simple SHALL retain its existing metrics and consume the same current native snapshot.
+Classic Forever General SHALL omit only the decorative icons for duel wins, battlegrounds played, battleground win rate and duel win rate. It SHALL preserve both stat bands, all captions and values, and the battleground wins and favorite battleground icons.
 
-#### Scenario: Classic Forever with a favorite battleground
-- **WHEN** General is displayed in Classic Forever and a favorite battleground is available
-- **THEN** the lower metrics area displays its icon, localized heading, name and match count as a single card.
-
-#### Scenario: Classic Forever without a favorite battleground
-- **WHEN** General is displayed in Classic Forever and the favorite battleground is unavailable
-- **THEN** the card displays the existing neutral dash and omits the match count.
+#### Scenario: Open Classic Forever General
+- **WHEN** General is shown in Classic Forever
+- **THEN** all six cards appear in their existing positions and the four selected icons are absent.
 
 #### Scenario: Switch to Classic Forever Simple
 - **WHEN** the player switches to Classic Forever Simple and opens General
-- **THEN** duel wins, battlegrounds played and won, both win rates and favorite battleground are presented as before using current data.
+- **THEN** its composition and metrics are displayed as before.

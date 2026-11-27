@@ -1,17 +1,18 @@
 ## Why
 
-Reduce visual clutter in the lower part of Classic Forever General.
+Reduce decorative clutter in the lower rows of Classic Forever General while keeping the statistics visible.
 
 ## What Changes
 
-- Keep only the favorite battleground card in the lower area of Classic Forever General.
-- Preserve all statistics and behavior in Classic Forever Simple.
+- Remove the icons for duel wins, battlegrounds played, battleground win rate and duel win rate in Classic Forever General.
+- Preserve both rows, all captions and values, and the favorite battleground and battleground wins icons.
+- Preserve the Classic Forever Simple layout and statistics.
 
 ## Capabilities
 
 ### New Capabilities
-- `classic-forever-general-footer`: Defines the statistics displayed in the Classic Forever footer.
+- `classic-forever-general-footer`: Defines the scope of lower-row icon visibility in Classic Forever.
 
 ## Impact
 
-The General renderer and its shared refresh are affected. Native data sources and bundled artwork are reused. Visual alignment and localized text require a WoW Forever check.
+The Classic Forever stat band renderer changes. Confirm the four icon removals and the original text layout in WoW Forever.

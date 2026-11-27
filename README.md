@@ -8,11 +8,11 @@ WarScore is a free, open-source PvP statistics addon for **World of Warcraft For
 
 ## General — your PvP overview
 
-Choose between two Warcraft-inspired visual styles in **Settings**. Both use the same native character statistics.
+Choose between two Warcraft-inspired visual styles in **Settings**. Both display the same real character statistics and share the same functionality.
 
 ### Classic Forever
 
-The ornamental dashboard shows the favorite battleground as the sole card below HK/D and PvP deaths. The screenshots show the earlier footer layout.
+The original ornamental dashboard, with detailed PvP panels and decorative stat cards.
 
 <p align="center">
   <img src="docs/addon%20v0.3.0/WarScore%201.png" width="440" alt="Classic Forever General view in Spanish" />
@@ -21,14 +21,14 @@ The ornamental dashboard shows the favorite battleground as the sole card below 
 
 ### Classic Forever Simple
 
-A more compact General layout with gold dividers, Warcraft-themed artwork and the full set of statistics listed below.
+A cleaner, more compact General layout with the same PvP data, gold dividers and Warcraft-themed artwork.
 
 <p align="center">
   <img src="docs/addon%20v0.3.0/War%20Score%201%20SIMPLE.png" width="440" alt="Classic Forever Simple General view in Spanish" />
   <img src="docs/addon%20v0.3.0/War%20Score%201%20SIMPLE%20ENG.png" width="440" alt="Classic Forever Simple General view in English" />
 </p>
 
-The **General** tab brings together your character's real portrait, name, level and class, alongside a detailed PvP overview. Switching styles changes the layout and which metrics appear. The values and calculations are shared.
+The **General** tab brings together your character's real portrait, name, level and class, alongside a detailed PvP overview. Switching styles changes the presentation only—not the values or calculations.
 
 | Statistic | What it means |
 | --- | --- |

@@ -8,10 +8,6 @@
 
 > **Estado técnico actual:** Honor actual (`1792`), rango PvP y Rank Points (`C_MajorFactions` `2800`) ya están integrados en General. La vista de Ajustes permite seleccionar idioma y el icono de minimapa abre/cierra la ventana y conserva su posición. Para la disponibilidad real de cada dato prevalece `docs/PVP_DATA_CATALOG.md`.
 
-## Composición de la zona inferior
-
-En Classic Forever, la zona inferior contiene una sola tarjeta centrada con el campo de batalla favorito y su número de partidas. Classic Forever Simple conserva los duelos ganados, los campos de batalla jugados y ganados, ambos porcentajes de victorias y el campo de batalla favorito. Ambos estilos consultan los mismos datos nativos al abrir General.
-
 ## Jerarquía visual acordada (obligatoria)
 
 1. **Retrato real del personaje activo**, centrado arriba, recortado circularmente; no avatar genérico, ni imagen cuadrada o lateral. La API candidata es `SetPortraitTexture`; verificar el soporte de máscara circular de Forever.
