@@ -177,29 +177,21 @@ local function statBand(parent, y, definitions, secondary)
             local icon = segment:CreateTexture(nil, "ARTWORK")
             icon:SetTexture(definition.ownerIcon)
             icon:SetSize(47.5, 47.5)
-            icon:SetPoint("LEFT", segment, "LEFT", secondary and 20 or 12, -5)
+            icon:SetPoint("LEFT", segment, "LEFT", 20, -5)
         end
 
-        -- x=0 means centered on the FULL segment, not offset by its icon.
-        -- Width reserves a small gap from the left decorative pictogram.
-        local caption = label(segment, text(definition.title), secondary and 12 or 13,
-            CREAM, 0, -12, 145, 38)
-        caption:SetTextColor(0.94, 0.84, 0.65)
-        -- Ratios in the two narrow lower cells have their own fixed text area,
-        -- offset right of the decorative icon; not anchored to the icon.
-        local isRate = secondary and i <= 2
-        -- v84: the favorite BG cell is much wider than the two rate cells.
-        -- Give its live name/count a dedicated area to the right of the pennant.
         local isFavorite = secondary and i == 3
-        local valueX = isRate and 19 or (isFavorite and 22 or 0)
-        local valueWidth = isRate and 105 or (isFavorite and 265 or 145)
-        -- v85: separate the favorite's name from the played-count caption.
-        -- The latter uses the client's built-in italic face when available.
-        -- v105: values are independently positioned, scaled to 95% and raised.
+        local caption = label(segment, text(definition.title), secondary and 12 or 13,
+            CREAM, 0, isFavorite and -12 or -2, 145, 38)
+        caption:SetTextColor(0.94, 0.84, 0.65)
+
+        local valueWidth = secondary and 105 or 145
         local valueFontSize = (definition.valueSize or (secondary and 29 or 35)) * 0.95
         local value = label(segment, "—", valueFontSize,
-            secondary and GREEN or GOLD, valueX, isFavorite and -46 or -50,
-            valueWidth, isFavorite and 28 or 45)
+            secondary and GREEN or GOLD, isFavorite and 22 or 0,
+            isFavorite and -46 or -25.5, isFavorite and 265 or valueWidth,
+            isFavorite and 28 or 45)
+        value:SetJustifyV("MIDDLE")
         value:SetShadowColor(0.26, 0.14, 0.045, secondary and 0.45 or 0.72)
         value:SetShadowOffset(1, -1)
         values[i] = value
@@ -679,7 +671,7 @@ local function build()
     local firstRow = statBand(window, -779, {
         { title = "duel_wins", color = GOLD },
         { title = "battlegrounds_played", color = GOLD },
-        { title = "battlegrounds_won", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_wins_owner_v77" },
+        { title = "battlegrounds_won", color = GOLD },
     })
     fields.duels, fields.bgPlayed, fields.bgWon = unpack(firstRow)
     -- v88: lift the entire lower band 8 UI units to clear the parent bottom rim.
