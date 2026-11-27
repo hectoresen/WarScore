@@ -50,6 +50,8 @@ The top navigation also includes a **Statistics** tab, reserved for more advance
 
 ## Settings — personalize your experience
 
+On your first opening after a new installation, WarScore shows a welcome screen with the four preferences below. Save and open General or choose Not now to finish. You can revisit these preferences at any time in Settings.
+
 <p align="center">
   <img src="docs/addon%20v0.3.0/WarScore%202.png" width="620" alt="WarScore Settings in English with language, interface size and visual style dropdowns" />
 </p>

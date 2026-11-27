@@ -881,7 +881,27 @@ local function build()
         end
     end)
 
+    local welcomeActions = CreateFrame("Frame", nil, settingsContent)
+    welcomeActions:SetSize(460, 36)
+    welcomeActions:SetPoint("TOP", settingsContent, "TOP", 0, -555)
+    welcomeActions:Hide()
+
+    local finishSetup = CreateFrame("Button", nil, welcomeActions, "UIPanelButtonTemplate")
+    finishSetup:SetSize(230, 34)
+    finishSetup:SetPoint("LEFT", welcomeActions, "LEFT", 44, 0)
+
+    local skipSetup = CreateFrame("Button", nil, welcomeActions, "UIPanelButtonTemplate")
+    skipSetup:SetSize(120, 34)
+    skipSetup:SetPoint("LEFT", finishSetup, "RIGHT", 18, 0)
+
+    local function updateSettingsTabTitle()
+        settingsTitle:SetText(text(ns.NeedsOnboarding() and "tab_welcome" or "tab_settings"))
+    end
+
     local function updateSettingsLanguage()
+        updateSettingsTabTitle()
+        finishSetup:SetText(text("onboarding_finish"))
+        skipSetup:SetText(text("onboarding_skip"))
         sectionTitle:SetText(text("settings_section"))
         languageTitle:SetText(text("settings_language"))
         scaleTitle:SetText(text("settings_ui_scale"))
@@ -908,6 +928,14 @@ local function build()
         refresh()
     end
     showSettingsView = function()
+        if ns.NeedsOnboarding() then
+            returnTab:Hide()
+            welcomeActions:Show()
+        else
+            returnTab:Show()
+            welcomeActions:Hide()
+        end
+        updateSettingsTabTitle()
         for _, object in ipairs(generalObjects) do object:Hide() end
         simpleGeneral:Hide()
         settingsPage:Show()
@@ -916,10 +944,16 @@ local function build()
         settingsFrame:SetFrameLevel(window:GetFrameLevel() + 10)
     end
     returnTab:SetScript("OnClick", showGeneralView)
+
+    local function completeSetup()
+        ns.CompleteOnboarding()
+        showGeneralView()
+    end
+    finishSetup:SetScript("OnClick", completeSetup)
+    skipSetup:SetScript("OnClick", completeSetup)
     settingsPage:Hide()
 
     ns.L:RegisterRefresh(function()
-        settingsTitle:SetText(text("tab_settings"))
         returnTitle:SetText(text("tab_back"))
         updateSettingsLanguage()
     end)
@@ -932,7 +966,11 @@ end
 
 function ns.UI.ShowGeneral()
     if not window then build() end
-    if showGeneralView then showGeneralView() end
+    if ns.NeedsOnboarding() then
+        showSettingsView()
+    else
+        showGeneralView()
+    end
     window:Show()
     refresh()
 end
