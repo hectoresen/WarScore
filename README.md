@@ -54,13 +54,15 @@ The top navigation also includes a **Statistics** tab, reserved for more advance
   <img src="docs/addon%20v0.3.0/WarScore%202.png" width="620" alt="WarScore Settings in English with language, interface size and visual style dropdowns" />
 </p>
 
-The **Settings** page includes three preference areas:
+The **Settings** page includes four preference areas:
 
 - **Language:** switch between **English and Spanish** at any time.
 - **Interface Size:** choose **75%, 100%, or 125%** (100% is the default compact size).
 - **Visual Style:** switch between **Classic Forever** and **Classic Forever Simple** without reloading the game.
 
-All three preferences are saved between sessions, and changes take effect immediately.
+- **Faction Appearance:** choose **Horde** or **Alliance** for the banners and the Classic Forever PvP rank plaque.
+
+All four preferences are saved between sessions, and changes take effect immediately.
 
 Use the **Back** tab to return to General, or close WarScore with the top-right **X**. Settings can also be opened directly with `/ws settings`.
 
