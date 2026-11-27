@@ -17,7 +17,7 @@ end
 local function positionButton(angle)
     if not minimapButton or not Minimap then return end
     local radians = math.rad(angle)
-    local radius = math.min(Minimap:GetWidth(), Minimap:GetHeight()) / 2 + 8
+    local radius = math.min(Minimap:GetWidth(), Minimap:GetHeight()) / 2
     minimapButton:ClearAllPoints()
     minimapButton:SetPoint("CENTER", Minimap, "CENTER",
         math.cos(radians) * radius, math.sin(radians) * radius)
