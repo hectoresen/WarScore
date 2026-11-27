@@ -12,6 +12,8 @@ El código y la documentación originales de WarScore se distribuyen bajo la [li
 - Las marcas, nombres y recursos pertenecientes a *World of Warcraft*, Blizzard u otros titulares no reciben derechos adicionales por esta licencia.
 - No incorporar assets de otros addons, webs o juegos sin una licencia compatible o autorización expresa; conservar autor, origen, condiciones y atribución.
 
+- `inner_frame_alliance.tga` y `rank_pvp_alliance.tga`: variantes creadas con generación de imágenes a partir del marco y la placa aportados a WarScore, revisadas y aprobadas por el propietario del proyecto.
+
 **Pendiente de publicación:** confirmar con quien aportó los diseños que posee sus derechos y autoriza distribuirlos, modificarlos y reutilizarlos en un proyecto abierto; después documentar expresamente su licencia. La disponibilidad pública de un archivo **no** equivale a permiso de reutilización.
 
 Esta distinción permite abrir el código bajo MIT sin prometer derechos sobre materiales cuyos permisos aún no se han confirmado.

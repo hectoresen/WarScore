@@ -44,14 +44,6 @@ local function backdrop(frame, alpha)
     return tex
 end
 
-local function line(parent, y, width)
-    local texture = parent:CreateTexture(nil, "BORDER")
-    texture:SetTexture("Interface\\Buttons\\WHITE8X8")
-    texture:SetVertexColor(0.72, 0.48, 0.17, 0.85)
-    texture:SetSize(width or 620, 2)
-    texture:SetPoint("TOP", parent, "TOP", 0, y)
-end
-
 -- Native decorative accents: no additional assets or client-only APIs required.
 local function accent(parent, point, relativePoint, x, y, width, height, color)
     local tex = parent:CreateTexture(nil, "BORDER")
@@ -63,16 +55,6 @@ local function accent(parent, point, relativePoint, x, y, width, height, color)
 end
 
 -- Decorative primitives, grouped so the whole visual pass can be QA'd together.
-local function ornamentDiamond(parent, y, size)
-    local d = parent:CreateTexture(nil, "OVERLAY")
-    d:SetTexture("Interface\\Buttons\\WHITE8X8")
-    d:SetVertexColor(0.88, 0.59, 0.19, 1)
-    d:SetSize(size or 10, size or 10)
-    d:SetRotation(math.pi / 4)
-    d:SetPoint("TOP", parent, "TOP", 0, y)
-    return d
-end
-
 local function cornerAccent(parent, xSide, ySide)
     local texture = parent:CreateTexture(nil, "OVERLAY")
     texture:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\ornate_corner")
@@ -383,7 +365,6 @@ local function build()
     -- 5 UI units left of the exterior contour. Shift the painting and its
     -- tab hitboxes together; preserve all artwork, dimensions and backing.
     local innerArt = window:CreateTexture(nil, "BORDER")
-    innerArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\inner_frame_owner_v64")
     innerArt:SetSize(774, 985)
     innerArt:SetPoint("TOP", window, "TOP", 5, -82)
     innerArt:SetAlpha(1)
@@ -510,24 +491,31 @@ local function build()
     rankPlate:SetSize(452, 42)
     rankPlate:SetPoint("TOP", window, "TOP", 0, -347)
 
-    -- Iteration 66: use the owner's actual Horde PvP-rank plaque.
-    -- The complete shield, red leather, gold bevel, laurels and center ruby
-    -- are baked into one alpha texture; never overlay the former square
-    -- inventory emblem, fake border, orange backing or stray gold lines.
-    -- The source PNG was cropped ONLY around transparent padding.
-    -- Alliance has no matching supplied plaque, so retain the established
-    -- neutral ribbon as fallback rather than displaying Horde heraldry.
-    local rankFaction = UnitFactionGroup("player")
     local rankArtwork = rankPlate:CreateTexture(nil, "ARTWORK")
-    if rankFaction == "Horde" then
-        rankArtwork:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_pvp_horde_owner_v66")
-        rankArtwork:SetSize(452, 113)
-        rankArtwork:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
-    else
-        rankArtwork:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\rank_ribbon")
-        rankArtwork:SetTexCoord(0.18, 0.74, 0.16, 0.84)
-        rankArtwork:SetSize(422, 48)
-        rankArtwork:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
+    rankArtwork:SetSize(452, 113)
+    rankArtwork:SetPoint("CENTER", rankPlate, "CENTER", 0, 0)
+
+    local factionOptions = {
+        {
+            id = "Horde",
+            labelKey = "appearance_horde",
+            frame = "Interface\\AddOns\\WarScore\\Media\\General\\inner_frame_owner_v64",
+            rank = "Interface\\AddOns\\WarScore\\Media\\General\\rank_pvp_horde_owner_v66",
+        },
+        {
+            id = "Alliance",
+            labelKey = "appearance_alliance",
+            frame = "Interface\\AddOns\\WarScore\\Media\\General\\inner_frame_alliance",
+            rank = "Interface\\AddOns\\WarScore\\Media\\General\\rank_pvp_alliance",
+        },
+    }
+    local function currentFactionAppearance()
+        local settings = WarScoreDB and WarScoreDB.settings
+        local saved = settings and settings.factionAppearance
+        for _, option in ipairs(factionOptions) do
+            if option.id == saved then return option end
+        end
+        return UnitFactionGroup("player") == "Alliance" and factionOptions[2] or factionOptions[1]
     end
 
     -- All primary dynamic text follows the window's central X axis.
@@ -541,13 +529,6 @@ local function build()
     fields.rank = label(rankPlate, text("rank_unavailable"), 18, GOLD, 0, -19, 280, 20)
     fields.rank:SetShadowColor(0.14, 0.06, 0.01, 0.85)
     fields.rank:SetShadowOffset(1, -1)
-    -- The supplied Horde plaque already has a lower gold rim and ruby:
-    -- an extra full-width rule/diamond would cut through that artwork.
-    if rankFaction ~= "Horde" then
-        line(window, -391, 632)
-        ornamentDiamond(window, -389, 8)
-    end
-
     -- v108: single owner-provided three-section frame.  The existing 21
     -- authored 5%-step rank textures remain dynamic, and are restricted to
     -- the central compartment, never the two rank labels.
@@ -759,7 +740,7 @@ local function build()
     -- caption and a native WoW Classic UIDropDownMenuTemplate control.
     -- Future settings can be added as new rows without moving the frame.
     local settingsContent = CreateFrame("Frame", nil, settingsPage)
-    settingsContent:SetSize(490, 500)
+    settingsContent:SetSize(490, 575)
     settingsContent:SetPoint("TOP", settingsPage, "TOP", 0, -270)
     local sectionTitle = label(settingsContent, text("settings_section"), 19, GOLD, 0, 0, 410, 32)
 
@@ -867,11 +848,46 @@ local function build()
     end)
     updateStyleSelection()
 
+    local factionRow, factionTitle = addSettingsRow("settings_faction_appearance", -463)
+    local factionDropdown = CreateFrame("Frame", "WarScoreSettingsFactionDropdown", factionRow, "UIDropDownMenuTemplate")
+    factionDropdown:SetPoint("TOP", factionRow, "TOP", -17, -32)
+    UIDropDownMenu_SetWidth(factionDropdown, 210)
+    factionDropdown:SetScale(1.4)
+
+    local function updateFactionAppearance()
+        local option = currentFactionAppearance()
+        innerArt:SetTexture(option.frame)
+        rankArtwork:SetTexture(option.rank)
+        UIDropDownMenu_SetSelectedValue(factionDropdown, option.id)
+        UIDropDownMenu_SetText(factionDropdown, text(option.labelKey))
+    end
+
+    UIDropDownMenu_Initialize(factionDropdown, function(_, level)
+        if level and level ~= 1 then return end
+        local current = currentFactionAppearance().id
+        for _, option in ipairs(factionOptions) do
+            local selection = option.id
+            local info = UIDropDownMenu_CreateInfo()
+            info.text = text(option.labelKey)
+            info.value = selection
+            info.checked = selection == current
+            info.func = function()
+                WarScoreDB = WarScoreDB or {}
+                WarScoreDB.settings = WarScoreDB.settings or {}
+                WarScoreDB.settings.factionAppearance = selection
+                updateFactionAppearance()
+            end
+            UIDropDownMenu_AddButton(info, level or 1)
+        end
+    end)
+
     local function updateSettingsLanguage()
         sectionTitle:SetText(text("settings_section"))
         languageTitle:SetText(text("settings_language"))
         scaleTitle:SetText(text("settings_ui_scale"))
         styleTitle:SetText(text("settings_visual_style"))
+        factionTitle:SetText(text("settings_faction_appearance"))
+        updateFactionAppearance()
         updateStyleSelection()
         local current = ns.L:GetLanguage()
         UIDropDownMenu_SetSelectedValue(languageDropdown, current)
