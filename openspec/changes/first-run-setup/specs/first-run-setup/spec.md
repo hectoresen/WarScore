@@ -4,12 +4,12 @@
 
 WarScore SHALL show a single welcome screen on the first opening of a new installation and let the player set language, visual style, faction appearance, and scale.
 
-#### Scenario: Finish or skip setup
-- **WHEN** a new player chooses Save and open General or Not now
+#### Scenario: Finish setup
+- **WHEN** a new player chooses Save and open
 - **THEN** WarScore opens General, preserves the current preferences, and skips the welcome on later openings and reloads.
 
-#### Scenario: Close without finishing
-- **WHEN** a new player closes the window with X or Escape
+#### Scenario: Defer or close without finishing
+- **WHEN** a new player chooses Not now or closes the window with X or Escape
 - **THEN** WarScore shows the welcome on the next opening, including after reload.
 
 #### Scenario: Upgrade an existing installation

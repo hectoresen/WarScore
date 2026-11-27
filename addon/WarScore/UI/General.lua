@@ -740,7 +740,7 @@ local function build()
     -- caption and a native WoW Classic UIDropDownMenuTemplate control.
     -- Future settings can be added as new rows without moving the frame.
     local settingsContent = CreateFrame("Frame", nil, settingsPage)
-    settingsContent:SetSize(490, 575)
+    settingsContent:SetSize(490, 690)
     settingsContent:SetPoint("TOP", settingsPage, "TOP", 0, -270)
     local sectionTitle = label(settingsContent, text("settings_section"), 19, GOLD, 0, 0, 410, 32)
 
@@ -882,16 +882,16 @@ local function build()
     end)
 
     local welcomeActions = CreateFrame("Frame", nil, settingsContent)
-    welcomeActions:SetSize(460, 36)
-    welcomeActions:SetPoint("TOP", settingsContent, "TOP", 0, -555)
+    welcomeActions:SetSize(460, 52)
+    welcomeActions:SetPoint("TOP", settingsContent, "TOP", 0, -635)
     welcomeActions:Hide()
 
     local finishSetup = CreateFrame("Button", nil, welcomeActions, "UIPanelButtonTemplate")
-    finishSetup:SetSize(230, 34)
-    finishSetup:SetPoint("LEFT", welcomeActions, "LEFT", 44, 0)
+    finishSetup:SetSize(250, 50)
+    finishSetup:SetPoint("LEFT", welcomeActions, "LEFT", 18, 0)
 
     local skipSetup = CreateFrame("Button", nil, welcomeActions, "UIPanelButtonTemplate")
-    skipSetup:SetSize(120, 34)
+    skipSetup:SetSize(156, 50)
     skipSetup:SetPoint("LEFT", finishSetup, "RIGHT", 18, 0)
 
     local function updateSettingsTabTitle()
@@ -950,7 +950,7 @@ local function build()
         showGeneralView()
     end
     finishSetup:SetScript("OnClick", completeSetup)
-    skipSetup:SetScript("OnClick", completeSetup)
+    skipSetup:SetScript("OnClick", showGeneralView)
     settingsPage:Hide()
 
     ns.L:RegisterRefresh(function()

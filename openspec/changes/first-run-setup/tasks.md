@@ -6,4 +6,4 @@
 ## 2. Verification
 
 - [x] PASS: Lua 5.1 syntax and statistics, simulated migration and completion state, repository and package tests, and strict OpenSpec.
-- [ ] Verify layout and complete, skip, and reload behavior in WoW Forever.
+- [ ] Verify the larger and lower buttons, completion, deferral and reload behavior in WoW Forever.
