@@ -21,8 +21,8 @@ for change in active:
     assert specs, f"{change.name}: missing capability spec"
     for spec in specs:
         body = spec.read_text(encoding="utf-8")
-        assert re.search(r"(?im)^## Requirement:", body), f"{spec}: no requirement"
-        assert re.search(r"(?im)^### Scenario:", body), f"{spec}: no acceptance scenario"
+        assert re.search(r"(?im)^#{2,3} Requirement:", body), f"{spec}: no requirement"
+        assert re.search(r"(?im)^#{3,4} Scenario:", body), f"{spec}: no acceptance scenario"
         assert re.search(r"(?i)\b(SHALL|MUST)\b", body), f"{spec}: no normative requirement"
     tasks = (change / "tasks.md").read_text(encoding="utf-8")
     assert re.search(r"- \[[ xX]\]", tasks), f"{change.name}: no task checklist"

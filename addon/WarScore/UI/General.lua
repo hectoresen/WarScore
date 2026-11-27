@@ -142,121 +142,33 @@ end
 
 -- Iteration 16: refine the tested two-band layout without changing data bindings.
 -- All ornament layers use native textures confirmed by earlier client screenshots.
-local function statBand(parent, y, definitions, secondary)
-    local band = CreateFrame("Frame", nil, parent, "BackdropTemplate")
-    -- v76: inset both owner-painted rows 8 units per side to clear parent rail.
-    local bandWidth = 688
-    -- v102: slightly shorter frame viewport while keeping captions fixed.
-    band:SetSize(bandWidth, 100)
-    -- Shared exact horizontal center for both stat cards.
-    band:SetPoint("TOP", parent, "TOP", 3, y)
-    backdrop(band, 0.92)
-    -- Owner artwork supplies all metal rails, corners and vertical dividers.
-    -- v74 top frame remains unchanged; v75 applies only to lower card row.
-    local frameArt = band:CreateTexture(nil, "BORDER")
-    frameArt:SetTexture(secondary
-        and "Interface\\AddOns\\WarScore\\Media\\General\\stat_band_bottom_owner_v75"
-        or "Interface\\AddOns\\WarScore\\Media\\General\\stat_band_top_owner_v74")
-    frameArt:SetAllPoints(band)
+local function buildFavoriteCard(parent)
+    local card = CreateFrame("Frame", nil, parent)
+    card:SetSize(688 * 380 / 704, 100)
+    card:SetPoint("TOP", parent, "TOP", 3, -830)
+    backdrop(card, 0.92)
 
-    local values = {}
-    -- The lower owner's frame has asymmetric dividers at ~24% and ~46%.
-    -- Allocate real column widths so labels and values belong to their cells.
-    local widths = secondary
-        and { bandWidth * 171 / 704, bandWidth * 153 / 704, bandWidth * 380 / 704 }
-        or { bandWidth / 3, bandWidth / 3, bandWidth / 3 }
-    local offset = 0
-    for i, definition in ipairs(definitions) do
-        local segmentWidth = widths[i]
-        local segment = CreateFrame("Frame", nil, band)
-        segment:SetSize(segmentWidth, 96)
-        segment:SetPoint("TOPLEFT", band, "TOPLEFT", offset, -2)
-        offset = offset + segmentWidth
+    -- The favorite occupies the rightmost cell of the original lower band.
+    local frameArt = card:CreateTexture(nil, "BORDER")
+    frameArt:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\stat_band_bottom_owner_v75")
+    frameArt:SetTexCoord(324 / 704, 1, 0, 1)
+    frameArt:SetAllPoints(card)
 
-        -- Decorative icon is never part of the text layout. Native WoW
-        -- inventory glyphs still have baked square art; future asset task
-        -- replaces these with transparent cutouts, not destructive cropping.
-        local icon = segment:CreateTexture(nil, "ARTWORK")
-        local ownerTopIcon = not secondary and definition.ownerIcon
-        local ownerBottomIcon = secondary and definition.ownerIcon
-        local ownerIcon = ownerTopIcon or ownerBottomIcon
-        icon:SetTexture(ownerIcon or definition.icon)
-        -- Preserve the native WoW illustration instead of rejected clip art.
-        -- A supported alpha mask removes the square inventory-tile corners
-        -- without zoom-cropping blades and heraldry. Graceful client fallback.
-        -- v80: common 50x50 viewport for every owner icon in both card rows.
-        -- v82: optical balancing in the two narrow lower-row cells only.
-        -- Favorite-BG pennant and the entire upper row keep their approved size.
-        local iconSize = ownerBottomIcon and (i == 1 and 47.5 or (i == 2 and 44 or 50))
-            or (ownerIcon and 50 or 43)
-        -- v105: harmonize icon size (-5%) while preserving band dimensions.
-        -- v135: visibly reduce ONLY upper-left Duelos ganados swords by 14%.
-        local iconDisplaySize = iconSize * 0.95
-        local duelIconReduction = not secondary and i == 1 and ownerTopIcon and 0.86 or 1
-        icon:SetSize(iconDisplaySize * duelIconReduction, iconDisplaySize * duelIconReduction)
-        -- v78: move only the crossed swords inward, clear of the left gold bevel.
-        -- v81: use consistent inner clearance for the normalized lower art.
-        -- Keep the owner-approved upper icon placement untouched.
-        local iconInset = ownerTopIcon and (i == 1 and 24 or 10)
-            or (ownerBottomIcon and (i == 1 and 16 or (i == 2 and 16 or 18)) or 8)
-        -- Offset by half the size delta so the slightly smaller swords
-        -- retain their previously approved horizontal visual center.
-        icon:SetPoint("LEFT", segment, "LEFT",
-            iconInset + 2 + (iconDisplaySize * (1 - duelIconReduction) / 2),
-            ownerIcon and -5 or 1)
-        icon:SetTexCoord(0, 1, 0, 1)
-        -- Owner art has real alpha; avoid circular masking and opacity reduction.
-        icon:SetAlpha(ownerIcon and 1 or (secondary and 0.78 or 0.91))
-        if not ownerIcon and type(segment.CreateMaskTexture) == "function"
-            and type(icon.AddMaskTexture) == "function" then
-            pcall(function()
-                local mask = segment:CreateMaskTexture(nil, "ARTWORK")
-                mask:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\portrait_mask")
-                mask:SetAllPoints(icon)
-                icon:AddMaskTexture(mask)
-            end)
-        end
+    local icon = card:CreateTexture(nil, "ARTWORK")
+    icon:SetTexture("Interface\\AddOns\\WarScore\\Media\\General\\icon_favorite_bg_owner_v79")
+    icon:SetSize(47.5, 47.5)
+    icon:SetPoint("LEFT", card, "LEFT", 20, -5)
 
-        -- x=0 means centered on the FULL segment, not offset by its icon.
-        -- Width reserves a small gap from the left decorative pictogram.
-        local caption = label(segment, text(definition.title), secondary and 12 or 13,
-            CREAM, 0, -12, 145, 38)
-        caption:SetTextColor(0.94, 0.84, 0.65)
-        -- Ratios in the two narrow lower cells have their own fixed text area,
-        -- offset right of the decorative icon; not anchored to the icon.
-        local isRate = secondary and i <= 2
-        -- v84: the favorite BG cell is much wider than the two rate cells.
-        -- Give its live name/count a dedicated area to the right of the pennant.
-        local isFavorite = secondary and i == 3
-        local valueX = isRate and 19 or (isFavorite and 22 or 0)
-        local valueWidth = isRate and 105 or (isFavorite and 265 or 145)
-        -- v85: separate the favorite's name from the played-count caption.
-        -- The latter uses the client's built-in italic face when available.
-        -- v105: values are independently positioned, scaled to 95% and raised.
-        local valueFontSize = (definition.valueSize or (secondary and 29 or 35)) * 0.95
-        local value = label(segment, "—", valueFontSize,
-            secondary and GREEN or GOLD, valueX, isFavorite and -46 or -50,
-            valueWidth, isFavorite and 28 or 45)
-        value:SetShadowColor(0.26, 0.14, 0.045, secondary and 0.45 or 0.72)
-        value:SetShadowOffset(1, -1)
-        values[i] = value
-        values.captions = values.captions or {}
-        values.captions[i] = caption
-        if isFavorite then
-            -- v86: center under the favorite card heading (segment x=0),
-            -- independently from the name, which is shifted right of the pennant.
-            local playedCaption = label(segment, "", 12.35, CREAM, 0, -66, 190, 20)
-            -- v87: own actual italic TTF. WoW has no SetFont italic flag;
-            -- QuestFont/ITALIC_TEXT_FONT rendered upright on Forever v86.
-            -- File is vendored from Google Fonts (Spectral, SIL OFL 1.1).
-            playedCaption:SetFont("Interface\\AddOns\\WarScore\\Media\\Fonts\\Spectral-Italic.ttf", 12.35, "OUTLINE")
-            playedCaption:SetTextColor(0.84, 0.77, 0.64)
-            playedCaption:SetShadowColor(0.20, 0.10, 0.03, 0.6)
-            playedCaption:SetShadowOffset(1, -1)
-            values.favoritePlayed = playedCaption
-        end
-    end
-    return values
+    fields.favoriteCaption = label(card, text("favorite_battleground"), 12, CREAM, 0, -14, 145, 38)
+    fields.favoriteCaption:SetTextColor(0.94, 0.84, 0.65)
+    fields.favorite = label(card, "—", 17 * 0.95, GREEN, 22, -48, 265, 28)
+    fields.favorite:SetShadowColor(0.26, 0.14, 0.045, 0.45)
+    fields.favorite:SetShadowOffset(1, -1)
+    fields.favoritePlayed = label(card, "", 12.35, CREAM, 0, -68, 190, 20)
+    fields.favoritePlayed:SetFont("Interface\\AddOns\\WarScore\\Media\\Fonts\\Spectral-Italic.ttf", 12.35, "OUTLINE")
+    fields.favoritePlayed:SetTextColor(0.84, 0.77, 0.64)
+    fields.favoritePlayed:SetShadowColor(0.20, 0.10, 0.03, 0.6)
+    fields.favoritePlayed:SetShadowOffset(1, -1)
 end
 
 local function formatNumber(value)
@@ -313,8 +225,7 @@ local function refresh()
     fields.hkCaption:SetText(text("honorable_kills"))
     fields.pvpDeathsCaption:SetText(text("pvp_deaths"))
     fields.hkDescription:SetText(text("hk_death_ratio_description"))
-    for i, key in ipairs(fields.statCaptionKeys) do fields.statCaptions[i]:SetText(text(key)) end
-    for i, key in ipairs(fields.statCaptionKeysSecondary) do fields.statCaptionsSecondary[i]:SetText(text(key)) end
+    fields.favoriteCaption:SetText(text("favorite_battleground"))
     local data = ns.Stats.ReadHistorical()
     fields.name:SetText(UnitName("player") or text("character_fallback"))
     fields.level:SetText(text("level_format", tostring(UnitLevel("player") or "?"), UnitClass("player") or text("class_fallback")))
@@ -353,11 +264,6 @@ local function refresh()
         fields.rankPoints:SetText("—")
         -- No percentage caption or graphical progress fill on the rank meter.
     end
-    fields.duels:SetText(formatCountOrZero(data.duelsWon))
-    fields.bgPlayed:SetText(formatCountOrZero(data.battlegroundsPlayed))
-    fields.bgWon:SetText(formatCountOrZero(data.battlegroundsWon))
-    fields.bgRate:SetText(formatPercent(data.bgWinRate))
-    fields.duelRate:SetText(formatPercent(data.duelWinRate))
     local favorite = data.favoriteBattleground
     if favorite and data.favoriteBattlegroundPlayed then
         fields.favorite:SetText(favorite)
@@ -372,10 +278,15 @@ local function refresh()
     if simpleGeneral then
         local keys = {
             "name", "level", "rank", "rankFrom", "rankTo", "rankPoints",
-            "hk", "honor", "hkd", "deaths", "duels", "bgPlayed",
-            "bgWon", "bgRate", "duelRate", "favorite", "favoritePlayed",
+            "hk", "honor", "hkd", "deaths", "favorite", "favoritePlayed",
         }
-        local model = {}
+        local model = {
+            duels = formatCountOrZero(data.duelsWon),
+            bgPlayed = formatCountOrZero(data.battlegroundsPlayed),
+            bgWon = formatCountOrZero(data.battlegroundsWon),
+            bgRate = formatPercent(data.bgWinRate),
+            duelRate = formatPercent(data.duelWinRate),
+        }
         for _, key in ipairs(keys) do model[key] = fields[key]:GetText() end
         simpleGeneral:Refresh(model)
     end
@@ -713,21 +624,7 @@ local function build()
 
     -- Lower ratio rail and central sapphire are part of the new owner asset.
 
-    local firstRow = statBand(window, -779, {
-        { title = "duel_wins", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duels_owner_v77" },
-        { title = "battlegrounds_played", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_played_owner_v77" },
-        { title = "battlegrounds_won", color = GOLD, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_wins_owner_v77" },
-    })
-    fields.duels, fields.bgPlayed, fields.bgWon = unpack(firstRow)
-    -- v88: lift the entire lower band 8 UI units to clear the parent bottom rim.
-    -- Keep the owner TGA, band dimensions and the text/icon local anchors intact.
-    local secondRow = statBand(window, -890, {
-        { title = "battleground_win_rate", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_bg_rate_owner_v79" },
-        { title = "duel_win_rate", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_duel_rate_owner_v79" },
-        { title = "favorite_battleground", color = GREEN, ownerIcon = "Interface\\AddOns\\WarScore\\Media\\General\\icon_favorite_bg_owner_v79", valueSize = 17 },
-    }, true)
-    fields.bgRate, fields.duelRate, fields.favorite = unpack(secondRow)
-    fields.favoritePlayed = secondRow.favoritePlayed
+    buildFavoriteCard(window)
     fields.rankCaption = rankCaption
     fields.honorHeading = honorHeading
     fields.hkCaption = hkCaption
@@ -735,10 +632,6 @@ local function build()
     fields.hkDescription = hkDescription
     fields.generalText = generalText
     fields.todayText = todayText
-    fields.statCaptions = firstRow.captions
-    fields.statCaptionKeys = { "duel_wins", "battlegrounds_played", "battlegrounds_won" }
-    fields.statCaptionsSecondary = secondRow.captions
-    fields.statCaptionKeysSecondary = { "battleground_win_rate", "duel_win_rate", "favorite_battleground" }
 
     -- v122: freeze the complete v121 General view as its own visibility
     -- group. These are the original region/child objects: no layout, anchor,
