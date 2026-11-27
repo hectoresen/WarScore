@@ -671,7 +671,7 @@ local function build()
 
     local firstRow = statBand(window, -779, {
         { title = "duel_wins", color = GOLD },
-        { title = "battlegrounds_played", color = GOLD },
+        { title = "battlegrounds_played_short", color = GOLD },
         { title = "battlegrounds_won", color = GOLD },
     })
     fields.duels, fields.bgPlayed, fields.bgWon = unpack(firstRow)
@@ -692,7 +692,7 @@ local function build()
     fields.generalText = generalText
     fields.todayText = todayText
     fields.statCaptions = firstRow.captions
-    fields.statCaptionKeys = { "duel_wins", "battlegrounds_played", "battlegrounds_won" }
+    fields.statCaptionKeys = { "duel_wins", "battlegrounds_played_short", "battlegrounds_won" }
     fields.statCaptionsSecondary = secondRow.captions
     fields.statCaptionKeysSecondary = { "battleground_win_rate", "duel_win_rate", "favorite_battleground" }
 
