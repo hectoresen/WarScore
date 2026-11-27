@@ -1,8 +1,6 @@
 local _, ns = ...
 ns.UI = ns.UI or {}
 
--- WarScore v129: slightly enlarge shield again within the same native Classic border.
--- The owner's shield remains the only icon inside Blizzard's existing frame.
 local minimapButton
 local DEFAULT_ANGLE = 225
 
@@ -53,19 +51,10 @@ local function createMinimapButton()
     minimapButton:RegisterForClicks("LeftButtonUp")
     minimapButton:RegisterForDrag("LeftButton")
 
-    -- v129: enlarge owner shield from 23 to 25 px while maintaining the
-    -- original center. Keep the 31px button and Blizzard 54px ring unchanged.
+    -- The supplied emblem includes its own gold rim.
     local icon = minimapButton:CreateTexture(nil, "ARTWORK")
-    icon:SetTexture("Interface\\AddOns\\WarScore\\Media\\Minimap\\warscore_icon_owner_v126")
-    icon:SetSize(25, 25)
-    icon:SetPoint("TOPLEFT", minimapButton, "TOPLEFT", 4.5, -3.5)
-    icon:SetAlpha(1)
-
-    local border = minimapButton:CreateTexture(nil, "OVERLAY")
-    border:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
-    border:SetSize(54, 54)
-    border:SetPoint("TOPLEFT", minimapButton, "TOPLEFT", 0, 0)
-    border:SetAlpha(1)
+    icon:SetTexture("Interface\\AddOns\\WarScore\\Media\\Minimap\\pvp_emblem")
+    icon:SetAllPoints(minimapButton)
 
     local dragging = false
     local justDragged = false
