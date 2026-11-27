@@ -47,13 +47,13 @@ jobs:
           required = module.source_files()
           assert required, "No runtime files found"
           assert all((root / path).is_file() for path in required)
-          assert any(str(p) == "UI/General.lua" for p in required)
-          assert any(str(p) == "UI/Minimap.lua" for p in required)
+          assert Path("UI/General.lua") in required
+          assert Path("UI/Minimap.lua") in required
           ui = (root / "UI/General.lua").read_text(encoding="utf-8")
           assert 'GetAddOnMetadata(ns.addonName or "WarScore", "Version")' in ui, "Version command must read addon metadata"
           manifest = toc.read_text(encoding="utf-8-sig")
           assert re.search(r'^## Version: [0-9]+\.[0-9]+\.[0-9]+$', manifest, re.MULTILINE), "Invalid TOC semantic version"
-          assert 'local duelIconReduction = not secondary and i == 1 and ownerTopIcon and 0.86 or 1' in ui
+          assert Path("Media/General/icon_favorite_bg_owner_v79.tga") in required, "Missing favorite battleground icon"
           assert 'honorPanel:SetPoint("TOP", window, "TOP", 0, -516)' in ui
           textures = [path for path in required if path.suffix.lower() == ".tga"]
           for path in textures:
