@@ -69,7 +69,7 @@ end
 
 -- Iteration 20: standalone native buttons prevent the UIPanelButtonTemplate's
 -- grey/red state textures from leaking through our ornamental tab skin.
-local function skinTab(button, text, selected)
+local function skinTab(button, text, selected, fontSize)
     local bg = button:CreateTexture(nil, "BACKGROUND")
     bg:SetTexture("Interface\\Buttons\\WHITE8X8")
     if selected then
@@ -105,12 +105,13 @@ local function skinTab(button, text, selected)
     edge("TOPRIGHT", "BOTTOMRIGHT", selected and 2 or 1, nil, borderColor)
 
     local title = button:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    title:SetFont("Fonts\\FRIZQT__.TTF", 15, "OUTLINE")
+    title:SetFont("Fonts\\FRIZQT__.TTF", fontSize or 15, "OUTLINE")
     title:SetTextColor(selected and 1 or 0.75, selected and 0.82 or 0.69, selected and 0.45 or 0.57)
     title:SetAllPoints(button)
     title:SetJustifyH("CENTER")
     title:SetJustifyV("MIDDLE")
     title:SetText(text)
+    return title
 end
 
 local function sectionPlaque(parent, y, width, height, alpha)
@@ -740,7 +741,7 @@ local function build()
     -- caption and a native WoW Classic UIDropDownMenuTemplate control.
     -- Future settings can be added as new rows without moving the frame.
     local settingsContent = CreateFrame("Frame", nil, settingsPage)
-    settingsContent:SetSize(490, 575)
+    settingsContent:SetSize(490, 690)
     settingsContent:SetPoint("TOP", settingsPage, "TOP", 0, -270)
     local sectionTitle = label(settingsContent, text("settings_section"), 19, GOLD, 0, 0, 410, 32)
 
@@ -881,7 +882,47 @@ local function build()
         end
     end)
 
+    local welcomeActions = CreateFrame("Frame", nil, settingsContent)
+    welcomeActions:SetSize(480, 52)
+    welcomeActions:SetPoint("TOP", settingsContent, "TOP", 0, -635)
+    welcomeActions:Hide()
+
+    local function createWelcomeButton(key, width, primary)
+        local button = CreateFrame("Button", nil, welcomeActions)
+        button:SetSize(width, 50)
+        local title = skinTab(button, text(key), primary, primary and 22 or 20)
+
+        local highlight = button:CreateTexture(nil, "ARTWORK")
+        highlight:SetTexture("Interface\\Buttons\\WHITE8X8")
+        highlight:SetAllPoints(button)
+        highlight:SetVertexColor(1, 0.76, 0.40, 0.15)
+        highlight:Hide()
+        button:SetScript("OnEnter", function()
+            highlight:Show()
+            title:SetTextColor(1, 0.95, 0.81)
+        end)
+        button:SetScript("OnLeave", function()
+            highlight:Hide()
+            title:SetTextColor(rgb(primary and GOLD or CREAM))
+        end)
+        title:SetTextColor(rgb(primary and GOLD or CREAM))
+        return button, title
+    end
+
+    local finishSetup, finishSetupTitle = createWelcomeButton("onboarding_finish", 252, true)
+    finishSetup:SetPoint("LEFT", welcomeActions, "LEFT", 0, 0)
+
+    local skipSetup, skipSetupTitle = createWelcomeButton("onboarding_skip", 176, false)
+    skipSetup:SetPoint("RIGHT", welcomeActions, "RIGHT", 0, 0)
+
+    local function updateSettingsTabTitle()
+        settingsTitle:SetText(text(ns.NeedsOnboarding() and "tab_welcome" or "tab_settings"))
+    end
+
     local function updateSettingsLanguage()
+        updateSettingsTabTitle()
+        finishSetupTitle:SetText(text("onboarding_finish"))
+        skipSetupTitle:SetText(text("onboarding_skip"))
         sectionTitle:SetText(text("settings_section"))
         languageTitle:SetText(text("settings_language"))
         scaleTitle:SetText(text("settings_ui_scale"))
@@ -908,6 +949,14 @@ local function build()
         refresh()
     end
     showSettingsView = function()
+        if ns.NeedsOnboarding() then
+            returnTab:Hide()
+            welcomeActions:Show()
+        else
+            returnTab:Show()
+            welcomeActions:Hide()
+        end
+        updateSettingsTabTitle()
         for _, object in ipairs(generalObjects) do object:Hide() end
         simpleGeneral:Hide()
         settingsPage:Show()
@@ -916,10 +965,16 @@ local function build()
         settingsFrame:SetFrameLevel(window:GetFrameLevel() + 10)
     end
     returnTab:SetScript("OnClick", showGeneralView)
+
+    local function completeSetup()
+        ns.CompleteOnboarding()
+        showGeneralView()
+    end
+    finishSetup:SetScript("OnClick", completeSetup)
+    skipSetup:SetScript("OnClick", showGeneralView)
     settingsPage:Hide()
 
     ns.L:RegisterRefresh(function()
-        settingsTitle:SetText(text("tab_settings"))
         returnTitle:SetText(text("tab_back"))
         updateSettingsLanguage()
     end)
@@ -932,7 +987,11 @@ end
 
 function ns.UI.ShowGeneral()
     if not window then build() end
-    if showGeneralView then showGeneralView() end
+    if ns.NeedsOnboarding() then
+        showSettingsView()
+    else
+        showGeneralView()
+    end
     window:Show()
     refresh()
 end
