@@ -5,5 +5,5 @@
 
 ## 2. Verification
 
-- [x] PASS: strict OpenSpec validation and source checks for the five centered values and the retained favorite icon.
+- [x] PASS: strict OpenSpec validation and source checks for the five horizontally centered values and the retained favorite icon.
 - [ ] Verify in WoW Forever and record owner acceptance before archival.

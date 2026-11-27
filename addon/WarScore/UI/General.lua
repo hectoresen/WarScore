@@ -182,14 +182,15 @@ local function statBand(parent, y, definitions, secondary)
 
         local isFavorite = secondary and i == 3
         local caption = label(segment, text(definition.title), secondary and 12 or 13,
-            CREAM, 0, isFavorite and -12 or -2, 145, 38)
+            CREAM, 0, isFavorite and -12 or -2, 145, isFavorite and 38 or 26)
+        caption:SetJustifyV(isFavorite and "MIDDLE" or "BOTTOM")
         caption:SetTextColor(0.94, 0.84, 0.65)
 
         local valueWidth = secondary and 105 or 145
         local valueFontSize = (definition.valueSize or (secondary and 29 or 35)) * 0.95
         local value = label(segment, "—", valueFontSize,
             secondary and GREEN or GOLD, isFavorite and 22 or 0,
-            isFavorite and -46 or -25.5, isFavorite and 265 or valueWidth,
+            isFavorite and -46 or -36.5, isFavorite and 265 or valueWidth,
             isFavorite and 28 or 45)
         value:SetJustifyV("MIDDLE")
         value:SetShadowColor(0.26, 0.14, 0.045, secondary and 0.45 or 0.72)
