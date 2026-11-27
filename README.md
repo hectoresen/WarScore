@@ -8,27 +8,32 @@ WarScore is a free, open-source PvP statistics addon for **World of Warcraft For
 
 ## General — your PvP overview
 
-Choose between two Warcraft-inspired visual styles in **Settings**. Both display the same real character statistics and share the same functionality.
+Choose between two Warcraft-inspired visual styles in **Settings**. Both display the same character statistics. The screenshots below come from the **v0.4.0 development gallery**.
 
 ### Classic Forever
 
-The original ornamental dashboard, with detailed PvP panels and decorative stat cards.
+The ornamental layout uses framed PvP panels and stat cards. The banners and rank plaque follow your faction appearance preference.
 
 <p align="center">
-  <img src="docs/addon%20v0.3.0/WarScore%201.png" width="440" alt="Classic Forever General view in Spanish" />
-  <img src="docs/addon%20v0.3.0/WarScore%201%20ENG.png" width="440" alt="Classic Forever General view in English" />
+  <img src="docs/addon%20v0.4.0/1.png" width="360" alt="Classic Forever General with red Horde banners and the Horde PvP rank plaque" />
+  <img src="docs/addon%20v0.4.0/2.png" width="360" alt="Classic Forever General with blue Alliance banners and the Alliance PvP rank plaque" />
 </p>
+
+<details>
+<summary>More Classic Forever screenshots with Horde appearance</summary>
+
+<p align="center">
+  <img src="docs/addon%20v0.4.0/3.png" width="360" alt="Additional Horde view of the Classic Forever character portrait, rank, Honor, and PvP cards" />
+  <img src="docs/addon%20v0.4.0/4.png" width="360" alt="Additional full-window capture of Classic Forever in English with Horde banners" />
+</p>
+
+</details>
 
 ### Classic Forever Simple
 
-A cleaner, more compact General layout with the same PvP data, gold dividers and Warcraft-themed artwork.
+A compact layout with gold dividers and the same PvP statistics.
 
-<p align="center">
-  <img src="docs/addon%20v0.3.0/War%20Score%201%20SIMPLE.png" width="440" alt="Classic Forever Simple General view in Spanish" />
-  <img src="docs/addon%20v0.3.0/War%20Score%201%20SIMPLE%20ENG.png" width="440" alt="Classic Forever Simple General view in English" />
-</p>
-
-The **General** tab brings together your character's real portrait, name, level and class, alongside a detailed PvP overview. Switching styles changes the presentation only—not the values or calculations.
+The **General** tab brings together your character's real portrait, name, level and class, alongside a detailed PvP overview. Both styles use the same values and calculations.
 
 | Statistic | What it means |
 | --- | --- |
@@ -50,28 +55,27 @@ The top navigation also includes a **Statistics** tab, reserved for more advance
 
 ## Settings — personalize your experience
 
-On your first opening after a new installation, WarScore shows a welcome screen with the four preferences below. Choose **Save and open** to finish or **Not now** to open General and see the welcome again the next time you open WarScore. You can revisit these preferences at any time in Settings.
+Open Settings with the gear icon or `/ws settings`. The four preferences take effect immediately and are saved between sessions.
 
 <p align="center">
-  <img src="docs/addon%20v0.3.0/WarScore%202.png" width="620" alt="WarScore Settings in English with language, interface size and visual style dropdowns" />
+  <img src="docs/addon%20v0.4.0/5.png" width="480" alt="English WarScore Settings showing English, 100% interface size, Classic Forever Simple, and Horde appearance" />
 </p>
 
-The **Settings** page includes four preference areas:
+- **Language** switches between **English** and **Spanish**.
+- **Interface Size** offers **75%**, **100%** (default), and **125%**.
+- **Visual Style** switches between **Classic Forever** and **Classic Forever Simple**.
+- **Faction Appearance** selects **Horde** or **Alliance** for the banners and the Classic Forever PvP rank plaque. By default, the artwork follows your character's faction.
 
-- **Language:** switch between **English and Spanish** at any time.
-- **Interface Size:** choose **75%, 100%, or 125%** (100% is the default compact size).
-- **Visual Style:** switch between **Classic Forever** and **Classic Forever Simple** without reloading the game.
+Select **Back** to return to General or use the top-right **X** to close WarScore.
 
-- **Faction Appearance:** choose **Horde** or **Alliance** for the banners and the Classic Forever PvP rank plaque.
+### First-time setup
 
-All four preferences are saved between sessions, and changes take effect immediately.
-
-Use the **Back** tab to return to General, or close WarScore with the top-right **X**. Settings can also be opened directly with `/ws settings`.
+On a new installation, the first time you open WarScore you can choose the same four preferences on the welcome screen. Select **Save and open** to finish or **Not now** to visit General and see the welcome next time you open WarScore. Players updating an existing installation keep their preferences.
 
 ## Minimap button — quick access
 
 <p align="center">
-  <img src="docs/addon%20v0.1/WarScore4.png" width="420" alt="Crossed-swords WarScore button on the WoW minimap with a tooltip" />
+  <img src="docs/addon%20v0.4.0/6.png" width="620" alt="Crossed-swords WarScore button on the WoW minimap with the Open/Close WarScore tooltip" />
 </p>
 
 WarScore adds a small **crossed-swords icon** with a circular Warcraft-style border to the edge of the minimap.
@@ -84,7 +88,7 @@ WarScore adds a small **crossed-swords icon** with a circular Warcraft-style bor
 
 WarScore retrieves your statistics using the **native APIs provided by WoW Forever**, including PvP records, the Honor currency, rank progression, duels, and battleground results. It calculates ratios and win rates from those reported values. The General view reads the latest available data when opened.
 
-The addon does **not require a website, account, external database, or remote synchronization**. Only local preferences, such as language, interface size, visual style and minimap icon position, are saved. See the [technical PvP statistics documentation](docs/PVP_STATISTICS.md) for API evidence and limitations.
+The addon does **not require a website, account, external database, or remote synchronization**. Only local preferences, such as language, interface size, visual style, faction appearance and minimap icon position, are saved. See the [technical PvP statistics documentation](docs/PVP_STATISTICS.md) for API evidence and limitations.
 
 ## Installation
 
@@ -106,7 +110,7 @@ The ready-to-install addon lives in [`addon/WarScore/`](addon/WarScore/), includ
 
 | Command | Description |
 | --- | --- |
-| `/ws` or `/warscore` | Open the General tab. |
+| `/ws` or `/warscore` | Open WarScore. New installations start with the welcome screen. |
 | `/ws settings` | Open Settings. |
 | `/ws lang en` | Switch to English. |
 | `/ws lang es` | Switch to Spanish. |
