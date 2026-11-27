@@ -19,3 +19,7 @@ WarScore SHALL show a single welcome screen on the first opening of a new instal
 #### Scenario: Change the welcome language
 - **WHEN** the player changes the language during setup
 - **THEN** the welcome and preferences are translated immediately.
+
+#### Scenario: Recognize both welcome actions
+- **WHEN** the welcome is open
+- **THEN** the two actions have readable labels, separate click targets and a visible pointer hover state.

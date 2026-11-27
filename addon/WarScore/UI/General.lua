@@ -69,7 +69,7 @@ end
 
 -- Iteration 20: standalone native buttons prevent the UIPanelButtonTemplate's
 -- grey/red state textures from leaking through our ornamental tab skin.
-local function skinTab(button, text, selected)
+local function skinTab(button, text, selected, fontSize)
     local bg = button:CreateTexture(nil, "BACKGROUND")
     bg:SetTexture("Interface\\Buttons\\WHITE8X8")
     if selected then
@@ -105,12 +105,13 @@ local function skinTab(button, text, selected)
     edge("TOPRIGHT", "BOTTOMRIGHT", selected and 2 or 1, nil, borderColor)
 
     local title = button:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    title:SetFont("Fonts\\FRIZQT__.TTF", 15, "OUTLINE")
+    title:SetFont("Fonts\\FRIZQT__.TTF", fontSize or 15, "OUTLINE")
     title:SetTextColor(selected and 1 or 0.75, selected and 0.82 or 0.69, selected and 0.45 or 0.57)
     title:SetAllPoints(button)
     title:SetJustifyH("CENTER")
     title:SetJustifyV("MIDDLE")
     title:SetText(text)
+    return title
 end
 
 local function sectionPlaque(parent, y, width, height, alpha)
@@ -882,17 +883,37 @@ local function build()
     end)
 
     local welcomeActions = CreateFrame("Frame", nil, settingsContent)
-    welcomeActions:SetSize(460, 52)
+    welcomeActions:SetSize(480, 52)
     welcomeActions:SetPoint("TOP", settingsContent, "TOP", 0, -635)
     welcomeActions:Hide()
 
-    local finishSetup = CreateFrame("Button", nil, welcomeActions, "UIPanelButtonTemplate")
-    finishSetup:SetSize(250, 50)
-    finishSetup:SetPoint("LEFT", welcomeActions, "LEFT", 18, 0)
+    local function createWelcomeButton(key, width, primary)
+        local button = CreateFrame("Button", nil, welcomeActions)
+        button:SetSize(width, 50)
+        local title = skinTab(button, text(key), primary, primary and 22 or 20)
 
-    local skipSetup = CreateFrame("Button", nil, welcomeActions, "UIPanelButtonTemplate")
-    skipSetup:SetSize(156, 50)
-    skipSetup:SetPoint("LEFT", finishSetup, "RIGHT", 18, 0)
+        local highlight = button:CreateTexture(nil, "ARTWORK")
+        highlight:SetTexture("Interface\\Buttons\\WHITE8X8")
+        highlight:SetAllPoints(button)
+        highlight:SetVertexColor(1, 0.76, 0.40, 0.15)
+        highlight:Hide()
+        button:SetScript("OnEnter", function()
+            highlight:Show()
+            title:SetTextColor(1, 0.95, 0.81)
+        end)
+        button:SetScript("OnLeave", function()
+            highlight:Hide()
+            title:SetTextColor(rgb(primary and GOLD or CREAM))
+        end)
+        title:SetTextColor(rgb(primary and GOLD or CREAM))
+        return button, title
+    end
+
+    local finishSetup, finishSetupTitle = createWelcomeButton("onboarding_finish", 252, true)
+    finishSetup:SetPoint("LEFT", welcomeActions, "LEFT", 0, 0)
+
+    local skipSetup, skipSetupTitle = createWelcomeButton("onboarding_skip", 176, false)
+    skipSetup:SetPoint("RIGHT", welcomeActions, "RIGHT", 0, 0)
 
     local function updateSettingsTabTitle()
         settingsTitle:SetText(text(ns.NeedsOnboarding() and "tab_welcome" or "tab_settings"))
@@ -900,8 +921,8 @@ local function build()
 
     local function updateSettingsLanguage()
         updateSettingsTabTitle()
-        finishSetup:SetText(text("onboarding_finish"))
-        skipSetup:SetText(text("onboarding_skip"))
+        finishSetupTitle:SetText(text("onboarding_finish"))
+        skipSetupTitle:SetText(text("onboarding_skip"))
         sectionTitle:SetText(text("settings_section"))
         languageTitle:SetText(text("settings_language"))
         scaleTitle:SetText(text("settings_ui_scale"))
